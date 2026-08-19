@@ -34,7 +34,10 @@ body:
   - type: textarea
     id: acceptance-criteria
     attributes:
-      label: Tiêu chí hoàn thành
-      description: Điều kiện để coi là "done" - càng cụ thể càng tốt (vd. endpoint nào, hành vi UI nào, test nào phải xanh).
+      label: Tiêu chí hoàn thành bổ sung (nếu có)
+      description: >-
+        Baseline chung (unit test pass, không ảnh hưởng tính năng khác, verification đã chạy...) đã có sẵn
+        trong AGENTS.md - KHÔNG lặp lại ở đây. Chỉ ghi điều kiện ĐẶC THÙ của riêng feature này (vd. endpoint
+        cụ thể phải trả về gì, hành vi UI cụ thể nào, ngưỡng hiệu năng). Để trống nếu không có gì đặc thù.
     validations:
-      required: true
+      required: false
