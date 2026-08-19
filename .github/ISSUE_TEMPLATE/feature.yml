@@ -1,0 +1,40 @@
+name: Feature Request
+description: Đề xuất 1 feature mới - issue này sẽ trở thành id (feat-<số-issue>) dùng xuyên suốt repo triển khai. Xem PROCESS.md.
+title: "<tên feature ngắn gọn>"
+labels: []
+body:
+  - type: checkboxes
+    id: affected-repos
+    attributes:
+      label: Repo bị ảnh hưởng
+      description: Chọn tất cả repo mà feature này chạm tới. Mỗi lựa chọn tương ứng label repo:<tên-repo> - tự thêm label sau khi tạo issue nếu GitHub không tự gắn.
+      options:
+        - label: crm-api
+        - label: crm-web
+        - label: crm-bot
+        - label: crm-manager-api
+        - label: crm-manager-web
+        - label: crm-auth
+        - label: khác (ghi rõ trong mô tả)
+  - type: input
+    id: primary-repo
+    attributes:
+      label: Repo chính (sở hữu contract/dữ liệu)
+      description: Chỉ điền khi feature chạm nhiều repo. Đây là repo mà id/tên branch của feature này sẽ dùng làm chuẩn trong feature_list.json.
+      placeholder: "vd: crm-api"
+    validations:
+      required: false
+  - type: textarea
+    id: description
+    attributes:
+      label: Mô tả
+      description: Feature này làm gì, tại sao cần, phạm vi.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Tiêu chí hoàn thành
+      description: Điều kiện để coi là "done" - càng cụ thể càng tốt (vd. endpoint nào, hành vi UI nào, test nào phải xanh).
+    validations:
+      required: true
