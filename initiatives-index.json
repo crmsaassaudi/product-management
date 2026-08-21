@@ -1,6 +1,14 @@
 {
   "initiatives": [
     {
+      "id": "feat-3",
+      "title": "Object Manager: Thông báo rõ ràng khi Admin chạm hạn mức 300 trường tùy biến",
+      "primary_repo": "crm-api",
+      "affected_repos": ["crm-api", "crm-web"],
+      "status": "not-started",
+      "links": ["https://github.com/crmsaassaudi/product-management/issues/3"]
+    },
+    {
       "id": "feat-4",
       "title": "Xây tính năng Chuyển nhượng quyền sở hữu Workspace (Ownership Transfer)",
       "primary_repo": "crm-api",
