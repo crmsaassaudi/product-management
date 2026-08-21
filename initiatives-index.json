@@ -1,3 +1,28 @@
 {
-  "initiatives": []
+  "initiatives": [
+    {
+      "id": "feat-4",
+      "title": "Xây tính năng Chuyển nhượng quyền sở hữu Workspace (Ownership Transfer)",
+      "primary_repo": "crm-api",
+      "affected_repos": ["crm-api", "crm-web"],
+      "status": "not-started",
+      "links": ["https://github.com/crmsaassaudi/product-management/issues/4"]
+    },
+    {
+      "id": "feat-5",
+      "title": "Hợp nhất luồng đăng ký workspace (/register) vào pipeline onboarding bất đồng bộ",
+      "primary_repo": "crm-api",
+      "affected_repos": ["crm-api", "crm-web"],
+      "status": "not-started",
+      "links": ["https://github.com/crmsaassaudi/product-management/issues/5"]
+    },
+    {
+      "id": "feat-6",
+      "title": "Cảnh báo + cascade khi xoá Vai trò (số người/nhóm bị ảnh hưởng, thu hồi Role Assignment, đăng xuất phiên)",
+      "primary_repo": "crm-api",
+      "affected_repos": ["crm-api", "crm-web"],
+      "status": "not-started",
+      "links": ["https://github.com/crmsaassaudi/product-management/issues/6"]
+    }
+  ]
 }
