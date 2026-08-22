@@ -31,3 +31,25 @@ _Avoid_: "Activity log", "history" chung chung — dùng đúng tên này để 
 **Bắt buộc khi tạo mới (Required on Create)**:
 Trường bắt buộc phải có giá trị ngay lúc tạo bản ghi — tập con của "bắt buộc", loại trừ các trường chỉ có ý nghĩa/bắt buộc sau khi bản ghi đã tồn tại.
 _Avoid_: "Required" dùng lẫn cho cả hai trường hợp mà không phân biệt thời điểm áp dụng.
+
+## Omnichat
+
+**Hồ sơ khách hàng tạm (Provisional Customer Record)**:
+Một hồ sơ khách hàng do hệ thống tự tạo ngay khi nhận tin nhắn từ một người gửi chưa xác định được danh tính CRM thật (chưa khớp email/số điện thoại/liên kết thủ công nào). Được thay thế bằng liên kết tới hồ sơ khách hàng thật khi có đủ căn cứ (tự động với kênh có định danh xác thực mạnh như WhatsApp, hoặc do Agent tự xác nhận với các kênh còn lại).
+_Avoid_: "Shadow contact", "khách vãng lai" — dùng đúng tên này để nhất quán giữa các SRS omnichannel.
+
+**Ngưỡng an toàn đóng hàng loạt (Bulk-Close Safety Threshold)**:
+Cơ chế giới hạn số lượng hội thoại được tự động đóng trong một khoảng thời gian ngắn của một tenant/kênh, để một lỗi cấu hình hoặc sự cố kênh không âm thầm đóng hàng loạt hội thoại đang cần xử lý. Khi chạm ngưỡng, việc đóng bị hoãn lại và được thử lại sau, không hủy bỏ.
+_Avoid_: "Circuit breaker", "rate limit" — đây là khái niệm nghiệp vụ (bảo vệ khách hàng khỏi bị đóng hội thoại oan), không phải thuật ngữ hạ tầng.
+
+**Lời mời nhận hội thoại (Conversation Offer)**:
+Một đề nghị có thời hạn gửi tới một Agent cụ thể để nhận xử lý một hội thoại đang chờ. Agent phải phản hồi (nhận/từ chối) trong thời hạn; hết hạn hoặc từ chối thì hội thoại được mời tới Agent phù hợp tiếp theo.
+_Avoid_: "Offer/lease", "work item" — dùng "Lời mời nhận hội thoại" trong mọi tài liệu nghiệp vụ.
+
+**Ưu tiên người phụ trách trước đó (Previous-Assignee Priority / Sticky Routing)**:
+Quy tắc ưu tiên định tuyến hội thoại mới của một khách hàng trở lại đúng Agent đã từng phụ trách khách hàng đó gần đây, nếu Agent đó còn khả năng nhận thêm việc — nhằm giữ mạch tương tác quen thuộc cho khách hàng.
+_Avoid_: "Sticky assignee/sticky routing" trong văn bản nghiệp vụ — chỉ dùng trong tài liệu kỹ thuật.
+
+**Cửa sổ phản hồi (Reply Window)**:
+Khoảng thời gian, tính từ tin nhắn gần nhất của khách hàng, mà Agent còn được phép chủ động gửi tin nhắn tự do cho khách trên một kênh nhắn tin. Sau khi hết cửa sổ, một số kênh (ví dụ WhatsApp) chỉ cho gửi tin dạng mẫu đã được phê duyệt trước; một số kênh khác (Email, Live Chat, Telegram) không có giới hạn này.
+_Avoid_: "Reply window" tiếng Anh trong văn bản nghiệp vụ tiếng Việt — dùng "Cửa sổ phản hồi".
