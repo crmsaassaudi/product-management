@@ -47,6 +47,14 @@
       "affected_repos": ["crm-api", "crm-web"],
       "status": "in-progress",
       "links": ["https://github.com/crmsaassaudi/product-management/issues/25"]
+    },
+    {
+      "id": "feat-26",
+      "title": "Đồng bộ Object ACL (grant/deny theo record) 2 chiều với List View, Export, Dashboard, và Related List",
+      "primary_repo": "crm-api",
+      "affected_repos": ["crm-api", "crm-web"],
+      "status": "in-progress",
+      "links": ["https://github.com/crmsaassaudi/product-management/issues/26"]
     }
   ]
 }
