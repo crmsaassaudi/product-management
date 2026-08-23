@@ -31,6 +31,14 @@
       "affected_repos": ["crm-api", "crm-web"],
       "status": "not-started",
       "links": ["https://github.com/crmsaassaudi/product-management/issues/6"]
+    },
+    {
+      "id": "feat-24",
+      "title": "Cho phép chỉnh sửa tên miền phụ (subdomain) trước khi xác nhận tạo workspace",
+      "primary_repo": "crm-api",
+      "affected_repos": ["crm-api", "crm-web"],
+      "status": "in-progress",
+      "links": ["https://github.com/crmsaassaudi/product-management/issues/24"]
     }
   ]
 }
