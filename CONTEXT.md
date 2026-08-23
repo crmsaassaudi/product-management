@@ -9,11 +9,11 @@ Một nhóm người dùng do quản trị viên tenant tạo ra để gán cấ
 _Avoid_: Role, permission group (khác Vai trò/Role hệ thống — nhóm ở đây là đối tượng do tenant admin tự tạo, không phải vai trò cấp hệ thống).
 
 **Phân quyền trường (Field-Level Security – FLS)**:
-Cơ chế quyết định một trường được hiển thị, ẩn, chỉ đọc, hay che giá trị — áp dụng theo Nhóm quyền, độc lập với quyền truy cập cả bản ghi.
+Cơ chế quyết định một người được làm gì với một trường — áp dụng theo Nhóm quyền, độc lập với quyền truy cập cả bản ghi. Theo đề xuất đang chờ duyệt, gồm **hai chiều độc lập**: Mức truy cập (Xem & Sửa / Chỉ xem / Ẩn) và Mức hiển thị giá trị (Hiện đầy đủ / Che một phần / Che hoàn toàn) — xem ADR-0001, mục Bổ sung 2026-08-23.
 _Avoid_: Permission, ACL (ACL kiểm soát bản ghi; FLS kiểm soát trường bên trong bản ghi — hai khái niệm khác nhau).
 
 **Chính sách phân giải xung đột nhóm quyền (Group Policy Conflict Resolution)**:
-Quy tắc quyết định cấu hình nào thắng khi một người dùng thuộc nhiều nhóm có cấu hình khác nhau trên cùng một trường. Chiến lược đang áp dụng là **hạn chế thắng (deny-override)** cho thuộc tính bảo mật (ẩn/chỉ đọc/che dữ liệu), và **cộng gộp (additive)** cho thuộc tính chất lượng dữ liệu (bắt buộc nhập). Xem [ADR-0001](./docs/adr/0001-group-policy-conflict-resolution.md).
+Quy tắc quyết định cấu hình nào thắng khi một người dùng thuộc nhiều nhóm có cấu hình khác nhau trên cùng một trường. Chiến lược đang áp dụng là **hạn chế thắng (deny-override)** cho thuộc tính bảo mật, áp dụng độc lập trên từng chiều của FLS; và **cộng gộp (additive)** cho thuộc tính chất lượng dữ liệu (bắt buộc nhập) — nhưng cộng gộp **không** áp dụng khi người dùng không có quyền nhập chính trường đó, khi ấy ràng buộc bắt buộc được miễn trừ và bản ghi bị gắn cờ thiếu dữ liệu. Ngoài ra, **vắng mặt cấu hình không phải là sự cho phép**, và quy tắc này không áp cho tác vụ tự động (được miễn trừ FLS) lẫn quản trị viên tenant (không bị FLS giới hạn). Xem [ADR-0001](./docs/adr/0001-group-policy-conflict-resolution.md) — lưu ý: phần gốc đã duyệt, riêng các điều khoản bổ sung 2026-08-23 (mô hình hai chiều, miễn trừ ràng buộc bắt buộc, vắng mặt cấu hình, phạm vi chủ thể) đang ở trạng thái đề xuất, chưa duyệt.
 _Avoid_: "Additive permissions" dùng chung cho mọi thuộc tính — trong hệ thống này hai nhóm thuộc tính có chiến lược hợp nhất khác nhau, không nên gộp chung một tên.
 
 **Danh sách hiển thị dùng chung (Shared List View)**:
@@ -31,6 +31,20 @@ _Avoid_: "Activity log", "history" chung chung — dùng đúng tên này để 
 **Bắt buộc khi tạo mới (Required on Create)**:
 Trường bắt buộc phải có giá trị ngay lúc tạo bản ghi — tập con của "bắt buộc", loại trừ các trường chỉ có ý nghĩa/bắt buộc sau khi bản ghi đã tồn tại.
 _Avoid_: "Required" dùng lẫn cho cả hai trường hợp mà không phân biệt thời điểm áp dụng.
+
+## IAM & Phân quyền Workspace
+
+**Quyền Ủy thác (Delegated Grant Authority)**:
+Một quyền hệ thống riêng biệt, do Owner/Admin chủ động cấp, cho phép người giữ nó gán các Vai trò/Nhóm đã tồn tại sẵn trong workspace cho thành viên khác mà không bị giới hạn bởi năng lực quyền hạn của chính bản thân (miễn trừ nguyên tắc "không vượt ceiling"). Không áp dụng cho việc tạo Vai trò/Nhóm mới, không áp dụng cho Cấp quyền tạm thời, và không cho phép thay đổi Cấp bậc thành viên (Owner/Admin/Member).
+_Avoid_: "Quyền tạm thời"/"Role Assignment" (tên khác của một tính năng đã có sẵn — cấp có thời hạn, cần phê duyệt; Quyền Ủy thác là cấp vĩnh viễn, không cần phê duyệt, chỉ miễn trừ ràng buộc ceiling). Xem [ADR-0002](./docs/adr/0002-delegated-grant-authority-ceiling-exception.md).
+
+**Cấp bậc thành viên (Membership Tier)** vs **Vai trò (Role)**:
+Hai trục hoàn toàn độc lập trong một workspace — Cấp bậc thành viên (Owner/Admin/Member) quyết định có toàn quyền hay không; Vai trò là tập hợp quyền hạn chi tiết chỉ có ý nghĩa ở cấp Member. Một thay đổi tác động tới trục này không mặc nhiên tác động tới trục kia.
+_Avoid_: Dùng lẫn "vai trò" để chỉ cả hai trục trong văn bản nghiệp vụ (ví dụ khi liệt kê phạm vi một nhật ký/audit log) — luôn nêu rõ đang nói tới Cấp bậc thành viên hay Vai trò.
+
+**Nguyên tắc đóng cho Nhật ký cấu hình quyền (Closure Rule)**:
+Nguyên tắc xác định phạm vi "Nhật ký thay đổi cấu hình quyền" (audit log Fail-closed, lưu 2 năm): bất kỳ thao tác nào làm thay đổi ai-được-làm-gì hoặc ai-thấy-gì trong workspace đều mặc định thuộc diện này, trừ thao tác xem trước/mô phỏng và thao tác chỉ đọc. Dùng nguyên tắc này thay vì liệt kê tĩnh để tránh bỏ sót tính năng phân quyền mới phát sinh sau này.
+_Avoid_: Coi danh sách ví dụ minh hoạ (Vai trò, Nhóm, Đơn vị tổ chức...) là danh sách đóng kín — đó chỉ là ví dụ, nguyên tắc mới là điều khoản ràng buộc thật. Xem [ADR-0003](./docs/adr/0003-permission-config-audit-log-fail-closed.md) cho quyết định Fail-closed đi kèm.
 
 ## Omnichat
 

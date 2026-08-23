@@ -4,8 +4,8 @@
 | --- | --- |
 | **Loại tài liệu** | Software Requirements Specification — vừa mô tả hành vi hiện tại, vừa là chuẩn cho phát triển tiếp theo (xem "Ghi chú về nguồn gốc tài liệu") |
 | **Module** | CRM — phân hệ Quản trị Workspace (Identity & Access Management) |
-| **Ngày viết** | 2026-08-21 |
-| **Phiên bản** | v2 |
+| **Ngày viết** | 2026-08-21 (cập nhật 2026-08-23) |
+| **Phiên bản** | v3 |
 | **Tài liệu liên quan** | [`CONTEXT.md`](../CONTEXT.md) (glossary) |
 
 ## Ghi chú về nguồn gốc tài liệu
@@ -31,7 +31,7 @@ Trong một FEAT đã `[Đã triển khai]`, nếu một quy tắc nghiệp vụ
 
 11 nhóm chức năng: (A) Khởi tạo Workspace, (B) Người dùng, (C) Nhóm, (D) Đơn vị tổ chức, (E) Vai trò & Quyền, (F) Cấp quyền tạm thời, (G) Phạm vi hiển thị dữ liệu, (H) Chính sách truy cập nâng cao, (I) Phân quyền theo bản ghi, (J) Che dữ liệu nhạy cảm, (K) Nhật ký thay đổi quyền.
 
-**Ngoài phạm vi:** đăng nhập/xác thực (SSO, mật khẩu, phiên đăng nhập), các module nghiệp vụ tiêu thụ dữ liệu (Khách hàng, Cơ hội, Ticket…) trừ phần chúng bị ảnh hưởng bởi phạm vi hiển thị dữ liệu.
+**Ngoài phạm vi:** đăng nhập/xác thực (SSO, mật khẩu, phiên đăng nhập), các module nghiệp vụ tiêu thụ dữ liệu (Khách hàng, Cơ hội, Ticket…) trừ phần chúng bị ảnh hưởng bởi phạm vi hiển thị dữ liệu; nhật ký thao tác vận hành nền tảng nội bộ không gắn với một workspace cụ thể (ví dụ bật/tắt tính năng mở rộng ở FEAT-07) — thuộc audit trail nội bộ riêng của đội vận hành nền tảng, không phải Nhóm K/FEAT-41 (vốn phục vụ chủ workspace tự tra soát nội bộ đội mình).
 
 ### 1.3 Đối tượng đọc
 
@@ -51,6 +51,7 @@ Trong một FEAT đã `[Đã triển khai]`, nếu một quy tắc nghiệp vụ
 | Thành viên (Member) | Người dùng thông thường, quyền hạn phụ thuộc vai trò/nhóm được gán. |
 | Vai trò nền tảng (Platform Role) | Trục **độc lập với workspace** — nhân sự vận hành nền tảng (Super Admin) hoặc người dùng thông thường (User). Không liên quan gì tới Cấp bậc thành viên hay Vai trò trong một workspace cụ thể. |
 | Vai trò (Role) | Một tập hợp quyền hạn có thể gán cho thành viên hoặc nhóm. Có vai trò "dựng sẵn" (hệ thống tạo mặc định) và vai trò "tự tạo" (tenant tự định nghĩa). |
+| Quyền Ủy thác (Delegated Grant Authority) | Một quyền hệ thống riêng biệt, do Owner/Admin chủ động cấp, cho phép người giữ quyền này gán các Vai trò/Nhóm **đã tồn tại sẵn** trong workspace cho thành viên khác mà không bị giới hạn bởi năng lực quyền hạn của chính bản thân người gán (xem BR-09.5). Không áp dụng cho việc tạo Vai trò/Nhóm mới, không áp dụng cho Cấp quyền tạm thời, và không cho phép thay đổi Cấp bậc thành viên. Khác với "Quyền tạm thời (Role Assignment)" ở trên — đây là cấp **vĩnh viễn**, không có hạn, không cần phê duyệt. |
 | Nhóm (Group) | Tập hợp thành viên dùng để cấp quyền/điều phối công việc theo tập thể (không phải sơ đồ tổ chức). |
 | Đơn vị tổ chức (Org Unit) | Nút trong sơ đồ tổ chức (phòng/ban/nhóm...), dùng để xác định "ai thuộc bộ phận nào" và từ đó suy ra phạm vi dữ liệu được xem. |
 | Phạm vi hiển thị dữ liệu (Data Scope) | Mức độ rộng của dữ liệu một vai trò được thấy: Chỉ của mình → Của mình + cấp dưới/đơn vị → Của mình + cả nhánh đơn vị → Toàn workspace. |
@@ -116,14 +117,14 @@ Một khách hàng đăng ký sử dụng dịch vụ, workspace của họ đư
 
 1. Người dùng nhập email, họ tên, mật khẩu → hệ thống tạo tài khoản.
 2. Hệ thống hỏi thêm thông tin công ty: tên công ty, quy mô đội ngũ, mục đích sử dụng (có thể trả lời dần qua nhiều màn hình, không bắt buộc trả lời hết một lần) — bắt buộc phải hỏi đủ các bước này, không có đường tắt bỏ qua.
-3. Người dùng xác nhận tạo workspace → hệ thống **tự sinh** tên miền phụ (subdomain) duy nhất từ tên công ty (không cho người dùng tự chọn tên miền phụ ở bất kỳ bước nào), đưa yêu cầu khởi tạo vào hàng chờ xử lý.
+3. Người dùng xác nhận tạo workspace → hệ thống **tự sinh** một tên miền phụ (subdomain) gợi ý từ tên công ty và hiển thị ngay để xem trước; người dùng có thể tự chỉnh sửa lại giá trị này trước khi xác nhận cuối cùng (vẫn phải duy nhất toàn hệ thống) `[Yêu cầu mới]`, sau đó đưa yêu cầu khởi tạo vào hàng chờ xử lý.
 4. Hệ thống trả về một mã theo dõi tiến trình để màn hình chờ tự động cập nhật trạng thái (xem FEAT-03).
 5. Khi khởi tạo xong, người dùng được chuyển tới trang đăng nhập của workspace vừa tạo, với vai trò **Chủ sở hữu (Owner)**.
 
 **Luồng ngoại lệ:**
 
 - Mật khẩu không đủ mạnh (thiếu hoa/thường/số/ký tự đặc biệt, dưới 8 ký tự) → yêu cầu nhập lại.
-- Tên miền phụ theo tên công ty đã trùng → hệ thống tự thêm hậu tố để tạo tên khác, không cho người dùng chọn tay.
+- Tên miền phụ bị trùng: nếu là giá trị tự sinh mà người dùng chưa chỉnh sửa → hệ thống tự thêm hậu tố để tạo tên khác; nếu người dùng đã tự sửa lại và tên đó bị trùng → từ chối ngay tại chỗ, yêu cầu nhập lại tên khác (không tự ý đổi tên đã tự chọn thay cho người dùng). `[Yêu cầu mới]`
 - Quá trình khởi tạo thất bại (lỗi hệ thống) → workspace được đánh dấu thất bại, dữ liệu tạm được dọn sạch, người dùng có thể thử lại.
 - Người dùng bỏ dở sau bước 1 (không hoàn tất tạo workspace) quá 24 giờ → tài khoản tạm được hệ thống tự động dọn dẹp định kỳ (không tính là workspace đã tồn tại).
 
@@ -131,12 +132,12 @@ Một khách hàng đăng ký sử dụng dịch vụ, workspace của họ đư
 
 - BR-01.1: Người tự đăng ký luôn trở thành **Owner** của workspace mới — không có lựa chọn vai trò nào khác ở bước này.
 - BR-01.2: Một email chỉ gắn với một tài khoản người dùng duy nhất trong toàn hệ thống (không phân biệt theo workspace).
-- BR-01.3: Tên miền phụ phải là duy nhất toàn hệ thống, luôn do hệ thống sinh ra, không có đường nhập tay.
+- BR-01.3 `[Yêu cầu mới]`: Tên miền phụ phải là duy nhất toàn hệ thống. Hệ thống luôn tự sinh một giá trị gợi ý từ tên công ty, nhưng người dùng được quyền tự chỉnh sửa lại trước khi xác nhận tạo workspace — không bắt buộc giữ nguyên giá trị tự sinh. (Trước đây: không có đường nhập tay dưới bất kỳ hình thức nào — lý do đổi: tên công ty đăng ký kinh doanh dài/nhiều ký tự đặc biệt dễ sinh ra subdomain xấu, thiếu chuyên nghiệp.)
 - BR-01.4: Đây là điểm vào duy nhất để một người hoàn toàn mới tạo workspace — không tồn tại một luồng rút gọn/thay thế nào khác cho cùng mục đích.
 
 **Kết quả đầu ra:** Một workspace mới ở trạng thái sẵn sàng sử dụng, với Owner là người vừa đăng ký, cùng bộ dữ liệu/cấu hình mặc định (xem FEAT-04).
 
-**Tham chiếu:** Gỡ bỏ luồng đăng ký 1 bước cũ (`/register`), hợp nhất hoàn toàn vào wizard này → issue [#5](https://github.com/crmsaassaudi/product-management/issues/5).
+**Tham chiếu:** Gỡ bỏ luồng đăng ký 1 bước cũ (`/register`), hợp nhất hoàn toàn vào wizard này → issue [#5](https://github.com/crmsaassaudi/product-management/issues/5). Cho phép chỉnh sửa tên miền phụ trước khi xác nhận tạo (BR-01.3) → issue [#24](https://github.com/crmsaassaudi/product-management/issues/24).
 
 *Đã gỡ bỏ (2026-08-21):* chức năng "tạo thêm workspace cho tài khoản đã có sẵn" (một người dùng đã đăng nhập tự tạo thêm workspace mới, không qua wizard) tồn tại ở tầng API nhưng không có màn hình nào trong sản phẩm gọi tới — xác nhận qua rà soát mã nguồn và đã được gỡ bỏ. Nếu nhu cầu "một người sở hữu nhiều workspace" phát sinh trở lại, nên đi qua đúng FEAT-01 (đăng xuất, đăng ký lại bằng cùng email) thay vì khôi phục lại đường tắt này.
 
@@ -154,7 +155,7 @@ Một khách hàng đăng ký sử dụng dịch vụ, workspace của họ đư
 
 1. Nhân sự nhập tên công ty, email/họ tên người quản trị, gói dịch vụ → gửi yêu cầu khởi tạo.
 2. Hệ thống ghi nhận yêu cầu, đưa vào hàng chờ xử lý (có cơ chế chống gửi trùng nếu gửi lại yêu cầu giống hệt).
-3. Workspace được khởi tạo tương tự FEAT-01 (tên miền phụ tự sinh, dữ liệu mặc định được tạo).
+3. Workspace được khởi tạo tương tự FEAT-01 (tên miền phụ tự sinh làm gợi ý, nhân sự thực hiện có thể chỉnh sửa lại trước khi xác nhận — cùng cơ chế BR-01.3 `[Yêu cầu mới]`; dữ liệu mặc định được tạo).
 4. Nhân sự gửi lời mời tới người quản trị phía khách hàng với vai trò mong muốn (Chủ sở hữu/Quản trị/Thành viên) — người này nhận email đặt mật khẩu để bắt đầu sử dụng.
 
 **Luồng ngoại lệ:**
@@ -166,6 +167,8 @@ Một khách hàng đăng ký sử dụng dịch vụ, workspace của họ đư
 - BR-02.1: Đường này dành riêng cho nội bộ, không mở công khai.
 
 **Kết quả đầu ra:** Workspace được tạo sẵn, người quản trị phía khách hàng nhận được lời mời kích hoạt.
+
+**Tham chiếu:** Cho phép chỉnh sửa tên miền phụ trước khi xác nhận tạo (BR-01.3) → issue [#24](https://github.com/crmsaassaudi/product-management/issues/24) (cùng issue với FEAT-01).
 
 ---
 
@@ -326,10 +329,13 @@ Một khách hàng đăng ký sử dụng dịch vụ, workspace của họ đư
 
 - BR-09.1: Không thể mời ai đó làm "Chủ sở hữu" qua chức năng này — chỉ được chọn Quản trị viên hoặc Thành viên.
 - BR-09.2: Chỉ được cấp vai trò "Quản trị viên" nếu bản thân người mời đã có toàn quyền (là Owner/Admin) — người có quyền "Tạo người dùng" nhưng không phải Owner/Admin thì không thể tự nâng người khác (hoặc gián tiếp chính mình) lên Quản trị viên.
-- BR-09.3: Người mời chỉ được gán cho người khác những quyền mà bản thân đang có — không thể cấp vượt quá năng lực quyền hạn của chính mình, dù có quyền "Tạo người dùng".
+- BR-09.3: Người mời chỉ được gán cho người khác những quyền mà bản thân đang có — không thể cấp vượt quá năng lực quyền hạn của chính mình, dù có quyền "Tạo người dùng". (Xem ngoại lệ dành cho Quyền Ủy thác ở BR-09.5.)
 - BR-09.4: Vị trí (đơn vị tổ chức, người quản lý) khai báo phải hợp lệ trong workspace hiện tại, không được trỏ sang workspace khác.
+- BR-09.5 `[Yêu cầu mới]`: Người giữ **Quyền Ủy thác** (xem Thuật ngữ 1.4) được miễn trừ khỏi ràng buộc BR-09.3 khi gán Vai trò quyền hạn cho người khác — được phép gán bất kỳ Vai trò nào đã tồn tại sẵn trong workspace, kể cả vượt quá năng lực quyền hạn hiện có của chính mình. Miễn trừ này: (a) không áp dụng cho việc nâng lên Quản trị viên — vẫn theo đúng BR-09.2, không đổi; (b) không cho phép tự gán quyền cho chính mình, cùng nguyên tắc chống tự leo thang áp dụng ở FEAT-11; (c) chỉ áp dụng khi gán Vai trò/Nhóm đã tồn tại sẵn (cũng áp dụng cho việc thêm vào Nhóm ở FEAT-18) — không áp dụng khi tạo mới Vai trò/Nhóm (FEAT-17, FEAT-25/26) hay khi yêu cầu Cấp quyền tạm thời (FEAT-30). Lý do: giải quyết nghịch lý nơi bộ phận IT/HR được giao nhiệm vụ tạo tài khoản/gán vai trò cho nhân viên mới nhưng bản thân không có quyền nghiệp vụ (Sales, v.v.) để gán — tách quyền này riêng để Owner kiểm soát được chính xác ai có năng lực "vượt ceiling", thay vì mọi người có quyền "Tạo người dùng" đều tự động có được. Xem [ADR-0002](../docs/adr/0002-delegated-grant-authority-ceiling-exception.md) cho phân tích đánh đổi đầy đủ.
 
 **Kết quả đầu ra:** Thành viên mới có mặt trong workspace với đúng vai trò/quyền/vị trí tổ chức đã chọn (hoặc mặc định an toàn nếu bỏ trống).
+
+**Tham chiếu:** Bổ sung Quyền Ủy thác (BR-09.5) → issue [#25](https://github.com/crmsaassaudi/product-management/issues/25).
 
 ---
 
@@ -471,10 +477,12 @@ Một khách hàng đăng ký sử dụng dịch vụ, workspace của họ đư
 **Quy tắc nghiệp vụ:**
 
 - BR-17.1: Nhóm là công cụ cộng tác/tổ chức công việc, hoàn toàn tách biệt với sơ đồ tổ chức (nhóm D) — một người có thể ở nhiều nhóm cùng lúc, không liên quan gì tới việc họ thuộc đơn vị tổ chức nào.
-- BR-17.2: Người tạo/sửa nhóm chỉ được gán cho nhóm (và qua đó, cho mọi thành viên nhóm) những quyền mà chính người đó đang có — tính gộp cả quyền của toàn bộ chuỗi nhóm cha phía trên, không chỉ riêng nhóm đang thao tác. Việc đổi tên/mô tả/màu sắc (không liên quan tới quyền/thành viên/phân cấp) thì không bị kiểm tra ràng buộc này.
+- BR-17.2: Người tạo/sửa nhóm chỉ được gán cho nhóm (và qua đó, cho mọi thành viên nhóm) những quyền mà chính người đó đang có — tính gộp cả quyền của toàn bộ chuỗi nhóm cha phía trên, không chỉ riêng nhóm đang thao tác. Việc đổi tên/mô tả/màu sắc (không liên quan tới quyền/thành viên/phân cấp) thì không bị kiểm tra ràng buộc này. **Quyền Ủy thác (BR-09.5) không tạo ngoại lệ ở đây** — miễn trừ đó chỉ áp dụng khi thêm thành viên vào một Nhóm *đã tồn tại sẵn* (xem FEAT-18), không áp dụng cho việc tạo/sửa cấu hình quyền của chính Nhóm. `[Yêu cầu mới]`
 - BR-17.3: Trước khi lưu, có thể xem trước quyền một cấu hình nhóm (kể cả với nhóm cha giả định, chưa lưu) sẽ mang lại — không bị ràng buộc bởi BR-17.2 vì xem trước không cấp gì thật.
 
 **Kết quả đầu ra:** Nhóm được tạo/cập nhật; mọi thành viên trong nhóm (và nhóm con) được cập nhật quyền hiệu lực ngay.
+
+**Tham chiếu:** Xác nhận Quyền Ủy thác không tạo ngoại lệ ở đây (regression test đi kèm issue Quyền Ủy thác) → issue [#25](https://github.com/crmsaassaudi/product-management/issues/25).
 
 ---
 
@@ -487,7 +495,7 @@ Một khách hàng đăng ký sử dụng dịch vụ, workspace của họ đư
 **Luồng chính (Thêm thành viên):**
 
 1. Chọn nhóm, chọn thành viên (phải đã là thành viên workspace).
-2. Hệ thống kiểm tra người thực hiện có đủ thẩm quyền cấp những gì nhóm (và chuỗi nhóm cha) mang lại — vì thêm ai đó vào nhóm tức là cấp cho họ toàn bộ quyền của nhóm đó.
+2. Hệ thống kiểm tra người thực hiện có đủ thẩm quyền cấp những gì nhóm (và chuỗi nhóm cha) mang lại — vì thêm ai đó vào nhóm tức là cấp cho họ toàn bộ quyền của nhóm đó — **trừ khi người thực hiện đang giữ Quyền Ủy thác (BR-09.5), khi đó được miễn kiểm tra này** vì thêm vào một Nhóm đã tồn tại sẵn mang bản chất rủi ro giống hệt việc gán thẳng một Vai trò có sẵn. `[Yêu cầu mới]`
 3. Thêm thành công (thêm lại một người đã có sẵn trong nhóm không gây lỗi, cũng không tạo trùng).
 
 **Luồng chính (Gỡ thành viên):** Gỡ ngay lập tức, không cần kiểm tra thẩm quyền — vì gỡ khỏi nhóm chỉ có thể làm giảm quyền, không bao giờ là hành vi cần kiểm soát chống lạm quyền.
@@ -496,7 +504,13 @@ Một khách hàng đăng ký sử dụng dịch vụ, workspace của họ đư
 
 - Người được thêm chưa phải thành viên workspace → từ chối, yêu cầu mời vào workspace trước.
 
+**Quy tắc nghiệp vụ:**
+
+- BR-18.1 `[Yêu cầu mới]`: Miễn trừ dành cho Quyền Ủy thác ở bước 2 chỉ áp dụng khi thêm vào một Nhóm đã tồn tại sẵn — không áp dụng nếu thao tác này đi kèm việc tạo/sửa cấu hình quyền của chính Nhóm (khi đó vẫn theo BR-17.2 như bình thường).
+
 **Kết quả đầu ra:** Danh sách thành viên nhóm cập nhật; quyền hiệu lực của người bị ảnh hưởng cập nhật gần như ngay lập tức.
+
+**Tham chiếu:** Miễn trừ ceiling qua Quyền Ủy thác (BR-18.1) → issue [#25](https://github.com/crmsaassaudi/product-management/issues/25).
 
 ---
 
@@ -615,11 +629,13 @@ Một khách hàng đăng ký sử dụng dịch vụ, workspace của họ đư
 
 **Luồng ngoại lệ:**
 
-- Danh sách quyền chọn cho vai trò mới phải nằm trong quyền hiện có của chính người tạo — không thể tạo ra một vai trò mạnh hơn năng lực của người tạo nó.
+- Danh sách quyền chọn cho vai trò mới phải nằm trong quyền hiện có của chính người tạo — không thể tạo ra một vai trò mạnh hơn năng lực của người tạo nó. Quyền Ủy thác (BR-09.5) không tạo ngoại lệ ở đây — miễn trừ đó chỉ áp dụng khi gán một Vai trò *đã tồn tại sẵn*, không áp dụng cho việc tạo ra một Vai trò mới. `[Yêu cầu mới]`
 - Phạm vi hiển thị dữ liệu chọn cho vai trò cũng bị ràng buộc tương tự: chỉ được chọn phạm vi rộng bằng hoặc hẹp hơn phạm vi mà chính người tạo đang có.
 - Sao chép một vai trò có sẵn không bị ràng buộc bởi 2 quy tắc trên — vì bản sao chỉ lặp lại đúng những gì vai trò gốc (đã tồn tại hợp lệ trong workspace) đang có, không tạo ra năng lực mới.
 
 **Kết quả đầu ra:** Vai trò mới sẵn sàng để gán cho thành viên/nhóm.
+
+**Tham chiếu:** Xác nhận Quyền Ủy thác không tạo ngoại lệ ở đây (regression test đi kèm issue Quyền Ủy thác) → issue [#25](https://github.com/crmsaassaudi/product-management/issues/25).
 
 ---
 
@@ -719,7 +735,7 @@ Một khách hàng đăng ký sử dụng dịch vụ, workspace của họ đư
 
 - Không thể tự yêu cầu cấp quyền cho chính mình.
 - Người/nhóm nhận phải thuộc chính workspace đang thao tác.
-- Vai trò yêu cầu cấp phải nằm trong năng lực quyền hạn hiện có của người yêu cầu (không thể nhờ cấp hộ quyền mà bản thân không có).
+- Vai trò yêu cầu cấp phải nằm trong năng lực quyền hạn hiện có của người yêu cầu (không thể nhờ cấp hộ quyền mà bản thân không có). Quyền Ủy thác (BR-09.5) không áp dụng cho luồng này — miễn trừ vượt ceiling chỉ dành cho việc gán vĩnh viễn một Vai trò/Nhóm đã tồn tại sẵn, không mở rộng sang Cấp quyền tạm thời. `[Yêu cầu mới]`
 - Bắt buộc phải có thời hạn — tối đa 90 ngày; không có lựa chọn "cấp vĩnh viễn" qua đường này.
 - Bắt buộc phải nhập lý do.
 
@@ -728,6 +744,8 @@ Một khách hàng đăng ký sử dụng dịch vụ, workspace của họ đư
 - BR-30.1: Mọi cấp quyền tạm thời đều phải có hạn và có lý do — đây là cơ chế "cấp có kiểm soát", không phải đường tắt để cấp quyền vĩnh viễn nhanh hơn quy trình thường.
 
 **Kết quả đầu ra:** Yêu cầu được ghi nhận, chờ phê duyệt.
+
+**Tham chiếu:** Xác nhận Quyền Ủy thác không tạo ngoại lệ ở đây (regression test đi kèm issue Quyền Ủy thác) → issue [#25](https://github.com/crmsaassaudi/product-management/issues/25).
 
 ---
 
@@ -890,9 +908,12 @@ Một khách hàng đăng ký sử dụng dịch vụ, workspace của họ đư
 
 - BR-39.1: Quyền chặn tường minh trên bản ghi luôn thắng tuyệt đối — dù vai trò/phạm vi dữ liệu thông thường có cho phép, bản ghi này vẫn bị chặn với người/nhóm bị chặn riêng.
 - BR-39.2: Nếu không có cấp/chặn riêng nào cho bản ghi → áp dụng đúng theo quy tắc chung (vai trò/phạm vi/chính sách) như bình thường, không bị ảnh hưởng gì.
-- BR-39.3: Cấp/chặn riêng cho 1 bản ghi chỉ chắc chắn có tác dụng khi xem đúng bản ghi đó — việc áp dụng ở màn hình danh sách/xuất báo cáo cần được từng nơi chủ động xử lý riêng, chưa phải là hành vi mặc định áp dụng ở mọi màn hình danh sách trong hệ thống (xem Mục 7).
+- BR-39.3 `[Yêu cầu mới]`: Cấp/chặn riêng cho 1 bản ghi phải có tác dụng đồng bộ ở **mọi nơi bản ghi đó có thể xuất hiện**, không chỉ ở màn hình xem chi tiết — bao gồm màn hình danh sách (List View), kết quả xuất báo cáo (Export), số liệu tổng hợp trên Dashboard, và danh sách bản ghi liên quan (Related List) hiển thị bên trong một bản ghi khác. Áp dụng cho cả 2 chiều: bản ghi bị **chặn** (deny) phải biến mất khỏi mọi nơi kể trên; bản ghi được **cấp** riêng (grant) phải xuất hiện đúng ở những nơi đó dù vai trò/phạm vi thông thường không cho phép — nếu không, người được cấp quyền đặc cách sẽ không tìm thấy bản ghi mình được phép xem, gây hiểu nhầm hệ thống lỗi. (Trước đây: chỉ chắc chắn có tác dụng ở màn hình chi tiết, coi là giới hạn chấp nhận được — lý do đổi: đây là rò rỉ dữ liệu thật, không phải trade-off UX chấp nhận được như BR-36.3.)
+- BR-39.4 `[Yêu cầu mới]`: Khi một bản ghi bị chặn xuất hiện gián tiếp qua một liên kết trong bản ghi khác (ví dụ: đang xem một Cơ hội có tham chiếu tới một Khách hàng bị chặn riêng), hệ thống hiển thị một placeholder trung lập (ví dụ: "Bị hạn chế truy cập") thay vì ẩn hoàn toàn liên kết đó — tránh gây hiểu nhầm là lỗi/mất dữ liệu, đồng thời không lộ bất kỳ thông tin nào của bản ghi bị chặn.
 
-**Kết quả đầu ra:** Bản ghi được bảo vệ/mở thêm đúng như cấu hình, độc lập với vai trò chung.
+**Kết quả đầu ra:** Bản ghi được bảo vệ/mở thêm đúng như cấu hình, độc lập với vai trò chung, và đồng bộ nhất quán ở mọi điểm hiển thị trong hệ thống.
+
+**Tham chiếu:** Đồng bộ Object ACL với List View/Export/Dashboard/Related List (BR-39.3/39.4) → issue [#26](https://github.com/crmsaassaudi/product-management/issues/26).
 
 ---
 
@@ -943,15 +964,26 @@ Một khách hàng đăng ký sử dụng dịch vụ, workspace của họ đư
 **Quy tắc nghiệp vụ:**
 
 - BR-41.1: Đây là nhật ký chỉ ghi, không sửa/xoá được — kể cả quản trị viên cấp cao nhất cũng không chỉnh sửa lại lịch sử này.
-- BR-41.2: Việc ghi nhật ký không bao giờ được làm gián đoạn hay chặn thao tác nghiệp vụ đang thực hiện — nếu việc ghi nhật ký gặp sự cố, thao tác chính vẫn diễn ra bình thường, chỉ có dòng nhật ký đó bị bỏ lỡ.
+- BR-41.2 `[Yêu cầu mới: thu hẹp phạm vi]`: Việc ghi **Nhật ký quyết định cho phép/từ chối truy cập** (xem BR-41.4) không bao giờ được làm gián đoạn hay chặn thao tác nghiệp vụ đang thực hiện — nếu việc ghi nhật ký gặp sự cố, thao tác chính vẫn diễn ra bình thường, chỉ có dòng nhật ký đó bị bỏ lỡ. Nguyên tắc "không chặn" này **chỉ áp dụng cho nhóm nhật ký này** — xem BR-41.5 cho nguyên tắc ngược lại áp dụng cho nhóm còn lại. (Trước đây: áp dụng chung cho toàn bộ nhật ký quyền không phân biệt — lý do thu hẹp: log lỗi ở một thay đổi quyền cụ thể — vd. nâng ai đó lên Admin — mà vẫn cho thao tác diễn ra sẽ làm mất hoàn toàn dấu vết kiểm toán cho đúng thao tác nhạy cảm nhất, khác hẳn hệ quả của việc bỏ lỡ 1 dòng log quyết định truy cập thông thường.)
 - BR-41.3: Đây là nhật ký quyền hạn, khác với nhật ký hoạt động nghiệp vụ thông thường (ví dụ: "khách hàng X vừa được tạo", "ticket Y vừa đóng") — hai loại nhật ký này tách biệt nhau, phục vụ mục đích khác nhau (nhật ký quyền phục vụ kiểm soát bảo mật/tuân thủ; nhật ký hoạt động phục vụ theo dõi công việc). Cùng một hành động (ví dụ mời một thành viên mới) có thể xuất hiện ở cả hai nơi.
-- BR-41.4 `[Yêu cầu mới]`: Nhật ký được phân theo 2 nhóm lưu trữ khác nhau:
-  - **Nhật ký quyết định cho phép/từ chối truy cập** (khối lượng lớn nhất, phát sinh theo mọi request) — lưu 60 ngày, tự động xoá sau đó.
-  - **Nhật ký thay đổi cấu hình quyền** (đổi vai trò/quyền/nhóm/chính sách/cấp quyền tạm thời/quyền trên bản ghi/vai trò nền tảng) — lưu cố định 2 năm cho mọi gói dịch vụ (chưa phân biệt theo gói).
+- BR-41.4 `[Yêu cầu mới: mở rộng danh sách + bổ sung nguyên tắc đóng]`: Nhật ký được phân theo 2 nhóm lưu trữ khác nhau:
+  - **Nhật ký quyết định cho phép/từ chối truy cập** (khối lượng lớn nhất, phát sinh theo mọi request đọc/ghi dữ liệu nghiệp vụ) — lưu 60 ngày, tự động xoá sau đó, áp dụng nguyên tắc Fail-open (BR-41.2).
+  - **Nhật ký thay đổi cấu hình quyền** — lưu cố định 2 năm cho mọi gói dịch vụ, áp dụng nguyên tắc Fail-closed (BR-41.5). **Nguyên tắc xác định nhóm này (nguyên tắc đóng):** bất kỳ thao tác nào làm thay đổi **ai được làm gì** hoặc **ai thấy gì** trong workspace đều thuộc nhóm này — trừ các thao tác chỉ xem trước/mô phỏng (không có hiệu lực thật, vd. FEAT-15/19/37) và các thao tác chỉ đọc. Danh sách dưới đây là ví dụ minh hoạ, không phải danh sách đóng kín — mọi tính năng phân quyền mới phát sinh sau này mặc định thuộc nhóm này trừ khi có lý do tường minh để loại trừ:
+    - Đổi Cấp bậc thành viên (Owner/Admin ⇄ Member — FEAT-08, FEAT-12).
+    - Thêm/gỡ khỏi workspace, khoá/mở khoá tài khoản (FEAT-09, FEAT-13, FEAT-14).
+    - Tạo/sửa/xoá Vai trò, đổi Vai trò quyền hạn của thành viên (nhóm E, FEAT-11).
+    - Tạo/sửa/xoá Nhóm, thêm/gỡ thành viên khỏi Nhóm (nhóm C).
+    - Tạo/sửa/di chuyển/xoá Đơn vị tổ chức (nhóm D).
+    - Cấu hình Phạm vi hiển thị dữ liệu (nhóm G).
+    - Tạo/sửa/xoá Chính sách truy cập nâng cao (nhóm H).
+    - Yêu cầu/phê duyệt/từ chối/thu hồi Cấp quyền tạm thời (nhóm F).
+    - Cấp/thu hồi Quyền trên bản ghi (nhóm I).
+    - Đổi vai trò nền tảng (SUPER_ADMIN).
+- BR-41.5 `[Yêu cầu mới]`: Việc ghi **Nhật ký thay đổi cấu hình quyền** (nhóm liệt kê ở BR-41.4) áp dụng nguyên tắc **Fail-closed**: nếu ghi log cho một trong các thao tác thuộc nhóm này gặp sự cố, hệ thống phải huỷ ngay thao tác nghiệp vụ chính đang thực hiện và báo lỗi cho người dùng — không được để thao tác diễn ra mà thiếu vết kiểm toán tương ứng. Đây là ngoại lệ có chủ đích với nguyên tắc chung "log không được chặn nghiệp vụ" (BR-41.2/NFR-3), áp dụng riêng cho nhóm log này vì hệ quả của việc mất dấu vết ở đây là mất khả năng chứng minh tuân thủ (non-repudiation) cho một thay đổi quyền hạn cụ thể — trong khi nhóm log quyết định truy cập (BR-41.2) không mang hệ quả tương đương. Xem [ADR-0003](../docs/adr/0003-permission-config-audit-log-fail-closed.md) cho phân tích đánh đổi đầy đủ.
 
-**Kết quả đầu ra:** Có thể tra soát đầy đủ "ai đã thay đổi quyền hạn gì, khi nào" phục vụ kiểm toán bảo mật, trong đúng thời hạn lưu trữ đã quy định.
+**Kết quả đầu ra:** Có thể tra soát đầy đủ "ai đã thay đổi quyền hạn gì, khi nào" phục vụ kiểm toán bảo mật, trong đúng thời hạn lưu trữ đã quy định, với đảm bảo không có khoảng trống kiểm toán ở nhóm thay đổi cấu hình quyền.
 
-**Tham chiếu:** Áp policy TTL cho nhật ký quyền (60 ngày / 2 năm) → issue [#10](https://github.com/crmsaassaudi/product-management/issues/10).
+**Tham chiếu:** Áp policy TTL cho nhật ký quyền (60 ngày / 2 năm) → issue [#10](https://github.com/crmsaassaudi/product-management/issues/10). Mở rộng danh sách BR-41.4 + bổ sung BR-41.5 (Fail-closed) → issue [#27](https://github.com/crmsaassaudi/product-management/issues/27).
 
 ---
 
@@ -965,17 +997,17 @@ Một khách hàng đăng ký sử dụng dịch vụ, workspace của họ đư
 
 ### 4.2 Ràng buộc cấp quyền
 
-- **NFR-5:** Không tồn tại cách "tự cấp thêm một quyền đứng riêng lẻ" ngoài vai trò — mọi việc mở rộng quyền hạn phải đi qua vai trò (có kiểm soát không-vượt-năng-lực người cấp) hoặc qua quy trình cấp quyền tạm thời có phê duyệt (nhóm F).
+- **NFR-5:** Không tồn tại cách "tự cấp thêm một quyền đứng riêng lẻ" ngoài vai trò — mọi việc mở rộng quyền hạn phải đi qua vai trò (có kiểm soát không-vượt-năng-lực người cấp, trừ người giữ Quyền Ủy thác — xem BR-09.5) hoặc qua quy trình cấp quyền tạm thời có phê duyệt (nhóm F, không có ngoại lệ cho Quyền Ủy thác).
 - **NFR-6:** Cấp quyền tạm thời (nhóm F) luôn có hạn tối đa 90 ngày — không có đường cấp "vĩnh viễn" chính thức.
 
 ### 4.3 Vận hành & Hiệu năng
 
-- **NFR-3:** Việc ghi nhật ký thay đổi quyền không bao giờ được làm gián đoạn/chặn nghiệp vụ chính đang thực hiện.
+- **NFR-3** `[Yêu cầu mới: bổ sung phân biệt]`**:** Việc ghi Nhật ký quyết định cho phép/từ chối truy cập (60 ngày) không bao giờ được làm gián đoạn/chặn nghiệp vụ chính đang thực hiện (Fail-open). Ngược lại, Nhật ký thay đổi cấu hình quyền (2 năm) áp dụng Fail-closed — một thao tác thuộc nhóm này bị huỷ nếu không ghi được log tương ứng (xem BR-41.2, BR-41.5).
 - **NFR-4:** Thay đổi vai trò/quyền/cấu hình nhóm phải phản ánh gần như ngay lập tức tới người bị ảnh hưởng; riêng thay đổi sơ đồ tổ chức có thể có độ trễ tối đa khoảng 1 phút.
 
 ### 4.4 Lưu trữ
 
-- **NFR-8:** Nhật ký quyết định cho phép/từ chối truy cập lưu tối đa 60 ngày; nhật ký thay đổi cấu hình quyền (vai trò/thành viên/nhóm/chính sách/quyền tạm thời/quyền trên bản ghi) lưu cố định 2 năm cho mọi gói dịch vụ.
+- **NFR-8:** Nhật ký quyết định cho phép/từ chối truy cập lưu tối đa 60 ngày (Fail-open); nhật ký thay đổi cấu hình quyền (danh sách đầy đủ xem BR-41.4) lưu cố định 2 năm cho mọi gói dịch vụ, áp dụng Fail-closed (BR-41.5).
 
 ---
 
@@ -1008,6 +1040,9 @@ Phần lớn tính năng của module này được cấp qua **quyền cụ th�
 5. **Nhiều vai trò/nhóm chồng lấn luôn chọn phương án an toàn nhất phù hợp với từng trục:** Ở trục phạm vi hiển thị dữ liệu, hệ thống luôn lấy phạm vi rộng nhất trong số vai trò/nhóm một người đang giữ (FEAT-35); ở trục chính sách truy cập nâng cao, luật "Từ chối" luôn thắng bất kể có bao nhiêu luật "Cho phép" khác (FEAT-36).
 6. **Che dữ liệu nhạy cảm không có ngoại lệ cho AI:** Một tác nhân AI truy vấn dữ liệu Khách hàng có trường System PII → luôn nhận giá trị đã che, không có quyền "xem đầy đủ" nào áp dụng được, bất kể tác nhân đó vận hành thay cho người dùng có quyền xem đầy đủ tới đâu (FEAT-40/BR-40.1).
 7. **Lỗi tính toán phạm vi luôn an toàn trước:** Nếu hệ thống gặp lỗi bất thường khi tính phạm vi dữ liệu một người được xem → hệ thống từ chối hiển thị hoàn toàn thay vì hiển thị nhầm dữ liệu ngoài phạm vi (FEAT-35/BR-35.6, NFR-1).
+8. **Quyền Ủy thác không vượt qua ranh giới Cấp bậc thành viên:** Một nhân sự IT/HR giữ Quyền Ủy thác gán Vai trò "Sales Manager" (vượt quá năng lực quyền hạn của chính họ) cho một nhân viên mới → thành công; nhưng nếu người đó thử nâng nhân viên lên Quản trị viên → bị từ chối, chỉ Owner/Admin mới làm được (FEAT-09/BR-09.5, BR-09.2, FEAT-12).
+9. **Object ACL đồng bộ ở mọi điểm hiển thị:** Một khách hàng bị chặn quyền xem với một nhân viên cụ thể → nhân viên đó không tìm thấy khách hàng này ở màn hình danh sách, kết quả xuất báo cáo, số liệu Dashboard; nếu khách hàng đó xuất hiện như một bản ghi liên quan trong hồ sơ khác, chỉ thấy placeholder "Bị hạn chế truy cập" (FEAT-39/BR-39.3, BR-39.4).
+10. **Audit log Fail-closed cho thay đổi cấu hình quyền:** Khi hạ tầng ghi log gặp sự cố ngay lúc một quản trị viên đang xoá một Vai trò hoặc chuyển nhượng quyền sở hữu Workspace → thao tác bị huỷ ngay, hệ thống báo lỗi, không có thay đổi quyền nào xảy ra mà thiếu vết kiểm toán tương ứng (FEAT-41/BR-41.5).
 
 ---
 
@@ -1024,9 +1059,9 @@ Mục này liệt kê các điểm **chưa có quyết định** (khác với c�
 5. Việc yêu cầu quyền tạm thời không tự động thông báo cho người phê duyệt phù hợp — chưa xác nhận có kênh thông báo đi kèm hay không (FEAT-30).
 6. Còn tồn tại một số bản ghi cấp quyền tạm thời "vĩnh viễn kiểu cũ" từ trước khi có quy trình phê duyệt — báo cáo kiểm định (FEAT-33) chỉ liệt kê, chưa có đợt rà soát thủ công dứt điểm.
 7. Trục "phạm vi theo cấp quản lý" tải toàn bộ nhân sự workspace mỗi lần tính — có thể cần tối ưu khi workspace rất lớn (FEAT-35).
-8. Cần rà soát từng màn hình danh sách/xuất báo cáo để xác nhận có thực sự loại trừ đúng các bản ghi đã bị chặn quyền riêng hay không (FEAT-39/BR-39.3).
-9. Người phụ trách một đơn vị tổ chức, nếu rời khỏi workspace, không tự động được gỡ khỏi vai trò phụ trách — chưa xác nhận có ảnh hưởng gì tới quyền xem dữ liệu (FEAT-21).
-10. Cơ chế kiểm tra tự động (chống lỗi "âm thầm mất tác dụng") cho che dữ liệu nhạy cảm mới có ở 1/4 nhóm dữ liệu (Khách hàng) — chưa quyết định có nhân rộng cho Công ty/Cơ hội/Hội thoại hay không (FEAT-40).
+8. Người phụ trách một đơn vị tổ chức, nếu rời khỏi workspace, không tự động được gỡ khỏi vai trò phụ trách — chưa xác nhận có ảnh hưởng gì tới quyền xem dữ liệu (FEAT-21).
+9. Cơ chế kiểm tra tự động (chống lỗi "âm thầm mất tác dụng") cho che dữ liệu nhạy cảm mới có ở 1/4 nhóm dữ liệu (Khách hàng) — chưa quyết định có nhân rộng cho Công ty/Cơ hội/Hội thoại hay không (FEAT-40).
+10. Đổi tên miền phụ (subdomain) sau khi workspace đã hoạt động (rename) — chưa quyết định có nên mở tính năng này không; việc cho sửa subdomain lúc đăng ký (FEAT-01/FEAT-02, BR-01.3) không đương nhiên kéo theo việc cho sửa sau này, do rủi ro làm hỏng link/SSO/email đã cấu hình theo domain cũ.
 
 ### Ưu tiên thấp
 

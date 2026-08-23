@@ -4,57 +4,313 @@
       "id": "feat-3",
       "title": "Object Manager: Thông báo rõ ràng khi Admin chạm hạn mức 300 trường tùy biến",
       "primary_repo": "crm-api",
-      "affected_repos": ["crm-api", "crm-web"],
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
       "status": "not-started",
-      "links": ["https://github.com/crmsaassaudi/product-management/issues/3"]
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/3"
+      ]
     },
     {
       "id": "feat-4",
       "title": "Xây tính năng Chuyển nhượng quyền sở hữu Workspace (Ownership Transfer)",
       "primary_repo": "crm-api",
-      "affected_repos": ["crm-api", "crm-web"],
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
       "status": "not-started",
-      "links": ["https://github.com/crmsaassaudi/product-management/issues/4"]
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/4"
+      ]
     },
     {
       "id": "feat-5",
       "title": "Hợp nhất luồng đăng ký workspace (/register) vào pipeline onboarding bất đồng bộ",
       "primary_repo": "crm-api",
-      "affected_repos": ["crm-api", "crm-web"],
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
       "status": "not-started",
-      "links": ["https://github.com/crmsaassaudi/product-management/issues/5"]
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/5"
+      ]
     },
     {
       "id": "feat-6",
       "title": "Cảnh báo + cascade khi xoá Vai trò (số người/nhóm bị ảnh hưởng, thu hồi Role Assignment, đăng xuất phiên)",
       "primary_repo": "crm-api",
-      "affected_repos": ["crm-api", "crm-web"],
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
       "status": "not-started",
-      "links": ["https://github.com/crmsaassaudi/product-management/issues/6"]
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/6"
+      ]
     },
     {
       "id": "feat-24",
       "title": "Cho phép chỉnh sửa tên miền phụ (subdomain) trước khi xác nhận tạo workspace",
       "primary_repo": "crm-api",
-      "affected_repos": ["crm-api", "crm-web"],
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
       "status": "in-progress",
-      "links": ["https://github.com/crmsaassaudi/product-management/issues/24"]
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/24"
+      ]
     },
     {
       "id": "feat-25",
       "title": "Bổ sung Quyền Ủy thác (Delegated Grant Authority) — gán Vai trò/Nhóm có sẵn vượt năng lực người gán",
       "primary_repo": "crm-api",
-      "affected_repos": ["crm-api", "crm-web"],
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
       "status": "in-progress",
-      "links": ["https://github.com/crmsaassaudi/product-management/issues/25"]
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/25"
+      ]
     },
     {
       "id": "feat-26",
       "title": "Đồng bộ Object ACL (grant/deny theo record) 2 chiều với List View, Export, Dashboard, và Related List",
       "primary_repo": "crm-api",
-      "affected_repos": ["crm-api", "crm-web"],
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
       "status": "in-progress",
-      "links": ["https://github.com/crmsaassaudi/product-management/issues/26"]
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/26"
+      ]
+    },
+    {
+      "id": "feat-29",
+      "title": "Object Manager: Chốt phần Bổ sung ADR-0001 — mô hình hai chiều FLS + thứ tự ưu tiên với ràng buộc bắt buộc (BR-03.1, BR-03.2)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/29"
+      ]
+    },
+    {
+      "id": "feat-30",
+      "title": "Object Manager: Đối chiếu hiện trạng Bố cục form nhập liệu với chuẩn nghiệp vụ (BR-03.7)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/30"
+      ]
+    },
+    {
+      "id": "feat-31",
+      "title": "Object Manager: Tách Giai đoạn Cơ hội vào bên trong từng Quy trình bán hàng + chuyển đổi dữ liệu (BR-07.2, MIG-01→06)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/31"
+      ]
+    },
+    {
+      "id": "feat-32",
+      "title": "Object Manager: Vòng đời Quy trình bán hàng & Giai đoạn khi đang có Cơ hội mở (BR-07.6)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/32"
+      ]
+    },
+    {
+      "id": "feat-33",
+      "title": "Object Manager: Chuyển Cơ hội giữa các Quy trình bán hàng, bảo toàn dự báo doanh số (BR-07.5)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/33"
+      ]
+    },
+    {
+      "id": "feat-34",
+      "title": "Object Manager: Chặn cấu hình kiểm tra sai ngay khi lưu, và từ chối bản ghi khi không đánh giá được quy tắc (BR-04.2)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/34"
+      ]
+    },
+    {
+      "id": "feat-36",
+      "title": "Object Manager: Cộng dồn điều kiện qua giai đoạn khi chốt Thắng nhanh, nhập gộp một lượt (BR-07.3, BR-07.4, BR-09.2)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/36"
+      ]
+    },
+    {
+      "id": "feat-37",
+      "title": "Object Manager: Chặn xóa trường đang là điều kiện chặn nghiệp vụ; trường đã vô hiệu hóa không chiếm hạn mức (BR-02.5, BR-02.3)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/37"
+      ]
+    },
+    {
+      "id": "feat-38",
+      "title": "Object Manager: Bảo toàn Trạng thái & Nguồn đang được sử dụng; làm rõ ý nghĩa cờ trạng thái đóng (BR-06.1, BR-06.3)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/38"
+      ]
+    },
+    {
+      "id": "feat-39",
+      "title": "Object Manager: Danh sách hiển thị dùng chung — Bộ lọc, Sắp xếp, cột Ẩn/Che, ưu tiên khi thuộc nhiều nhóm (FEAT-08)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/39"
+      ]
+    },
+    {
+      "id": "feat-40",
+      "title": "Object Manager: Công cụ Xem trước quyền thực tế của một người dùng (BR-03.3)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/40"
+      ]
+    },
+    {
+      "id": "feat-41",
+      "title": "Object Manager: Miễn trừ ràng buộc bắt buộc theo quyền truy cập + cờ thiếu dữ liệu có người chịu trách nhiệm (BR-03.2, BR-05.5)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/41"
+      ]
+    },
+    {
+      "id": "feat-43",
+      "title": "Object Manager: Chống ghi đè âm thầm khi hai Admin sửa cùng một cấu hình (NFR-07b)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/43"
+      ]
+    },
+    {
+      "id": "feat-45",
+      "title": "Object Manager: Chống trùng Cơ hội khi chuyển đổi, thứ tự ưu tiên chủ sở hữu, danh mục Vai trò liên hệ (BR-05.3)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/45"
+      ]
+    },
+    {
+      "id": "feat-46",
+      "title": "Object Manager: Hàng đợi chưa phân công khi phân công tự động không tìm được người phụ trách (BR-09.3)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/46"
+      ]
+    },
+    {
+      "id": "feat-47",
+      "title": "Object Manager: Báo cáo kết quả nhập liệu nêu đầy đủ mọi lý do từ chối của từng dòng (BR-09.1)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/47"
+      ]
+    },
+    {
+      "id": "feat-50",
+      "title": "Object Manager: Hạn mức 20 Nhóm quyền cho một người dùng và cam kết hiệu năng ở điều kiện biên (NFR-08)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/50"
+      ]
     }
   ]
 }

@@ -2,23 +2,38 @@
 
 | | |
 | --- | --- |
-| **Loại tài liệu** | Software Requirements Specification — vừa mô tả hành vi hiện tại, vừa là chuẩn để phát triển tiếp theo (xem "Ghi chú về nguồn gốc tài liệu") |
-| **Module** | Object Manager — cấu hình schema và chính sách dữ liệu cho Contact, Account, Deal, Ticket, Task |
-| **Ngày viết** | 2026-08-21 (cập nhật sau vòng review BA lần 1) |
-| **Tài liệu liên quan** | Báo cáo audit kỹ thuật của module (repo `crm-api`, thư mục `docs/audit`) · [`CONTEXT.md`](../CONTEXT.md) (glossary) · [`docs/adr/0001-group-policy-conflict-resolution.md`](../docs/adr/0001-group-policy-conflict-resolution.md) |
+| **Loại tài liệu** | Software Requirements Specification — Chuẩn nghiệp vụ và đặc tả chức năng |
+| **Module** | Object Manager — Cấu hình cấu trúc dữ liệu và chính sách dữ liệu cho Contact, Account, Deal, Ticket, Task |
+| **Ngày cập nhật** | 2026-08-23 |
+| **Phiên bản** | **v4.0 — Bản chốt (baseline)** · xem *Lịch sử phiên bản* bên dưới |
+| **Tài liệu liên quan** | [`CONTEXT.md`](../CONTEXT.md) (Glossary) · [ADR-0001](../docs/adr/0001-group-policy-conflict-resolution.md) — xung đột nhóm quyền · [ADR-0003](../docs/adr/0003-permission-config-audit-log-fail-closed.md) và [SRS IAM](./iam-tenant-authorization.md) BR-41.4/41.5 — phân loại nhật ký kiểm toán |
 
-## Ghi chú về nguồn gốc tài liệu
+## Ghi chú về nguồn gốc & Nguyên tắc tài liệu
 
-Object Manager đã được xây dựng và đưa vào vận hành mà chưa từng có SRS. Bản gốc của tài liệu này được viết sau khi module đã chạy thật, bằng cách khảo sát hành vi hệ thống hiện tại (qua giao diện quản trị và các quy tắc nghiệp vụ đang áp dụng) và trình bày lại theo đúng format một SRS nên có: theo tính năng, theo use case, bằng ngôn ngữ nghiệp vụ. Đây không phải tài liệu thiết kế kỹ thuật — không mô tả code, tên hàm hay tên file.
+Tài liệu này được tái cấu trúc sau vòng review chiến lược giữa Product Owner, Lead Business Analyst và Solution Architect. Tài liệu tuân thủ các nguyên tắc sau:
 
-Sau vòng review đầu tiên với BA, tài liệu chuyển vai trò: từ "chỉ mô tả hiện trạng" sang **vừa mô tả hiện trạng vừa là chuẩn bắt buộc cho phát triển tiếp theo** — các yêu cầu mới thêm ở vòng review này (ví dụ FEAT-10) chưa tồn tại trong hệ thống, và code sẽ phải được cập nhật để khớp với tài liệu, không phải ngược lại.
+1. **Chuẩn nghiệp vụ độc lập (Business-First):** Các quy tắc nghiệp vụ (BR) mô tả logic kinh doanh đúng đắn và chuẩn mực của một nền tảng B2B CRM, hoàn toàn độc lập với cách hiện thực hóa. Tài liệu đặc tả **hệ thống phải hành xử như thế nào để đúng về mặt nghiệp vụ**, không đặc tả hệ thống được xây dựng bằng cách nào.
+2. **Tách bạch nghiệp vụ khỏi kỹ thuật:** Mọi quy tắc trong Mục 3 và Mục 4 được viết bằng ngôn ngữ nghiệp vụ mà Product Owner, Customer Success và khách hàng doanh nghiệp đều đọc hiểu và phản biện được. Các thuật ngữ kỹ thuật, tên cơ chế hoặc chuẩn công nghệ tương ứng — nếu cần cho đội phát triển — được tập trung tại **Phụ lục A (Ghi chú kỹ thuật tham chiếu)** và mang tính **không ràng buộc (non-normative)**: khi Phụ lục A và phần thân tài liệu có khác biệt, **phần thân tài liệu là căn cứ duy nhất để nghiệm thu**.
+3. **Phân định ranh giới giữa Chuẩn nghiệp vụ và Hạn chế Phase 1:** Các năng lực chuẩn mà phiên bản Phase 1 chưa đáp ứng (ví dụ: chưa gộp Account, chưa sửa hàng loạt Contact) được đưa vào mục **"Hạn chế hệ thống Phase 1" (Mục 7)** để làm căn cứ nghiệm thu cho QA, tuyệt đối không bị đồng hóa thành "quy tắc nghiệp vụ vĩnh viễn".
+4. **Quy ước nhãn trạng thái:** Mỗi tính năng (FEAT) hoặc quy tắc (BR) được gắn nhãn để phục vụ theo dõi tiến độ bàn giao:
+   - **[Đã triển khai]** — Đã có trong hệ thống và khớp với đặc tả chuẩn.
+   - **[Cần chuẩn hóa]** — Năng lực đã tồn tại nhưng hành vi hiện tại chưa khớp chuẩn nghiệp vụ, cần điều chỉnh để khớp (ví dụ: Giai đoạn Cơ hội chưa thuộc về từng Quy trình bán hàng tại FEAT-07; Danh sách hiển thị chưa có Bộ lọc tại FEAT-08).
+   - **[Yêu cầu mới]** — Năng lực chưa tồn tại, bổ sung vào phạm vi phát triển.
+5. **Trạng thái bản chốt (từ v4.0):** Tài liệu đã qua bốn vòng phản biện chéo nghiệp vụ và được chốt làm **căn cứ phân rã công việc**. Không còn câu hỏi nghiệp vụ nào để ngỏ trong phần đặc tả: những điểm chưa quyết được đã chuyển thành issue có người chịu trách nhiệm, và những giới hạn chưa làm được nằm ở Mục 7.1. Mỗi thay đổi nội dung sau v4.0 phải nêu lý do nghiệp vụ và ghi vào Lịch sử phiên bản, để người đọc sau luôn phản biện được *lập luận* chứ không chỉ thấy *kết luận*.
 
-**Quy ước nhãn trạng thái:** mỗi tính năng (FEAT) được gắn nhãn ngay sau tiêu đề:
+## Lịch sử phiên bản
 
-- **[Đã triển khai]** — hành vi đã được xác minh khớp với hệ thống đang chạy tại thời điểm soạn bản gốc (2026-08-21).
-- **[Yêu cầu mới]** — chưa tồn tại trong hệ thống, được thêm ở vòng review này; đội phát triển cần lên kế hoạch xây dựng.
-
-Trong một FEAT đã `[Đã triển khai]`, nếu có một quy tắc nghiệp vụ (BR) cụ thể mới được bổ sung/thay đổi ở vòng review này, BR đó được đánh dấu riêng `[Yêu cầu mới]` ngay sau mã số — các BR không có nhãn kế thừa trạng thái của FEAT chứa nó. Với thay đổi tính năng trong tương lai, tài liệu này cần được cập nhật song song, không để trôi khỏi thực tế vận hành.
+| Phiên bản | Nội dung thay đổi chính |
+| --- | --- |
+| **v2.0** | Tái cấu trúc sau vòng review chiến lược PO / Lead BA / Solution Architect: chuẩn hóa kiến trúc Pipeline–Stage, tách bạch Chuẩn nghiệp vụ khỏi Hạn chế Phase 1, phân kỳ lộ trình. |
+| **v2.1** | Vá các lỗ hổng phát hiện qua phản biện chéo nghiệp vụ vòng 1: deadlock FLS vs Bắt buộc theo giai đoạn (BR-05.5), chống né Stage Gating khi chốt Thắng (BR-07.4 & BR-09.2), chống trùng Cơ hội khi chuyển đổi (BR-05.3), truy vết trách nhiệm Automation Bypass FLS (BR-03.4), các fallback vận hành (BR-08.1, BR-09.1, BR-09.3). |
+| **v2.2** | Vá các lỗ hổng phát hiện qua phản biện chéo vòng 2: tie-break Ẩn vs Bắt buộc trong cùng tầng FLS (BR-03.2), quy tắc chuyển Deal giữa các Pipeline (BR-07.5), vòng đời Stage & Pipeline khi đang có Deal (BR-07.6), giải quyết tranh chấp chủ sở hữu Deal tự sinh (BR-05.3), quản trị bản ghi bị gắn cờ thiếu dữ liệu (BR-05.5), hoàn tác cấu hình FLS sai (BR-10.5), chống ghi đè khi hai Admin sửa cùng một cấu hình (NFR-07b). |
+| **v2.3** | Vá các lỗ hổng phát hiện qua phản biện chéo vòng 3: bổ sung **Yêu cầu chuyển đổi dữ liệu khi Refactor (Mục 7.3)** — rủi ro nghiệp vụ lớn nhất của lộ trình, trước đó không được đặc tả ở bất kỳ đâu; chặn xóa trường đang là điều kiện chặn nghiệp vụ (BR-02.5); chặn luân chuyển dữ liệu nhạy cảm sang trường bảo vệ thấp hơn qua Automation (BR-03.4); chống tồn đọng cờ thiếu dữ liệu (BR-05.5); làm rõ ranh giới hạn chế Cross-field Validation so với các ràng buộc điều kiện có sẵn (Mục 7.1); ràng buộc hiệu năng theo số Nhóm quyền (NFR-08); yêu cầu dữ liệu đo (NFR-09); phân kỳ lộ trình lại theo quan hệ phụ thuộc thay vì theo chủ đề (Mục 7.2). |
+| **v3.0** | **Chuẩn hóa tài liệu về thuần nghiệp vụ và tách bạch khỏi kỹ thuật.** Loại bỏ thuật ngữ kỹ thuật khỏi toàn bộ quy tắc nghiệp vụ và chuyển sang **Phụ lục A** (không ràng buộc); giải quyết các xung đột nghiệp vụ còn lại: tách hai chiều Mức truy cập vs Mức hiển thị (BR-03.1), làm rõ Tenant Admin không bị FLS giới hạn và hệ quả với cam kết bán hàng (BR-03.2b), ngoại lệ có kiểm soát cho Đội Vận hành nội bộ (NFR-02), trường đã vô hiệu hóa không chiếm hạn mức (BR-02.3), cho phép Liên hệ đi ngược giai đoạn và tái tiếp cận khách cũ (BR-05.1), nhật ký kiểm toán không được mất (BR-10.3). |
+| **v3.1** | Soạn phần bổ sung cho ADR-0001 (mô hình hai chiều, thứ tự ưu tiên với ràng buộc bắt buộc, nguyên tắc vắng mặt cấu hình, phạm vi chủ thể) — **đang chờ PO và Solution Architect thông qua**. Sửa xung đột giữa BR-10.3 và nguyên tắc đóng tại SRS IAM BR-41.4/41.5: phân loại lại nhóm fail-closed theo mặc định-thuộc-nhóm, đưa việc vô hiệu hóa trường và hoàn tác FLS vào nhóm fail-closed, nêu lý do loại trừ tường minh cho FEAT-08 (BR-10.3, BR-10.5). |
+| **v3.2** | Kiểm toán lại toàn văn theo chuẩn nghiệp vụ: lấp khoảng trống đặc tả **Bố cục form nhập liệu (BR-03.7)** — trước đó được hứa trong Phạm vi, Thuật ngữ và tên FEAT-03 nhưng không có quy tắc nào; ghi nhận yêu cầu đối chiếu hiện trạng (Mục 7.1 điểm 9); làm sạch các thuật ngữ kỹ thuật còn sót (mã nguồn, cơ sở dữ liệu, Boolean, API Integration). |
+| **v3.3** | Rà soát sẵn sàng phát hành: khử các chỗ hệ thống có thể làm hai cách khác nhau — cột ẩn/che trong danh sách hiển thị (BR-08.2), danh sách mặc định khi người dùng thuộc nhiều nhóm (BR-08.1), ý nghĩa cờ trạng thái đóng ngoài Cơ hội (BR-06.1); bảo toàn Nguồn đang dùng (BR-06.3); fallback khi không xác định được khu vực (BR-09.3); bổ sung tiêu chí nghiệm thu cho FEAT-06/08/09 và ghi nhận thiếu điều kiện đóng Ticket (Mục 7.1 điểm 10). |
+| **v4.0** | **Bản chốt làm căn cứ phân rã công việc.** Chốt hạn mức 20 Nhóm quyền cho một người dùng kèm lý do nghiệp vụ (NFR-08) — tham số cuối cùng còn để trống. Các câu hỏi còn treo được chuyển thành issue có người chịu trách nhiệm thay vì tiếp tục nằm trong đặc tả: thông qua phần Bổ sung ADR-0001, và đối chiếu hiện trạng Bố cục form nhập liệu (Mục 7.1 điểm 9). Từ phiên bản này, mọi thay đổi nội dung phải đi kèm lý do nghiệp vụ và cập nhật Lịch sử phiên bản. |
 
 ---
 
@@ -26,45 +41,55 @@ Trong một FEAT đã `[Đã triển khai]`, nếu có một quy tắc nghiệp 
 
 ### 1.1 Mục đích
 
-Tài liệu đặc tả toàn bộ yêu cầu chức năng và phi chức năng của module **Object Manager** — khu vực cấu hình cho phép quản trị viên tenant tùy biến cấu trúc dữ liệu và chính sách truy cập dữ liệu cho 5 đối tượng nghiệp vụ cốt lõi của CRM, mà không cần yêu cầu đội kỹ thuật can thiệp code.
+Tài liệu đặc tả toàn bộ yêu cầu chức năng và phi chức năng của module **Object Manager** — khu vực cấu hình cho phép quản trị viên tenant (Tenant Admin) tùy biến cấu trúc dữ liệu, quy tắc toàn vẹn và chính sách truy cập cho 5 đối tượng nghiệp vụ cốt lõi của CRM, mà không cần đội phát triển can thiệp.
 
 ### 1.2 Phạm vi
 
-Tài liệu bao trùm toàn bộ tính năng của Object Manager: quản lý trường tùy biến, phân quyền hiển thị/chỉnh sửa trường theo nhóm người dùng, quy tắc kiểm tra dữ liệu, giai đoạn vòng đời khách hàng, trạng thái/nguồn, pipeline bán hàng, danh sách hiển thị tùy biến, và các cấu hình nâng cao theo từng đối tượng.
+Tài liệu bao trùm toàn bộ tính năng quản trị cấu hình dữ liệu:
 
-**Ngoài phạm vi:** nghiệp vụ vận hành riêng của từng đối tượng (quy trình bán hàng, quy trình hỗ trợ khách hàng...) — các tài liệu đó mô tả *cách dùng* dữ liệu, còn tài liệu này mô tả *cách cấu hình* cấu trúc và chính sách của dữ liệu đó. Chiến dịch marketing (Campaign) hiện chưa nằm trong phạm vi Object Manager — đây là giới hạn phạm vi sản phẩm hiện tại, xem mục 8.
+- Danh mục đối tượng và ma trận năng lực khả dụng.
+- Quản lý định nghĩa trường tùy biến và thuộc tính kiểu dữ liệu.
+- Phân quyền hiển thị/chỉnh sửa trường (FLS) theo Nhóm quyền và cấu hình Bố cục form (Layout).
+- Quy tắc kiểm tra dữ liệu (Validation Rules) và cơ chế kích hoạt khi thay đổi dữ liệu.
+- Giai đoạn vòng đời (Lifecycle Stages) và Ma trận chuyển đổi khách hàng tiềm năng.
+- Quản lý Trạng thái & Nguồn theo đối tượng.
+- Quản lý Quy trình bán hàng (Multi-Pipeline) và Giai đoạn cơ hội (Deal Stages).
+- Danh sách hiển thị dùng chung (Shared List Views: Cột + Bộ lọc + Sắp xếp).
+- Cấu hình nâng cao theo từng đối tượng (Chống trùng, Phân bổ, Điều kiện đóng thương vụ).
+- Nhật ký kiểm toán thay đổi cấu hình (Configuration Audit Trail).
 
-Cũng ngoài phạm vi: **bộ lọc/cột hiển thị cá nhân** mà một người dùng cuối có thể tự lưu cho riêng mình ở màn hình danh sách bản ghi (nếu sản phẩm hỗ trợ) — đây là khái niệm khác với "Danh sách hiển thị" ở FEAT-08, vốn là cấu hình *dùng chung* do quản trị viên tạo và gán cho nhóm qua Object Manager. Ranh giới này được nêu lại ở Mục 8.
+**Ngoài phạm vi:**
+
+- Nghiệp vụ vận hành chi tiết của người dùng cuối (ví dụ: kịch bản telesales, thao tác xử lý ticket, chiến dịch email marketing).
+- Bộ lọc/view cá nhân (Personal View) mà người dùng cuối tự lưu riêng cho bản thân ở màn hình danh sách (nằm ngoài phạm vi quản trị dùng chung của Object Manager).
+- **Chỉ số thành công và mục tiêu kinh doanh (Success Metrics / KPI):** SRS đặc tả *hệ thống phải làm gì và phải đúng như thế nào*, không đặt mục tiêu kinh doanh. Ngưỡng KPI, baseline và mục tiêu theo quý thuộc tài liệu kế hoạch sản phẩm (PRD/Product Plan) — nếu đưa vào SRS, chúng sẽ lạc hậu ngay sau một quý trong khi phần đặc tả vẫn còn hiệu lực nhiều năm. Phần SRS chịu trách nhiệm là **đảm bảo các chỉ số đó đo được**, đặc tả tại NFR-09.
+- Nhật ký thao tác ở cấp bản ghi — tức việc lưu vết ai đã đọc hoặc ghi giá trị cụ thể nào trên một bản ghi. Đây là năng lực của tầng lõi CRM, không thuộc phạm vi cấu hình của Object Manager, nhưng là **điều kiện tiên quyết bắt buộc** để việc miễn trừ FLS cho tác vụ tự động (BR-03.4) đáp ứng chuẩn bảo mật khi bán cho khách hàng Enterprise.
 
 ### 1.3 Đối tượng đọc
 
-- Business Analyst / Product Owner: hiểu đúng hành vi hiện tại trước khi đề xuất thay đổi.
-- QA: làm căn cứ viết test case chấp nhận.
-- Đội triển khai (Customer Success/Support): hiểu rõ giới hạn khi tư vấn cấu hình cho khách hàng.
-- Kỹ sư phát triển: hiểu ý định nghiệp vụ trước khi đọc code — chi tiết triển khai kỹ thuật không nằm trong tài liệu này.
+- **Product Owner / Business Analyst:** Định hướng tầm nhìn sản phẩm, lập kế hoạch sprint và backlog.
+- **Kỹ sư phát triển (Developers):** Hiểu rõ bản chất nghiệp vụ để thiết kế kiến trúc và triển khai chính xác.
+- **QA / Software Testers:** Căn cứ viết kịch bản kiểm thử chấp nhận (UAT) theo cả chuẩn nghiệp vụ và hạn chế Phase 1.
+- **Customer Success / Solution Consultant:** Nắm vững năng lực cấu hình khi triển khai giải pháp cho khách hàng doanh nghiệp.
 
-### 1.4 Thuật ngữ & viết tắt
+### 1.4 Thuật ngữ & Viết tắt
 
 | Thuật ngữ | Giải thích |
 | --- | --- |
-| **Đối tượng (Object)** | Một loại bản ghi nghiệp vụ cốt lõi có thể cấu hình được: Liên hệ (Contact), Tài khoản/Công ty (Account), Cơ hội (Deal), Yêu cầu hỗ trợ (Ticket), Công việc (Task). |
-| **Trường (Field)** | Một thuộc tính dữ liệu trên một đối tượng — có thể là trường chuẩn (có sẵn hệ thống) hoặc trường tùy biến (tenant tự tạo). |
-| **Trường tùy biến (Custom Field)** | Trường do quản trị viên tenant tự định nghĩa thêm vào một đối tượng. |
-| **Phân quyền trường (Field-Level Security – FLS)** | Cơ chế quyết định một trường được hiển thị, ẩn, chỉ đọc, hay che (mask) giá trị, áp dụng riêng theo từng nhóm người dùng — độc lập với quyền xem/sửa cả bản ghi. |
-| **Nhóm quyền (Group)** | Một nhóm người dùng được quản trị viên tạo ra (ví dụ: "Sales Rep miền Bắc", "Support Tier 2"); phân quyền trường được cấu hình theo nhóm, không theo từng người dùng riêng lẻ. |
-| **Bố cục mặc định (Default Layout)** | Cấu hình phân quyền trường áp dụng cho người dùng không thuộc nhóm nào có cấu hình riêng. |
-| **Quy tắc kiểm tra dữ liệu (Validation Rule)** | Điều kiện do quản trị viên định nghĩa mà giá trị một trường phải thỏa mãn khi lưu bản ghi. |
-| **Giai đoạn vòng đời (Lifecycle Stage)** | Các bước tuần tự một bản ghi trải qua (hiện chỉ áp dụng cho Liên hệ), ví dụ: Khách tiềm năng → Đang chăm sóc → Khách hàng. |
-| **Bắt buộc khi tạo mới (Required on Create)** | Trường bắt buộc phải có giá trị ngay lúc tạo bản ghi — khác với trường chỉ bắt buộc phải điền *sau khi* bản ghi đã tồn tại. |
-| **Danh sách hiển thị dùng chung (Shared List View)** | Một cấu hình bảng danh sách bản ghi (cột hiển thị, thứ tự) do quản trị viên tạo và gán cho một hay nhiều Nhóm quyền — thuộc phạm vi Object Manager. |
-| **Bộ lọc/view cá nhân (Personal View)** | Bộ lọc hoặc bộ cột hiển thị mà một người dùng cuối tự lưu cho riêng mình, độc lập với Danh sách hiển thị dùng chung. Nằm ngoài phạm vi Object Manager (xem Mục 1.2). |
-| **Nhật ký kiểm toán cấu hình (Configuration Audit Trail)** | Bản ghi lưu vết ai đã thay đổi cấu hình gì trong Object Manager, vào lúc nào — xem FEAT-10. |
-
-### 1.5 Tài liệu tham khảo
-
-- Báo cáo audit kỹ thuật Object Manager (`docs/audit/OBJECT_MANAGER_AUDIT.md`, repo `crm-api`) — lịch sử rà soát và khắc phục các vấn đề kỹ thuật của module, không phải tài liệu yêu cầu.
-- [`CONTEXT.md`](../CONTEXT.md) — glossary thuật ngữ nghiệp vụ dùng chung cho các SRS trong `product-management` (nguồn thuật ngữ canonical, tài liệu này chỉ trích lại phần liên quan).
-- [`docs/adr/0001-group-policy-conflict-resolution.md`](../docs/adr/0001-group-policy-conflict-resolution.md) — quyết định kiến trúc/chính sách đằng sau BR-03.2.
+| **Đối tượng (Object)** | Một loại thực thể dữ liệu nghiệp vụ cốt lõi: Liên hệ (Contact), Tài khoản (Account), Cơ hội (Deal), Yêu cầu hỗ trợ (Ticket), Công việc (Task). |
+| **Trường tùy biến (Custom Field)** | Thuộc tính dữ liệu do quản trị viên tenant tự định nghĩa thêm vào một đối tượng. |
+| **Phân quyền trường (Field-Level Security – FLS)** | Cơ chế kiểm soát, theo từng Nhóm quyền, việc một người được làm gì với một trường. Gồm hai chiều độc lập: **Mức truy cập** (Xem & Sửa / Chỉ xem / Ẩn) và **Mức hiển thị giá trị** (Hiện đầy đủ / Che một phần / Che hoàn toàn) — xem BR-03.1. |
+| **Bố cục mặc định (Default Layout)** | Cấu hình bố cục và FLS áp dụng cho người dùng không thuộc nhóm quyền chuyên biệt nào. |
+| **Quy tắc kiểm tra dữ liệu (Validation Rule)** | Ràng buộc nghiệp vụ mà giá trị của trường phải thỏa mãn khi lưu bản ghi. |
+| **Quy trình bán hàng (Pipeline)** | Chuỗi các giai đoạn tuần tự để theo đuổi và chốt một thương vụ bán hàng. |
+| **Giai đoạn Cơ hội (Deal Stage)** | Một bước cụ thể bên trong một Pipeline, gắn liền với tỷ lệ thành công (%) và thời gian kỳ vọng. |
+| **Danh sách hiển thị dùng chung (Shared List View)** | Cấu hình bảng danh sách bản ghi gồm Tập cột hiển thị + Điều kiện lọc + Sắp xếp mặc định do Admin tạo và phân quyền cho Nhóm. |
+| **Nhật ký kiểm toán cấu hình (Configuration Audit Trail)** | Lịch sử lưu vết thời gian, người thực hiện và chi tiết các thay đổi cấu hình trong Object Manager. |
+| **Điều kiện qua giai đoạn (Stage Gating)** | Tập trường bắt buộc phải có giá trị để một Cơ hội được chuyển vào một Giai đoạn cụ thể của Pipeline. |
+| **Cờ thiếu dữ liệu do giới hạn quyền** | Dấu hiệu hệ thống gắn lên bản ghi được lưu thành công nhờ miễn trừ ràng buộc bắt buộc, vì người lưu không có quyền nhìn/nhập trường đó. Là căn cứ để người có thẩm quyền bổ sung dữ liệu về sau. |
+| **Vai trò liên hệ trong Cơ hội (Contact Role)** | Vai trò nghiệp vụ của một Liên hệ trong một Cơ hội (Người quyết định, Người phê duyệt, Người ảnh hưởng, Người dùng cuối...), phản ánh sơ đồ ảnh hưởng trong tài khoản doanh nghiệp. |
+| **Hàng đợi chưa phân công (Unassigned Queue)** | Nơi tiếp nhận các bản ghi mà quy tắc phân công tự động không tìm được người phụ trách khả dụng, kèm cảnh báo cho cấp quản lý. |
+| **Tài khoản hệ thống / Dịch vụ (Service Account)** | Danh tính của các tác vụ tự động hóa (Automation) hoặc API tích hợp. |
 
 ---
 
@@ -72,430 +97,529 @@ Cũng ngoài phạm vi: **bộ lọc/cột hiển thị cá nhân** mà một ng
 
 ### 2.1 Vấn đề mà module giải quyết
 
-Một CRM đa tenant phục vụ nhiều khách hàng doanh nghiệp khác nhau, mỗi khách hàng có nhu cầu dữ liệu và quy trình khác nhau. Nếu mọi thay đổi cấu trúc dữ liệu (thêm trường, đổi quy tắc bắt buộc, ẩn thông tin nhạy cảm khỏi một nhóm nhân viên...) đều cần đội kỹ thuật sửa code, hệ thống không thể phục vụ nhiều khách hàng với chi phí hợp lý và tốc độ triển khai nhanh.
+Trong mô hình CRM SaaS phục vụ đa dạng khách hàng B2B, mỗi doanh nghiệp có quy trình bán hàng, cấu trúc dữ liệu và chính sách bảo mật nội bộ hoàn toàn khác nhau. Object Manager giải quyết bài toán này bằng cách trao cho **Quản trị viên Tenant** năng lực tự cấu hình toàn bộ mô hình dữ liệu và chính sách truy cập trong vài phút, đồng thời đảm bảo các cấu hình này được thực thi nhất quán trên mọi kênh mà dữ liệu đi vào hoặc đi ra khỏi hệ thống — nhập trên máy tính, nhập trên điện thoại, nhập từ file, tác vụ tự động và tích hợp bên ngoài.
 
-Object Manager giải quyết vấn đề này bằng cách cung cấp cho **quản trị viên của từng tenant** một khu vực tự cấu hình, và đảm bảo cấu hình đó được **tôn trọng nhất quán** ở mọi nơi dữ liệu được nhập vào hoặc đọc ra — dù là qua giao diện người dùng, nhập liệu hàng loạt từ file Excel, tự động hóa quy trình (automation), hay báo cáo.
-
-### 2.2 Năm đối tượng được quản lý
+### 2.2 Năm đối tượng nghiệp vụ cốt lõi
 
 | Đối tượng | Mô tả nghiệp vụ |
 | --- | --- |
-| **Liên hệ (Contact)** | Cá nhân mà doanh nghiệp tương tác — khách hàng, người liên hệ tại một công ty đối tác. |
-| **Tài khoản (Account)** | Công ty/tổ chức là khách hàng hoặc đối tác. |
-| **Cơ hội (Deal)** | Một thương vụ bán hàng đang theo đuổi, đi qua các giai đoạn của một pipeline bán hàng. |
-| **Yêu cầu hỗ trợ (Ticket)** | Một yêu cầu/khiếu nại của khách hàng cần đội hỗ trợ xử lý. |
-| **Công việc (Task)** | Một việc cần làm, có thể gắn với Liên hệ/Tài khoản/Cơ hội/Ticket. |
+| **Liên hệ (Contact)** | Cá nhân khách hàng hoặc người liên hệ đại diện của một đối tác/doanh nghiệp. |
+| **Tài khoản (Account)** | Công ty, tổ chức, pháp nhân là khách hàng doanh nghiệp hoặc đối tác kinh doanh. |
+| **Cơ hội (Deal)** | Một thương vụ bán hàng đang được theo đuổi qua các giai đoạn của Pipeline. |
+| **Yêu cầu hỗ trợ (Ticket)** | Một khiếu nại, thắc mắc hoặc sự cố của khách hàng cần đội ngũ CSKH xử lý. |
+| **Công việc (Task)** | Một tác vụ hoặc hoạt động cần thực hiện gắn liền với Contact, Account, Deal hoặc Ticket. |
 
-Đây là danh sách cố định ở phiên bản hiện tại — quản trị viên không tự tạo thêm một loại đối tượng hoàn toàn mới (xem giới hạn ở mục 8).
+### 2.3 Vai trò người dùng (Actors)
 
-### 2.3 Vai trò người dùng (Actor)
-
-| Actor | Vai trò trong module |
+| Actor | Quyền hạn & Trách nhiệm trong Object Manager |
 | --- | --- |
-| **Quản trị viên hệ thống (Tenant Admin)** | Người duy nhất truy cập được khu vực cấu hình Object Manager. Thực hiện mọi thao tác: tạo trường, cấu hình phân quyền, quy tắc kiểm tra, giai đoạn vòng đời, danh sách hiển thị. Yêu cầu quyền quản trị hệ thống cấp cao (không phải mọi người có quyền "xem cài đặt" đều vào được khu vực này). |
-| **Người dùng cuối (Sales Rep, Support Agent, Manager...)** | Không truy cập màn hình cấu hình, nhưng là đối tượng chịu tác động trực tiếp của phân quyền trường: họ thấy/không thấy, sửa được/không sửa được, thấy giá trị thật/giá trị bị che của từng trường tùy theo nhóm họ thuộc về. |
-
-### 2.4 Nhóm tính năng
-
-1. Danh mục đối tượng & năng lực khả dụng
-2. Quản lý trường tùy biến
-3. Phân quyền & bố cục hiển thị trường theo nhóm
-4. Quy tắc kiểm tra dữ liệu
-5. Giai đoạn vòng đời (Liên hệ)
-6. Trạng thái & Nguồn theo từng đối tượng
-7. Quản lý Pipeline bán hàng (Cơ hội)
-8. Danh sách hiển thị tùy biến
-9. Cấu hình nâng cao theo từng đối tượng
-10. Nhật ký kiểm toán thay đổi cấu hình
+| **Quản trị viên Tenant (Tenant Admin)** | Người có toàn quyền truy cập khu vực Object Manager để quản lý trường, phân quyền FLS, quy tắc kiểm tra, pipeline, danh sách hiển thị và cấu hình nâng cao. |
+| **Người dùng cuối (Sales, Support, Manager...)** | Không truy cập màn hình cấu hình. Là đối tượng thụ hưởng bố cục hiển thị và chịu sự ràng buộc trực tiếp của FLS, Validation Rules và Shared List Views khi thao tác dữ liệu. |
+| **Tác vụ Tự động & Tích hợp (Service Account / API)** | Các luồng Automation nội bộ hoặc kết nối API bên ngoài thực hiện ghi/đọc dữ liệu. |
+| **Đội Vận hành / Hỗ trợ nội bộ (Nhà cung cấp SaaS)** | Nhân sự của bên vận hành nền tảng, **không thuộc tenant khách hàng**. Trong Phase 1, đây là actor duy nhất tra cứu được Nhật ký kiểm toán cấu hình (BR-10.4) và thực hiện hoàn tác cấu hình FLS sai (BR-10.5) khi khách hàng báo sự cố. Mọi truy cập của actor này phải tuân thủ chính sách kiểm soát truy cập nội bộ của nhà cung cấp và bản thân cũng phải được lưu vết. |
 
 ---
 
 ## 3. Đặc tả yêu cầu chức năng
 
-### FEAT-01 — Danh mục đối tượng & năng lực khả dụng `[Đã triển khai]`
+### FEAT-01 — Danh mục đối tượng & Năng lực khả dụng `[Đã triển khai]`
 
-**Mô tả nghiệp vụ:** Điểm vào của khu vực Object Manager, giúp quản trị viên biết những đối tượng nào cấu hình được và mỗi đối tượng hỗ trợ những thao tác hàng loạt/nhập-xuất/gộp bản ghi nào.
+**Mô tả nghiệp vụ:** Cung cấp bức tranh tổng quan về 5 đối tượng dữ liệu và các năng lực thao tác dữ liệu chuẩn mà hệ thống hỗ trợ.
 
-**Actor:** Quản trị viên.
-
-**Luồng chính:**
-
-1. Quản trị viên vào khu vực Object Manager, thấy 5 đối tượng được nhóm theo danh mục nghiệp vụ (Con người: Liên hệ, Tài khoản; Bán hàng: Cơ hội; Dịch vụ: Ticket; Năng suất: Công việc).
-2. Chọn một đối tượng để vào màn hình cấu hình chi tiết của đối tượng đó.
+**Actor:** Quản trị viên Tenant.
 
 **Quy tắc nghiệp vụ:**
 
-- BR-01.1: Mỗi đối tượng có một tập năng lực cố định theo hệ thống, không tự cấu hình được qua UI, gồm: cập nhật hàng loạt, gán chủ sở hữu hàng loạt, gắn thẻ hàng loạt, nhập liệu từ file, xuất dữ liệu, có giai đoạn vòng đời, và gộp bản ghi trùng.
-- BR-01.2: Năng lực hiện tại của từng đối tượng:
-  - **Liên hệ**: gán chủ sở hữu hàng loạt, gắn thẻ hàng loạt, nhập/xuất file, có giai đoạn vòng đời, gộp bản ghi trùng. *Không* hỗ trợ cập nhật hàng loạt theo trường tùy ý.
-  - **Tài khoản**: gán chủ sở hữu hàng loạt, gắn thẻ hàng loạt, nhập/xuất file. *Không* có giai đoạn vòng đời, *không* gộp bản ghi trùng.
-  - **Cơ hội**: cập nhật hàng loạt, gán chủ sở hữu hàng loạt, gắn thẻ hàng loạt, nhập/xuất file. *Không* dùng mô hình giai đoạn vòng đời chung (có mô hình Pipeline riêng, xem FEAT-07), *không* gộp bản ghi trùng.
-  - **Ticket**: gán chủ sở hữu hàng loạt, gắn thẻ hàng loạt, nhập/xuất file, gộp bản ghi trùng. *Không* cập nhật hàng loạt, *không* có giai đoạn vòng đời.
-  - **Công việc**: cập nhật hàng loạt, gán chủ sở hữu hàng loạt, xuất file. *Không* gắn thẻ hàng loạt, *không* nhập file, *không* giai đoạn vòng đời, *không* gộp bản ghi trùng.
+- **BR-01.1 (Năng lực chuẩn của CRM B2B):** Mỗi đối tượng trong CRM hướng tới tập năng lực chuẩn bao gồm: Tạo/Sửa/Xóa, Cập nhật hàng loạt (Bulk Update), Gán chủ sở hữu hàng loạt (Bulk Assign), Gắn thẻ hàng loạt (Bulk Tag), Nhập dữ liệu từ file (Import), Xuất dữ liệu (Export), Vòng đời/Giai đoạn (Lifecycle/Pipeline), và Gộp bản ghi trùng lặp (Deduplication & Merge).
+- **BR-01.2 (Năng lực khả dụng trong Phase 1):** Theo kế hoạch phân kỳ triển khai, năng lực khả dụng hiện tại của từng đối tượng được giới hạn như sau (đối chiếu đầy đủ với căn cứ nghiệm thu QA tại **Mục 7.1**):
+  - **Liên hệ (Contact):** Gán chủ sở hữu hàng loạt, gắn thẻ hàng loạt, nhập/xuất file, giai đoạn vòng đời, gộp trùng lặp. *(Hạn chế Phase 1: Chưa hỗ trợ Bulk Update theo trường tùy ý — xem Mục 7)*.
+  - **Tài khoản (Account):** Gán chủ sở hữu hàng loạt, gắn thẻ hàng loạt, nhập/xuất file. *(Hạn chế Phase 1: Chưa hỗ trợ Merge và chưa có Lifecycle độc lập — xem Mục 7)*.
+  - **Cơ hội (Deal):** Cập nhật hàng loạt, gán chủ sở hữu hàng loạt, gắn thẻ hàng loạt, nhập/xuất file, quản lý đa Pipeline.
+  - **Ticket:** Gán chủ sở hữu hàng loạt, gắn thẻ hàng loạt, nhập/xuất file, gộp trùng lặp. *(Hạn chế Phase 1: Chưa hỗ trợ Bulk Update)*.
+  - **Công việc (Task):** Cập nhật hàng loạt, gán chủ sở hữu hàng loạt, xuất file. *(Hạn chế Phase 1: Chưa hỗ trợ Import file và Bulk Tag)*.
 
 **Tiêu chí chấp nhận:**
 
-- Quản trị viên xem được danh sách 5 đối tượng, phân nhóm đúng danh mục.
-- Với mỗi đối tượng, hệ thống chỉ hiển thị/cho phép các thao tác hàng loạt/nhập-xuất/gộp đúng theo bảng năng lực ở trên — không đối tượng nào thực hiện được thao tác mà nó không được khai báo hỗ trợ.
+- Admin xem được danh mục 5 đối tượng kèm trạng thái cấu hình và số lượng trường tùy biến đang sử dụng.
+- Hệ thống chỉ mở các nút thao tác hàng loạt/nhập/xuất trên màn hình danh sách bản ghi khớp đúng với ma trận năng lực khả dụng của Phase 1.
 
 ---
 
-### FEAT-02 — Quản lý trường tùy biến (Custom Field) `[Đã triển khai]`
+### FEAT-02 — Quản lý trường tùy biến (Custom Fields) `[Đã triển khai]`
 
-**Mô tả nghiệp vụ:** Cho phép quản trị viên bổ sung trường dữ liệu riêng cho tenant của mình trên bất kỳ đối tượng nào trong 5 đối tượng, để lưu thông tin đặc thù mà hệ thống không có sẵn.
+**Mô tả nghiệp vụ:** Cho phép quản trị viên mở rộng mô hình dữ liệu của bất kỳ đối tượng nào để đáp ứng nhu cầu lưu trữ thông tin đặc thù của doanh nghiệp.
 
-**Actor:** Quản trị viên.
+**Actor:** Quản trị viên Tenant.
 
-**Điều kiện tiên quyết:** Đã chọn đối tượng cần thêm trường.
+**Danh mục kiểu dữ liệu chuẩn (Field Data Types):**
 
-**Luồng chính — Tạo trường mới:**
-
-1. Quản trị viên chọn "Thêm trường mới" tại màn hình Trường & Quan hệ của một đối tượng.
-2. Nhập tên trường, chọn kiểu dữ liệu (văn bản, số, ngày tháng, danh sách chọn, tệp đính kèm, công thức tính toán...), và các thuộc tính đi kèm (ví dụ danh sách lựa chọn nếu là kiểu chọn).
-3. Hệ thống lưu định nghĩa trường; trường xuất hiện ngay trên form nhập liệu, bảng danh sách, và các màn hình cấu hình khác của đối tượng đó.
-
-**Luồng chính — Sửa trường:**
-
-1. Quản trị viên chọn một trường tùy biến đã tạo, chỉnh thông tin hiển thị (nhãn, mô tả, danh sách lựa chọn...).
-2. Tên kỹ thuật của trường, đối tượng gắn với trường, và kiểu dữ liệu **không thể thay đổi** sau khi đã tạo — muốn đổi kiểu dữ liệu, quản trị viên phải tạo trường mới.
-
-**Luồng chính — Xóa (Vô hiệu hóa) trường:**
-
-1. Quản trị viên chọn "Xóa" trên một trường tùy biến, xác nhận trong hộp thoại cảnh báo.
-2. Trường biến mất khỏi form nhập liệu, bảng danh sách, và các màn hình cấu hình cho các thao tác mới — nhưng **dữ liệu đã lưu trên các bản ghi cũ không bị xóa**, chỉ không còn hiển thị/thao tác được nữa qua giao diện thông thường.
-3. Mọi cấu hình phân quyền hoặc quy tắc kiểm tra dữ liệu đang tham chiếu tới trường này được tự động gỡ bỏ, để không còn cấu hình "treo" gây khó hiểu cho quản trị viên sau này.
+1. **Văn bản ngắn (Single-line Text):** Lưu chuỗi văn bản tối đa 255 ký tự.
+2. **Văn bản dài / Định dạng phong phú (Multi-line / Rich Text):** Lưu mô tả, ghi chú chi tiết.
+3. **Số (Number):** Số nguyên hoặc số thập phân, cho phép cấu hình độ chính xác thập phân.
+4. **Tiền tệ (Currency):** Giá trị số gắn liền với ký hiệu/mã tiền tệ của tenant.
+5. **Phần trăm (Percentage):** Giá trị phần trăm (0 - 100%).
+6. **Ngày (Date):** Chỉ lưu ngày tháng năm.
+7. **Ngày & Giờ (DateTime):** Lưu mốc thời gian chi tiết theo múi giờ.
+8. **Hộp kiểm (Checkbox):** Giá trị Có / Không.
+9. **Danh sách chọn đơn (Single-Select Dropdown):** Chọn 1 giá trị trong danh sách định sẵn.
+10. **Danh sách chọn nhiều (Multi-Select Dropdown):** Chọn 1 hoặc nhiều giá trị trong danh sách.
+11. **Liên kết / Tham chiếu (Lookup / Relation):** Trỏ tới một bản ghi thuộc đối tượng khác (ví dụ: Liên hệ trỏ tới Người giới thiệu).
+12. **Công thức (Formula):** Giá trị chỉ đọc do hệ thống tự tính toán dựa trên biểu thức số học hoặc logic giữa các trường khác.
 
 **Quy tắc nghiệp vụ:**
 
-- BR-02.1: Tên kỹ thuật của trường tùy biến không được trùng với tên của bất kỳ trường chuẩn nào sẵn có trên cùng đối tượng (kể cả tên cũ đã đổi của một trường chuẩn).
-- BR-02.2: Mỗi đối tượng chỉ được tạo tối đa **300 trường tùy biến**.
-- BR-02.3: Xóa trường tùy biến luôn là **thao tác mềm** (ẩn/vô hiệu hóa) — không bao giờ xóa cứng dữ liệu lịch sử đã lưu, và không cho phép một trường mới tái sử dụng đúng tên kỹ thuật của trường đã xóa để tránh nhầm lẫn dữ liệu cũ sang định nghĩa mới.
-- BR-02.4: Trường kiểu "Công thức tính toán" (Formula) luôn do hệ thống tự tính, không ai — kể cả qua nhập liệu hàng loạt hay tự động hóa — được phép ghi đè giá trị trực tiếp.
-- BR-02.5: Giá trị nhập vào một trường tùy biến phải đúng định dạng khai báo (ví dụ: số phải là số, email phải đúng định dạng email, giá trị chọn phải nằm trong danh sách đã cấu hình) — áp dụng bất kể dữ liệu được nhập qua form, nhập liệu hàng loạt, hay ghi tự động từ automation.
-- BR-02.6 `[Yêu cầu mới]`: Khi quản trị viên cố tạo trường thứ 301 trở đi cho cùng một đối tượng, hệ thống PHẢI hiển thị thông báo rõ ràng là đã đạt hạn mức và chặn thao tác lưu ngay tại thời điểm đó — không tạo trường một phần rồi báo lỗi sau, không để quản trị viên tự đoán lý do thất bại.
-- BR-02.7: Hạn mức 300 trường/đối tượng là **giới hạn kỹ thuật đồng nhất cho mọi tenant**, không phân biệt theo gói dịch vụ (subscription tier) ở phiên bản này — xem thêm Mục 8.
-
-**Luồng ngoại lệ:**
-
-- Nếu quản trị viên đặt tên kỹ thuật trùng với trường chuẩn hoặc vượt quá 300 trường/đối tượng, hệ thống từ chối tạo và báo lỗi rõ ràng.
+- **BR-02.1 (Định danh duy nhất):** Mỗi trường có một **mã định danh** không đổi, dùng để tham chiếu trường đó trong nhập/xuất dữ liệu và tích hợp. Mã định danh của một trường tùy biến không được trùng với mã định danh của trường chuẩn hoặc trường tùy biến khác trên cùng đối tượng.
+- **BR-02.2 (Bảo toàn dữ liệu lịch sử khi sửa Dropdown):** Khi Admin sửa nhãn hoặc vô hiệu hóa một lựa chọn (Option) trong Dropdown:
+  - Các bản ghi cũ đã lưu giá trị đó vẫn **giữ nguyên giá trị cũ ở chế độ chỉ đọc** để bảo toàn tính toàn vẹn của báo cáo lịch sử.
+  - Lựa chọn bị vô hiệu hóa sẽ **không xuất hiện** trên form nhập liệu cho các thao tác tạo mới hoặc chỉnh sửa tiếp theo.
+- **BR-02.3 (Vòng đời xóa trường):** "Xóa" một trường tùy biến trên giao diện quản trị thực chất là **vô hiệu hóa**: trường không còn xuất hiện với người dùng, nhưng dữ liệu đã nhập trên các bản ghi cũ **không bị mất vĩnh viễn** và vẫn phục vụ được nhu cầu tra cứu lịch sử. Mã định danh của trường đã vô hiệu hóa không được phép tái sử dụng cho trường mới, để một mã định danh luôn chỉ tương ứng với duy nhất một ý nghĩa nghiệp vụ trong suốt lịch sử dữ liệu của tenant.
+  - **Hạn mức không bị chiếm dụng bởi trường đã vô hiệu hóa (`[Yêu cầu mới]`):** Trường đã vô hiệu hóa **không được tính vào hạn mức 300 trường** tại BR-02.6. Nếu tính vào, một tenant vận hành nhiều năm và điều chỉnh mô hình dữ liệu nhiều lần sẽ bị chặn tạo trường mới dù thực tế đang dùng rất ít trường — đây là kết cục không thể giải thích được với khách hàng.
+- **BR-02.4 (Tính toàn vẹn của trường Công thức):** Giá trị trường Công thức luôn do hệ thống tự tính; không một kênh nào — người dùng nhập tay, nhập liệu từ file, tác vụ tự động hay tích hợp — được phép ghi đè giá trị này.
+- **BR-02.5 (Xử lý cấu hình phụ thuộc khi xóa trường):** Một trường tùy biến có thể đang được tham chiếu bởi nhiều cấu hình khác nhau trong Object Manager. Hệ thống phân xử theo hai nhóm:
+  - **Nhóm tự động dọn dẹp (tham chiếu mang tính hiển thị/kiểm tra):** Hệ thống tự động gỡ trường khỏi Phân quyền FLS (FEAT-03), Quy tắc kiểm tra dữ liệu (FEAT-04) và Danh sách hiển thị dùng chung (FEAT-08).
+  - **Nhóm chặn xóa (tham chiếu mang tính điều kiện chặn nghiệp vụ) `[Yêu cầu mới]`:** Nếu trường đang được dùng làm **điều kiện bắt buộc để bản ghi tiến trình**, hệ thống **chặn thao tác xóa** và yêu cầu Admin gỡ trường khỏi các cấu hình đó trước, kèm danh sách cụ thể nơi đang tham chiếu. Các cấu hình thuộc nhóm này gồm: Trường bắt buộc theo giai đoạn vòng đời (BR-05.2), Ma trận chuyển đổi (BR-05.3), Điều kiện qua giai đoạn — Stage Gating (BR-07.3), và Điều kiện đóng thương vụ (BR-09.2).
+  - **Lý do phân biệt:** Nếu tự động gỡ trường khỏi nhóm thứ hai, một điều kiện chặn nghiệp vụ sẽ **âm thầm biến mất** — Deal/Contact đột nhiên đi qua được giai đoạn mà lẽ ra phải bị chặn, làm mất kỷ luật quy trình mà không ai hay biết. Ngược lại, nếu để tham chiếu treo thì bản ghi bị kẹt vĩnh viễn ở giai đoạn đó. Cả hai kết cục đều không chấp nhận được, nên thao tác xóa phải bị chặn để Admin ra quyết định tường minh.
+  - *(Lưu ý: Công cụ phân tích tác động chéo tới Automation/Email Template nằm ở Backlog tương lai — xem Mục 7)*.
+- **BR-02.6 (Hạn mức cấu hình):** Mỗi đối tượng hỗ trợ tối đa **300 trường tùy biến**. Khi chạm ngưỡng 300, hệ thống chặn tạo mới và hiển thị cảnh báo rõ ràng ngay lập tức.
 
 **Tiêu chí chấp nhận:**
 
-- Trường tùy biến mới tạo xuất hiện đồng thời trên: form tạo/sửa bản ghi, bảng danh sách (tùy chọn hiển thị), màn hình phân quyền trường, màn hình quy tắc kiểm tra dữ liệu.
-- Xóa một trường đang được dùng trong quy tắc bắt buộc/phân quyền thì quy tắc/phân quyền đó tự dọn dẹp, không còn hiển thị "trường không xác định" ở bất kỳ đâu.
+- Tạo trường mới với đầy đủ thuộc tính xuất hiện ngay lập tức trên các giao diện nhập liệu và cấu hình liên quan.
+- Vô hiệu hóa một lựa chọn Dropdown không làm mất giá trị đó trên các bản ghi lịch sử.
+- Thao tác xóa trường dọn dẹp sạch sẽ các rule kiểm tra và phân quyền liên quan.
+- Xóa một trường đang được dùng làm điều kiện Stage Gating hoặc điều kiện đóng thương vụ bị chặn lại, kèm danh sách chính xác nơi đang tham chiếu — không có tham chiếu treo và cũng không có điều kiện chặn nào biến mất âm thầm.
 
 ---
 
-### FEAT-03 — Phân quyền & bố cục hiển thị trường theo nhóm (Field-Level Security) `[Đã triển khai]`
+### FEAT-03 — Phân quyền trường (FLS) & Bố cục hiển thị theo nhóm `[Đã triển khai]`
 
-**Mô tả nghiệp vụ:** Cho phép quản trị viên kiểm soát, theo từng nhóm người dùng, trường nào được nhìn thấy, trường nào chỉ xem không sửa được, trường nào bị ẩn hoàn toàn, và trường nào phải che bớt giá trị (ví dụ chỉ hiện 4 số cuối). Đây là công cụ bảo vệ dữ liệu nhạy cảm (lương, số thẻ, thông tin cá nhân) mà không cần tách hệ thống riêng cho từng phòng ban.
+**Mô tả nghiệp vụ:** Cho phép quản trị viên kiểm soát chi tiết quyền xem, sửa, ẩn hoặc che dữ liệu nhạy cảm của từng trường theo từng Nhóm quyền, đồng thời tổ chức bố cục form nhập liệu hợp lý.
 
-**Actor:** Quản trị viên (người cấu hình); toàn bộ người dùng cuối (người chịu tác động).
-
-**Điều kiện tiên quyết:** Đã có ít nhất một Nhóm quyền được tạo trong hệ thống (hoặc dùng cấu hình mặc định áp dụng chung).
-
-**Luồng chính:**
-
-1. Quản trị viên chọn đối tượng cần cấu hình, chọn phạm vi áp dụng: "Mặc định" (áp dụng cho ai không thuộc nhóm nào có cấu hình riêng) hoặc một Nhóm quyền cụ thể.
-2. Với từng trường, quản trị viên chọn mức truy cập: **Xem & Sửa**, **Chỉ xem**, hoặc **Ẩn**.
-3. Nếu chọn Xem & Sửa, có thể thêm bật "Bắt buộc nhập" cho trường đó (nếu trường cho phép bắt buộc — xem BR-03.3).
-4. Có thể chọn kiểu che dữ liệu cho trường: Không che / Che toàn bộ / Chỉ hiện 4 ký tự cuối (áp dụng cho trường dạng văn bản/số nhạy cảm).
-5. Sắp xếp thứ tự hiển thị trường bằng kéo-thả, gom nhóm trường vào các "Phần" (Section) trên form để tổ chức giao diện hợp lý (ví dụ: "Thông tin liên hệ", "Thông tin công việc").
-6. Có thể gắn một Phần chỉ hiển thị ở một số Giai đoạn vòng đời nhất định (xem FEAT-05).
-7. Xem trước (Preview) form theo từng giai đoạn vòng đời với dữ liệu mẫu trước khi lưu.
-8. Lưu cấu hình — áp dụng ngay cho toàn bộ người dùng thuộc nhóm được chọn.
+**Actor:** Quản trị viên Tenant (cấu hình); Người dùng cuối & Service Account (thụ hưởng/chịu tác động).
 
 **Quy tắc nghiệp vụ:**
 
-- BR-03.1: Phân quyền được cấu hình theo **Nhóm quyền**, không theo từng người dùng riêng lẻ. Nếu một người dùng không thuộc nhóm nào có cấu hình riêng cho đối tượng đó, áp dụng cấu hình Mặc định.
-- BR-03.2: Nếu một người dùng thuộc **nhiều nhóm** có cấu hình khác nhau trên cùng một trường, hệ thống luôn chọn phương án **an toàn/hạn chế hơn**: Ẩn thắng Hiển thị, Chỉ xem thắng Xem&Sửa, mức che dữ liệu mạnh hơn thắng mức che yếu hơn. Ngược lại, yêu cầu "Bắt buộc nhập" được cộng gộp — nếu bất kỳ nhóm nào yêu cầu bắt buộc thì trường đó bắt buộc. Đây là quyết định chủ đích, thiên về bảo mật dữ liệu — xem [ADR-0001](../docs/adr/0001-group-policy-conflict-resolution.md) cho lý do và các phương án đã cân nhắc.
-
-  > **Hướng dẫn vận hành cho Admin (không phải ràng buộc hệ thống):** để nâng quyền truy cập một trường cho một người cụ thể (ví dụ khi thăng chức Sales Rep → Sales Manager), hãy **rút người đó khỏi nhóm đang hạn chế trường đó**, hoặc tổ chức lại nhóm cho rõ ràng — không nên chỉ *thêm* người đó vào một nhóm quyền mở rộng hơn trong khi vẫn giữ họ ở nhóm cũ, vì theo BR-03.2 cấu hình hạn chế hơn luôn thắng.
-- BR-03.3: Một số trường do hệ thống tự quản lý (ví dụ: Ngày tạo, Người tạo, một số trường có giá trị mặc định do hệ thống tính sẵn) **không thể** được cấu hình là "Bắt buộc nhập" — vì bản thân người dùng không nhập tay các trường này. Cấu hình cố tình vi phạm sẽ bị hệ thống từ chối ngay khi lưu.
-- BR-03.4: Một số trường mang nhãn/tên định danh chính của bản ghi (ví dụ tên Liên hệ, tiêu đề Cơ hội) **không thể** bị che dữ liệu — vì đây là thông tin cần thiết tối thiểu để người dùng nhận diện bản ghi trong danh sách.
-- BR-03.5: Trường đang bị **Ẩn** thì không được phép xuất hiện ở **bất kỳ nơi nào khác** ngoài form/bảng chính — bao gồm: file xuất dữ liệu, báo cáo thống kê (kể cả gộp nhóm/đếm theo trường đó), kết quả tìm kiếm toàn hệ thống, xem trước khi gộp bản ghi trùng, xem trước danh sách phân đoạn khách hàng (segment).
-- BR-03.6: Trường bị che dữ liệu (ví dụ hiện `****1234`) mà người dùng gửi lại nguyên giá trị bị che đó khi lưu form thì hệ thống phải **bỏ qua**, không được ghi đè giá trị thật bằng chuỗi che — tránh mất dữ liệu gốc.
-- BR-03.7: Việc thay đổi cấu hình phân quyền cho một nhóm/đối tượng có hiệu lực ngay, không ảnh hưởng tới cấu hình của nhóm hoặc đối tượng khác đang được admin khác chỉnh sửa cùng lúc.
-
-**Luồng ngoại lệ:**
-
-- Quản trị viên cố đánh dấu bắt buộc một trường hệ thống quản lý → nút bắt buộc bị khóa ngay trên giao diện, không cho bật.
-- Quản trị viên cố đặt chế độ che dữ liệu cho trường không hỗ trợ che → tùy chọn che bị khóa trên giao diện.
+- **BR-03.1 (Hai chiều độc lập: Mức truy cập và Mức hiển thị):** Chính sách của một trường đối với một Nhóm quyền gồm **hai chiều tách biệt**, không được gộp thành một thang duy nhất:
+  - **Chiều 1 — Mức truy cập (loại trừ nhau, chọn đúng một):** **Xem & Sửa** › **Chỉ xem** › **Ẩn** (hoàn toàn không thấy trường).
+  - **Chiều 2 — Mức hiển thị giá trị (áp dụng khi mức truy cập không phải Ẩn):** **Hiện đầy đủ** › **Che một phần** (ví dụ chỉ hiện 4 ký tự cuối) › **Che hoàn toàn** (biết trường có dữ liệu nhưng không đọc được giá trị).
+  - **Lý do tách hai chiều (`[Yêu cầu mới]`):** Che dữ liệu là *cách trình bày giá trị*, không phải *mức được phép làm gì với trường*. Nếu gộp chung, hai tổ hợp nghiệp vụ có thật sẽ không diễn đạt được: *(a)* nhân viên CSKH **được sửa** số thẻ khách hàng nhưng **không được đọc** giá trị cũ; *(b)* nhân viên kế toán **chỉ xem** nhưng được đọc **đầy đủ**. Việc gộp cũng làm nguyên tắc so sánh "Che mạnh hơn thắng Che yếu hơn" trở nên vô nghĩa vì không còn thang bậc để so.
+- **BR-03.2 (Nguyên tắc giải quyết xung đột — Cấu hình hạn chế hơn luôn thắng):** Theo quyết định kiến trúc đã duyệt tại [ADR-0001](../docs/adr/0001-group-policy-conflict-resolution.md), hệ thống luôn chọn phương án an toàn nhất khi có mâu thuẫn, thay vì chọn phương án thuận tiện nhất cho người dùng:
+  - Khi một người dùng thuộc nhiều Nhóm quyền có cấu hình khác nhau trên cùng một trường, **cấu hình hạn chế hơn luôn thắng, và hai chiều tại BR-03.1 được xét độc lập**: chiều Mức truy cập lấy giá trị hạn chế nhất trong các nhóm (*Ẩn thắng Chỉ xem, Chỉ xem thắng Xem & Sửa*), chiều Mức hiển thị cũng lấy giá trị hạn chế nhất (*Che hoàn toàn thắng Che một phần, Che một phần thắng Hiện đầy đủ*).
+  - Ràng buộc "Bắt buộc nhập" được áp dụng theo cơ chế **cộng gộp**: nếu bất kỳ nhóm nào yêu cầu bắt buộc thì người dùng đó phải điền trường đó khi lưu.
+  - **Thứ tự ưu tiên khi hai nguyên tắc trên xung đột — Quyền truy cập thắng Ràng buộc nhập (`[Yêu cầu mới]`):** Trường hợp một người dùng thuộc Nhóm A (cấu hình trường ở mức **Ẩn** hoặc **Chỉ xem**) và đồng thời thuộc Nhóm B (cấu hình trường đó là **Bắt buộc nhập**), hai nguyên tắc trên cho ra kết quả trái ngược nhau. Nguyên tắc xử lý: **mức truy cập hạn chế hơn luôn được áp dụng trước, và ràng buộc Bắt buộc nhập được miễn trừ đối với riêng người dùng đó** — hệ thống không bao giờ được yêu cầu người dùng nhập một trường mà chính họ không có quyền nhìn thấy hoặc không có quyền sửa. Bản ghi được gắn cờ thiếu dữ liệu theo cơ chế thống nhất tại BR-05.5. *(Điều khoản này được đặc tả tại [ADR-0001](../docs/adr/0001-group-policy-conflict-resolution.md), mục Bổ sung 2026-08-23 — mục 2, **hiện ở trạng thái đề xuất, chờ PO và Solution Architect thông qua**.)*
+- **BR-03.2b (Phạm vi áp dụng FLS đối với Quản trị viên Tenant `[Yêu cầu mới]`):** Tenant Admin là người cấu hình FLS, nên phải trả lời rõ ràng câu hỏi: *chính Admin có bị FLS của mình ràng buộc không?* Nguyên tắc: **Tenant Admin không bị giới hạn bởi FLS** — vì họ có quyền tự sửa cấu hình để mở lại bất kỳ trường nào, việc áp FLS lên Admin chỉ tạo cảm giác an toàn giả mà không ngăn được gì. Hệ quả nghiệp vụ phải được nêu minh bạch trong hồ sơ bán hàng và triển khai: **FLS là công cụ phân tách trách nhiệm giữa các phòng ban, không phải công cụ che dữ liệu khỏi quản trị viên.** Khách hàng có yêu cầu giới hạn cả quản trị viên (thường thuộc ngành tài chính, y tế) cần được tư vấn giải pháp khác, không được cam kết bằng FLS.
+- **BR-03.3 (Xem trước quyền thực tế — Effective Permissions Preview `[Yêu cầu mới]`):** Hệ thống cung cấp công cụ cho Admin nhập tên một người dùng cụ thể để xem trước bảng phân quyền trường thực tế mà người dùng đó đang nhận được sau khi hệ thống hợp nhất chính sách của tất cả các nhóm họ tham gia.
+- **BR-03.4 (Ranh giới FLS đối với Tác vụ Tự động và Tích hợp bên ngoài `[Yêu cầu mới]`):**
+  - Các tác vụ tự động chạy ngầm và các luồng tích hợp bên ngoài được **miễn trừ FLS** (đọc/ghi được mọi trường) nhằm đảm bảo quy trình đồng bộ dữ liệu không bị đứt đoạn chỉ vì chính sách hiển thị dành cho con người.
+  - Các tác vụ này **vẫn phải tuân thủ nghiêm ngặt các Quy tắc kiểm tra dữ liệu (FEAT-04)**.
+  - **Cấm luân chuyển dữ liệu sang trường có mức bảo vệ thấp hơn (`[Yêu cầu mới]`):** Quyền miễn trừ FLS **không được dùng để sao chép giá trị của một trường đang bị Ẩn/Che sang một trường khác có mức bảo vệ thấp hơn** (ví dụ tác vụ tự động đọc trường *Số CMND* đang bị che rồi ghi vào trường *Ghi chú* mà mọi người dùng đều xem được). Đây là đường vòng vô hiệu hóa toàn bộ FLS: dữ liệu nhạy cảm sau khi được sao chép sẽ mang chính sách truy cập của trường đích và **không thể thu hồi**. Hệ thống phải phát hiện và chặn cấu hình dạng này ngay tại thời điểm người dùng lưu quy trình tự động, đồng thời nêu rõ trường nguồn và trường đích gây vi phạm. Nguyên tắc nghiệp vụ: **mức bảo vệ của dữ liệu đi theo dữ liệu, không đi theo trường chứa nó.**
+  - **Truy vết trách nhiệm (`[Yêu cầu mới]`):** Mỗi lần một tác vụ được miễn trừ FLS đọc/ghi vào trường đang bị Ẩn/Che, hệ thống phải truy vết được **danh tính người đã tạo/sở hữu quy trình tự động đó** — không chỉ ghi chung là "tác vụ hệ thống". Mục đích là quy được trách nhiệm khi dữ liệu nhạy cảm vô tình lộ ra ngoài phạm vi FLS qua một kênh khác (email nội bộ, thông báo ra hệ thống ngoài, tích hợp bên thứ ba). Năng lực ghi nhận này nằm ở nhật ký thao tác cấp bản ghi (xem Mục 1.2 — Ngoài phạm vi) và là điều kiện bắt buộc trước khi cam kết chuẩn bảo mật này với khách hàng Enterprise.
+- **BR-03.5 (Phạm vi che chắn của trường Ẩn):** Trường bị Ẩn đối với một người dùng sẽ không được phép xuất hiện ở bất kỳ kênh nào người đó truy cập: Form chi tiết, Bảng danh sách, File xuất Excel/CSV, Báo cáo thống kê, Kết quả tìm kiếm toàn cầu, Xem trước phân đoạn khách hàng (Segment).
+- **BR-03.6 (Bảo vệ giá trị bị che):** Khi người dùng lưu form có chứa chuỗi giá trị bị che (ví dụ: `****5678`), hệ thống bỏ qua và giữ nguyên giá trị gốc đã lưu, không ghi đè chuỗi che lên dữ liệu thật.
+- **BR-03.7 (Bố cục form nhập liệu theo Nhóm quyền) `[Cần chuẩn hóa]`:** *(Quy tắc này bổ sung để lấp khoảng trống đặc tả: Bố cục form được nêu trong Phạm vi — Mục 1.2, trong Thuật ngữ — Mục 1.4 và trong tên của FEAT-03, nhưng trước đây không có quy tắc nghiệp vụ nào. **Hiện trạng đã được đối chiếu ngày 2026-08-24 theo issue [#30](https://github.com/crmsaassaudi/product-management/issues/30): kết luận (b) — đã có nhưng khác chuẩn.** Chi tiết tại Mục 7.1 điểm 9.)*
+  - Admin cấu hình bố cục form nhập liệu cho từng đối tượng: chọn trường nào xuất hiện trên form, nhóm các trường thành **phần có tiêu đề**, và sắp thứ tự trường trong từng phần.
+  - Có thể gán bố cục riêng cho từng Nhóm quyền. Người dùng không thuộc nhóm nào được gán bố cục riêng thì dùng **Bố cục mặc định** (Mục 1.4).
+  - **Ranh giới với phân quyền trường — bố cục không bao giờ mở thêm quyền:** Bố cục quyết định *cách trình bày* (trường nằm ở phần nào, thứ tự nào); FLS quyết định *quyền* (được thấy, được sửa hay không). Khi hai thứ mâu thuẫn, **FLS luôn thắng**: một trường có mặt trên bố cục nhưng bị Ẩn với người dùng thì không hiển thị với người đó. Việc đưa một trường lên bố cục không bao giờ được hiểu là cấp quyền xem trường đó.
+  - **Ràng buộc bắt buộc ở cấp bố cục:** Admin có thể đặt một trường là bắt buộc trên bố cục. Ràng buộc này **cộng gộp** với ràng buộc bắt buộc từ FLS, và cũng chịu nguyên tắc miễn trừ theo quyền truy cập tại BR-03.2 và BR-05.5 — không có ngoại lệ riêng cho bố cục.
+  - **Trường mới được tạo:** Trường tùy biến mới **không tự động chèn vào giữa bố cục đang dùng**; hệ thống thêm vào cuối một phần do Admin chỉ định, để không làm thay đổi trật tự nhập liệu mà nhân viên đã quen mà không ai chủ ý.
+  - **Gỡ trường khỏi bố cục không phải là xóa trường:** Thao tác này chỉ ẩn trường khỏi form nhập liệu; định nghĩa trường và dữ liệu đã lưu không bị ảnh hưởng, và trường vẫn có thể xuất hiện ở danh sách, báo cáo hay file xuất nếu FLS cho phép.
 
 **Tiêu chí chấp nhận:**
 
-- Người dùng thuộc nhóm bị ẩn một trường thì không thấy trường đó ở form, bảng danh sách, file xuất, báo cáo, tìm kiếm, và mọi màn hình xem trước liên quan.
-- Người dùng thuộc nhiều nhóm với cấu hình khác nhau luôn nhận được trải nghiệm an toàn nhất trong số các cấu hình áp dụng.
-- Gửi lại giá trị bị che không làm mất dữ liệu gốc.
+- Người dùng thuộc nhóm bị ẩn trường không thể thấy hoặc truy vấn trường đó qua bất kỳ giao diện nào.
+- Admin sử dụng công cụ Effective Permissions Preview kiểm tra được chính xác quyền của nhân viên thuộc nhiều nhóm.
+- Một trường có mặt trên bố cục nhưng bị Ẩn với người dùng thì không hiển thị với người đó — bố cục không mở thêm quyền (BR-03.7).
+- Tạo trường tùy biến mới không làm xáo trộn thứ tự trường trên bố cục đang dùng.
+- Tác vụ Automation chạy ngầm ghi nhận dữ liệu vào trường bị ẩn với người dùng cuối một cách bình thường.
+- Mọi hành động ghi dữ liệu vào trường bị Ẩn/Che thông qua Automation/API đều truy được về danh tính người tạo cấu hình Automation đó.
+- Không thể lưu một cấu hình Automation sao chép giá trị từ trường bị Ẩn/Che sang trường có mức bảo vệ thấp hơn; hệ thống chặn và nêu rõ trường nguồn, trường đích vi phạm.
 
 ---
 
-### FEAT-04 — Quy tắc kiểm tra dữ liệu (Validation Rules) `[Đã triển khai]`
+### FEAT-04 — Quy tắc kiểm tra dữ liệu (Validation Rules) `[Cần chuẩn hóa]`
 
-> **Giới hạn phạm vi:** các quy tắc dưới đây chỉ kiểm tra **một trường độc lập**. Quy tắc so sánh/phụ thuộc giữa nhiều trường (cross-field, ví dụ "nếu Trạng thái = Đã chốt thì Lý do chốt không được để trống") **chưa được hỗ trợ** — xem Mục 8, khoản 7.
+**Mô tả nghiệp vụ:** Cho phép quản trị viên thiết lập các ràng buộc logic để đảm bảo tính đúng đắn và chuẩn hóa của dữ liệu khi nhập vào hệ thống.
 
-**Mô tả nghiệp vụ:** Cho phép quản trị viên định nghĩa điều kiện mà giá trị một trường phải thỏa mãn khi lưu bản ghi, để đảm bảo chất lượng dữ liệu theo yêu cầu riêng của tenant (ví dụ: số điện thoại phải đúng định dạng, doanh thu phải nằm trong khoảng hợp lý).
-
-**Actor:** Quản trị viên.
-
-**Luồng chính:**
-
-1. Quản trị viên vào màn hình Quy tắc kiểm tra dữ liệu của một đối tượng.
-2. Chọn "Thêm quy tắc", chọn trường áp dụng, chọn kiểu kiểm tra: **Không được để trống**, **Đúng định dạng** (biểu thức chính quy), hoặc **Nằm trong khoảng** (giá trị số).
-3. Nhập thông báo lỗi hiển thị cho người dùng khi vi phạm.
-4. Có thể bật/tắt tạm thời một quy tắc mà không cần xóa.
-5. Các thay đổi (thêm/sửa/tắt/xóa) chỉ có hiệu lực thật sự sau khi bấm "Lưu tất cả" — trước đó hệ thống cảnh báo còn thay đổi chưa lưu nếu người dùng cố rời trang.
+**Actor:** Quản trị viên Tenant.
 
 **Quy tắc nghiệp vụ:**
 
-- BR-04.1: Quy tắc "Đúng định dạng" bỏ qua kiểm tra nếu trường đang để trống — việc bắt buộc nhập là trách nhiệm của quy tắc "Không được để trống" hoặc cấu hình bắt buộc riêng, tránh vô tình biến một trường tùy chọn thành bắt buộc chỉ vì thêm một quy tắc định dạng.
-- BR-04.2: Quy tắc "Nằm trong khoảng" cho phép để trống một đầu (chỉ giới hạn tối thiểu hoặc chỉ giới hạn tối đa) và hỗ trợ giá trị âm.
-- BR-04.3: Nếu một quy tắc được cấu hình sai (biểu thức không hợp lệ, khoảng giá trị không hợp lệ, hoặc biểu thức có nguy cơ gây treo hệ thống), quy tắc đó **tạm thời không được áp dụng** thay vì chặn toàn bộ việc lưu dữ liệu của cả đối tượng — lỗi cấu hình của quản trị viên không được phép làm gián đoạn hoạt động của toàn bộ người dùng.
-- BR-04.4: Quy tắc kiểm tra áp dụng nhất quán bất kể dữ liệu được nhập qua form, nhập liệu hàng loạt từ file, hay ghi tự động từ automation — không có kênh nhập liệu nào được phép bỏ qua quy tắc đã cấu hình.
-- BR-04.5: Trường đang ở chế độ "Chỉ xem" (không cho sửa) thì không áp dụng quy tắc kiểm tra dữ liệu cho lần ghi đó, vì người dùng vốn không được phép thay đổi giá trị.
+- **BR-04.1 (Các kiểu kiểm tra chuẩn):** Hệ thống hỗ trợ:
+  - **Không được để trống:** Bắt buộc phải có giá trị.
+  - **Đúng định dạng:** Giá trị phải khớp một khuôn dạng do Admin định nghĩa (Email, Số điện thoại quốc tế, Mã số thuế, địa chỉ web...).
+  - **Nằm trong khoảng:** Giới hạn giá trị số tối thiểu và/hoặc tối đa.
+- **BR-04.2 (Cấu hình sai phải bị chặn ngay khi lưu `[Cần chuẩn hóa]`):**
+  - Hệ thống **bắt buộc kiểm tra tính hợp lệ của khuôn dạng và khoảng giá trị ngay tại thời điểm Admin lưu cấu hình**, và chỉ ra cụ thể chỗ sai để Admin sửa.
+  - Một quy tắc mà hệ thống không thể đánh giá được (khuôn dạng viết sai, hoặc phức tạp tới mức gây rủi ro cho hiệu năng hệ thống) **phải bị từ chối ngay lúc lưu**.
+  - **Nguyên tắc nghiệp vụ khi không đánh giá được quy tắc:** Nếu tới thời điểm người dùng cuối lưu bản ghi mà hệ thống vẫn không đánh giá được một quy tắc, hệ thống phải **từ chối bản ghi** chứ không được **âm thầm bỏ qua quy tắc và cho lưu**. Lý do: bỏ qua quy tắc tạo ra dữ liệu sai mà không ai biết — thiệt hại lớn hơn nhiều so với việc chặn một lần nhập liệu, vì dữ liệu sai sẽ chảy tiếp vào báo cáo và quyết định kinh doanh.
+- **BR-04.3 (Chỉ kiểm tra khi giá trị của trường thay đổi `[Yêu cầu mới]`):**
+  - Một quy tắc kiểm tra chỉ được đánh giá khi: (1) bản ghi được **tạo mới**, hoặc (2) **giá trị của chính trường đó bị thay đổi** trong lần lưu này.
+  - Nếu người dùng chỉnh sửa các trường khác trên một bản ghi cũ mà không động tới trường đang có dữ liệu chưa chuẩn hóa, hệ thống cho phép lưu bình thường. Lý do nghiệp vụ: một quy tắc mới ban hành hôm nay không được phép làm đình trệ toàn bộ công việc trên dữ liệu đã tồn tại từ trước.
+  - **Đánh đổi có chủ đích (`[Ghi nhận rủi ro]`):** Cơ chế này chấp nhận rủi ro dữ liệu không đạt chuẩn tồn tại vô thời hạn nếu không ai chủ động sửa trường đó — đây là đánh đổi có chủ đích giữa tính liên tục của vận hành và tốc độ làm sạch dữ liệu, không phải khiếm khuyết. Để nợ dữ liệu không tồn đọng mãi, Admin cần có báo cáo "Bản ghi chưa đạt quy tắc kiểm tra hiện hành" để chủ động rà soát và khắc phục (xem Mục 7.2 — Phase 2).
+- **BR-04.4 (Độc lập giữa Định dạng và Bắt buộc):** Quy tắc "Đúng định dạng" tự động bỏ qua nếu trường đang để trống (trừ khi trường đó đồng thời được cấu hình Bắt buộc nhập).
+- **BR-04.5 (Thực thi nhất quán đa kênh):** Quy tắc kiểm tra áp dụng bình đẳng cho mọi kênh dữ liệu đi vào hệ thống: nhập trên máy tính, nhập trên điện thoại, nhập từ file, tác vụ tự động và tích hợp bên ngoài. Không kênh nào được có "cửa sau".
 
 **Tiêu chí chấp nhận:**
 
-- Lưu bản ghi vi phạm bất kỳ quy tắc active nào → bị từ chối, hiển thị đúng thông báo lỗi đã cấu hình cho trường đó.
-- Nhập liệu hàng loạt vi phạm quy tắc → dòng dữ liệu đó bị báo lỗi riêng, không được âm thầm ghi vào hệ thống.
-- Một quy tắc lỗi cấu hình không làm ảnh hưởng tới khả năng lưu dữ liệu bình thường của các trường khác.
+- Admin không thể lưu một quy tắc có khuôn dạng viết sai; hệ thống chỉ rõ chỗ sai.
+- Người dùng sửa thông tin người phụ trách trên một Contact cũ không bị chặn bởi quy tắc định dạng số điện thoại mới ban hành nếu họ không sửa trường số điện thoại đó.
+- Nhập file Excel chứa dòng sai định dạng bị từ chối chính xác ở dòng đó với thông báo lỗi đã cấu hình.
 
 ---
 
-### FEAT-05 — Giai đoạn vòng đời (Lifecycle Stages) `[Đã triển khai]`
+### FEAT-05 — Giai đoạn vòng đời (Lifecycle Stages) & Chuyển đổi `[Đã triển khai]`
 
-**Mô tả nghiệp vụ:** Cho phép quản trị viên định nghĩa các giai đoạn mà một bản ghi Liên hệ trải qua trong hành trình khách hàng, và những trường bắt buộc phải điền ở từng giai đoạn.
+**Mô tả nghiệp vụ:** Định nghĩa các giai đoạn phát triển của khách hàng (hiện áp dụng cho Liên hệ) và chuẩn hóa quy trình chuyển đổi khách hàng tiềm năng thành Cơ hội bán hàng chính thức.
 
-**Actor:** Quản trị viên.
-
-**Phạm vi áp dụng:** Hiện tại chỉ **Liên hệ (Contact)** có mô hình giai đoạn vòng đời nhiều bước; các đối tượng khác dùng mô hình trạng thái đơn giản hơn (xem FEAT-06), riêng Cơ hội có mô hình Pipeline chuyên biệt (xem FEAT-07).
-
-**Luồng chính:**
-
-1. Quản trị viên vào màn hình Giai đoạn vòng đời của Liên hệ.
-2. Thêm một giai đoạn mới: đặt tên hiển thị, thứ tự, màu sắc nhận diện.
-3. Chọn những trường **bắt buộc phải có giá trị** khi một bản ghi ở giai đoạn này.
-4. Đánh dấu một giai đoạn là **"Đã chuyển đổi"** (điểm kết thúc hành trình, ví dụ đã trở thành khách hàng chính thức) — có thể đồng thời bật tùy chọn **tự động tạo một Cơ hội bán hàng mới** khi Liên hệ đạt tới giai đoạn này.
-5. Sắp xếp thứ tự các giai đoạn theo số thứ tự.
+**Actor:** Quản trị viên Tenant (cấu hình); Người dùng cuối & Quản lý nhóm (chịu ràng buộc khi chuyển giai đoạn, xử lý bản ghi bị gắn cờ thiếu dữ liệu).
 
 **Quy tắc nghiệp vụ:**
 
-- BR-05.1: Trường được chọn "bắt buộc ở giai đoạn này" phải là trường mà người dùng thực sự có thể tự nhập (không chọn được các trường do hệ thống tự quản lý).
-- BR-05.2: Nếu một trường được đánh dấu bắt buộc ở một giai đoạn, nhưng đồng thời bị cấu hình Ẩn ở đúng giai đoạn đó (qua phân quyền theo Phần — FEAT-03), hệ thống phải **cảnh báo xung đột** cho quản trị viên ngay trên màn hình cấu hình, vì người dùng sẽ không thể thỏa mãn yêu cầu bắt buộc với một trường họ không nhìn thấy.
-- BR-05.3: Việc tự động tạo Cơ hội khi chuyển giai đoạn chỉ áp dụng cho các giai đoạn được đánh dấu "Đã chuyển đổi", không áp dụng ngầm cho giai đoạn khác.
+- **BR-05.1 (Chuỗi giai đoạn vòng đời):** Admin định nghĩa chuỗi giai đoạn vòng đời (ví dụ: *Khách tiềm năng → Đang chăm sóc → Đủ điều kiện (MQL) → Khách hàng chính thức → Rời bỏ*), kèm màu sắc nhận diện và thứ tự.
+  - **Cho phép đi ngược và tái tiếp cận (`[Yêu cầu mới]`):** Thứ tự giai đoạn thể hiện **tiến trình kỳ vọng**, không phải đường một chiều. Liên hệ được phép **quay về giai đoạn trước** (khách hàng tạm dừng, nhu cầu chưa chín) và được phép **rời khỏi trạng thái Rời bỏ để vào lại vòng nuôi dưỡng** — tái tiếp cận khách hàng cũ là hoạt động kinh doanh cốt lõi trong B2B, hệ thống không được chặn. Khi Liên hệ quay lại, các trường bắt buộc của giai đoạn đích vẫn được áp dụng đầy đủ, và dữ liệu lịch sử của lần theo đuổi trước không bị xóa. *(Quy tắc này làm cho vòng đời Liên hệ nhất quán với quy tắc chuyển lùi giai đoạn của Cơ hội tại BR-07.4.)*
+- **BR-05.2 (Trường bắt buộc theo giai đoạn):** Cho phép cấu hình danh sách trường bắt buộc phải có dữ liệu khi một Liên hệ chuyển tới một giai đoạn nhất định.
+- **BR-05.3 (Ma trận Chuyển đổi Khách hàng tiềm năng — Conversion Matrix `[Cần chuẩn hóa]`):**
+  - Khi một giai đoạn được đánh dấu là "Đã chuyển đổi" (Converted) và bật tùy chọn tự động sinh Cơ hội (Deal), Admin cấu hình trước ma trận chuyển đổi:
+    1. **Mẫu tên Cơ hội mặc định:** Định dạng tự động, ví dụ: `{Contact_Name} - Cơ hội mới {Date}`.
+    2. **Quy trình bán hàng đích:** Chọn Pipeline và Giai đoạn khởi đầu (Initial Stage) của Cơ hội được tạo.
+    3. **Người phụ trách Cơ hội (Deal Owner):** Mặc định kế thừa từ Người phụ trách Liên hệ (Contact Owner) hoặc gán cho một người dùng/nhóm chỉ định. **Thứ tự ưu tiên khi tranh chấp với Phân công tự động (`[Yêu cầu mới]`):** Nếu đối tượng Cơ hội đồng thời có quy tắc Phân công tự động đang bật (BR-09.3), **cấu hình Deal Owner trong Ma trận chuyển đổi luôn thắng** — Cơ hội sinh ra từ chuyển đổi không được đưa vào vòng phân bổ Round Robin. Lý do nghiệp vụ: người đã nuôi dưỡng Liên hệ tới điểm chuyển đổi cần giữ được quyền theo đuổi thương vụ, tránh tranh chấp hoa hồng và mất ngữ cảnh khách hàng. Trường hợp Admin cố ý muốn Cơ hội chuyển đổi đi qua Round Robin, phải chọn tường minh tùy chọn *"Áp dụng quy tắc phân công tự động"* thay cho việc kế thừa chủ sở hữu.
+    4. **Liên kết Tài khoản doanh nghiệp (Account):** Nếu Liên hệ đã gắn với một Account, Cơ hội tự động liên kết với Account đó; nếu chưa có Account, hệ thống cho phép tùy chọn tự động tạo Account doanh nghiệp tương ứng hoặc giữ độc lập.
+    5. **Chống trùng lặp Cơ hội trên cùng Tài khoản (`[Yêu cầu mới]`):** Trước khi tự động sinh Cơ hội mới, hệ thống kiểm tra Tài khoản liên kết đã có Cơ hội nào đang **Đang mở (Open)** trong cùng Quy trình bán hàng đích hay chưa — nếu **có**, hệ thống không tự tạo Cơ hội trùng lặp mà cảnh báo cho Chủ sở hữu Tài khoản/Admin và cho phép chọn gắn Liên hệ mới vào Cơ hội đang mở đó, hoặc vẫn tạo mới có chủ đích (lưu vết quyết định); nếu **không có**, hệ thống tạo Cơ hội mới như bình thường.
+       - **Vai trò liên hệ trong Cơ hội (Contact Role):** Khi gắn Liên hệ thứ hai trở đi vào một Cơ hội đang mở, quan hệ này phải mang **vai trò nghiệp vụ** (ví dụ: *Người quyết định, Người phê duyệt, Người ảnh hưởng, Người dùng cuối, Liên hệ phụ*) thay vì chỉ là một danh sách phẳng — giúp đội bán hàng nắm được sơ đồ ảnh hưởng bên trong tài khoản doanh nghiệp. *Ranh giới phạm vi: Object Manager chịu trách nhiệm cho phép Admin cấu hình danh mục vai trò này (như một danh mục dùng chung của tenant); còn việc lưu và hiển thị quan hệ Liên hệ–Cơ hội thuộc tầng lõi CRM, ngoài phạm vi tài liệu này (Mục 1.2).*
+- **BR-05.4 (Cảnh báo xung đột Ẩn vs Bắt buộc — Config-time):** Nếu một trường bị ẩn đối với một Nhóm quyền nhưng lại bị cấu hình bắt buộc ở một giai đoạn vòng đời, hệ thống hiển thị cảnh báo xung đột ngay tại màn hình cấu hình cho Admin, kèm danh sách Nhóm quyền bị ảnh hưởng.
+- **BR-05.5 (Chống Deadlock giữa Ẩn và Bắt buộc — Runtime `[Yêu cầu mới]`):** Ràng buộc bắt buộc theo giai đoạn vòng đời (BR-05.2) không được phép ép người dùng nhập một trường mà FLS đang Ẩn hoặc Chỉ xem với họ (BR-03.1). Khi xảy ra xung đột này, hệ thống **miễn trừ ràng buộc bắt buộc đối với riêng người dùng đó** và cho phép lưu bản ghi bình thường; bản ghi được gắn cờ **"Thiếu dữ liệu bắt buộc do giới hạn quyền"**. Ràng buộc bắt buộc vẫn được áp dụng đầy đủ với bất kỳ người dùng nào có quyền nhập trường đó.
+  - **Phạm vi áp dụng thống nhất:** Cờ này là cơ chế dùng chung cho mọi trường hợp miễn trừ vì lý do quyền truy cập — bao gồm cả xung đột nội tại của tầng FLS giữa nhiều Nhóm quyền (BR-03.2) và xung đột giữa FLS với Stage Gating của Cơ hội (BR-07.3).
+  - **Quản trị bản ghi bị gắn cờ (`[Yêu cầu mới]`):** Cờ này chỉ có giá trị nghiệp vụ nếu có người chịu trách nhiệm xử lý. Do đó hệ thống phải đảm bảo: (1) bản ghi hiển thị cảnh báo trực quan nêu rõ **đang thiếu trường bắt buộc của giai đoạn nào**, chỉ đối với người dùng có quyền nhìn thấy trường đó; (2) tồn tại điều kiện lọc hệ thống theo trạng thái *"Thiếu dữ liệu bắt buộc do giới hạn quyền"* để dùng trong Shared List View (FEAT-08), cho phép Trưởng nhóm/Admin lọc ra toàn bộ bản ghi tồn đọng và giao người có thẩm quyền bổ sung; (3) không bản ghi nào bị gắn cờ mà không xuất hiện trong bộ lọc này.
+  - **Chống tồn đọng vô thời hạn (`[Yêu cầu mới]`):** Một cờ không có người nhận trách nhiệm cụ thể sẽ tồn đọng vĩnh viễn — đúng bệnh lý đã được ghi nhận ở BR-04.3. Do đó: (1) khi bản ghi bị gắn cờ, hệ thống **gửi thông báo tới Nhóm quyền có quyền nhập trường còn thiếu** (cơ chế tương đương cảnh báo của Hàng đợi chưa phân công tại BR-09.3), không chỉ chờ ai đó tự vào lọc; (2) cờ được **tự động xóa ngay khi trường còn thiếu có giá trị hợp lệ**, không cần thao tác thủ công — tránh tình trạng dữ liệu đã đủ nhưng cờ vẫn treo làm sai lệch báo cáo tồn đọng.
 
 **Tiêu chí chấp nhận:**
 
-- Bản ghi Liên hệ chuyển sang một giai đoạn có trường bắt buộc mà chưa có giá trị → không cho phép lưu chuyển giai đoạn cho đến khi bổ sung.
-- Xung đột "bắt buộc nhưng bị ẩn" luôn được cảnh báo ngay tại màn hình cấu hình, không đợi tới khi người dùng cuối gặp lỗi mới phát hiện.
+- Liên hệ chuyển sang giai đoạn có trường bắt buộc mà thiếu thông tin sẽ bị chặn lưu và chỉ rõ trường cần bổ sung.
+- Khi Liên hệ đạt trạng thái "Đã chuyển đổi", một Cơ hội mới được tạo chính xác theo mẫu tên, đúng Pipeline, đúng giai đoạn và đúng người phụ trách đã cấu hình.
+- Người dùng không có quyền xem một trường đang bắt buộc bởi giai đoạn vòng đời vẫn lưu được bản ghi bình thường (miễn trừ theo BR-05.5), không bị kẹt vĩnh viễn.
+- Hai Liên hệ cùng một Tài khoản chuyển đổi gần nhau không sinh ra hai Cơ hội trùng lặp trong cùng Pipeline.
 
 ---
 
-### FEAT-06 — Trạng thái & Nguồn (Status & Sources) `[Đã triển khai]`
+### FEAT-06 — Trạng thái & Nguồn theo đối tượng `[Cần chuẩn hóa]`
 
-**Mô tả nghiệp vụ:** Cho phép quản trị viên định nghĩa danh sách trạng thái vận hành (ví dụ trạng thái xử lý Ticket, trạng thái Công việc) và danh sách nguồn phát sinh bản ghi (ví dụ nguồn khách hàng: Quảng cáo, Giới thiệu, Website) cho từng đối tượng.
+**Mô tả nghiệp vụ:** Quản lý danh mục trạng thái vận hành và nguồn gốc phát sinh dữ liệu cho từng đối tượng.
 
-**Actor:** Quản trị viên.
-
-**Luồng chính — Trạng thái:**
-
-1. Quản trị viên chọn đối tượng, xem danh sách trạng thái hiện có.
-2. Thêm trạng thái mới: tên hiển thị, thứ tự, màu sắc; đánh dấu **mặc định** (trạng thái khởi tạo khi tạo bản ghi mới) và/hoặc **trạng thái kết thúc** (đóng vòng đời xử lý, ví dụ "Đã giải quyết", "Đã hủy").
-3. Riêng đối tượng Cơ hội, mỗi trạng thái còn có thêm: tỉ lệ thắng ước tính (%), số ngày dự kiến ở trạng thái đó, và cờ đánh dấu "Thắng" (Won).
-4. Đặt một trạng thái làm mặc định sẽ tự động bỏ mặc định khỏi trạng thái khác cùng nhóm.
-
-**Luồng chính — Nguồn:**
-
-1. Quản trị viên thêm/sửa/xóa tên nguồn phát sinh bản ghi cho một đối tượng — đây là danh sách đơn giản chỉ gồm tên hiển thị.
+**Actor:** Quản trị viên Tenant.
 
 **Quy tắc nghiệp vụ:**
 
-- BR-06.1: Chỉ Liên hệ có nhiều tầng trạng thái theo giai đoạn vòng đời (FEAT-05); các đối tượng còn lại dùng một danh sách trạng thái phẳng, dùng chung cho toàn bộ bản ghi của đối tượng đó.
-- BR-06.2: Danh sách trạng thái/nguồn hiển thị trên các trường chọn (dropdown) của form nhập liệu **phải luôn khớp với danh sách mà hệ thống chấp nhận khi lưu** — không được xảy ra tình trạng người dùng chọn một trạng thái hợp lệ trên form nhưng bị hệ thống từ chối khi lưu.
-- BR-06.3: Xóa một trạng thái/nguồn đang được dùng cho các bản ghi hiện có không được làm ảnh hưởng tới dữ liệu lịch sử.
+- **BR-06.1 (Trạng thái phẳng cho Contact, Account, Ticket, Task):**
+  - Các đối tượng Contact, Account, Ticket, Task sử dụng danh sách trạng thái phẳng. Mỗi trạng thái gồm: Tên hiển thị, Màu sắc, Thứ tự, Cờ đánh dấu "Mặc định khi tạo mới", và Cờ "Trạng thái đóng/kết thúc".
+  - Chỉ có đúng 1 trạng thái mặc định cho mỗi đối tượng.
+  - **Ý nghĩa của cờ "Trạng thái đóng/kết thúc" trong Phase 1 (`[Yêu cầu mới]`):** Cờ này **chỉ** phục vụ lọc danh sách và thống kê — phân biệt việc đang mở với việc đã xong; nó **không kéo theo bất kỳ ràng buộc dữ liệu bắt buộc nào** khi bản ghi chuyển sang trạng thái đó. Chỉ duy nhất đối tượng **Cơ hội** có điều kiện đóng cấu hình được (BR-09.2). Nêu rõ điều này để tránh hiểu nhầm rằng đóng một Ticket cũng bắt buộc nhập lý do như đóng một Cơ hội — năng lực đó hiện chưa có, xem Mục 7.1 điểm 10.
+  - **Bảo toàn khi vô hiệu hóa trạng thái đang được sử dụng (`[Yêu cầu mới]`):** Trạng thái đang được gán cho bản ghi hiện hữu chỉ được **vô hiệu hóa** (không còn xuất hiện khi tạo mới/chỉnh sửa), không được xóa vĩnh viễn; các bản ghi cũ giữ nguyên trạng thái đó ở chế độ chỉ đọc để không làm sai lệch báo cáo lịch sử — áp dụng cùng nguyên tắc với BR-02.2. Trạng thái đang mang cờ Mặc định không được vô hiệu hóa trước khi Admin chỉ định trạng thái mặc định thay thế.
+- **BR-06.2 (Trạng thái vĩ mô của Cơ hội — Deal System Status `[Cần chuẩn hóa]`):**
+  - Riêng đối tượng **Cơ hội (Deal)**, trạng thái cấp hệ thống (System Status) chỉ gồm 3 nhóm trạng thái vĩ mô cố định:
+    1. **Đang mở (Open):** Thương vụ đang trong quá trình tiếp cận/đàm phán.
+    2. **Thắng (Closed Won):** Thương vụ thành công, chốt hợp đồng.
+    3. **Thua (Closed Lost):** Thương vụ thất bại/hủy bỏ.
+  - *Các giai đoạn chi tiết (Stages), tỷ lệ % thành công và thời gian xử lý của Deal được chuyển toàn bộ sang quản lý bên trong từng Pipeline tại FEAT-07*.
+- **BR-06.3 (Nguồn phát sinh dữ liệu - Source):** Danh mục nguồn (Website, Hotline, Quảng cáo, Giới thiệu...) được quản lý độc lập cho từng đối tượng để phục vụ phân tích hiệu quả kênh. **Nguồn đang được gán cho bản ghi hiện hữu chỉ được vô hiệu hóa, không được xóa vĩnh viễn** — cùng nguyên tắc bảo toàn lịch sử như trạng thái (BR-06.1) và lựa chọn danh sách (BR-02.2). Nếu xóa hẳn, toàn bộ báo cáo hiệu quả kênh của các kỳ trước mất gốc so sánh.
 
 **Tiêu chí chấp nhận:**
 
-- Trạng thái mới thêm xuất hiện ngay trên form tạo/sửa bản ghi và được chấp nhận khi lưu.
-- Đổi trạng thái mặc định luôn đảm bảo chỉ có đúng một trạng thái mặc định trong cùng nhóm.
+- Trạng thái và Nguồn mới tạo hiển thị đồng bộ trên các dropdown của đối tượng tương ứng.
+- Đổi trạng thái mặc định tự động giải phóng cờ mặc định khỏi trạng thái cũ.
+- Không thể vô hiệu hóa một trạng thái đang mang cờ Mặc định trước khi chỉ định trạng thái thay thế; bản ghi cũ giữ nguyên trạng thái đã vô hiệu hóa và báo cáo lịch sử không đổi số.
+- Đóng một Ticket không bị hệ thống đòi thêm dữ liệu bắt buộc nào — cờ đóng chỉ tác động tới việc lọc và thống kê (BR-06.1).
 
 ---
 
-### FEAT-07 — Quản lý Pipeline bán hàng (Deal) `[Đã triển khai]`
+### FEAT-07 — Quản lý Quy trình bán hàng & Giai đoạn Cơ hội (Deal Pipelines & Stages) `[Cần chuẩn hóa]`
 
-**Mô tả nghiệp vụ:** Cho phép quản trị viên định nghĩa một hoặc nhiều quy trình bán hàng (pipeline) mà Cơ hội đi qua, phù hợp với các dòng sản phẩm/kênh bán hàng khác nhau của doanh nghiệp.
+**Mô tả nghiệp vụ:** Cho phép quản trị viên định nghĩa nhiều Quy trình bán hàng (Multi-Pipeline) độc lập cho các dòng sản phẩm hoặc kênh bán hàng khác nhau, và quản lý các Giai đoạn (Stages) chi tiết thuộc về từng Pipeline.
 
-**Actor:** Quản trị viên.
-
-**Luồng chính:**
-
-1. Quản trị viên xem danh sách Pipeline hiện có, mỗi pipeline có tên, mô tả, màu sắc nhận diện, và cờ "Mặc định"/"Đã lưu trữ".
-2. Tạo pipeline mới: đặt tên, mô tả, màu sắc, và bật/tắt tùy chọn **"Bắt buộc tuần tự"** — nếu bật, Cơ hội trong pipeline này chỉ được tiến từng bước một qua các giai đoạn kế tiếp (không được nhảy cóc); đóng thương vụ (thắng/thua) và lùi giai đoạn luôn được phép bất kể tùy chọn này.
-3. Đặt một pipeline làm mặc định.
-4. Lưu trữ (archive) một pipeline không còn dùng — đây là thao tác mềm, không xóa dữ liệu các Cơ hội đã gắn với pipeline đó.
+**Actor:** Quản trị viên Tenant (cấu hình Pipeline/Stage); Người dùng cuối (chịu ràng buộc Stage Gating, tiến trình tuần tự và quy tắc chuyển Pipeline khi vận hành Cơ hội).
 
 **Quy tắc nghiệp vụ:**
 
-- BR-07.1: Không thể lưu trữ pipeline đang là mặc định — phải chuyển mặc định sang pipeline khác trước.
-- BR-07.2: Các giai đoạn cụ thể bên trong một pipeline (ví dụ: Tiếp cận → Đề xuất → Đàm phán → Chốt) được quản lý ở màn hình Trạng thái & Nguồn của Cơ hội (FEAT-06), không phải ở màn hình Pipeline này — màn hình Pipeline chỉ quản lý thông tin cấp pipeline (tên, quy tắc tuần tự, mặc định/lưu trữ).
+- **BR-07.1 (Đa quy trình bán hàng - Multi-Pipeline):** Admin có thể tạo nhiều Pipeline (ví dụ: *Bán hàng Doanh nghiệp B2B, Bán hàng SMB, Gia hạn Hợp đồng/Upsell*). Mỗi Pipeline có tên, mô tả, màu sắc nhận diện, cờ "Mặc định", và cờ "Đã lưu trữ" (Archived).
+- **BR-07.2 (Giai đoạn thuộc Pipeline — Pipeline Stages Architecture `[Cần chuẩn hóa]`):**
+  - Mỗi Pipeline sở hữu một tập hợp các **Giai đoạn (Stages)** hoàn toàn độc lập.
+  - Mỗi Stage trong một Pipeline được cấu hình các thuộc tính riêng biệt:
+    1. **Tên giai đoạn:** (Ví dụ: *Tiếp cận, Demo giải pháp, Báo giá, Đàm phán*).
+    2. **Thuộc nhóm Trạng thái vĩ mô:** Liên kết với *Đang mở (Open)*, *Thắng (Won)* hoặc *Thua (Lost)*.
+    3. **Tỷ lệ thành công kỳ vọng (Probability %):** Từ 0% đến 100% (dùng để tính Doanh số dự báo trọng số = Giá trị Deal × Tỷ lệ %).
+    4. **Thời gian lưu kỳ vọng (Expected Days / SLA):** Số ngày tối đa một deal nên ở giai đoạn này trước khi bị đánh dấu cảnh báo trễ hạn (Stale Deal).
+- **BR-07.3 (Điều kiện qua giai đoạn — Stage Gating `[Yêu cầu mới]`):**
+  - Cho phép Admin cấu hình các trường **bắt buộc phải có giá trị khi Deal chuyển vào một Stage cụ thể** (ví dụ: chuyển sang Stage "Báo giá" bắt buộc có *Giá trị cơ hội* và *Ngày dự kiến chốt*).
+- **BR-07.4 (Quy tắc tiến trình tuần tự — Sequential Enforcement):**
+  - Tùy chọn "Bắt buộc tuần tự" trên Pipeline: Nếu bật, Deal chỉ được chuyển tiến từng bước qua các giai đoạn liền kề, không được nhảy cóc.
+  - Ngoại lệ: Hành động chuyển Deal sang trạng thái đóng (*Closed Won / Closed Lost*) hoặc chuyển lùi về giai đoạn trước luôn được phép thực hiện bất kể tùy chọn này. **Riêng khi chuyển thẳng sang Closed Won, điều kiện Stage Gating của các Stage bị bỏ qua vẫn được cộng dồn và kiểm tra theo BR-09.2 — ngoại lệ này chỉ miễn trừ ràng buộc tuần tự, không miễn trừ nghĩa vụ nhập dữ liệu.**
+  - **Nhập liệu gộp một lần khi chốt nhanh (`[Yêu cầu mới]`):** Toàn bộ dữ liệu còn thiếu khi chốt Thắng nhanh (điều kiện đóng deal + Stage Gating cộng dồn của các giai đoạn bị bỏ qua) phải được yêu cầu **trong một lượt nhập liệu duy nhất**, không được buộc người dùng quay lại từng giai đoạn để điền rồi mới chốt được. Yêu cầu nghiệp vụ ở đây là *số lượt tương tác*, không phải hình thức giao diện cụ thể — thiết kế UI do đội Product Design quyết định.
+- **BR-07.5 (Chuyển Cơ hội giữa các Quy trình bán hàng — Pipeline Switching `[Yêu cầu mới]`):** Do mỗi Pipeline có tập Stage hoàn toàn độc lập (BR-07.2), khi một Deal được chuyển từ Pipeline này sang Pipeline khác, Stage hiện tại của nó không còn tồn tại ở Pipeline đích. Quy tắc xử lý:
+  - Hệ thống **bắt buộc yêu cầu người dùng chọn Stage đích** trong Pipeline mới, không được tự động gán ngầm (ví dụ tự đưa về Stage đầu tiên), vì thao tác gán ngầm sẽ làm sai lệch Doanh số dự báo trọng số do tỷ lệ % thành công của hai Stage khác nhau.
+  - Nhóm Trạng thái vĩ mô (Open/Won/Lost) của Deal phải được bảo toàn: Deal đang mở chỉ được chuyển vào Stage thuộc nhóm *Đang mở* của Pipeline đích.
+  - Dữ liệu đã nhập ở các trường Stage Gating của Pipeline cũ **không bị xóa**; nếu Pipeline đích không dùng những trường đó thì dữ liệu được giữ nguyên trên bản ghi để bảo toàn lịch sử (nguyên tắc NFR-06).
+  - Việc chuyển Pipeline được ghi vào lịch sử của Deal (Pipeline cũ → Pipeline mới, Stage cũ → Stage mới, người thực hiện) để giải trình các biến động bất thường trong báo cáo dự báo doanh số.
+- **BR-07.6 (Vòng đời của Pipeline & Stage khi đang có dữ liệu vận hành `[Yêu cầu mới]`):** Áp dụng nguyên tắc bảo toàn dữ liệu lịch sử tương đương BR-02.2/BR-02.3 cho Pipeline và Stage:
+  - **Xóa/Vô hiệu hóa một Stage** đang có Deal ở trạng thái *Đang mở*: hệ thống **chặn thao tác** và yêu cầu Admin chỉ định Stage tiếp nhận để chuyển các Deal đó sang, nhằm tránh Deal bị treo ở một giai đoạn không còn tồn tại.
+  - **Lưu trữ (Archive) một Pipeline** đang có Deal *Đang mở*: hệ thống cảnh báo rõ số lượng Deal bị ảnh hưởng và yêu cầu Admin chọn một trong hai hướng — chuyển toàn bộ Deal đang mở sang Pipeline khác (theo BR-07.5), hoặc chấp nhận để chúng ở chế độ **chỉ đọc, không thể chuyển giai đoạn tiếp**. Không được để tồn tại trạng thái mơ hồ thứ ba.
+  - Pipeline đã lưu trữ **không xuất hiện** trong danh sách lựa chọn khi tạo Deal mới hoặc cấu hình Ma trận chuyển đổi (BR-05.3), nhưng Deal lịch sử và báo cáo cũ vẫn tham chiếu đúng tên Pipeline/Stage tại thời điểm phát sinh.
+  - Pipeline đang mang cờ **"Mặc định"** không được phép lưu trữ trước khi Admin chỉ định một Pipeline mặc định khác.
 
 **Tiêu chí chấp nhận:**
 
-- Cơ hội thuộc pipeline có bật "Bắt buộc tuần tự" không thể được chuyển nhảy cóc qua giai đoạn không liền kề (trừ khi là đóng thương vụ hoặc lùi giai đoạn).
-- Lưu trữ pipeline không xóa lịch sử Cơ hội đã từng thuộc pipeline đó.
+- Admin tạo được 2 Pipeline khác nhau với danh sách các Stage, tỷ lệ % và số ngày SLA hoàn toàn khác nhau.
+- Deal chuyển qua Stage có yêu cầu bắt buộc trường sẽ bị chặn nếu chưa điền đủ dữ liệu.
+- Lưu trữ (Archive) một Pipeline không làm mất dữ liệu lịch sử của các Deal đã từng thuộc Pipeline đó.
+- Deal nhảy thẳng từ Stage đầu tiên sang Closed Won vẫn bị yêu cầu điền đủ các trường Stage Gating của những Stage đã bỏ qua trước khi lưu thành công; nhảy thẳng sang Closed Lost thì không. Toàn bộ các trường còn thiếu này được yêu cầu trong một lượt nhập duy nhất.
+- Chuyển một Deal đang mở sang Pipeline khác luôn buộc người dùng chọn Stage đích; Doanh số dự báo trọng số sau khi chuyển khớp đúng tỷ lệ % của Stage mới.
+- Không thể xóa một Stage đang có Deal mở nếu chưa chỉ định Stage tiếp nhận; không thể lưu trữ Pipeline đang mang cờ Mặc định.
 
 ---
 
-### FEAT-08 — Danh sách hiển thị tùy biến (List Views) `[Đã triển khai]`
+### FEAT-08 — Danh sách hiển thị dùng chung (Shared List Views) `[Cần chuẩn hóa]`
 
-**Mô tả nghiệp vụ:** Cho phép quản trị viên tạo các cấu hình bảng danh sách khác nhau (cột nào hiển thị, thứ tự cột) và gán mỗi cấu hình cho một hoặc nhiều nhóm người dùng, để mỗi nhóm thấy thông tin phù hợp với công việc của họ khi xem danh sách bản ghi.
+**Mô tả nghiệp vụ:** Cho phép quản trị viên thiết kế sẵn các chế độ xem danh sách bản ghi chuẩn hóa (gồm bộ cột hiển thị, bộ lọc dữ liệu và thứ tự sắp xếp) và phân quyền áp dụng cho từng Nhóm quyền.
 
-> **Ghi chú ranh giới:** đây là cấu hình **dùng chung** do Admin quản lý (Danh sách hiển thị dùng chung). Bộ lọc/cột hiển thị **cá nhân** mà một người dùng tự lưu riêng cho mình (nếu sản phẩm hỗ trợ) là khái niệm khác, nằm ngoài phạm vi Object Manager — xem Mục 1.2 và Mục 8.
+**Actor:** Quản trị viên Tenant (tạo & phân quyền); Người dùng cuối (sử dụng).
 
-**Actor:** Quản trị viên.
+**Cấu phần của một Shared List View:**
 
-**Luồng chính:**
-
-1. Quản trị viên tạo danh sách hiển thị mới cho một đối tượng: đặt tên, chọn các cột hiển thị (bao gồm cả trường tùy biến), sắp xếp thứ tự cột, ẩn/hiện từng cột, và tùy chỉnh độ rộng cột.
-2. Gán danh sách hiển thị này làm mặc định cho một hoặc nhiều Nhóm quyền.
-3. Trong phạm vi các nhóm đã gán, có thể loại trừ riêng một vài người dùng cụ thể khỏi việc dùng danh sách này.
-4. Có thể **sao chép** một danh sách hiển thị có sẵn để tạo biến thể mới nhanh hơn.
-5. Xóa một danh sách hiển thị — không áp dụng được cho danh sách được đánh dấu là "danh sách hệ thống mặc định".
+1. **Bộ cột hiển thị (Columns):** Chọn các trường hiển thị, thứ tự cột kéo thả và độ rộng cột.
+2. **Bộ lọc dữ liệu mặc định (Default Filter Criteria `[Cần chuẩn hóa]`):** Định nghĩa các điều kiện lọc sẵn (ví dụ: `[Chủ sở hữu = Người dùng hiện tại]`, `[Trạng thái = Đang mở]`, `[Thành phố = Hà Nội]`).
+3. **Thứ tự sắp xếp mặc định (Default Sorting `[Cần chuẩn hóa]`):** Cấu hình trường sắp xếp và chiều sắp xếp (ví dụ: `Ngày tạo - Giảm dần` hoặc `Giá trị Deal - Giảm dần`).
 
 **Quy tắc nghiệp vụ:**
 
-- BR-08.1: Một cột chỉ được thêm vào danh sách hiển thị nếu tương ứng với một trường có thể hiển thị được trên bảng (bao gồm cột hiển thị giá trị suy ra từ một quan hệ, ví dụ cột "Chủ sở hữu" hiển thị tên người được gán).
-- BR-08.2: Sao chép một danh sách hiển thị không kế thừa việc gán nhóm/loại trừ người dùng của bản gốc — quản trị viên phải gán lại.
-- BR-08.3: Danh sách hiển thị hệ thống mặc định không thể bị xóa (có thể sao chép để tạo bản tùy biến riêng).
-- BR-08.4: Cột tương ứng với trường đang bị Ẩn theo phân quyền (FEAT-03) không được hiển thị dữ liệu cho người dùng bị ẩn trường đó, kể cả khi cột này nằm trong một danh sách hiển thị đã cấu hình.
+- **BR-08.1 (Gán theo Nhóm quyền):** Danh sách hiển thị được gán làm mặc định cho một hoặc nhiều Nhóm quyền. Có thể chọn loại trừ một số người dùng cụ thể khỏi danh sách được gán. **Người dùng không thuộc bất kỳ Nhóm quyền nào được gán Shared List View (hoặc bị loại trừ khỏi tất cả) sẽ mặc định thấy danh sách hệ thống "All Records" (BR-08.3), không gặp màn hình trắng `[Yêu cầu mới]`.**
+  - **Khi một người thuộc nhiều nhóm được gán các danh sách mặc định khác nhau (`[Yêu cầu mới]`):** Đây không phải xung đột quyền, nên **không** áp dụng nguyên tắc hạn chế hơn thắng của ADR-0001 — không có danh sách nào "an toàn hơn" danh sách nào. Nguyên tắc xử lý: **Admin phải xếp ưu tiên tường minh** giữa các danh sách được gán; hệ thống mở sẵn danh sách có ưu tiên cao nhất trong các nhóm mà người đó tham gia, **các danh sách còn lại vẫn khả dụng để người dùng tự chuyển sang**. Tuyệt đối không được chọn ngầu nhiên hoặc chọn theo thứ tự tạo — khi đó hai nhân viên cùng vai trò sẽ thấy hai màn hình khác nhau mà không ai giải thích được.
+- **BR-08.2 (Tôn trọng phân quyền trường):** Danh sách hiển thị không bao giờ được mở thêm quyền. Hành vi được xác định dứt khoát theo từng chiều của BR-03.1, không để tùy chọn cách hiện thực:
+  - Trường ở mức **Ẩn** với người dùng → **cột bị loại bỏ hoàn toàn** khỏi bảng của người đó, không được để cột trống. Lý do: theo BR-03.5 trường bị Ẩn không được xuất hiện ở bất kỳ kênh nào — một cột trống vẫn tiết lộ rằng trường đó tồn tại, bản thân điều đó đã là rò rỉ thông tin (ví dụ cột *Đang điều tra gian lận*).
+  - Trường ở mức **Che một phần / Che hoàn toàn** → **cột vẫn hiển thị**, giá trị được che đúng mức đã cấu hình, và **không được dùng làm điều kiện lọc hay sắp xếp** cho người dùng đó — vì kết quả lọc/sắp xếp cho phép suy ra giá trị thật đang bị che.
+- **BR-08.3 (Bảo vệ Danh sách hệ thống):** Danh sách hiển thị mặc định của hệ thống (All Records) không thể bị xóa.
+- **BR-08.4 (Sao chép danh sách):** Cho phép sao chép một Shared List View có sẵn để tạo biến thể mới mà không làm thay đổi bản gốc.
 
 **Tiêu chí chấp nhận:**
 
-- Người dùng thuộc nhóm được gán một danh sách hiển thị thấy đúng bộ cột, đúng thứ tự đã cấu hình.
-- Người dùng bị loại trừ riêng không thấy danh sách hiển thị đó dù thuộc nhóm được gán.
+- Người dùng thuộc nhóm kinh doanh mở màn hình Cơ hội thấy ngay danh sách hiển thị được cấu hình riêng cho nhóm mình với đúng bộ lọc "Deal của tôi", đúng thứ tự cột và sắp xếp theo ngày chốt gần nhất.
+- Cột chứa dữ liệu nhạy cảm tự động biến mất đối với nhân viên không có quyền FLS.
+- Người dùng không thuộc nhóm nào được gán Shared List View vẫn thấy được danh sách "All Records" mặc định thay vì màn hình trắng.
+- Cột ứng với trường bị Ẩn **biến mất hoàn toàn** khỏi bảng, không còn lại cột trống; cột ứng với trường bị che vẫn hiển thị nhưng không lọc/sắp xếp được theo cột đó (BR-08.2).
+- Hai nhân viên thuộc cùng tập Nhóm quyền luôn thấy cùng một danh sách mở sẵn, xác định theo thứ tự ưu tiên Admin đã xếp (BR-08.1).
 
 ---
 
 ### FEAT-09 — Cấu hình nâng cao theo từng đối tượng (Advanced Settings) `[Đã triển khai]`
 
-**Mô tả nghiệp vụ:** Mỗi đối tượng có thêm một số cấu hình đặc thù không thuộc các nhóm tính năng chung ở trên.
+**Mô tả nghiệp vụ:** Cung cấp các thiết lập nghiệp vụ chuyên sâu cấp tenant cho từng đối tượng cốt lõi.
 
-**Actor:** Quản trị viên.
+**Actor:** Quản trị viên Tenant.
 
-**Nội dung theo từng đối tượng:**
+**Quy tắc nghiệp vụ chi tiết:**
 
-- **Tài khoản**: bật/tắt mô hình phân cấp công ty mẹ-con và độ sâu phân cấp tối đa; danh mục loại tài khoản và ngành nghề; tự động phân công chủ sở hữu theo khu vực; hỗ trợ đa tiền tệ.
-- **Liên hệ**: chính sách xử lý trùng lặp khi phát hiện email/số điện thoại giống nhau (xem xét thủ công hoặc ngăn tạo mới); mô hình quan hệ với Tài khoản (một Liên hệ thuộc một hay nhiều Tài khoản); theo dõi đồng ý nhận email/tuân thủ bảo vệ dữ liệu cá nhân (GDPR); danh mục vai trò liên hệ; quy tắc tự động phân công Liên hệ mới cho nhân viên (chia đều, theo trọng số, theo khu vực).
-- **Cơ hội**: các điều kiện bắt buộc trước khi đánh dấu Thắng (bắt buộc có giá trị/chủ sở hữu/liên hệ/ngày đóng); cấu hình dự báo doanh thu (đơn vị tiền tệ, năm tài chính bắt đầu từ quý nào, có tính dự báo theo trọng số hay không); mục tiêu doanh số theo nhóm/cá nhân và chu kỳ (tháng/quý/năm).
-- **Công việc**: danh mục loại công việc tùy biến; thời gian nhắc nhở mặc định trước hạn; bật quy tắc tự động hoàn tất công việc.
-- **Ticket**: danh mục loại Ticket; cây phân loại (category) đa cấp; danh mục mã lý do đóng (resolution code).
-
-**Quy tắc nghiệp vụ:**
-
-- BR-09.1: Cấu hình nâng cao là cấu hình cấp tenant (áp dụng cho toàn bộ tenant), không cấu hình theo từng nhóm người dùng như FEAT-03.
-- BR-09.2: Điều kiện bắt buộc khi đánh dấu Cơ hội Thắng chỉ kiểm tra tại thời điểm chuyển sang trạng thái Thắng, không chặn việc tạo/chỉnh sửa Cơ hội ở các giai đoạn khác.
-
-**Tiêu chí chấp nhận:**
-
-- Thay đổi một cấu hình nâng cao có hiệu lực ngay cho toàn tenant mà không cần thao tác thêm.
-- Cố gắng đánh dấu Cơ hội Thắng khi thiếu điều kiện bắt buộc đã cấu hình → bị từ chối, nêu rõ điều kiện còn thiếu.
-
----
-
-### FEAT-10 — Nhật ký kiểm toán thay đổi cấu hình (Configuration Audit Trail) `[Yêu cầu mới]`
-
-**Mô tả nghiệp vụ:** Object Manager cho phép quản trị viên thay đổi cấu trúc dữ liệu và chính sách truy cập ảnh hưởng tới toàn bộ người dùng của tenant. Khi một thay đổi gây sự cố (ví dụ: một nhóm nhân viên đột nhiên không còn thấy số điện thoại khách hàng), hệ thống phải cho phép trả lời được: ai đã đổi cấu hình gì, vào lúc nào — mà không cần truy vấn trực tiếp cơ sở dữ liệu ứng dụng.
-
-**Actor:** Hệ thống tự động ghi nhận mỗi khi Quản trị viên thực hiện một thao tác cấu hình trong Object Manager. Không có actor nào chủ động "xem" nhật ký ở phiên bản này (xem BR-10.4) — đội vận hành/hỗ trợ tra cứu khi cần điều tra sự cố.
-
-**Luồng chính:**
-
-1. Quản trị viên thực hiện bất kỳ thao tác tạo/sửa/xóa cấu hình nào trong Object Manager (trường tùy biến, phân quyền/bố cục trường, quy tắc kiểm tra dữ liệu, giai đoạn vòng đời, trạng thái/nguồn, pipeline, danh sách hiển thị, cấu hình nâng cao).
-2. Hệ thống tự động ghi một bản ghi nhật ký gồm: thời điểm, người thực hiện, loại hành động, đối tượng/mục cấu hình bị ảnh hưởng.
-3. Nếu thao tác thuộc nhóm phân quyền trường (đổi mức truy cập, bật/tắt bắt buộc, đổi kiểu che dữ liệu), nhật ký còn lưu **giá trị trước và sau** của đúng thuộc tính bị đổi.
-4. Việc ghi nhật ký diễn ra nền, không chặn hay làm chậm thao tác của quản trị viên.
-
-**Quy tắc nghiệp vụ:**
-
-- BR-10.1: Mọi hành động tạo/sửa/xóa cấu hình trong Object Manager PHẢI để lại đúng một bản ghi nhật ký tương ứng, không có ngoại lệ.
-- BR-10.2: Với thay đổi thuộc nhóm phân quyền trường (mức truy cập, bắt buộc, che dữ liệu), nhật ký PHẢI lưu giá trị trước và sau của thuộc tính bị đổi. Với các hành động khác (CRUD trường/giai đoạn/trạng thái/nguồn/pipeline/danh sách hiển thị/cấu hình nâng cao), nhật ký chỉ cần ghi loại hành động và đối tượng/mục bị tác động, không cần snapshot đầy đủ.
-- BR-10.3: Nhật ký được lưu trữ **không giới hạn thời gian** ở phiên bản này. Một chính sách lưu trữ theo thời hạn cụ thể (nếu cần vì lý do pháp lý hoặc chi phí hạ tầng) sẽ do chính sách chung của nền tảng quyết định sau, không đặt cứng trong tài liệu này.
-- BR-10.4: Ở phiên bản này, nhật ký **không có màn hình tự tra cứu cho tenant admin** — chỉ đội vận hành/hỗ trợ tra cứu được qua công cụ nội bộ. Màn hình lịch sử thay đổi cho chính tenant admin tự xem là hướng mở rộng hợp lý, xem Mục 8.
-- BR-10.5: Việc ghi nhật ký KHÔNG được phép là điều kiện quyết định một thao tác cấu hình thành công hay thất bại — đây là tác vụ nền, không phải một bước xác thực trong luồng chính.
+- **BR-09.1 (Chính sách chống trùng lặp — Deduplication):**
+  - Cho phép cấu hình tiêu chí nhận diện trùng lặp: Khớp chính xác Email, Khớp số điện thoại sau khi đã chuẩn hóa về định dạng quốc tế, hoặc Khớp Mã số thuế/Tên công ty.
+  - Hành động xử lý khi phát hiện trùng: Cảnh báo người dùng khi nhập tay trên biểu mẫu, hoặc từ chối tạo bản ghi khi nhập file hàng loạt và khi nhận từ tích hợp bên ngoài.
+  - **Xử lý dòng bị từ chối (`[Yêu cầu mới]`):** Đối với Import file, các dòng bị từ chối do trùng lặp phải được liệt kê trong báo cáo kết quả Import (kèm lý do và ID bản ghi trùng) để Admin tải về đối chiếu, không được âm thầm bỏ qua. Đối với API, phản hồi phải **phân biệt được lỗi trùng lặp với các lỗi nghiệp vụ khác** và trả kèm **ID bản ghi gốc** cùng **tên trường gây trùng**, để hệ thống tích hợp có thể tự động chuyển sang luồng cập nhật bản ghi hiện có thay vì báo lỗi chung chung. *(Mã lỗi/HTTP status cụ thể thuộc tài liệu đặc tả API, không quy định trong SRS nghiệp vụ.)*
+  - **Thứ tự thực thi so với Quy tắc kiểm tra dữ liệu (`[Yêu cầu mới]`):** Một dòng dữ liệu có thể đồng thời sai định dạng (FEAT-04) và trùng lặp. Hệ thống **kiểm tra Validation Rules trước, kiểm tra trùng lặp sau**, và báo cáo kết quả phải nêu **toàn bộ** lý do bị từ chối của dòng đó, không dừng ở lỗi đầu tiên — tránh việc người dùng phải sửa và import lại nhiều lượt cho cùng một dòng.
+- **BR-09.2 (Điều kiện đóng thương vụ Cơ hội — Deal Close Requirements):**
+  - **Khi đóng Thắng (Closed Won):** Bắt buộc phải có *Giá trị thực tế*, *Ngày chốt thực tế*, *Liên hệ chính*, **và toàn bộ trường Stage Gating (BR-07.3) của mọi Stage mà Deal đã bỏ qua trong Pipeline hiện tại `[Yêu cầu mới]`** — đảm bảo việc chuyển thẳng sang Closed Won (ngoại lệ tại BR-07.4) không trở thành cách né tránh nghĩa vụ nhập dữ liệu của quy trình bán hàng.
+  - **Khi đóng Thua (Closed Lost):** Bắt buộc phải chọn *Lý do thất bại (Loss Reason)* và ghi chú nguyên nhân. Trường Stage Gating của các Stage trung gian bị bỏ qua **không bắt buộc** trong trường hợp này.
+- **BR-09.3 (Quy tắc phân công tự động — Auto-Assignment):**
+  - Hỗ trợ cơ chế phân bổ xoay vòng chia đều (Round Robin) hoặc theo Khu vực địa lý (Territory).
+  - **Khi không xác định được khu vực (`[Yêu cầu mới]`):** Với phân bổ theo khu vực, bản ghi không có dữ liệu khu vực hoặc có khu vực chưa gán cho ai **không được âm thầm bỏ qua**: bản ghi được đưa vào Hàng đợi chưa phân công kèm cảnh báo, giống trường hợp hết người khả dụng bên dưới. Đây là nguyên nhân mất khách phổ biến nhất khi triển khai phân bổ theo khu vực.
+  - Hệ thống chỉ phân công cho các thành viên trong nhóm đang ở trạng thái **Đang hoạt động (Active)** và không bật chế độ vắng mặt/nghỉ phép.
+  - **Xử lý khi không còn thành viên khả dụng (`[Yêu cầu mới]`):** Nếu toàn bộ thành viên trong quy tắc phân bổ đều không khả dụng (nghỉ phép/không hoạt động), bản ghi được đưa vào **Hàng đợi chưa phân công (Unassigned Queue)** và gửi cảnh báo cho Trưởng nhóm/Admin, thay vì bị bỏ sót không ai xử lý.
+- **BR-09.4 (Phạm vi áp dụng):** Các cấu hình nâng cao là cấu hình cấp toàn tenant, áp dụng đồng nhất cho mọi người dùng trong workspace.
 
 **Tiêu chí chấp nhận:**
 
-- Mọi thay đổi cấu hình trong Object Manager để lại đúng 1 bản ghi nhật ký tương ứng, không thiếu, không trùng.
-- Với thay đổi phân quyền trường, nhật ký cho biết đủ để trả lời "trường Y của nhóm X bị đổi từ gì sang gì, ai đổi, lúc nào" mà không cần suy đoán.
-- Đội vận hành tra cứu được nhật ký phục vụ điều tra sự cố mà không cần quyền truy cập trực tiếp cơ sở dữ liệu ứng dụng.
+- Nhân viên cố tình đánh dấu Deal là "Closed Lost" mà không chọn Lý do thất bại sẽ bị hệ thống chặn lại và yêu cầu điền đầy đủ.
+- Nhập liệu trùng số điện thoại đã tồn tại sẽ kích hoạt đúng cảnh báo chống trùng theo cấu hình.
+- File Import chứa dòng trùng số điện thoại bị từ chối sẽ xuất hiện đầy đủ trong báo cáo kết quả Import kèm lý do, không bị bỏ sót âm thầm.
+- Khi toàn bộ thành viên trong quy tắc Auto-Assignment đều nghỉ phép, bản ghi được đưa vào Hàng đợi chưa phân công và Trưởng nhóm nhận được cảnh báo.
+- Bản ghi không xác định được khu vực cũng vào Hàng đợi chưa phân công, không bị bỏ qua không dấu vết (BR-09.3).
 
 ---
 
-## 4. Yêu cầu phi chức năng
+### FEAT-10 — Nhật ký kiểm toán thay đổi cấu hình (Configuration Audit Trail) `[Đã triển khai]`
+
+**Mô tả nghiệp vụ:** Tự động ghi lại lịch sử mọi thay đổi cấu hình trong Object Manager để phục vụ điều tra sự cố vận hành và bảo vệ tính minh bạch dữ liệu.
+
+**Actor:** Hệ thống ghi tự động khi Tenant Admin thao tác. Đội hỗ trợ/Vận hành tra cứu qua công cụ nội bộ trong Phase 1.
+
+**Quy tắc nghiệp vụ:**
+
+- **BR-10.1 (Ghi nhận toàn diện):** Mọi hành động Tạo, Sửa, Xóa cấu hình trong Object Manager đều phải sinh ra đúng một bản ghi kiểm toán gồm: Thời gian thực hiện, Người thực hiện (Admin ID & Email), Loại hành động, và Đối tượng/Mục cấu hình bị tác động.
+- **BR-10.2 (Lưu vết giá trị trước và sau đối với phân quyền trường):**
+  - Riêng đối với các thay đổi thuộc nhóm **Phân quyền trường FLS** (đổi mức truy cập Xem/Sửa/Ẩn, bật/tắt Bắt buộc, đổi chế độ Che dữ liệu), nhật ký **bắt buộc phải lưu giá trị trước và sau (Old Value → New Value)** của thuộc tính bị đổi.
+  - Đối với các cấu hình khác (tạo trường, đổi thứ tự, đổi màu sắc...), nhật ký lưu thông tin hành động và đối tượng bị tác động để tối ưu dung lượng lưu trữ.
+- **BR-10.3 (Hành vi khi không ghi được nhật ký):** Object Manager áp dụng **nguyên tắc đóng đã chốt tại SRS IAM BR-41.4/BR-41.5** và [ADR-0003](../docs/adr/0003-permission-config-audit-log-fail-closed.md): *mọi thao tác làm thay đổi "ai được làm gì" hoặc "ai thấy gì" đều thuộc nhóm nhật ký thay đổi cấu hình quyền, mặc định là **thuộc nhóm này** trừ khi có lý do loại trừ tường minh.* Vì phân quyền trường (FLS) đúng nghĩa là *"ai thấy gì"*, các thao tác dưới đây thuộc nhóm **buộc phải có dấu vết**:
+  - **Nhóm buộc phải có dấu vết — nếu không ghi được nhật ký thì hủy thao tác và báo lỗi cho Admin:** thay đổi mức truy cập hoặc mức hiển thị của trường theo Nhóm quyền (FEAT-03); bật/tắt ràng buộc bắt buộc; **vô hiệu hóa một trường (BR-02.3) và việc tự động gỡ trường khỏi cấu hình FLS kèm theo (BR-02.5)**; hoàn tác thay đổi phân quyền (BR-10.5). Lý do: một khoảng trống trong dấu vết *"ai đã mở/khóa quyền xem trường dữ liệu nhạy cảm nào, khi nào"* làm mất khả năng chứng minh trước khách hàng và kiểm toán viên. Đây là thao tác tần suất thấp, không nằm trên đường công việc của người dùng cuối, nên chi phí của việc chặn là chấp nhận được.
+  - **Được loại trừ tường minh — ghi nhật ký không được chặn hay làm chậm Admin:** các thay đổi **chỉ mang tính trình bày và tổ chức**, không cấp thêm và không thu hồi quyền của bất kỳ ai: đổi màu, đổi thứ tự, đổi nhãn hiển thị, đặt tên quy trình bán hàng. Riêng **Danh sách hiển thị dùng chung (FEAT-08)** cũng được loại trừ, với lý do tường minh: theo BR-08.2 danh sách hiển thị luôn tuân thủ FLS, nó chỉ **sắp xếp lại thứ tự trình bày** những gì người dùng vốn đã được phép thấy, không mở thêm quyền — nên không thuộc phạm vi *"ai thấy gì"* theo nghĩa phân quyền.
+  - **Xem trước không thuộc phạm vi:** Công cụ Xem trước quyền thực tế (BR-03.3) không tạo ra thay đổi có hiệu lực, nên không thuộc nhóm buộc phải có dấu vết — thống nhất với ngoại lệ dành cho thao tác mô phỏng tại BR-41.4.
+  - **Nguyên tắc cho tính năng phát sinh sau này:** Mọi năng lực cấu hình mới bổ sung vào Object Manager **mặc định thuộc nhóm buộc phải có dấu vết** nếu nó tác động tới việc ai thấy gì hoặc ai làm được gì; muốn loại trừ thì phải nêu lý do tường minh ngay trong tài liệu, không được loại trừ bằng im lặng.
+- **BR-10.4 (Quyền tra cứu trong Phase 1):** Trong Phase 1, nhật ký kiểm toán được lưu trữ tập trung phục vụ đội CSKH/Vận hành nội bộ điều tra khi khách hàng báo sự cố. *(Giao diện tự tra cứu dành riêng cho Tenant Admin được hoạch định cho gói Enterprise trong Phase tiếp theo — xem Mục 7)*.
+- **BR-10.5 (Hoàn tác thay đổi phân quyền FLS — Revert `[Yêu cầu mới]`):** Một thao tác cấu hình FLS sai có phạm vi ảnh hưởng tức thời tới toàn bộ người dùng của tenant (ví dụ Admin ẩn nhầm 20 trường của Contact vào cuối ngày làm việc). Vì nhật ký đã lưu đầy đủ giá trị trước/sau (BR-10.2), hệ thống phải cho phép **hoàn tác một thay đổi phân quyền FLS về đúng giá trị trước đó** dựa trên bản ghi kiểm toán tương ứng, thay vì buộc Admin nhớ và dựng lại cấu hình cũ bằng tay.
+  - Thao tác hoàn tác bản chất là một thay đổi phân quyền mới, do đó **cũng sinh bản ghi kiểm toán riêng** (ghi rõ là hành động hoàn tác và trỏ tới bản ghi gốc), không được ghi đè hay xóa lịch sử — và cũng thuộc nhóm buộc phải có dấu vết tại BR-10.3: nếu không ghi được nhật ký cho chính hành động hoàn tác thì việc hoàn tác bị hủy.
+  - Trong Phase 1, năng lực này được thực hiện bởi đội Vận hành nội bộ qua công cụ quản trị platform (nhất quán với BR-10.4).
+
+**Tiêu chí chấp nhận:**
+
+- Mỗi lần Admin đổi quyền một trường từ "Xem & Sửa" sang "Ẩn", hệ thống lưu lại đầy đủ bản ghi kiểm toán kèm giá trị cũ và mới.
+- Đội hỗ trợ có thể trích xuất chính xác ai đã thực hiện thay đổi cấu hình vào thời điểm nào mà không cần tác động trực tiếp vào dữ liệu vận hành của khách hàng.
+- Một thay đổi phân quyền FLS sai có thể được hoàn tác về đúng trạng thái trước đó dựa trên nhật ký, và bản thân hành động hoàn tác cũng được lưu vết.
+
+---
+
+## 4. Yêu cầu phi chức năng (NFR)
 
 ### 4.1 Bảo mật & Phân quyền
 
-- **NFR-1 (Cách ly dữ liệu theo tenant):** Mọi cấu hình (trường tùy biến, phân quyền, quy tắc, giai đoạn, danh sách hiển thị...) chỉ nhìn thấy và áp dụng được trong phạm vi tenant đã tạo ra nó, không rò rỉ chéo giữa các tenant.
-- **NFR-3 (Phân quyền truy cập khu vực cấu hình):** Chỉ vai trò quản trị hệ thống mới truy cập được toàn bộ khu vực Object Manager; người không đủ quyền phải thấy thông báo từ chối rõ ràng, không được âm thầm chuyển hướng hay hiển thị dữ liệu rút gọn.
-- **NFR-7 (Ưu tiên an toàn khi có nhiều cấu hình chồng lấn):** Khi một người dùng chịu ảnh hưởng của nhiều cấu hình phân quyền cùng lúc (do thuộc nhiều nhóm), hệ thống luôn chọn phương án hạn chế/an toàn hơn cho việc hiển thị dữ liệu (xem BR-03.2, ADR-0001).
+- **NFR-01 (Cách ly dữ liệu giữa các khách hàng):** Mọi cấu hình trường tùy biến, phân quyền trường, quy tắc kiểm tra, quy trình bán hàng và danh sách hiển thị hoàn toàn cô lập theo từng tenant. Không tồn tại bất kỳ đường nào để cấu hình hoặc dữ liệu của một khách hàng bị nhìn thấy từ tenant khác.
+- **NFR-02 (Quyền truy cập khu vực cấu hình):** Trong phạm vi một tenant, chỉ người mang vai trò Quản trị viên tenant mới truy cập được khu vực cấu hình Object Manager. Người dùng cuối không có đường nào tiếp cận, kể cả truy cập trực tiếp.
+  - **Ngoại lệ duy nhất — Đội Vận hành nội bộ của nhà cung cấp (`[Yêu cầu mới]`):** Actor này (Mục 2.3) cần truy cập cấu hình của tenant để tra cứu nhật ký kiểm toán (BR-10.4) và hoàn tác cấu hình sai (BR-10.5) khi khách hàng báo sự cố. Đây là ngoại lệ **có kiểm soát**, không phải quyền mặc định: chỉ được cấp trong phạm vi và thời gian xử lý sự cố, và **mọi thao tác của actor này trên dữ liệu khách hàng đều phải được lưu vết** như một hành động cấu hình bình thường (BR-10.1), kèm định danh nhân sự thực hiện. Đây là câu hỏi bắt buộc phải trả lời được trong mọi vòng đánh giá bảo mật của khách hàng Enterprise: *"nhân sự của nhà cung cấp có xem được dữ liệu của chúng tôi không, và ai kiểm soát việc đó?"*
+- **NFR-03 (Ưu tiên an toàn khi chồng lấn nhóm quyền):** Khi các Nhóm quyền chồng lấn và cho kết quả mâu thuẫn, hệ thống luôn chọn phương án hạn chế hơn thay vì phương án thuận tiện hơn, theo ADR-0001 và BR-03.2.
 
 ### 4.2 Toàn vẹn & Nhất quán dữ liệu
 
-- **NFR-2 (Nhất quán xuyên kênh dữ liệu):** Một quy tắc đã cấu hình (bắt buộc, chỉ đọc, ẩn, định dạng...) phải được áp dụng **giống nhau** dù dữ liệu đi vào qua giao diện người dùng, nhập liệu hàng loạt từ file, hay ghi tự động bởi automation — không có kênh nào được phép "đi tắt" qua cấu hình đã thiết lập.
-- **NFR-6 (Không để lỗi cấu hình làm gián đoạn toàn hệ thống):** Một quy tắc/cấu hình bị nhập sai bởi quản trị viên không được phép làm sập hoặc chặn hoàn toàn khả năng lưu dữ liệu của những người dùng khác đang thao tác bình thường (xem BR-04.3).
-- **NFR-9 (Có thể kiểm thử hồi quy):** Các ràng buộc nền tảng (một trường hệ thống không thể bị đánh dấu bắt buộc, một trường không hỗ trợ che thì không cấu hình che được...) phải được kiểm tra tự động, không phụ thuộc vào việc quản trị viên/kỹ sư nhớ để rà soát thủ công mỗi lần thay đổi.
+- **NFR-04 (Nhất quán đa kênh):** Phân quyền trường và quy tắc kiểm tra dữ liệu phải được thực thi đồng nhất trên mọi kênh dữ liệu đi vào hệ thống — nhập trên máy tính, nhập trên điện thoại, nhập từ file, tác vụ tự động và tích hợp bên ngoài.
+- **NFR-05 (Không để cấu hình lỗi lọt xuống người dùng cuối):** Mọi cấu hình có dạng biểu thức (khuôn dạng kiểm tra, công thức tính) phải được xác nhận hợp lệ trước khi lưu. Cấu hình mà hệ thống không đánh giá được thì phải bị từ chối ngay tại màn hình quản trị, không được để phát tác thành lỗi cho người dùng cuối.
+- **NFR-06 (Bảo vệ dữ liệu lịch sử):** Xóa trường hoặc vô hiệu hóa lựa chọn dropdown không bao giờ được phép làm sai lệch hoặc mất mát dữ liệu lịch sử đã lưu trên các bản ghi cũ.
 
 ### 4.3 Hiệu năng & Vận hành
 
-- **NFR-4 (An toàn khi nhiều quản trị viên thao tác song song):** Hai quản trị viên chỉnh sửa cấu hình của hai đối tượng/nhóm khác nhau cùng lúc không được ghi đè mất cấu hình của nhau.
-- **NFR-5 (Giới hạn quy mô hợp lý):** Số trường tùy biến mỗi đối tượng, số dòng cấu hình trong một lần lưu, đều có giới hạn trên để đảm bảo hệ thống vận hành ổn định (chi tiết ngưỡng nêu tại BR-02.2, BR-02.6, BR-02.7).
-
-### 4.4 Đa ngôn ngữ
-
-- **NFR-8 (Đa ngôn ngữ):** Tên đối tượng và tên trường chuẩn phải hiển thị theo ngôn ngữ người dùng đang chọn; tên trường tùy biến hiển thị đúng theo tên quản trị viên đã đặt.
+- **NFR-07 (Tác vụ song song):** Hai Admin thao tác cấu hình trên hai đối tượng hoặc hai nhóm quyền khác nhau cùng lúc không được ghi đè hay làm mất cấu hình của nhau.
+- **NFR-07b (Chống ghi đè khi sửa cùng một cấu hình `[Yêu cầu mới]`):** Trường hợp hai Admin mở và lưu **cùng một** cấu hình (cùng bảng FLS của một nhóm quyền, cùng một Pipeline, cùng một Shared List View), hệ thống **không được áp dụng cơ chế người lưu sau ghi đè toàn bộ người lưu trước** — thay đổi của người lưu trước sẽ biến mất âm thầm mà không ai biết. Hệ thống phải phát hiện cấu hình đã bị người khác thay đổi kể từ lúc mở và **cảnh báo cho người lưu sau trước khi ghi**, cho họ biết ai đã thay đổi và buộc xác nhận lại. Đây là rủi ro thực tế cao ở các tenant lớn có nhiều Admin cùng vận hành.
+- **NFR-08 (Giới hạn quy mô an toàn):** Hệ thống đảm bảo thời gian tải trang danh sách và form nhập liệu dưới 1.5 giây đối với các đối tượng có tối đa 300 trường tùy biến.
+  - **Bổ sung chiều Nhóm quyền (`[Yêu cầu mới]`):** Cam kết trên chỉ có ý nghĩa nếu ràng buộc được cả chiều thứ hai. Chi phí tính toán quyền thực tế của một người dùng tăng theo **số trường × số Nhóm quyền người đó tham gia** (do phải hợp nhất chính sách theo BR-03.2), chưa kể chi phí cộng dồn Stage Gating (BR-09.2). Vì vậy hệ thống công bố hạn mức: **một người dùng thuộc tối đa 20 Nhóm quyền** (tương tự hạn mức 300 trường tại BR-02.6). Cam kết 1.5 giây được đo ở điều kiện biên: đối tượng đạt trần 300 trường tùy biến **và** người dùng đạt trần 20 nhóm. Không có hạn mức này, cam kết hiệu năng không kiểm chứng được.
+  - **Lý do chọn 20 là lý do nghiệp vụ, không phải giới hạn kỹ thuật:** Vượt ngưỡng này, quyền thực tế của một người trở thành thứ **không ai giải thích nổi bằng lời** — Admin không còn tự suy ra được vì sao nhân viên X không thấy trường Y, và công cụ Xem trước quyền thực tế (BR-03.3) trở thành bảng dữ liệu quá dài để đọc. Một người thuộc hơn 20 nhóm là dấu hiệu mô hình phân quyền của tenant cần tổ chức lại, không phải dấu hiệu hệ thống cần nâng trần. Khi chạm hạn mức, hệ thống chặn thêm nhóm và nêu rõ lý do kèm gợi ý tổ chức lại — cùng cách xử lý với BR-02.6.
+- **NFR-09 (Khả năng đo lường — Instrumentation `[Yêu cầu mới]`):** Các chỉ số thành công của module (xem ranh giới tại Mục 1.2) chỉ tính toán được nếu hệ thống phát sinh sẵn dữ liệu đo. Do đó hệ thống phải ghi nhận được, ở mức tối thiểu: (1) mỗi thay đổi cấu hình kèm thời điểm và người thực hiện (đã có qua FEAT-10); (2) số lượng bản ghi đang mang cờ *"Thiếu dữ liệu bắt buộc do giới hạn quyền"* theo từng đối tượng và từng trường (BR-05.5); (3) số lần thao tác cấu hình bị hệ thống chặn vì xung đột (BR-02.5, BR-06.1, BR-07.6) — đây là tín hiệu cho thấy Admin đang gặp khó khi tự cấu hình; (4) số lần cảnh báo ghi đè cấu hình đồng thời được kích hoạt (NFR-07b). Yêu cầu ở đây là **dữ liệu đo phải tồn tại**; việc chọn ngưỡng mục tiêu và cách diễn giải thuộc tài liệu kế hoạch sản phẩm, không thuộc SRS.
 
 ---
 
 ## 5. Ma trận quyền truy cập tính năng
 
-| Tính năng | Quản trị viên hệ thống | Người dùng cuối |
-| --- | :---: | :---: |
-| Xem danh mục đối tượng & năng lực | ✅ | — |
-| Tạo/sửa/xóa trường tùy biến | ✅ | — |
-| Cấu hình phân quyền trường theo nhóm | ✅ | — |
-| Chịu tác động của phân quyền trường | — | ✅ (thụ động) |
-| Cấu hình quy tắc kiểm tra dữ liệu | ✅ | — |
-| Cấu hình giai đoạn vòng đời / trạng thái / nguồn / pipeline | ✅ | — |
-| Tạo/gán danh sách hiển thị | ✅ | — |
-| Sử dụng danh sách hiển thị đã gán | — | ✅ |
-| Cấu hình nâng cao theo đối tượng | ✅ | — |
-| Nhật ký kiểm toán cấu hình (ghi tự động, không thao tác) | — (tự động khi Admin cấu hình) | — |
+| Nhóm tính năng | Quản trị viên Tenant | Người dùng cuối | Tác vụ Tự động / API (Service Account) | Đội Vận hành nội bộ (SaaS) |
+| --- | :---: | :---: | :---: | :---: |
+| Xem & Cấu hình Đối tượng / Năng lực | ✅ | — | — | — |
+| Tạo / Sửa / Xóa Trường tùy biến | ✅ | — | — | — |
+| Cấu hình Phân quyền FLS & Layout | ✅ | — | — | — |
+| Thao tác nhập liệu trên bản ghi | ✅ (không bị FLS giới hạn — BR-03.2b) | ✅ (tuân thủ FLS) | ✅ (được miễn trừ FLS) | — |
+| Cấu hình Quy tắc kiểm tra (Validation) | ✅ | — | — | — |
+| Kiểm tra dữ liệu khi lưu bản ghi | ✅ (tuân thủ Rule) | ✅ (tuân thủ Rule) | ✅ (tuân thủ Rule) | — |
+| Cấu hình Pipeline & Deal Stages | ✅ | — | — | — |
+| Cấu hình Shared List Views | ✅ | — | — | — |
+| Sử dụng Shared List Views đã gán | — | ✅ | — | — |
+| Cấu hình nâng cao (Trùng lặp, Phân bổ) | ✅ | — | — | — |
+| Tra cứu Nhật ký kiểm toán cấu hình | — *(Phase 2: gói Enterprise)* | — | — (Hệ thống ghi) | ✅ (Phase 1) |
+| Hoàn tác thay đổi phân quyền FLS (BR-10.5) | — | — | — | ✅ (Phase 1) |
 
 ---
 
 ## 6. Kịch bản chấp nhận tổng hợp (Acceptance Scenarios)
 
-1. **Trường bắt buộc được tôn trọng ở mọi kênh nhập liệu:** Quản trị viên đánh dấu một trường tùy biến là bắt buộc khi tạo mới. Tạo bản ghi thiếu trường này qua giao diện bị từ chối; nhập liệu hàng loạt thiếu trường này bị báo lỗi ở đúng dòng vi phạm, không tạo bản ghi thiếu dữ liệu; automation ghi sai định dạng/giá trị không hợp lệ vào trường này bị từ chối, không báo "thành công" giả.
-2. **Trường bị ẩn không lộ ra ở kênh phụ:** Người dùng thuộc nhóm bị ẩn một trường không nhìn thấy trường đó ở: form, bảng danh sách, file xuất, báo cáo (kể cả khi gộp nhóm/đếm theo trường đó), kết quả tìm kiếm, màn hình xem trước gộp bản ghi trùng hoặc xem trước phân đoạn khách hàng.
-3. **Không thể tự cấu hình sai gây gián đoạn:** Quản trị viên thử đánh dấu bắt buộc một trường do hệ thống quản lý (ví dụ trạng thái mặc định khi tạo mới) → hệ thống chặn ngay tại bước lưu cấu hình, không đợi đến khi người dùng thật gặp lỗi mới phát hiện ra.
-4. **Nhiều nhóm chồng lấn luôn an toàn:** Người dùng thuộc 2 nhóm, một nhóm ẩn trường X, nhóm còn lại cho xem-sửa trường X → người dùng vẫn không thấy trường X.
-5. **Xóa trường tùy biến dọn sạch cấu hình liên quan:** Xóa một trường tùy biến đang được dùng trong quy tắc bắt buộc và phân quyền hiển thị → cả hai cấu hình tự động gỡ bỏ tham chiếu, không còn "quy tắc chết" gây khó hiểu cho quản trị viên sau này.
-6. **Danh sách chọn luôn khớp giữa hiển thị và khi lưu:** Trạng thái/nguồn hiển thị trên form chọn được là chấp nhận được khi lưu — không có trường hợp người dùng chọn một giá trị hợp lệ trên form nhưng bị từ chối khi submit.
-7. **Truy vết thay đổi cấu hình phân quyền (FEAT-10):** Quản trị viên đổi trường Số điện thoại của Liên hệ từ Xem&Sửa sang Ẩn cho nhóm Sales. Vài ngày sau, đội hỗ trợ nhận báo cáo "Sales không còn thấy Số điện thoại" — tra nhật ký kiểm toán cho biết đúng người đổi, thời điểm đổi, và giá trị trước/sau, giải quyết sự cố mà không cần đoán hay truy vấn database.
+1. **Quy tắc kiểm tra được tôn trọng trên mọi kênh:** Admin đặt quy tắc Số điện thoại phải đúng định dạng quốc tế. Người dùng nhập sai trên giao diện bị báo lỗi ngay tại trường đó; file nhập liệu có dòng sai bị từ chối đúng ở dòng đó; tác vụ tự động ghi sai định dạng bị từ chối và lưu lại dấu vết lỗi để đối chiếu.
+2. **Quy tắc mới không làm đình trệ công việc trên dữ liệu cũ:** Admin mới ban hành quy tắc bắt buộc nhập Mã số thuế cho Tài khoản. Khi nhân viên mở một Tài khoản cũ (chưa có MST) để cập nhật trường "Ghi chú", hệ thống cho phép lưu thành công mà không bắt buộc phải điền ngay MST.
+3. **Phân tách Pipeline và Stages độc lập cho Deal:** Admin tạo Pipeline "Bán phần mềm B2B" (5 giai đoạn) và Pipeline "Gia hạn dịch vụ" (2 giai đoạn). Khi nhân viên chuyển qua lại giữa 2 Pipeline trên màn hình Kanban, các cột giai đoạn hiển thị chính xác theo từng quy trình riêng biệt kèm đúng tỷ lệ % thành công.
+4. **Shared List View hiển thị chuẩn theo Nhóm:** Nhân viên kinh doanh mở danh sách Deal thấy view mặc định "Deal của tôi đang mở" với dữ liệu đã được lọc sẵn theo Chủ sở hữu và sắp xếp theo ngày đóng gần nhất.
+5. **Bảo vệ dữ liệu nhạy cảm bị Ẩn:** Nhân viên không có quyền xem trường "Lương cơ bản" sẽ không thể thấy trường này trên Form, không thấy cột trên Danh sách, không thấy trong File xuất Excel và không thể tìm kiếm bản ghi bằng từ khóa lương.
+6. **Xem trước quyền thực tế (Effective Preview):** Admin mở công cụ Preview cho nhân viên Nguyễn Văn A (thuộc cả nhóm Sales và nhóm Support), hệ thống hiển thị bảng tổng hợp chính xác các trường A được xem, bị ẩn hoặc bị che theo luật an toàn nhất.
+7. **Không ai bị yêu cầu nhập trường mình không được thấy:** Trường "Hạn mức tín dụng" bị Ẩn với nhóm Sales nhưng được nhóm Kế toán cấu hình Bắt buộc. Nhân viên thuộc cả hai nhóm vẫn lưu được bản ghi (miễn trừ theo BR-03.2/BR-05.5); bản ghi bị gắn cờ thiếu dữ liệu và xuất hiện trong bộ lọc quản trị để Kế toán bổ sung — không ai bị kẹt, cũng không có dữ liệu nào bị bỏ quên.
+8. **Chuyển Pipeline không làm méo dự báo doanh số:** Một Deal đang ở Stage "Đàm phán" (80%) của Pipeline B2B được chuyển sang Pipeline "Gia hạn dịch vụ". Hệ thống buộc chọn Stage đích thuộc nhóm Đang mở, dự báo trọng số cập nhật theo đúng tỷ lệ % của Stage mới, dữ liệu Stage Gating cũ vẫn còn trên bản ghi, và lịch sử ghi rõ ai đã chuyển.
+9. **Hai Admin không âm thầm ghi đè nhau:** Admin A và Admin B cùng mở bảng FLS của nhóm Sales. A lưu trước; khi B bấm lưu, hệ thống cảnh báo cấu hình đã bị A thay đổi và buộc B xác nhận lại thay vì xóa trắng thay đổi của A.
+10. **Hoàn tác cấu hình sai không cần dựng lại bằng tay:** Admin ẩn nhầm hàng loạt trường của Contact; đội Vận hành dùng nhật ký kiểm toán hoàn tác về đúng trạng thái trước đó, và hành động hoàn tác này cũng được lưu vết đầy đủ.
 
 ---
 
-## 7. Giới hạn hiện tại & vấn đề tồn đọng
+## 7. Hạn chế hệ thống Phase 1 & Phân kỳ lộ trình (Roadmap)
 
-Mục này nêu rõ ranh giới hiện tại để tránh kỳ vọng sai, không phải danh sách lỗi (lỗi/khiếm khuyết kỹ thuật được theo dõi ở tài liệu audit riêng, xem mục 1.5):
+### 7.1 Hạn chế hệ thống trong Phase 1 (Căn cứ nghiệm thu QA)
 
-1. **Không phải nền tảng tạo đối tượng tùy ý.** Quản trị viên tùy biến được *trường* trên 5 đối tượng có sẵn, nhưng không tự tạo được một *loại đối tượng* hoàn toàn mới, cũng chưa có công cụ thiết kế quan hệ dữ liệu tùy ý giữa các đối tượng.
-2. **Chiến dịch marketing (Campaign) chưa nằm trong phạm vi cấu hình của Object Manager** — không có trường tùy biến, không có phân quyền trường theo nhóm cho Campaign qua khu vực này.
-3. **Một số kiểu trường nhạy cảm không hỗ trợ dùng để lọc/gộp nhóm trong báo cáo** (trường mã hóa, trường công thức, trường tệp đính kèm, trường dữ liệu dạng JSON) — đây là giới hạn có chủ đích để tránh việc dùng báo cáo như một cách gián tiếp dò ra giá trị thật của dữ liệu nhạy cảm, không phải thiếu sót cần bổ sung.
-4. **Bảng danh sách trường tùy biến chưa tối ưu cho tenant có rất nhiều trường** (gần ngưỡng 300 trường/đối tượng) — hiện hiển thị theo từng đợt, chưa phải giải pháp phân trang hoàn chỉnh phía máy chủ.
-5. **Một vài mục trong Cấu hình nâng cao (FEAT-09) hiện chỉ là giao diện minh họa, chưa có tác động thực tế** khi lưu (ví dụ một số nút "Thêm loại mới"/"Thêm vai trò mới" ở cấu hình Tài khoản/Liên hệ) — quản trị viên không nên dựa vào các mục này cho đến khi được xác nhận hoàn thiện.
-6. **Một danh sách phân đoạn khách hàng (segment) đã lưu giữ nguyên định nghĩa gốc**, không tự tính lại theo phân quyền trường của từng người xem sau này — vì một phân đoạn được hiểu là một tập khách hàng cố định, không phải "mỗi người xem thấy một tập khác nhau".
-7. **Validation liên trường (cross-field) chưa được hỗ trợ.** Quy tắc kiểm tra dữ liệu (FEAT-04) hiện chỉ áp dụng trên một trường độc lập (không để trống / đúng định dạng / nằm trong khoảng). Các điều kiện phụ thuộc giữa nhiều trường (ví dụ: "nếu Trạng thái = Đã chốt thì Lý do chốt không được để trống", hoặc "Ngày kết thúc phải sau Ngày bắt đầu") **chưa được hỗ trợ** ở phiên bản này. Đây là nhu cầu thật đã được ghi nhận qua review, nhưng cần một vòng thiết kế riêng (toán tử so sánh, cách cấu hình điều kiện, thứ tự áp dụng khi nhiều quy tắc phụ thuộc nhau) trước khi đưa vào — không đặc tả trong tài liệu này.
-8. **"Danh sách hiển thị" (FEAT-08) là cấu hình dùng chung do Admin quản lý, không phải view cá nhân của từng người dùng.** Nếu người dùng cuối có thể tự lưu bộ lọc/cột hiển thị riêng cho mình, đó là một khả năng khác nằm ngoài khu vực Object Manager và ngoài phạm vi tài liệu này (xem Mục 1.2).
-9. **Nhật ký kiểm toán cấu hình (FEAT-10) chưa có màn hình tự tra cứu cho tenant admin ở phiên bản này** — chỉ đội vận hành/hỗ trợ tra cứu được qua công cụ nội bộ. Màn hình lịch sử thay đổi cho chính tenant admin tự xem là hướng mở rộng hợp lý cho phiên bản sau, không phải cam kết của phiên bản này.
-10. **Hạn mức 300 trường tùy biến/đối tượng là giới hạn kỹ thuật đồng nhất, chưa gắn với mô hình gói dịch vụ (subscription tier).** Việc phân biệt hạn mức theo gói (entitlement) là quyết định kinh doanh chưa được đưa vào phạm vi tài liệu này — xem BR-02.7.
+Các giới hạn dưới đây là hiện trạng kỹ thuật của phiên bản Phase 1. Đội ngũ QA và Kỹ thuật căn cứ vào danh sách này để kiểm thử nghiệm thu:
+
+1. **Chưa hỗ trợ Gộp trùng (Merge) cho Tài khoản (Account):** Hiện tại chỉ hỗ trợ gộp trùng lặp trên Liên hệ (Contact) và Ticket.
+2. **Chưa hỗ trợ Cập nhật hàng loạt (Bulk Update) cho Contact và Ticket:** Thao tác sửa hàng loạt theo trường tùy ý hiện chỉ khả dụng trên Deal và Task.
+3. **Chưa hỗ trợ Nhập file (Import) và Gắn thẻ hàng loạt (Bulk Tag) cho Task.**
+4. **Chưa hỗ trợ Quy tắc kiểm tra liên trường do Admin tự định nghĩa (Cross-field Validation):** Trong **Quy tắc kiểm tra dữ liệu (FEAT-04)**, Admin chỉ cấu hình được ràng buộc trên từng trường độc lập; chưa thể tự viết điều kiện phụ thuộc giữa nhiều trường (ví dụ *"nếu Loại khách hàng = Doanh nghiệp thì Mã số thuế bắt buộc"*).
+   - **Lưu ý phân biệt cho QA:** Hạn chế này **không áp dụng** cho các ràng buộc điều kiện đã được hệ thống xây dựng sẵn theo ngữ cảnh nghiệp vụ, vốn nằm trong phạm vi Phase 1 và phải hoạt động đầy đủ: Trường bắt buộc theo giai đoạn vòng đời (BR-05.2), Điều kiện qua giai đoạn — Stage Gating (BR-07.3), Điều kiện đóng thương vụ kèm cộng dồn Stage Gating (BR-09.2). Ranh giới ở đây là **ai định nghĩa điều kiện**: hệ thống định nghĩa sẵn theo ngữ cảnh (có trong Phase 1) so với Admin tự do định nghĩa biểu thức logic giữa các trường (chưa có trong Phase 1).
+5. **Chưa có Vòng đời (Lifecycle Stages) độc lập cho Account:** Vòng đời khách hàng hiện chỉ áp dụng trên đối tượng Contact.
+6. **Chưa mở Giao diện tra cứu Audit Trail cho Tenant Admin:** Nhật ký kiểm toán được lưu trữ phục vụ đội ngũ kỹ thuật/vận hành nội bộ tra cứu qua công cụ quản trị platform.
+7. **Chưa có Thùng rác (Recycle Bin) và Engine phân tích tác động chéo khi xóa trường.**
+8. **Chưa có môi trường thử nghiệm cấu hình (Sandbox / Staged Rollout):** Mọi thay đổi cấu hình của Tenant Admin có hiệu lực tức thời trên môi trường vận hành thật với toàn bộ người dùng, không có bước thử nghiệm hay triển khai theo từng nhóm. Rủi ro này được giảm nhẹ một phần nhờ Effective Permissions Preview (BR-03.3) và khả năng hoàn tác FLS (BR-10.5), nhưng chưa được loại bỏ hoàn toàn — cần lưu ý khi cam kết với khách hàng Enterprise có quy trình quản lý thay đổi (Change Management) nội bộ.
+9. **Bố cục form nhập liệu (BR-03.7) — đã đối chiếu, phân loại `[Cần chuẩn hóa]`:** Đối chiếu hoàn tất ngày 2026-08-24 theo issue [#30](https://github.com/crmsaassaudi/product-management/issues/30). Kết luận: khả năng này **đã tồn tại nhưng khác chuẩn**, nên **giữ Bố cục form trong Phạm vi Mục 1.2** và đưa phần còn lệch vào lộ trình.
+   - **Đã đúng chuẩn:** chọn trường xuất hiện trên form; gán trường vào phần có tiêu đề; sắp thứ tự trường trong từng phần; bố cục riêng theo từng Nhóm quyền kèm Bố cục mặc định; FLS luôn thắng bố cục; ràng buộc bắt buộc ở cấp bố cục cộng gộp và chịu miễn trừ theo BR-03.2/BR-05.5.
+   - **Hai khoảng trống đã khắc phục cùng đợt đối chiếu:** (a) cấu hình phần trước đây không có hợp đồng nên không thể từ chối cấu hình sai — nay bị chặn ngay khi lưu nếu thiếu tiêu đề, trùng khoá phần, hoặc không chỉ định phần tiếp nhận trường mới (cùng nguyên tắc "chặn ngay khi lưu" của BR-04.2); (b) trường tùy biến mới trước đây không có phần nào tiếp nhận nên không xuất hiện ở đâu trên form — nay được thêm vào **cuối** phần do Admin chỉ định, đúng yêu cầu "không tự chèn vào giữa bố cục đang dùng".
+   - **Còn lại trong lộ trình (không chặn nghiệm thu BR-03.7 phần đã nêu trên):** giao diện quản trị phần/bố cục dành cho Tenant Admin (hiện chỉ cấu hình được qua API), và bố cục theo giai đoạn vòng đời — trường `visibleAtStages` đã lưu được nhưng chưa có quy tắc nghiệp vụ nào đặc tả, nên chưa dùng làm căn cứ nghiệm thu.
+
+10. **Chưa có điều kiện đóng cấu hình được cho Ticket và các đối tượng ngoài Cơ hội:** Chỉ Cơ hội có điều kiện bắt buộc khi đóng (BR-09.2). Đóng một Ticket không bắt buộc nhập lý do hay kết quả xử lý, dù đây là yêu cầu phổ biến của đội CSKH và là căn cứ đo chất lượng hỗ trợ. Cần lưu ý khi tư vấn khách hàng có cam kết SLA hỗ trợ — để ngỏ sẽ dẫn tới Ticket đóng hàng loạt mà không ai biết đã xử lý thực sự hay chưa.
+
+### 7.2 Phân kỳ lộ trình phát triển (Roadmap)
+
+**Nguyên tắc phân kỳ:** Các hạng mục dưới đây được xếp theo **quan hệ phụ thuộc giữa các hạng mục**, không theo chủ đề nghiệp vụ. Lý do: gộp toàn bộ khối chuẩn hóa vào một sprint sẽ đặt một đợt chuyển đổi dữ liệu (Mục 7.3) cạnh nhiều luồng thay đổi độc lập khác — khi có sự cố sẽ không thể khoanh vùng nguyên nhân, và QA không có mốc nào để nghiệm thu từng phần.
+
+- **Sprint R1 — Nền tảng dữ liệu Pipeline (điều kiện tiên quyết cho mọi hạng mục Deal):**
+  - Hiện thực hóa mô hình hai chiều của phân quyền trường và thứ tự ưu tiên so với ràng buộc bắt buộc — issue [#29](https://github.com/crmsaassaudi/product-management/issues/29), theo [ADR-0001](../docs/adr/0001-group-policy-conflict-resolution.md) mục Bổ sung 2026-08-23. **Điều kiện tiên quyệt: phần Bổ sung này phải được PO và Solution Architect thông qua trước khi bắt đầu hiện thực hóa** — nó là nền tảng cho **BR-05.5, BR-07.3 và BR-09.2** — cả ba cùng phụ thuộc một trục logic, cần hoàn tất trước ba hạng mục đó.
+  - Tách hoàn toàn Deal Stages vào bên trong từng Pipeline (FEAT-06 & FEAT-07) **kèm đợt chuyển đổi dữ liệu theo Mục 7.3** — issue [#31](https://github.com/crmsaassaudi/product-management/issues/31).
+  - Vòng đời Pipeline & Stage khi đang có Deal mở (BR-07.6) — issue [#32](https://github.com/crmsaassaudi/product-management/issues/32); quy tắc chuyển Deal giữa các Pipeline (BR-07.5) — issue [#33](https://github.com/crmsaassaudi/product-management/issues/33).
+  - *Ghi chú phụ thuộc:* BR-07.5 và BR-07.6 phải ra cùng đợt với việc tách Stage. Nếu tách Stage mà chưa có BR-07.6, hệ thống ở trạng thái cho phép xóa Stage đang có Deal mở — tức là tự tạo ra dữ liệu mồ côi ngay trong sprint refactor.
+- **Sprint R2 — Toàn vẹn dữ liệu & Kỷ luật quy trình:**
+  - Chặn cấu hình kiểm tra sai ngay khi lưu và từ chối bản ghi khi không đánh giá được quy tắc (BR-04.2) — issue [#34](https://github.com/crmsaassaudi/product-management/issues/34); chỉ kiểm tra khi giá trị trường thay đổi (BR-04.3) — issue [#35](https://github.com/crmsaassaudi/product-management/issues/35).
+  - Cộng dồn điều kiện Stage Gating khi chốt Thắng nhanh, kèm yêu cầu nhập gộp một lượt (BR-07.4 & BR-09.2) — issue [#36](https://github.com/crmsaassaudi/product-management/issues/36).
+  - Chặn xóa trường đang được dùng làm điều kiện chặn nghiệp vụ (BR-02.5) — issue [#37](https://github.com/crmsaassaudi/product-management/issues/37); bảo toàn trạng thái/nguồn đang được sử dụng (BR-06.1, BR-06.3) — issue [#38](https://github.com/crmsaassaudi/product-management/issues/38).
+  - Bổ sung Bộ lọc dữ liệu và Sắp xếp vào Shared List Views, kèm fallback "All Records" và quy tắc ưu tiên khi thuộc nhiều nhóm (FEAT-08) — issue [#39](https://github.com/crmsaassaudi/product-management/issues/39).
+  - *Ghi chú phụ thuộc:* Bộ lọc của FEAT-08 phải có **trước** cờ thiếu dữ liệu ở Sprint R3 — cơ chế quản trị bản ghi bị gắn cờ (BR-05.5) được đặc tả dựa trên năng lực lọc của Shared List View.
+- **Sprint R3 — An toàn vận hành & Vùng đệm nghiệp vụ:**
+  - Công cụ Effective Permissions Preview (BR-03.3) — issue [#40](https://github.com/crmsaassaudi/product-management/issues/40).
+  - Miễn trừ ràng buộc bắt buộc theo quyền truy cập khi người dùng lưu bản ghi, cờ thiếu dữ liệu kèm thông báo và tự động xóa cờ (BR-03.2, BR-05.5) — issue [#41](https://github.com/crmsaassaudi/product-management/issues/41).
+  - Truy vết danh tính tác vụ tự động và chặn luân chuyển dữ liệu sang trường bảo vệ thấp hơn (BR-03.4) — issue [#42](https://github.com/crmsaassaudi/product-management/issues/42); điều kiện tiên quyết trước khi cam kết chuẩn bảo mật với khách hàng Enterprise.
+  - Chống ghi đè khi hai Admin sửa cùng một cấu hình (NFR-07b) — issue [#43](https://github.com/crmsaassaudi/product-management/issues/43); hoàn tác phân quyền trường qua nhật ký (BR-10.5) — issue [#44](https://github.com/crmsaassaudi/product-management/issues/44).
+  - Chống trùng lặp Cơ hội khi chuyển đổi, thứ tự ưu tiên chủ sở hữu, danh mục Vai trò liên hệ (BR-05.3) — issue [#45](https://github.com/crmsaassaudi/product-management/issues/45).
+  - Hàng đợi chưa phân công, gồm cả trường hợp không xác định được khu vực (BR-09.3) — issue [#46](https://github.com/crmsaassaudi/product-management/issues/46); báo cáo Import nêu đầy đủ mọi lý do từ chối của một dòng (BR-09.1) — issue [#47](https://github.com/crmsaassaudi/product-management/issues/47).
+  - Nhóm thao tác buộc phải có dấu vết cho nhật ký cấu hình (BR-10.3) — issue [#48](https://github.com/crmsaassaudi/product-management/issues/48).
+  - Dữ liệu đo phục vụ theo dõi hiệu quả module (NFR-09) — issue [#49](https://github.com/crmsaassaudi/product-management/issues/49).
+  - Hạn mức 20 Nhóm quyền cho một người dùng và cam kết hiệu năng ở điều kiện biên (NFR-08) — issue [#50](https://github.com/crmsaassaudi/product-management/issues/50).
+- **Phase 2 (Mở rộng năng lực dữ liệu):**
+  - Bổ sung năng lực Merge cho Account và Bulk Update cho Contact/Ticket (FEAT-01).
+  - Bổ sung Quy tắc kiểm tra liên trường (Cross-field / Conditional Validation).
+  - Mở màn hình tra cứu Configuration Audit Trail trên UI dành riêng cho các gói dịch vụ Enterprise.
+  - Báo cáo "Bản ghi chưa đạt quy tắc kiểm tra hiện hành" để Admin chủ động rà soát và khắc phục nợ dữ liệu tồn đọng theo BR-04.3.
+- **Phase 3 (Nâng cao & Tối ưu hóa):**
+  - Xây dựng Lifecycle Stages độc lập cho Account trong mô hình Account-Based Marketing (ABM).
+  - Thùng rác phục hồi trường tùy biến đã vô hiệu hóa, và công cụ cảnh báo tác động chéo trước khi Admin gỡ bỏ một định nghĩa trường.
+  - Môi trường thử nghiệm cấu hình và triển khai theo từng nhóm (Sandbox / Staged Rollout) phục vụ khách hàng Enterprise có quy trình Change Management nội bộ.
+
+### 7.3 Yêu cầu chuyển đổi dữ liệu khi Refactor (Data Migration) `[Yêu cầu mới]`
+
+Các hạng mục mang nhãn `[Yêu cầu chuẩn hóa / Refactor]` không phải là tính năng mới trên dữ liệu trắng — chúng thay đổi cấu trúc của dữ liệu **đang vận hành thật của khách hàng**. Đặc biệt việc tách Deal Stages vào bên trong từng Pipeline (FEAT-06 & FEAT-07) buộc mọi Cơ hội hiện hữu phải được ánh xạ lại từ danh sách Stage phẳng cũ sang cặp *(Pipeline, Stage)* mới. Một đợt chuyển đổi sai sẽ làm sai lệch Pipeline và báo cáo dự báo doanh số của **toàn bộ tenant cùng lúc** — đây là rủi ro nghiệp vụ lớn nhất của cả lộ trình, lớn hơn bất kỳ lỗi tính năng đơn lẻ nào. Do đó các yêu cầu sau là điều kiện nghiệm thu bắt buộc:
+
+- **MIG-01 (Quy tắc ánh xạ tường minh):** Phải có quy tắc ánh xạ được duyệt trước cho *mọi* Stage đang tồn tại của từng tenant sang cặp (Pipeline, Stage) mới, bao gồm cả các Stage đã không còn sử dụng nhưng vẫn được Deal lịch sử tham chiếu. Không Deal nào được kết thúc đợt chuyển đổi ở trạng thái không xác định Pipeline.
+- **MIG-02 (Bảo toàn nhóm Trạng thái vĩ mô):** Deal đang *Đang mở* phải nằm ở Stage thuộc nhóm Đang mở của Pipeline đích; Deal đã *Thắng/Thua* phải giữ nguyên kết quả — đợt chuyển đổi tuyệt đối không được làm một Deal đã chốt trở lại trạng thái đang mở, hoặc ngược lại.
+- **MIG-03 (Đối chiếu trước và sau):** Trước khi công bố hoàn tất, phải đối chiếu và khớp đúng: tổng số Deal theo từng nhóm trạng thái, tổng giá trị Pipeline, và tổng Doanh số dự báo trọng số. Sai lệch ở chỉ số dự báo trọng số là **được phép** khi tỷ lệ % của Stage mới khác Stage cũ, nhưng phải được giải thích và duyệt trước, không được phát hiện sau khi khách hàng phản ánh.
+- **MIG-04 (Hành vi trong thời gian chuyển đổi):** Phải xác định rõ trạng thái hệ thống trong đợt chuyển đổi — người dùng cuối bị chặn thao tác trên Cơ hội, hay hệ thống vẫn cho ghi. Không được để tồn tại khoảng thời gian mà người dùng chuyển giai đoạn Deal trong khi dữ liệu đang được ánh xạ.
+- **MIG-05 (Khả năng khôi phục):** Phải có phương án đưa dữ liệu về đúng trạng thái trước đợt chuyển đổi nếu phát hiện sai sót, và phương án này phải được diễn tập trước trên bản sao dữ liệu thật, không chỉ tồn tại trên giấy.
+- **MIG-06 (Thông báo cho khách hàng):** Tenant Admin phải được thông báo trước về thay đổi cấu trúc Pipeline và được cung cấp bản đối chiếu Stage cũ → Stage mới của chính tenant mình, vì đây là thay đổi họ sẽ thấy ngay trên màn hình Kanban và báo cáo.
+
+*Ghi chú phạm vi: Mục này đặc tả **yêu cầu nghiệm thu nghiệp vụ** đối với đợt chuyển đổi. Cách thức thực thi, thời điểm và phân công thuộc kế hoạch triển khai của đội Kỹ thuật.*
+
+---
+
+## Phụ lục A — Ghi chú kỹ thuật tham chiếu (không ràng buộc)
+
+Phụ lục này **không phải là đặc tả** và **không dùng làm căn cứ nghiệm thu**. Mục đích duy nhất là giúp đội phát triển và QA đối chiếu các quy tắc nghiệp vụ ở phần thân tài liệu với thuật ngữ kỹ thuật thông dụng trong ngành. Khi Phụ lục A và phần thân tài liệu khác nhau, **phần thân tài liệu thắng** (Nguyên tắc 2).
+
+Lý do tách ra: phần thân tài liệu cần đọc được và phản biện được bởi Product Owner, Customer Success và chính khách hàng doanh nghiệp — những người quyết định *thế nào là đúng nghiệp vụ*. Nếu trộn thuật ngữ kỹ thuật vào quy tắc nghiệp vụ, tài liệu sẽ mất đúng nhóm người đọc quan trọng nhất, và tệ hơn: một lựa chọn kỹ thuật sẽ được mặc nhiên coi là yêu cầu nghiệp vụ mà không ai còn chất vấn được nữa.
+
+| Quy tắc nghiệp vụ | Thuật ngữ / cơ chế kỹ thuật thường dùng tương ứng |
+| --- | --- |
+| BR-02.1 — Mã định danh trường | API Name / field key |
+| BR-02.3 — "Xóa" trường là vô hiệu hóa, dữ liệu lịch sử không mất | Soft delete |
+| BR-03.1 — Hai chiều Mức truy cập và Mức hiển thị | Field-Level Security + data masking policy (hai thuộc tính độc lập) |
+| BR-03.2 — Hạn chế hơn thắng; vắng mặt cấu hình không phải sự cho phép | Deny-override áp dụng độc lập trên từng chiều; xem ADR-0001 mục Bổ sung 2026-08-23 |
+| BR-03.4 — Miễn trừ FLS cho tác vụ tự động | Service account với quyền bypass FLS |
+| BR-04.1 — Kiểm tra "Đúng định dạng" | Regular expression (regex) |
+| BR-04.2 — Từ chối bản ghi khi không đánh giá được quy tắc | Fail-closed; kiểm tra rủi ro biểu thức (ReDoS) tại thời điểm lưu |
+| BR-04.3 — Chỉ kiểm tra khi giá trị trường thay đổi | Điều kiện dạng `ISCHANGED(field)` |
+| BR-09.1 — Chuẩn hóa số điện thoại về định dạng quốc tế | E.164 |
+| BR-10.2 — Lưu giá trị trước và sau | Snapshot diff / before-after audit record |
+| BR-10.3 — Nhóm "buộc phải có dấu vết" vs nhóm không chặn | Fail-closed vs fail-open audit logging; xem ADR-0003 và SRS IAM BR-41.4/41.5 |
+| NFR-07b — Cảnh báo khi cấu hình đã bị người khác thay đổi | Optimistic locking / version check |
+| Mục 7.3 — Yêu cầu chuyển đổi dữ liệu | Data migration; MIG-05 tương ứng rollback plan |
