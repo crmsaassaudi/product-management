@@ -1,7 +1,7 @@
 # SRS — Object Manager
 
 | | |
-|---|---|
+| --- | --- |
 | **Loại tài liệu** | Software Requirements Specification — vừa mô tả hành vi hiện tại, vừa là chuẩn để phát triển tiếp theo (xem "Ghi chú về nguồn gốc tài liệu") |
 | **Module** | Object Manager — cấu hình schema và chính sách dữ liệu cho Contact, Account, Deal, Ticket, Task |
 | **Ngày viết** | 2026-08-21 (cập nhật sau vòng review BA lần 1) |
@@ -14,6 +14,7 @@ Object Manager đã được xây dựng và đưa vào vận hành mà chưa t�
 Sau vòng review đầu tiên với BA, tài liệu chuyển vai trò: từ "chỉ mô tả hiện trạng" sang **vừa mô tả hiện trạng vừa là chuẩn bắt buộc cho phát triển tiếp theo** — các yêu cầu mới thêm ở vòng review này (ví dụ FEAT-10) chưa tồn tại trong hệ thống, và code sẽ phải được cập nhật để khớp với tài liệu, không phải ngược lại.
 
 **Quy ước nhãn trạng thái:** mỗi tính năng (FEAT) được gắn nhãn ngay sau tiêu đề:
+
 - **[Đã triển khai]** — hành vi đã được xác minh khớp với hệ thống đang chạy tại thời điểm soạn bản gốc (2026-08-21).
 - **[Yêu cầu mới]** — chưa tồn tại trong hệ thống, được thêm ở vòng review này; đội phát triển cần lên kế hoạch xây dựng.
 
@@ -45,7 +46,7 @@ Cũng ngoài phạm vi: **bộ lọc/cột hiển thị cá nhân** mà một ng
 ### 1.4 Thuật ngữ & viết tắt
 
 | Thuật ngữ | Giải thích |
-|---|---|
+| --- | --- |
 | **Đối tượng (Object)** | Một loại bản ghi nghiệp vụ cốt lõi có thể cấu hình được: Liên hệ (Contact), Tài khoản/Công ty (Account), Cơ hội (Deal), Yêu cầu hỗ trợ (Ticket), Công việc (Task). |
 | **Trường (Field)** | Một thuộc tính dữ liệu trên một đối tượng — có thể là trường chuẩn (có sẵn hệ thống) hoặc trường tùy biến (tenant tự tạo). |
 | **Trường tùy biến (Custom Field)** | Trường do quản trị viên tenant tự định nghĩa thêm vào một đối tượng. |
@@ -78,7 +79,7 @@ Object Manager giải quyết vấn đề này bằng cách cung cấp cho **qu�
 ### 2.2 Năm đối tượng được quản lý
 
 | Đối tượng | Mô tả nghiệp vụ |
-|---|---|
+| --- | --- |
 | **Liên hệ (Contact)** | Cá nhân mà doanh nghiệp tương tác — khách hàng, người liên hệ tại một công ty đối tác. |
 | **Tài khoản (Account)** | Công ty/tổ chức là khách hàng hoặc đối tác. |
 | **Cơ hội (Deal)** | Một thương vụ bán hàng đang theo đuổi, đi qua các giai đoạn của một pipeline bán hàng. |
@@ -90,7 +91,7 @@ Object Manager giải quyết vấn đề này bằng cách cung cấp cho **qu�
 ### 2.3 Vai trò người dùng (Actor)
 
 | Actor | Vai trò trong module |
-|---|---|
+| --- | --- |
 | **Quản trị viên hệ thống (Tenant Admin)** | Người duy nhất truy cập được khu vực cấu hình Object Manager. Thực hiện mọi thao tác: tạo trường, cấu hình phân quyền, quy tắc kiểm tra, giai đoạn vòng đời, danh sách hiển thị. Yêu cầu quyền quản trị hệ thống cấp cao (không phải mọi người có quyền "xem cài đặt" đều vào được khu vực này). |
 | **Người dùng cuối (Sales Rep, Support Agent, Manager...)** | Không truy cập màn hình cấu hình, nhưng là đối tượng chịu tác động trực tiếp của phân quyền trường: họ thấy/không thấy, sửa được/không sửa được, thấy giá trị thật/giá trị bị che của từng trường tùy theo nhóm họ thuộc về. |
 
@@ -118,10 +119,12 @@ Object Manager giải quyết vấn đề này bằng cách cung cấp cho **qu�
 **Actor:** Quản trị viên.
 
 **Luồng chính:**
+
 1. Quản trị viên vào khu vực Object Manager, thấy 5 đối tượng được nhóm theo danh mục nghiệp vụ (Con người: Liên hệ, Tài khoản; Bán hàng: Cơ hội; Dịch vụ: Ticket; Năng suất: Công việc).
 2. Chọn một đối tượng để vào màn hình cấu hình chi tiết của đối tượng đó.
 
 **Quy tắc nghiệp vụ:**
+
 - BR-01.1: Mỗi đối tượng có một tập năng lực cố định theo hệ thống, không tự cấu hình được qua UI, gồm: cập nhật hàng loạt, gán chủ sở hữu hàng loạt, gắn thẻ hàng loạt, nhập liệu từ file, xuất dữ liệu, có giai đoạn vòng đời, và gộp bản ghi trùng.
 - BR-01.2: Năng lực hiện tại của từng đối tượng:
   - **Liên hệ**: gán chủ sở hữu hàng loạt, gắn thẻ hàng loạt, nhập/xuất file, có giai đoạn vòng đời, gộp bản ghi trùng. *Không* hỗ trợ cập nhật hàng loạt theo trường tùy ý.
@@ -131,6 +134,7 @@ Object Manager giải quyết vấn đề này bằng cách cung cấp cho **qu�
   - **Công việc**: cập nhật hàng loạt, gán chủ sở hữu hàng loạt, xuất file. *Không* gắn thẻ hàng loạt, *không* nhập file, *không* giai đoạn vòng đời, *không* gộp bản ghi trùng.
 
 **Tiêu chí chấp nhận:**
+
 - Quản trị viên xem được danh sách 5 đối tượng, phân nhóm đúng danh mục.
 - Với mỗi đối tượng, hệ thống chỉ hiển thị/cho phép các thao tác hàng loạt/nhập-xuất/gộp đúng theo bảng năng lực ở trên — không đối tượng nào thực hiện được thao tác mà nó không được khai báo hỗ trợ.
 
@@ -145,32 +149,38 @@ Object Manager giải quyết vấn đề này bằng cách cung cấp cho **qu�
 **Điều kiện tiên quyết:** Đã chọn đối tượng cần thêm trường.
 
 **Luồng chính — Tạo trường mới:**
+
 1. Quản trị viên chọn "Thêm trường mới" tại màn hình Trường & Quan hệ của một đối tượng.
 2. Nhập tên trường, chọn kiểu dữ liệu (văn bản, số, ngày tháng, danh sách chọn, tệp đính kèm, công thức tính toán...), và các thuộc tính đi kèm (ví dụ danh sách lựa chọn nếu là kiểu chọn).
 3. Hệ thống lưu định nghĩa trường; trường xuất hiện ngay trên form nhập liệu, bảng danh sách, và các màn hình cấu hình khác của đối tượng đó.
 
 **Luồng chính — Sửa trường:**
+
 1. Quản trị viên chọn một trường tùy biến đã tạo, chỉnh thông tin hiển thị (nhãn, mô tả, danh sách lựa chọn...).
 2. Tên kỹ thuật của trường, đối tượng gắn với trường, và kiểu dữ liệu **không thể thay đổi** sau khi đã tạo — muốn đổi kiểu dữ liệu, quản trị viên phải tạo trường mới.
 
 **Luồng chính — Xóa (Vô hiệu hóa) trường:**
+
 1. Quản trị viên chọn "Xóa" trên một trường tùy biến, xác nhận trong hộp thoại cảnh báo.
 2. Trường biến mất khỏi form nhập liệu, bảng danh sách, và các màn hình cấu hình cho các thao tác mới — nhưng **dữ liệu đã lưu trên các bản ghi cũ không bị xóa**, chỉ không còn hiển thị/thao tác được nữa qua giao diện thông thường.
 3. Mọi cấu hình phân quyền hoặc quy tắc kiểm tra dữ liệu đang tham chiếu tới trường này được tự động gỡ bỏ, để không còn cấu hình "treo" gây khó hiểu cho quản trị viên sau này.
 
 **Quy tắc nghiệp vụ:**
+
 - BR-02.1: Tên kỹ thuật của trường tùy biến không được trùng với tên của bất kỳ trường chuẩn nào sẵn có trên cùng đối tượng (kể cả tên cũ đã đổi của một trường chuẩn).
 - BR-02.2: Mỗi đối tượng chỉ được tạo tối đa **300 trường tùy biến**.
 - BR-02.3: Xóa trường tùy biến luôn là **thao tác mềm** (ẩn/vô hiệu hóa) — không bao giờ xóa cứng dữ liệu lịch sử đã lưu, và không cho phép một trường mới tái sử dụng đúng tên kỹ thuật của trường đã xóa để tránh nhầm lẫn dữ liệu cũ sang định nghĩa mới.
 - BR-02.4: Trường kiểu "Công thức tính toán" (Formula) luôn do hệ thống tự tính, không ai — kể cả qua nhập liệu hàng loạt hay tự động hóa — được phép ghi đè giá trị trực tiếp.
 - BR-02.5: Giá trị nhập vào một trường tùy biến phải đúng định dạng khai báo (ví dụ: số phải là số, email phải đúng định dạng email, giá trị chọn phải nằm trong danh sách đã cấu hình) — áp dụng bất kể dữ liệu được nhập qua form, nhập liệu hàng loạt, hay ghi tự động từ automation.
 - BR-02.6 `[Yêu cầu mới]`: Khi quản trị viên cố tạo trường thứ 301 trở đi cho cùng một đối tượng, hệ thống PHẢI hiển thị thông báo rõ ràng là đã đạt hạn mức và chặn thao tác lưu ngay tại thời điểm đó — không tạo trường một phần rồi báo lỗi sau, không để quản trị viên tự đoán lý do thất bại.
-- BR-02.7 `[Đã triển khai]`: Hạn mức 300 trường/đối tượng là **giới hạn kỹ thuật đồng nhất cho mọi tenant**, không phân biệt theo gói dịch vụ (subscription tier) ở phiên bản này — xem thêm Mục 8.
+- BR-02.7: Hạn mức 300 trường/đối tượng là **giới hạn kỹ thuật đồng nhất cho mọi tenant**, không phân biệt theo gói dịch vụ (subscription tier) ở phiên bản này — xem thêm Mục 8.
 
 **Luồng ngoại lệ:**
+
 - Nếu quản trị viên đặt tên kỹ thuật trùng với trường chuẩn hoặc vượt quá 300 trường/đối tượng, hệ thống từ chối tạo và báo lỗi rõ ràng.
 
 **Tiêu chí chấp nhận:**
+
 - Trường tùy biến mới tạo xuất hiện đồng thời trên: form tạo/sửa bản ghi, bảng danh sách (tùy chọn hiển thị), màn hình phân quyền trường, màn hình quy tắc kiểm tra dữ liệu.
 - Xóa một trường đang được dùng trong quy tắc bắt buộc/phân quyền thì quy tắc/phân quyền đó tự dọn dẹp, không còn hiển thị "trường không xác định" ở bất kỳ đâu.
 
@@ -185,6 +195,7 @@ Object Manager giải quyết vấn đề này bằng cách cung cấp cho **qu�
 **Điều kiện tiên quyết:** Đã có ít nhất một Nhóm quyền được tạo trong hệ thống (hoặc dùng cấu hình mặc định áp dụng chung).
 
 **Luồng chính:**
+
 1. Quản trị viên chọn đối tượng cần cấu hình, chọn phạm vi áp dụng: "Mặc định" (áp dụng cho ai không thuộc nhóm nào có cấu hình riêng) hoặc một Nhóm quyền cụ thể.
 2. Với từng trường, quản trị viên chọn mức truy cập: **Xem & Sửa**, **Chỉ xem**, hoặc **Ẩn**.
 3. Nếu chọn Xem & Sửa, có thể thêm bật "Bắt buộc nhập" cho trường đó (nếu trường cho phép bắt buộc — xem BR-03.3).
@@ -195,6 +206,7 @@ Object Manager giải quyết vấn đề này bằng cách cung cấp cho **qu�
 8. Lưu cấu hình — áp dụng ngay cho toàn bộ người dùng thuộc nhóm được chọn.
 
 **Quy tắc nghiệp vụ:**
+
 - BR-03.1: Phân quyền được cấu hình theo **Nhóm quyền**, không theo từng người dùng riêng lẻ. Nếu một người dùng không thuộc nhóm nào có cấu hình riêng cho đối tượng đó, áp dụng cấu hình Mặc định.
 - BR-03.2: Nếu một người dùng thuộc **nhiều nhóm** có cấu hình khác nhau trên cùng một trường, hệ thống luôn chọn phương án **an toàn/hạn chế hơn**: Ẩn thắng Hiển thị, Chỉ xem thắng Xem&Sửa, mức che dữ liệu mạnh hơn thắng mức che yếu hơn. Ngược lại, yêu cầu "Bắt buộc nhập" được cộng gộp — nếu bất kỳ nhóm nào yêu cầu bắt buộc thì trường đó bắt buộc. Đây là quyết định chủ đích, thiên về bảo mật dữ liệu — xem [ADR-0001](../docs/adr/0001-group-policy-conflict-resolution.md) cho lý do và các phương án đã cân nhắc.
 
@@ -206,10 +218,12 @@ Object Manager giải quyết vấn đề này bằng cách cung cấp cho **qu�
 - BR-03.7: Việc thay đổi cấu hình phân quyền cho một nhóm/đối tượng có hiệu lực ngay, không ảnh hưởng tới cấu hình của nhóm hoặc đối tượng khác đang được admin khác chỉnh sửa cùng lúc.
 
 **Luồng ngoại lệ:**
+
 - Quản trị viên cố đánh dấu bắt buộc một trường hệ thống quản lý → nút bắt buộc bị khóa ngay trên giao diện, không cho bật.
 - Quản trị viên cố đặt chế độ che dữ liệu cho trường không hỗ trợ che → tùy chọn che bị khóa trên giao diện.
 
 **Tiêu chí chấp nhận:**
+
 - Người dùng thuộc nhóm bị ẩn một trường thì không thấy trường đó ở form, bảng danh sách, file xuất, báo cáo, tìm kiếm, và mọi màn hình xem trước liên quan.
 - Người dùng thuộc nhiều nhóm với cấu hình khác nhau luôn nhận được trải nghiệm an toàn nhất trong số các cấu hình áp dụng.
 - Gửi lại giá trị bị che không làm mất dữ liệu gốc.
@@ -225,6 +239,7 @@ Object Manager giải quyết vấn đề này bằng cách cung cấp cho **qu�
 **Actor:** Quản trị viên.
 
 **Luồng chính:**
+
 1. Quản trị viên vào màn hình Quy tắc kiểm tra dữ liệu của một đối tượng.
 2. Chọn "Thêm quy tắc", chọn trường áp dụng, chọn kiểu kiểm tra: **Không được để trống**, **Đúng định dạng** (biểu thức chính quy), hoặc **Nằm trong khoảng** (giá trị số).
 3. Nhập thông báo lỗi hiển thị cho người dùng khi vi phạm.
@@ -232,6 +247,7 @@ Object Manager giải quyết vấn đề này bằng cách cung cấp cho **qu�
 5. Các thay đổi (thêm/sửa/tắt/xóa) chỉ có hiệu lực thật sự sau khi bấm "Lưu tất cả" — trước đó hệ thống cảnh báo còn thay đổi chưa lưu nếu người dùng cố rời trang.
 
 **Quy tắc nghiệp vụ:**
+
 - BR-04.1: Quy tắc "Đúng định dạng" bỏ qua kiểm tra nếu trường đang để trống — việc bắt buộc nhập là trách nhiệm của quy tắc "Không được để trống" hoặc cấu hình bắt buộc riêng, tránh vô tình biến một trường tùy chọn thành bắt buộc chỉ vì thêm một quy tắc định dạng.
 - BR-04.2: Quy tắc "Nằm trong khoảng" cho phép để trống một đầu (chỉ giới hạn tối thiểu hoặc chỉ giới hạn tối đa) và hỗ trợ giá trị âm.
 - BR-04.3: Nếu một quy tắc được cấu hình sai (biểu thức không hợp lệ, khoảng giá trị không hợp lệ, hoặc biểu thức có nguy cơ gây treo hệ thống), quy tắc đó **tạm thời không được áp dụng** thay vì chặn toàn bộ việc lưu dữ liệu của cả đối tượng — lỗi cấu hình của quản trị viên không được phép làm gián đoạn hoạt động của toàn bộ người dùng.
@@ -239,6 +255,7 @@ Object Manager giải quyết vấn đề này bằng cách cung cấp cho **qu�
 - BR-04.5: Trường đang ở chế độ "Chỉ xem" (không cho sửa) thì không áp dụng quy tắc kiểm tra dữ liệu cho lần ghi đó, vì người dùng vốn không được phép thay đổi giá trị.
 
 **Tiêu chí chấp nhận:**
+
 - Lưu bản ghi vi phạm bất kỳ quy tắc active nào → bị từ chối, hiển thị đúng thông báo lỗi đã cấu hình cho trường đó.
 - Nhập liệu hàng loạt vi phạm quy tắc → dòng dữ liệu đó bị báo lỗi riêng, không được âm thầm ghi vào hệ thống.
 - Một quy tắc lỗi cấu hình không làm ảnh hưởng tới khả năng lưu dữ liệu bình thường của các trường khác.
@@ -254,6 +271,7 @@ Object Manager giải quyết vấn đề này bằng cách cung cấp cho **qu�
 **Phạm vi áp dụng:** Hiện tại chỉ **Liên hệ (Contact)** có mô hình giai đoạn vòng đời nhiều bước; các đối tượng khác dùng mô hình trạng thái đơn giản hơn (xem FEAT-06), riêng Cơ hội có mô hình Pipeline chuyên biệt (xem FEAT-07).
 
 **Luồng chính:**
+
 1. Quản trị viên vào màn hình Giai đoạn vòng đời của Liên hệ.
 2. Thêm một giai đoạn mới: đặt tên hiển thị, thứ tự, màu sắc nhận diện.
 3. Chọn những trường **bắt buộc phải có giá trị** khi một bản ghi ở giai đoạn này.
@@ -261,11 +279,13 @@ Object Manager giải quyết vấn đề này bằng cách cung cấp cho **qu�
 5. Sắp xếp thứ tự các giai đoạn theo số thứ tự.
 
 **Quy tắc nghiệp vụ:**
+
 - BR-05.1: Trường được chọn "bắt buộc ở giai đoạn này" phải là trường mà người dùng thực sự có thể tự nhập (không chọn được các trường do hệ thống tự quản lý).
 - BR-05.2: Nếu một trường được đánh dấu bắt buộc ở một giai đoạn, nhưng đồng thời bị cấu hình Ẩn ở đúng giai đoạn đó (qua phân quyền theo Phần — FEAT-03), hệ thống phải **cảnh báo xung đột** cho quản trị viên ngay trên màn hình cấu hình, vì người dùng sẽ không thể thỏa mãn yêu cầu bắt buộc với một trường họ không nhìn thấy.
 - BR-05.3: Việc tự động tạo Cơ hội khi chuyển giai đoạn chỉ áp dụng cho các giai đoạn được đánh dấu "Đã chuyển đổi", không áp dụng ngầm cho giai đoạn khác.
 
 **Tiêu chí chấp nhận:**
+
 - Bản ghi Liên hệ chuyển sang một giai đoạn có trường bắt buộc mà chưa có giá trị → không cho phép lưu chuyển giai đoạn cho đến khi bổ sung.
 - Xung đột "bắt buộc nhưng bị ẩn" luôn được cảnh báo ngay tại màn hình cấu hình, không đợi tới khi người dùng cuối gặp lỗi mới phát hiện.
 
@@ -278,20 +298,24 @@ Object Manager giải quyết vấn đề này bằng cách cung cấp cho **qu�
 **Actor:** Quản trị viên.
 
 **Luồng chính — Trạng thái:**
+
 1. Quản trị viên chọn đối tượng, xem danh sách trạng thái hiện có.
 2. Thêm trạng thái mới: tên hiển thị, thứ tự, màu sắc; đánh dấu **mặc định** (trạng thái khởi tạo khi tạo bản ghi mới) và/hoặc **trạng thái kết thúc** (đóng vòng đời xử lý, ví dụ "Đã giải quyết", "Đã hủy").
 3. Riêng đối tượng Cơ hội, mỗi trạng thái còn có thêm: tỉ lệ thắng ước tính (%), số ngày dự kiến ở trạng thái đó, và cờ đánh dấu "Thắng" (Won).
 4. Đặt một trạng thái làm mặc định sẽ tự động bỏ mặc định khỏi trạng thái khác cùng nhóm.
 
 **Luồng chính — Nguồn:**
+
 1. Quản trị viên thêm/sửa/xóa tên nguồn phát sinh bản ghi cho một đối tượng — đây là danh sách đơn giản chỉ gồm tên hiển thị.
 
 **Quy tắc nghiệp vụ:**
+
 - BR-06.1: Chỉ Liên hệ có nhiều tầng trạng thái theo giai đoạn vòng đời (FEAT-05); các đối tượng còn lại dùng một danh sách trạng thái phẳng, dùng chung cho toàn bộ bản ghi của đối tượng đó.
 - BR-06.2: Danh sách trạng thái/nguồn hiển thị trên các trường chọn (dropdown) của form nhập liệu **phải luôn khớp với danh sách mà hệ thống chấp nhận khi lưu** — không được xảy ra tình trạng người dùng chọn một trạng thái hợp lệ trên form nhưng bị hệ thống từ chối khi lưu.
 - BR-06.3: Xóa một trạng thái/nguồn đang được dùng cho các bản ghi hiện có không được làm ảnh hưởng tới dữ liệu lịch sử.
 
 **Tiêu chí chấp nhận:**
+
 - Trạng thái mới thêm xuất hiện ngay trên form tạo/sửa bản ghi và được chấp nhận khi lưu.
 - Đổi trạng thái mặc định luôn đảm bảo chỉ có đúng một trạng thái mặc định trong cùng nhóm.
 
@@ -304,16 +328,19 @@ Object Manager giải quyết vấn đề này bằng cách cung cấp cho **qu�
 **Actor:** Quản trị viên.
 
 **Luồng chính:**
+
 1. Quản trị viên xem danh sách Pipeline hiện có, mỗi pipeline có tên, mô tả, màu sắc nhận diện, và cờ "Mặc định"/"Đã lưu trữ".
 2. Tạo pipeline mới: đặt tên, mô tả, màu sắc, và bật/tắt tùy chọn **"Bắt buộc tuần tự"** — nếu bật, Cơ hội trong pipeline này chỉ được tiến từng bước một qua các giai đoạn kế tiếp (không được nhảy cóc); đóng thương vụ (thắng/thua) và lùi giai đoạn luôn được phép bất kể tùy chọn này.
 3. Đặt một pipeline làm mặc định.
 4. Lưu trữ (archive) một pipeline không còn dùng — đây là thao tác mềm, không xóa dữ liệu các Cơ hội đã gắn với pipeline đó.
 
 **Quy tắc nghiệp vụ:**
+
 - BR-07.1: Không thể lưu trữ pipeline đang là mặc định — phải chuyển mặc định sang pipeline khác trước.
 - BR-07.2: Các giai đoạn cụ thể bên trong một pipeline (ví dụ: Tiếp cận → Đề xuất → Đàm phán → Chốt) được quản lý ở màn hình Trạng thái & Nguồn của Cơ hội (FEAT-06), không phải ở màn hình Pipeline này — màn hình Pipeline chỉ quản lý thông tin cấp pipeline (tên, quy tắc tuần tự, mặc định/lưu trữ).
 
 **Tiêu chí chấp nhận:**
+
 - Cơ hội thuộc pipeline có bật "Bắt buộc tuần tự" không thể được chuyển nhảy cóc qua giai đoạn không liền kề (trừ khi là đóng thương vụ hoặc lùi giai đoạn).
 - Lưu trữ pipeline không xóa lịch sử Cơ hội đã từng thuộc pipeline đó.
 
@@ -328,6 +355,7 @@ Object Manager giải quyết vấn đề này bằng cách cung cấp cho **qu�
 **Actor:** Quản trị viên.
 
 **Luồng chính:**
+
 1. Quản trị viên tạo danh sách hiển thị mới cho một đối tượng: đặt tên, chọn các cột hiển thị (bao gồm cả trường tùy biến), sắp xếp thứ tự cột, ẩn/hiện từng cột, và tùy chỉnh độ rộng cột.
 2. Gán danh sách hiển thị này làm mặc định cho một hoặc nhiều Nhóm quyền.
 3. Trong phạm vi các nhóm đã gán, có thể loại trừ riêng một vài người dùng cụ thể khỏi việc dùng danh sách này.
@@ -335,12 +363,14 @@ Object Manager giải quyết vấn đề này bằng cách cung cấp cho **qu�
 5. Xóa một danh sách hiển thị — không áp dụng được cho danh sách được đánh dấu là "danh sách hệ thống mặc định".
 
 **Quy tắc nghiệp vụ:**
+
 - BR-08.1: Một cột chỉ được thêm vào danh sách hiển thị nếu tương ứng với một trường có thể hiển thị được trên bảng (bao gồm cột hiển thị giá trị suy ra từ một quan hệ, ví dụ cột "Chủ sở hữu" hiển thị tên người được gán).
 - BR-08.2: Sao chép một danh sách hiển thị không kế thừa việc gán nhóm/loại trừ người dùng của bản gốc — quản trị viên phải gán lại.
 - BR-08.3: Danh sách hiển thị hệ thống mặc định không thể bị xóa (có thể sao chép để tạo bản tùy biến riêng).
 - BR-08.4: Cột tương ứng với trường đang bị Ẩn theo phân quyền (FEAT-03) không được hiển thị dữ liệu cho người dùng bị ẩn trường đó, kể cả khi cột này nằm trong một danh sách hiển thị đã cấu hình.
 
 **Tiêu chí chấp nhận:**
+
 - Người dùng thuộc nhóm được gán một danh sách hiển thị thấy đúng bộ cột, đúng thứ tự đã cấu hình.
 - Người dùng bị loại trừ riêng không thấy danh sách hiển thị đó dù thuộc nhóm được gán.
 
@@ -361,10 +391,12 @@ Object Manager giải quyết vấn đề này bằng cách cung cấp cho **qu�
 - **Ticket**: danh mục loại Ticket; cây phân loại (category) đa cấp; danh mục mã lý do đóng (resolution code).
 
 **Quy tắc nghiệp vụ:**
+
 - BR-09.1: Cấu hình nâng cao là cấu hình cấp tenant (áp dụng cho toàn bộ tenant), không cấu hình theo từng nhóm người dùng như FEAT-03.
 - BR-09.2: Điều kiện bắt buộc khi đánh dấu Cơ hội Thắng chỉ kiểm tra tại thời điểm chuyển sang trạng thái Thắng, không chặn việc tạo/chỉnh sửa Cơ hội ở các giai đoạn khác.
 
 **Tiêu chí chấp nhận:**
+
 - Thay đổi một cấu hình nâng cao có hiệu lực ngay cho toàn tenant mà không cần thao tác thêm.
 - Cố gắng đánh dấu Cơ hội Thắng khi thiếu điều kiện bắt buộc đã cấu hình → bị từ chối, nêu rõ điều kiện còn thiếu.
 
@@ -377,12 +409,14 @@ Object Manager giải quyết vấn đề này bằng cách cung cấp cho **qu�
 **Actor:** Hệ thống tự động ghi nhận mỗi khi Quản trị viên thực hiện một thao tác cấu hình trong Object Manager. Không có actor nào chủ động "xem" nhật ký ở phiên bản này (xem BR-10.4) — đội vận hành/hỗ trợ tra cứu khi cần điều tra sự cố.
 
 **Luồng chính:**
+
 1. Quản trị viên thực hiện bất kỳ thao tác tạo/sửa/xóa cấu hình nào trong Object Manager (trường tùy biến, phân quyền/bố cục trường, quy tắc kiểm tra dữ liệu, giai đoạn vòng đời, trạng thái/nguồn, pipeline, danh sách hiển thị, cấu hình nâng cao).
 2. Hệ thống tự động ghi một bản ghi nhật ký gồm: thời điểm, người thực hiện, loại hành động, đối tượng/mục cấu hình bị ảnh hưởng.
 3. Nếu thao tác thuộc nhóm phân quyền trường (đổi mức truy cập, bật/tắt bắt buộc, đổi kiểu che dữ liệu), nhật ký còn lưu **giá trị trước và sau** của đúng thuộc tính bị đổi.
 4. Việc ghi nhật ký diễn ra nền, không chặn hay làm chậm thao tác của quản trị viên.
 
 **Quy tắc nghiệp vụ:**
+
 - BR-10.1: Mọi hành động tạo/sửa/xóa cấu hình trong Object Manager PHẢI để lại đúng một bản ghi nhật ký tương ứng, không có ngoại lệ.
 - BR-10.2: Với thay đổi thuộc nhóm phân quyền trường (mức truy cập, bắt buộc, che dữ liệu), nhật ký PHẢI lưu giá trị trước và sau của thuộc tính bị đổi. Với các hành động khác (CRUD trường/giai đoạn/trạng thái/nguồn/pipeline/danh sách hiển thị/cấu hình nâng cao), nhật ký chỉ cần ghi loại hành động và đối tượng/mục bị tác động, không cần snapshot đầy đủ.
 - BR-10.3: Nhật ký được lưu trữ **không giới hạn thời gian** ở phiên bản này. Một chính sách lưu trữ theo thời hạn cụ thể (nếu cần vì lý do pháp lý hoặc chi phí hạ tầng) sẽ do chính sách chung của nền tảng quyết định sau, không đặt cứng trong tài liệu này.
@@ -390,6 +424,7 @@ Object Manager giải quyết vấn đề này bằng cách cung cấp cho **qu�
 - BR-10.5: Việc ghi nhật ký KHÔNG được phép là điều kiện quyết định một thao tác cấu hình thành công hay thất bại — đây là tác vụ nền, không phải một bước xác thực trong luồng chính.
 
 **Tiêu chí chấp nhận:**
+
 - Mọi thay đổi cấu hình trong Object Manager để lại đúng 1 bản ghi nhật ký tương ứng, không thiếu, không trùng.
 - Với thay đổi phân quyền trường, nhật ký cho biết đủ để trả lời "trường Y của nhóm X bị đổi từ gì sang gì, ai đổi, lúc nào" mà không cần suy đoán.
 - Đội vận hành tra cứu được nhật ký phục vụ điều tra sự cố mà không cần quyền truy cập trực tiếp cơ sở dữ liệu ứng dụng.
@@ -424,7 +459,7 @@ Object Manager giải quyết vấn đề này bằng cách cung cấp cho **qu�
 ## 5. Ma trận quyền truy cập tính năng
 
 | Tính năng | Quản trị viên hệ thống | Người dùng cuối |
-|---|:---:|:---:|
+| --- | :---: | :---: |
 | Xem danh mục đối tượng & năng lực | ✅ | — |
 | Tạo/sửa/xóa trường tùy biến | ✅ | — |
 | Cấu hình phân quyền trường theo nhóm | ✅ | — |
@@ -450,7 +485,7 @@ Object Manager giải quyết vấn đề này bằng cách cung cấp cho **qu�
 
 ---
 
-## 7. Giới hạn hiện tại của sản phẩm
+## 7. Giới hạn hiện tại & vấn đề tồn đọng
 
 Mục này nêu rõ ranh giới hiện tại để tránh kỳ vọng sai, không phải danh sách lỗi (lỗi/khiếm khuyết kỹ thuật được theo dõi ở tài liệu audit riêng, xem mục 1.5):
 
