@@ -311,6 +311,32 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/50"
       ]
+    },
+    {
+      "id": "feat-51",
+      "title": "Object Manager: Phân bổ theo Khu vực địa lý — hợp đồng cấu hình và định tuyến (BR-09.3)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/51"
+      ]
+    },
+    {
+      "id": "feat-53",
+      "title": "Object Manager: Cảnh báo xung đột cấu hình phải nêu ai đã thay đổi và khi nào (NFR-07b)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/53"
+      ]
     }
   ]
 }
