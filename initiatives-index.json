@@ -434,6 +434,18 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/66"
       ]
+    },
+    {
+      "id": "feat-67",
+      "title": "Omnichat BR-17.3: Hộp thư không xác định được cấu hình riêng thì không được âm thầm chạy theo mặc định",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/67"
+      ]
     }
   ]
 }
