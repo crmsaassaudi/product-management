@@ -11,7 +11,9 @@
 
 Phần **kỹ thuật** đã xong: cấu trúc dữ liệu mới, công cụ chuyển đổi có chế độ chạy thử và chế độ khôi phục, đối chiếu số liệu trước/sau (MIG-01, MIG-02, MIG-03), **đóng băng thao tác Cơ hội trong lúc ánh xạ (MIG-04)** và **bản đối chiếu Stage cũ → Stage mới theo từng tenant (MIG-06)**.
 
-Phần **vận hành** chưa thể hoàn tất: hệ thống chưa golive nên **chưa có dữ liệu thật để chuyển và chưa có bản sao dữ liệu thật để diễn tập**. Đây là chốt chặn trước lần golive đầu tiên có dữ liệu Cơ hội thật, và trước mỗi đợt chuyển đổi của một tenant hiện hữu.
+Phần **vận hành** đã nghiệm thu ở mức **cơ chế**: đợt diễn tập khôi phục đã chạy trên bản sao cấu hình thật của môi trường dev ngày 2026-08-24 — xem [biên bản MIG-05](./mig-05-rehearsal-record-2026-08-24.md). Lần diễn tập đó phát hiện **hai lỗi nghiêm trọng** trong công cụ ([#60](https://github.com/crmsaassaudi/product-management/issues/60)), cả hai đều để công cụ tự báo cáo là thành công; cả hai đã được xử lý và diễn tập lại sạch.
+
+Còn lại là phần **theo từng tenant**, không phải phần cơ chế: đối chiếu trên dữ liệu Cơ hội thật của tenant đó và gửi bản đối chiếu cho Admin của họ. Xem *Điều kiện công bố hoàn tất*.
 
 ## MIG-04 — Hành vi hệ thống trong thời gian chuyển đổi
 
@@ -28,16 +30,19 @@ Không dùng cơ chế so sánh phiên bản để hòa giải: hai bên ghi **k
 - Công cụ tự lấy khóa đóng băng trước khi ghi và **luôn** nhả khóa khi kết thúc, kể cả khi chạy lỗi. Một khóa bị bỏ quên sẽ khóa mọi Cơ hội của workspace, mà người nhận ra điều đó lại chính là khách hàng vừa được chạy migration.
 - Chế độ `--verify` và `--dry-run` **không** lấy khóa: cả hai không ghi gì, và đóng băng một workspace chỉ để đọc là cái giá không đổi lấy điều gì.
 - Truyền `--reason="dự kiến 15 phút"` để thông báo từ chối nói được thời lượng — người đặt khóa là người duy nhất biết con số đó.
+- **Nghiệm thu bằng một thao tác ghi thật bị từ chối, không bằng dòng nhật ký "đã đóng băng".** *Đã đặt khóa* và *khóa có hiệu lực* là hai việc khác nhau: lần diễn tập đầu tiên cho thấy khóa được ghi vào một nơi hệ thống không đọc tới, nên nhật ký đủ cả hai dòng đặt và nhả khóa trong khi mọi thao tác chuyển giai đoạn vẫn ghi được suốt cửa sổ chuyển đổi.
 
 **Cần chốt trước mỗi đợt:** khung giờ chạy (ngoài giờ làm việc của tenant, theo múi giờ của họ), và thời lượng cam kết để đưa vào `--reason`.
 
 ## MIG-05 — Diễn tập phương án khôi phục
 
-**Chưa thực hiện được.** Cần một bản sao dữ liệu thật, mà hiện chưa tồn tại.
+**Đã diễn tập ngày 2026-08-24** trên bản sao cấu hình thật của môi trường dev. Biên bản: [`mig-05-rehearsal-record-2026-08-24.md`](./mig-05-rehearsal-record-2026-08-24.md).
 
-Công cụ khôi phục đã có (`--rollback`, đưa Stage trở lại `deal_stages`) và có kiểm thử, nhưng **chưa chạy trên bất kỳ môi trường nào có dữ liệu thật**. Một cơ chế khôi phục chưa từng được diễn tập là một cơ chế chưa ai biết có chạy hay không — và thời điểm phát hiện ra sẽ là lúc cần đến nó.
+Chạy bằng `npm run rehearse:pipeline-stages`. Bộ diễn tập sao workspace sang một cơ sở dữ liệu riêng, **chỉ đọc nguồn**, rồi gọi đúng công cụ mà đợt chạy thật sẽ gọi — chuyển đổi, rồi khôi phục — và **so khớp từng thuộc tính của từng Giai đoạn** với bản chụp lấy trước đó. Nó từ chối chạy nếu bản sao được trỏ vào chính cơ sở dữ liệu nguồn.
 
-**Biên bản diễn tập phải ghi:** ngày, môi trường và nguồn bản sao, số Cơ hội và tổng giá trị trước/sau khôi phục, thời gian hoàn tất, và mọi sai lệch cùng cách xử lý.
+**Vì sao phải so khớp từng thuộc tính, không dựa vào đối chiếu số liệu tổng:** lần diễn tập đầu tiên khôi phục đủ 11 Giai đoạn, đối chiếu MIG-03 báo *khớp hoàn toàn*, và đã xóa vĩnh viễn bảy thuộc tính — trong đó có cờ *Giai đoạn còn dùng hay không*. Số liệu tổng không thể phát hiện điều đó, vì số Giai đoạn và số Cơ hội vẫn đúng.
+
+**Biên bản diễn tập phải ghi:** ngày, môi trường và nguồn bản sao, số Cơ hội và tổng giá trị trước/sau khôi phục, kết quả so khớp từng thuộc tính, và mọi sai lệch cùng cách xử lý.
 
 ## MIG-06 — Thông báo cho Tenant Admin
 
@@ -51,8 +56,9 @@ Bản đối chiếu được lấy **trước** khi ánh xạ, vì sau đó `de
 
 ## Điều kiện công bố hoàn tất
 
-- [ ] Chạy `--verify` trên dữ liệu thật, duyệt sai lệch dự báo trọng số (MIG-03) — sai lệch chỉ được chấp nhận khi có một thay đổi xác suất đã được duyệt.
-- [ ] Diễn tập khôi phục trên bản sao dữ liệu thật, có biên bản (MIG-05).
+- [x] **Diễn tập khôi phục trên bản sao, có biên bản (MIG-05)** — 2026-08-24, [biên bản](./mig-05-rehearsal-record-2026-08-24.md). Nghiệm thu **cơ chế**; phần theo từng tenant vẫn ở các mục dưới.
+- [ ] Chạy `--verify` trên dữ liệu Cơ hội thật của tenant, duyệt sai lệch dự báo trọng số (MIG-03) — sai lệch chỉ được chấp nhận khi có một thay đổi xác suất đã được duyệt.
+- [ ] Chạy lại bộ diễn tập trên bản sao dữ liệu **Cơ hội thật** của tenant đó.
 - [ ] Gửi bản đối chiếu Stage cũ → Stage mới cho từng Tenant Admin và nhận xác nhận (MIG-06).
 - [ ] Chạy thật trong khung giờ đã chốt, xác nhận khóa đã nhả sau khi chạy (MIG-04).
 - [ ] Chạy `--verify` lại sau khi chạy thật, đối chiếu khớp.
