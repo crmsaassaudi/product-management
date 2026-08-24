@@ -96,12 +96,12 @@
       "title": "Object Manager: Chốt phần Bổ sung ADR-0001 — mô hình hai chiều FLS + thứ tự ưu tiên với ràng buộc bắt buộc (BR-03.1, BR-03.2)",
       "primary_repo": "crm-api",
       "affected_repos": [
-        "crm-api",
-        "crm-web"
+        "crm-api"
       ],
-      "status": "in-progress",
+      "status": "done",
       "links": [
-        "https://github.com/crmsaassaudi/product-management/issues/29"
+        "https://github.com/crmsaassaudi/product-management/issues/29",
+        "https://github.com/crmsaassaudi/crm-api/pull/37"
       ]
     },
     {
