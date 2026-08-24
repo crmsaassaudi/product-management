@@ -1,7 +1,8 @@
 ---
 status: accepted
 amendment_status: accepted
-amendment_date: 2026-08-23
+amendment_date: 2026-08-24
+amendment_approved_by: Nguyễn Phước Đại Toàn (PO + Solution Architect)
 ---
 
 # Xung đột phân quyền trường khi user thuộc nhiều Nhóm quyền: hạn chế thắng, không cộng gộp
@@ -25,11 +26,11 @@ Yêu cầu "bắt buộc nhập" (không phải thuộc tính bảo mật mà l�
 
 ## Bổ sung 2026-08-23 — Mô hình hai chiều, thứ tự ưu tiên với ràng buộc bắt buộc, và phạm vi áp dụng
 
-> **TRẠNG THÁI: ĐỀ XUẤT (proposed) — chưa duyệt.** Phần gốc phía trên đã được duyệt (accepted) và không thay đổi. Riêng bốn điều khoản dưới đây đang chờ Product Owner và Solution Architect thông qua, **chưa được dùng làm căn cứ hiện thực hóa**.
+> **TRẠNG THÁI: ĐÃ DUYỆT (accepted) ngày 2026-08-24.** Cả bốn điều khoản dưới đây được thông qua nguyên văn, không sửa đổi, và có hiệu lực ngang với phần gốc. Phần gốc phía trên không thay đổi.
 >
-> **Điểm cần Solution Architect có ý kiến trước khi đóng:** điều khoản 1 không chỉ là quy tắc nghiệp vụ — nó quy định cấu hình phân quyền trường phải lưu **hai thuộc tính độc lập** cho mỗi cặp (trường, nhóm), thay vì một giá trị bốn trạng thái như cách hiểu ban đầu. Đây là thay đổi mô hình dữ liệu, ảnh hưởng tới cả dữ liệu cấu hình đang tồn tại của các tenant hiện hữu.
+> **Ý kiến Solution Architect về điều khoản 1 (điểm chặn trước khi duyệt):** điều khoản này quy định cấu hình phân quyền trường phải lưu **hai thuộc tính độc lập** cho mỗi cặp (trường, nhóm), thay vì một giá trị bốn trạng thái như cách hiểu ban đầu. Kết luận khi rà soát dữ liệu cấu hình đang tồn tại: **không cần ghi lại dữ liệu của tenant.** Chiều *Mức hiển thị giá trị* vốn đã được lưu tách bạch từ đầu; chiều *Mức truy cập* ở các cấu hình cũ được diễn đạt bằng hai dấu hiệu riêng lẻ (trường có hiện trên form hay không, và trường có bị khóa sửa hay không) thay vì một mức duy nhất. Cách hiểu bốn trạng thái là **cách hiểu ban đầu về mô hình, chưa từng là hình thức lưu trữ**. Đổi lại, việc đọc hiểu cách diễn đạt cũ trở thành điều kiện nghiệm thu bắt buộc — xem MIG-07 tại SRS Object Manager Mục 7.3.
 >
-> **Vì sao cần đóng sớm:** ba quy tắc BR-05.5, BR-07.3 và BR-09.2 của SRS Object Manager cùng phụ thuộc vào điều khoản 2. Nếu chưa chốt mà đã code, mỗi người sẽ tự suy diễn một cách hiểu khác nhau (xem lộ trình Sprint R1 tại SRS Object Manager Mục 7.2).
+> **Vì sao phải đóng sớm (lý do khi còn ở trạng thái đề xuất):** ba quy tắc BR-05.5, BR-07.3 và BR-09.2 của SRS Object Manager cùng phụ thuộc vào điều khoản 2. Nếu chưa chốt mà đã code, mỗi người sẽ tự suy diễn một cách hiểu khác nhau (xem lộ trình Sprint R1 tại SRS Object Manager Mục 7.2).
 
 Quyết định gốc ở trên chỉ trả lời câu hỏi *"cấu hình nào thắng"* cho các thuộc tính bảo mật. Quá trình phản biện chéo SRS Object Manager (v2.2 → v3.0) phát hiện bốn tình huống mà quyết định gốc không xử lý được, trong đó có một tình huống **hai điều khoản của chính ADR này phủ định nhau**. Bốn bổ sung dưới đây là phần không thể tách rời của quyết định, có hiệu lực ngang với phần gốc.
 
@@ -76,4 +77,5 @@ Quyết định gốc không khoanh phạm vi chủ thể, khiến người đ�
 | Ngày | Trạng thái | Thay đổi |
 | --- | --- | --- |
 | 2026-08-21 | **accepted** | Quyết định gốc: hạn chế thắng cho thuộc tính bảo mật, cộng gộp cho ràng buộc bắt buộc nhập. |
-| 2026-08-23 | **proposed** | Bổ sung bốn điều khoản: tách hai chiều truy cập/hiển thị; quyền truy cập thắng ràng buộc bắt buộc; vắng mặt cấu hình không phải sự cho phép; khoanh phạm vi chủ thể áp dụng. Phần gốc được giữ nguyên văn; điều khoản cộng gộp ở đoạn 3 được giới hạn lại bởi mục 2. *Chờ PO + Solution Architect thông qua — khi duyệt, đổi `amendment_status` ở frontmatter thành `accepted` và ghi người duyệt vào dòng này.* |
+| 2026-08-23 | **proposed** | Bổ sung bốn điều khoản: tách hai chiều truy cập/hiển thị; quyền truy cập thắng ràng buộc bắt buộc; vắng mặt cấu hình không phải sự cho phép; khoanh phạm vi chủ thể áp dụng. Phần gốc được giữ nguyên văn; điều khoản cộng gộp ở đoạn 3 được giới hạn lại bởi mục 2. |
+| 2026-08-24 | **accepted** | **Thông qua cả bốn điều khoản, nguyên văn, không sửa đổi.** Người duyệt: Nguyễn Phước Đại Toàn (Product Owner kiêm Solution Architect — issue [#29](https://github.com/crmsaassaudi/product-management/issues/29)). Điểm chặn của điều khoản 1 được kết luận: không cần ghi lại dữ liệu cấu hình của tenant, đổi lại việc đọc hiểu cách diễn đạt cũ trở thành điều kiện nghiệm thu (MIG-07, SRS Object Manager Mục 7.3). Bốn điều khoản được đưa vào phần thân SRS Object Manager v4.3 (BR-03.1, BR-03.2, BR-03.2b, BR-03.4, BR-05.5) để phần dùng nghiệm thu không còn phải tra cứu sang ADR. |
