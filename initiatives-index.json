@@ -446,6 +446,19 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/67"
       ]
+    },
+    {
+      "id": "feat-68",
+      "title": "Omnichat FEAT-23: Lưu trữ, xuất và xóa dữ liệu hội thoại",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/68"
+      ]
     }
   ]
 }
