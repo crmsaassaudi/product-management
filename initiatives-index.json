@@ -421,6 +421,19 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/54"
       ]
+    },
+    {
+      "id": "feat-66",
+      "title": "Omnichat BR-16.1: Phạm vi tìm kiếm tin nhắn đi theo phạm vi quyền, không theo giới hạn cố định",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/66"
+      ]
     }
   ]
 }
