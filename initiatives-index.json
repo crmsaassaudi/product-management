@@ -320,7 +320,7 @@
         "crm-api",
         "crm-web"
       ],
-      "status": "not-started",
+      "status": "in-progress",
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/51"
       ]
@@ -333,9 +333,93 @@
         "crm-api",
         "crm-web"
       ],
-      "status": "not-started",
+      "status": "in-progress",
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/53"
+      ]
+    },
+    {
+      "id": "feat-35",
+      "title": "Object Manager: Chỉ đánh giá quy tắc kiểm tra khi giá trị của trường thay đổi (BR-04.3)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/35"
+      ]
+    },
+    {
+      "id": "feat-42",
+      "title": "Object Manager: Truy vết trách nhiệm và chặn luân chuyển dữ liệu qua tác vụ tự động (BR-03.4)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/42"
+      ]
+    },
+    {
+      "id": "feat-44",
+      "title": "Object Manager: Hoàn tác thay đổi phân quyền trường dựa trên nhật ký kiểm toán (BR-10.5)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/44"
+      ]
+    },
+    {
+      "id": "feat-48",
+      "title": "Object Manager: Nhóm thao tác buộc phải có dấu vết cho nhật ký cấu hình (BR-10.3)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/48"
+      ]
+    },
+    {
+      "id": "feat-49",
+      "title": "Object Manager: Dữ liệu đo để theo dõi hiệu quả module (NFR-09)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/49"
+      ]
+    },
+    {
+      "id": "feat-52",
+      "title": "Object Manager: Áp bộ lọc & sắp xếp của Shared List View cho 4 đối tượng còn lại (FEAT-08)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/52"
+      ]
+    },
+    {
+      "id": "feat-54",
+      "title": "Object Manager: Vận hành đợt chuyển đổi Stage vào Pipeline — MIG-04, MIG-05, MIG-06",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/54"
       ]
     }
   ]
