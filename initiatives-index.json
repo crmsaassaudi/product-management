@@ -459,6 +459,19 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/68"
       ]
+    },
+    {
+      "id": "feat-69",
+      "title": "Omnichat FEAT-24: Giờ làm việc & lịch nghỉ",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/69"
+      ]
     }
   ]
 }
