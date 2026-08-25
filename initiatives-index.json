@@ -498,6 +498,19 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/71"
       ]
+    },
+    {
+      "id": "feat-72",
+      "title": "Omnichat BR-04.7 + BR-06.5: Năng lực Agent theo điểm tải có trọng số, và trạng thái Xử lý sau hội thoại",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/72"
+      ]
     }
   ]
 }
