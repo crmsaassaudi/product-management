@@ -731,6 +731,18 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/89"
       ]
+    },
+    {
+      "id": "feat-90",
+      "title": "ADR: Đơn vị công việc của Omnichat — phiên trên một kênh hay vụ việc của một con người",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/90"
+      ]
     }
   ]
 }
