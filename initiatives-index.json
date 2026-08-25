@@ -679,6 +679,19 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/85"
       ]
+    },
+    {
+      "id": "feat-86",
+      "title": "Omnichat FEAT-33: Quy tắc tự động hóa (Sự kiện → Điều kiện → Hành động)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/86"
+      ]
     }
   ]
 }
