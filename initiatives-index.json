@@ -588,6 +588,19 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/78"
       ]
+    },
+    {
+      "id": "feat-79",
+      "title": "Omnichat FEAT-22: Widget tùy biến thương hiệu, chủ động mời trò chuyện, và nối lại hội thoại khi đổi thiết bị",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "livechat-widget"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/79"
+      ]
     }
   ]
 }
