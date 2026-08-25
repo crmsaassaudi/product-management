@@ -666,6 +666,19 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/84"
       ]
+    },
+    {
+      "id": "feat-85",
+      "title": "Omnichat FEAT-31: Chặn spam & xử lý lạm dụng",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/85"
+      ]
     }
   ]
 }
