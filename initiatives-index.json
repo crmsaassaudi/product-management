@@ -640,6 +640,19 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/82"
       ]
+    },
+    {
+      "id": "feat-83",
+      "title": "Omnichat FEAT-29: Danh mục lý do xử lý & quản trị nhãn",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/83"
+      ]
     }
   ]
 }
