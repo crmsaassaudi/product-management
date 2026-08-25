@@ -537,6 +537,18 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/74"
       ]
+    },
+    {
+      "id": "feat-75",
+      "title": "Omnichat BR-08.11 + BR-08.12: Phân khúc khách hàng một nguồn duy nhất, và cam kết thời gian im lặng tối đa",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/75"
+      ]
     }
   ]
 }
