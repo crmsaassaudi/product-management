@@ -627,6 +627,19 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/81"
       ]
+    },
+    {
+      "id": "feat-82",
+      "title": "Omnichat FEAT-28: Ca trực, tuân thủ ca & bàn giao ca",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/82"
+      ]
     }
   ]
 }
