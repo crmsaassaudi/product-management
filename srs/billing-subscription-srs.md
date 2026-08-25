@@ -5,6 +5,8 @@
 | **Loại tài liệu** | Software Requirements Specification — chuẩn nghiệp vụ cho một module chưa xây dựng (xem "Ghi chú về nguồn gốc tài liệu") |
 | **Module** | Billing & Subscription — đăng ký gói cước, đo lường tiêu dùng, lập hóa đơn, thu tiền và quản lý vòng đời thương mại của từng doanh nghiệp (tenant) dùng CRM |
 | **Ngày viết** | 2026-08-24 |
+| **Sửa đổi lần cuối** | 2026-08-25 — rà soát toàn văn, bổ sung FEAT-18b và các quy tắc còn thiếu (xem "Nhật ký sửa đổi") |
+| **Trạng thái phạm vi** | **ĐÃ ĐÓNG (frozen)** kể từ 2026-08-25. Phạm vi nghiệp vụ của module này không được mở rộng hay sửa đổi thêm; mọi yêu cầu phát sinh về sau đi qua quy trình thay đổi có kiểm soát và tạo phiên bản tài liệu mới, không sửa tại chỗ. Các câu hỏi ở Mục 7.2 là **quyết định cần chốt**, không phải phạm vi cần mở. |
 | **Neo phiên bản hệ thống** | Chưa xác định — module chưa có phần triển khai nào tại thời điểm viết. Khi những hạng mục đầu tiên lên môi trường thật, tài liệu PHẢI được neo lại vào commit cụ thể của (các) repo triển khai. |
 | **Tài liệu liên quan** | [`CONTEXT.md`](../CONTEXT.md) (glossary, mục "Billing & Subscription") · [`omnichat-srs.md`](./omnichat-srs.md) · [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) |
 
@@ -34,7 +36,7 @@ Tài liệu phục vụ hai nhóm mục tiêu đối lập nhau mà thiết kế
 
 **Đo lường tiêu dùng:** danh mục loại tiêu dùng tính phí và mã định danh, phát sinh Sự kiện tính phí từ các module nghiệp vụ của CRM, định nghĩa thời điểm tính phí của từng loại, tính phí theo số người dùng, chuyển sự kiện sang hệ tính phí, ghi nhận bù và sự kiện đến muộn, điều chỉnh/hủy hiệu lực sự kiện đã ghi nhận, đối soát, hạn mức bao gồm và phí vượt, theo dõi tiêu dùng và cảnh báo ngưỡng.
 
-**Hóa đơn và thu tiền:** lập và phát hành hóa đơn cuối kỳ, thuế và yêu cầu hóa đơn hợp lệ, phương thức thanh toán và thu tiền tự động, nhắc nợ khi thanh toán thất bại, đình chỉ và khôi phục dịch vụ, ghi có và hoàn tiền, đa tiền tệ.
+**Hóa đơn và thu tiền:** lập và phát hành hóa đơn cuối kỳ, vòng đời và trạng thái của chứng từ đã lập, thuế và yêu cầu hóa đơn hợp lệ, phương thức thanh toán và thu tiền tự động, nhắc nợ khi thanh toán thất bại, đình chỉ và khôi phục dịch vụ, ghi có và hoàn tiền, đa tiền tệ.
 
 **Minh bạch và vận hành:** cổng thanh toán tự phục vụ, truy vết từ dòng hóa đơn xuống đối tượng gốc và xử lý khiếu nại, công cụ quản trị của nhà cung cấp, nhật ký kiểm toán thương mại, báo cáo doanh thu và sức khỏe đăng ký, thông báo về thanh toán, và nguyên tắc cách ly ảnh hưởng giữa lớp tính phí và nghiệp vụ CRM.
 
@@ -145,8 +147,33 @@ Ba nguyên tắc dưới đây chi phối toàn bộ Mục 3 và là lý do tài
 | --- | --- | --- |
 | **A. Nền tảng thương mại** | Gói cước, danh mục tiêu dùng, hồ sơ thanh toán, vòng đời đăng ký, dùng thử, đổi gói, add-on, chiết khấu | FEAT-01 → FEAT-08 |
 | **B. Đo lường tiêu dùng** | Phát sinh, chuyển giao, ghi nhận bù, điều chỉnh và đối soát sự kiện; hạn mức và theo dõi | FEAT-09 → FEAT-17 |
-| **C. Hóa đơn & thu tiền** | Lập hóa đơn, thuế, thu tiền, nhắc nợ, đình chỉ, ghi có, hủy, đa tiền tệ | FEAT-18 → FEAT-25 |
+| **C. Hóa đơn & thu tiền** | Lập hóa đơn, vòng đời chứng từ, thuế, thu tiền, nhắc nợ, đình chỉ, ghi có, hủy, đa tiền tệ | FEAT-18 → FEAT-25 (gồm FEAT-18b) |
 | **D. Minh bạch, vận hành & tuân thủ** | Cổng tự phục vụ, truy vết và khiếu nại, công cụ nhà cung cấp, nhật ký, báo cáo, thông báo, cách ly ảnh hưởng | FEAT-26 → FEAT-32 |
+
+### 2.5 Bản đồ phụ thuộc & thứ tự triển khai
+
+Mục này không thêm yêu cầu nào. Nó nêu **quan hệ phụ thuộc bắt buộc** giữa các tính năng, để việc xếp thứ tự xây dựng không phụ thuộc trí nhớ của người lập kế hoạch. Một tính năng KHÔNG ĐƯỢC coi là hoàn tất khi tính năng nó phụ thuộc chưa hoàn tất — con số nó tạo ra sẽ đúng trên môi trường thử và sai trên môi trường thật.
+
+| Tính năng | Phụ thuộc bắt buộc | Vì sao là phụ thuộc, không phải liên quan |
+| --- | --- | --- |
+| FEAT-01 (gói cước) | FEAT-02 | Không có danh mục loại tiêu dùng thì không khai được hạn mức và đơn giá vượt (BR-01.1) |
+| FEAT-09 (phát sinh sự kiện) | FEAT-02, FEAT-10 | Không có mã định danh và định nghĩa thời điểm tính phí thì sự kiện không có nghĩa (BR-02.5) |
+| FEAT-12 (chuyển giao) | FEAT-09 | Chuyển giao cái chưa được ghi nhận là vô nghĩa |
+| FEAT-13 (đến muộn & ranh giới kỳ) | FEAT-12 | Thời hạn chốt kỳ chỉ có tác dụng khi đã có cơ chế tồn đọng và chuyển giao lại |
+| FEAT-15 (đối soát) | FEAT-12, FEAT-14 | So khớp phải trừ được bút toán đảo, nếu không mọi lần đảo đều thành một chênh lệch giả |
+| FEAT-16 (hạn mức & phí vượt) | FEAT-01, FEAT-04, FEAT-12 | Cần điều kiện gói, trạng thái đăng ký và số liệu tiêu dùng cùng lúc mới ra được quyết định chặn/cho phép |
+| FEAT-17 (theo dõi & cảnh báo) | FEAT-16, FEAT-12 | Không có mức tồn đọng thì không thực hiện được BR-17.3 |
+| FEAT-18 (lập & phát hành hóa đơn) | FEAT-13, FEAT-15, FEAT-19 | Thời hạn chốt kỳ, cổng chặn đối soát và thủ tục chứng từ đều nằm trước bước phát hành |
+| **FEAT-18b (vòng đời hóa đơn)** | FEAT-18, FEAT-19 | Tập trạng thái chỉ định nghĩa được sau khi biết thủ tục bắt buộc của thị trường |
+| FEAT-20 (thu tiền) | FEAT-18b | Không có ngày tới hạn và trạng thái chứng từ thì không biết khi nào được phép thu |
+| FEAT-21 (nhắc nợ) | FEAT-18b, BR-18.9 | Ngày tới hạn là mốc khởi phát duy nhất (BR-21.9) |
+| FEAT-22 (đình chỉ & khôi phục) | FEAT-21 | Đình chỉ là bước cuối của chu trình nhắc nợ |
+| FEAT-23 (ghi có & hoàn tiền) | FEAT-14, FEAT-18b | Ghi có luôn tham chiếu tới một hóa đơn đã phát hành và tới sự kiện gốc đã bị đảo |
+| FEAT-27 (truy vết & khiếu nại) | FEAT-12 (BR-12.6), FEAT-18b | Không giữ đủ sự kiện gốc thì không đi xuống chi tiết được |
+| FEAT-30 (báo cáo) | FEAT-18b, BR-16.8 | Doanh thu ghi theo kỳ dịch vụ cần chứng từ; giá vốn cần con số tự chịu tách riêng |
+| FEAT-29 (nhật ký) | — | Không phụ thuộc ai, nhưng mọi tính năng thuộc diện quyết định thương mại phụ thuộc nó (BR-29.2) |
+
+**Quyết định chặn ánh xạ vào tính năng nào** (Mục 7.2): câu 1 → FEAT-10 và FEAT-02; câu 2 → FEAT-02 và FEAT-30; câu 3 và 4 → FEAT-18b, FEAT-19, FEAT-20, FEAT-23; câu 13 → FEAT-04 và FEAT-06. Trước khi mở issue xây dựng cho một tính năng, PHẢI kiểm tra quyết định chặn tương ứng đã có kết luận.
 
 ---
 
@@ -208,7 +235,7 @@ Ba nguyên tắc dưới đây chi phối toàn bộ Mục 3 và là lý do tài
 - BR-02.2: Khi bản chất đo lường của một loại tiêu dùng thay đổi (đổi đơn vị, đổi thời điểm tính phí, đổi cách gộp), PHẢI tạo một mã mới và ngừng bán mã cũ. KHÔNG ĐƯỢC giữ nguyên mã cũ với ý nghĩa mới — làm vậy khiến báo cáo so sánh giữa các kỳ trở thành số liệu sai mà không ai phát hiện được.
 - BR-02.3: Mỗi loại tiêu dùng PHẢI khai báo cách gộp trong kỳ, chọn một trong: cộng dồn số lượng, đếm số đối tượng duy nhất, lấy giá trị cao nhất tại bất kỳ thời điểm nào trong kỳ, hoặc lấy giá trị tại thời điểm cuối kỳ.
 - BR-02.4: Thêm một loại tiêu dùng mới KHÔNG ĐƯỢC yêu cầu sửa bất kỳ quy tắc nghiệp vụ nào khác trong tài liệu này, và KHÔNG ĐƯỢC yêu cầu sửa module nghiệp vụ nào ngoài chính module phát sinh ra nó. Mọi quy tắc trong tài liệu này viện dẫn **thuộc tính của loại tiêu dùng**, KHÔNG viện dẫn tên một loại cụ thể.
-- BR-02.5: Một loại tiêu dùng chỉ được phát hành khi đã trả lời được cả hai câu hỏi: **thời điểm tính phí là gì** (FEAT-10) và **doanh nghiệp tự kiểm chứng con số này bằng cách nào** (BR-10.8). Chưa trả lời được thì chưa được đưa vào gói bán.
+- BR-02.5: Một loại tiêu dùng chỉ được phát hành khi đã trả lời được cả **ba** câu hỏi: **thời điểm tính phí là gì** (FEAT-10), **doanh nghiệp tự kiểm chứng con số này bằng cách nào** (BR-10.8), và **nhà cung cấp bị bên thứ ba tính tiền theo đơn vị nào, chênh lệch với đơn vị bán ra là bao nhiêu, bên nào chịu phần chênh** (BR-10.4). Chưa trả lời được câu nào thì chưa được đưa vào gói bán. Câu thứ ba nằm trong gate này chứ không nằm riêng ở FEAT-10, vì nếu chỉ ghi nó ở chỗ khác thì việc phát hành một loại tiêu dùng có biên lợi nhuận âm sẽ phụ thuộc vào việc ai đó nhớ ra, thay vì bị chính quy trình chặn lại.
 - BR-02.6: Danh mục của giai đoạn đầu gồm hai loại: một đơn vị ứng với một hội thoại được tạo, và một đơn vị ứng với một tin nhắn mẫu được gửi đi. Danh mục dự kiến mở rộng — thư điện tử gửi đi, tin nhắn SMS gửi đi, lượt chạy quy trình tự động, tin nhắn chiến dịch gửi đi, token AI tiêu thụ, dung lượng lưu trữ, phút gọi thoại — được liệt kê để định hình mô hình, KHÔNG được coi là cam kết phạm vi của giai đoạn đầu.
 - BR-02.7: Tên hiển thị của loại tiêu dùng trên hóa đơn và trên màn hình theo dõi PHẢI dùng ngôn ngữ của người trả tiền, không dùng mã định danh kỹ thuật.
 
@@ -338,6 +365,7 @@ Ba nguyên tắc dưới đây chi phối toàn bộ Mục 3 và là lý do tài
 - BR-06.6: Quy tắc này áp cho mọi **tài nguyên tĩnh có trần** — số người dùng đang hoạt động hôm nay, và mọi tài nguyên cùng bản chất được đưa vào danh mục về sau (dung lượng lưu trữ, số kênh kết nối). Hạ gói xuống mức có trần thấp hơn lượng đang chiếm dụng PHẢI bị chặn cho tới khi doanh nghiệp tự giảm xuống dưới trần, hoặc PHẢI nêu rõ phần vượt sẽ bị tính phí — KHÔNG ĐƯỢC tự động vô hiệu hóa người dùng, xóa dữ liệu hay ngắt kết nối để cho vừa gói. Quy tắc viết theo thuộc tính chứ không theo tên một tài nguyên cụ thể là yêu cầu của BR-02.4.
 - BR-06.6b: Điều kiện của BR-06.6 PHẢI được kiểm lại tại mốc cắt kỳ, không chỉ tại lúc doanh nghiệp bấm hạ gói. Nếu tới mốc cắt kỳ mà điều kiện chưa thỏa, thao tác hạ gói KHÔNG có hiệu lực, đăng ký giữ nguyên phiên bản gói cũ, và doanh nghiệp PHẢI được thông báo trước mốc đó. Để thao tác hạ gói có hiệu lực rồi cưỡng chế tài nguyên cho vừa là cách hệ thống tự ra một quyết định mà đáng lẽ doanh nghiệp phải ra.
 - BR-06.7: Mỗi lần đổi gói PHẢI lưu lại phiên bản gói trước, phiên bản gói sau, thời điểm hiệu lực và số tiền phát sinh (FEAT-29).
+- BR-06.8: Đổi gói CHỈ thực hiện được giữa các phiên bản gói **cùng tiền tệ với hồ sơ thanh toán đang áp dụng**. Danh sách gói hiển thị ở bước chọn PHẢI đã lọc theo tiền tệ đó. Đổi tiền tệ không phải một thao tác đổi gói: nó đòi hỏi kết thúc đăng ký hiện tại và lập đăng ký mới theo BR-25.1, vì tiền tệ cố định trong suốt vòng đời một đăng ký (BR-03.3). Không nêu rõ điều này thì màn hình chọn gói sẽ bày ra những phiên bản gói mà chọn vào là vi phạm một quy tắc ở tài liệu khác.
 
 **Tiêu chí chấp nhận:**
 
@@ -462,6 +490,13 @@ Ba nguyên tắc dưới đây chi phối toàn bộ Mục 3 và là lý do tài
 
 **Actor:** Quản trị viên tenant, Tác vụ tự động.
 
+**Luồng chính:**
+
+1. Khi một kỳ mở, hệ thống ghi nhận **mốc đầu kỳ**: số người dùng đang ở trạng thái hoạt động tại thời điểm kỳ bắt đầu (BR-11.8b).
+2. Trong kỳ, mỗi lần một người dùng chuyển sang trạng thái hoạt động hoặc rời khỏi trạng thái hoạt động, hệ thống ghi một Sự kiện tính phí tương ứng (BR-11.8).
+3. Khi Quản trị viên tenant thêm người dùng vượt số người dùng bao gồm trong gói, hệ thống thực thi chính sách chạm trần đã khai của gói và nêu rõ lý do (BR-11.6, BR-11.7).
+4. Cuối kỳ, số người dùng bị tính phí của kỳ được suy ra từ mốc đầu kỳ cộng chuỗi sự kiện trong kỳ, theo cách gộp đã khai của loại tiêu dùng (BR-11.2).
+
 **Quy tắc nghiệp vụ:**
 
 - BR-11.1: **Người dùng bị tính phí** là người dùng ở trạng thái hoạt động trong workspace, bất kể có đăng nhập trong kỳ hay không. Việc có dùng hay không không đổi được nghĩa vụ trả tiền — chỗ ngồi đã được giữ.
@@ -471,14 +506,18 @@ Ba nguyên tắc dưới đây chi phối toàn bộ Mục 3 và là lý do tài
 - BR-11.5: Tài khoản kỹ thuật — tài khoản dành cho tích hợp, cho tác vụ tự động, cho bot — KHÔNG tính là người dùng bị tính phí, nhưng PHẢI khai báo rõ là tài khoản kỹ thuật, PHẢI bị giới hạn số lượng, và PHẢI không đăng nhập được bằng giao diện người dùng thông thường. Không có ba ràng buộc này thì mọi doanh nghiệp đều có thể gắn nhãn kỹ thuật cho người thật.
 - BR-11.6: Khi vượt số người dùng bao gồm trong gói, hệ thống PHẢI thực thi đúng chính sách chạm trần đã khai báo của gói (BR-16.2) — hoặc chặn thêm người dùng mới, hoặc cho thêm và tính phí phần vượt. KHÔNG ĐƯỢC âm thầm cho thêm mà không tính phí, cũng KHÔNG ĐƯỢC âm thầm chặn mà không nói rõ lý do.
 - BR-11.7: Khi chính sách là chặn, thông báo hiển thị cho Quản trị viên tenant PHẢI nêu rõ đang chạm giới hạn nào, giới hạn là bao nhiêu, và cách xử lý (nâng gói, mua thêm chỗ, vô hiệu hóa người khác).
-- BR-11.8: Số người dùng bị tính phí là một đại lượng dẫn xuất theo kỳ, nhưng nó vẫn PHẢI đi qua đúng ranh giới của FEAT-09 như mọi loại tiêu dùng khác. Đối tượng gốc ở đây là **từng lần một người dùng chuyển sang trạng thái hoạt động**, mỗi lần mang một mã tham chiếu riêng theo BR-12.1; mức cao nhất trong kỳ ở BR-11.2 được suy ra từ chuỗi đó. KHÔNG ĐƯỢC chuyển giao một con số tổng chụp tại một thời điểm: con số tổng không tái lập được (NFR-8), không đối soát ngược về đối tượng có thật được (FEAT-15), và doanh nghiệp không tự đối chiếu được với danh sách người dùng của mình (BR-10.8).
+- BR-11.8: Số người dùng bị tính phí là một đại lượng dẫn xuất theo kỳ, nhưng nó vẫn PHẢI đi qua đúng ranh giới của FEAT-09 như mọi loại tiêu dùng khác. Đối tượng gốc ở đây là **từng lần trạng thái hoạt động của một người dùng thay đổi, theo cả hai chiều** — chuyển sang hoạt động và rời khỏi trạng thái hoạt động — mỗi lần mang một mã tham chiếu riêng theo BR-12.1. Ghi nhận một chiều là không đủ: thiếu chiều rời đi thì không dựng lại được số ghế đang chiếm dụng tại từng thời điểm, và một người bị bật rồi tắt rồi bật lại sẽ bị đếm thành nhiều người. KHÔNG ĐƯỢC thay chuỗi sự kiện này bằng một con số tổng chụp tại một thời điểm bất kỳ: con số tổng không tái lập được (NFR-8), không đối soát ngược về đối tượng có thật được (FEAT-15), và doanh nghiệp không tự đối chiếu được với danh sách người dùng của mình (BR-10.8).
+- BR-11.8b: Một người dùng đã ở trạng thái hoạt động **từ trước khi kỳ bắt đầu** không tạo ra thay đổi trạng thái nào trong kỳ, nên chuỗi sự kiện của riêng kỳ đó không mô tả được số ghế đang chiếm dụng. Vì vậy mỗi kỳ PHẢI mở bằng một **mốc đầu kỳ** ghi số người dùng đang hoạt động tại thời điểm kỳ bắt đầu. Mốc này KHÔNG phải con số tổng bị cấm ở BR-11.8, với đúng một điều kiện bắt buộc: nó PHẢI dựng lại được từ chính chuỗi thay đổi trạng thái của các kỳ trước, và khi dựng lại PHẢI ra đúng giá trị đã ghi. Một mốc đầu kỳ lấy bằng cách đếm trực tiếp danh sách người dùng tại thời điểm đó — không đối chiếu được với chuỗi — là con số tổng bị cấm, chỉ đổi tên.
+- BR-11.9: Số người dùng bị tính phí của **bất kỳ kỳ nào trong quá khứ** PHẢI dựng lại được từ mốc đầu kỳ cộng chuỗi thay đổi trạng thái của kỳ đó, ra đúng con số đã xuất hiện trên hóa đơn (NFR-8). Nếu hai cách tính cho ra hai kết quả khác nhau thì chuỗi sự kiện là căn cứ, và chênh lệch PHẢI được xử lý như một chênh lệch đối soát theo FEAT-15 chứ KHÔNG ĐƯỢC bỏ qua — đây là loại tiêu dùng duy nhất mà con số bán ra là đại lượng dẫn xuất, nên nó cũng là chỗ dễ lệch âm thầm nhất.
 
 **Tiêu chí chấp nhận:**
 
 - Doanh nghiệp đếm số người dùng hoạt động của mình ra đúng con số trên hóa đơn.
 - Bật một người dùng vào ngày 5 rồi tắt vào ngày 6 vẫn được tính vào mức cao nhất của kỳ.
 - Không tồn tại doanh nghiệp nào vượt số người dùng bao gồm mà không có phí vượt tương ứng hoặc không có chặn tương ứng.
-- Con số người dùng bị tính phí của một kỳ trong quá khứ dựng lại được từ chuỗi thay đổi trạng thái người dùng, không phụ thuộc vào một ảnh chụp nào.
+- Con số người dùng bị tính phí của một kỳ trong quá khứ dựng lại được từ mốc đầu kỳ cộng chuỗi thay đổi trạng thái người dùng, không phụ thuộc vào một ảnh chụp nào.
+- Một doanh nghiệp không thay đổi người dùng nào trong suốt một kỳ vẫn bị tính đúng số ghế của kỳ đó, dù kỳ đó không phát sinh sự kiện thay đổi trạng thái nào.
+- Một người dùng bị bật, tắt rồi bật lại trong cùng một kỳ được tính là một ghế, không phải hai.
 
 ---
 
@@ -515,6 +554,7 @@ Ba nguyên tắc dưới đây chi phối toàn bộ Mục 3 và là lý do tài
 - BR-13.1: Sự kiện được quy về kỳ theo **thời điểm phát sinh nghiệp vụ**, KHÔNG theo thời điểm hệ thống nhận được. Một hội thoại tạo lúc 23h50 ngày cuối kỳ thuộc kỳ đó, kể cả khi sự kiện tới nơi lúc 00h10 hôm sau.
 - BR-13.2: Mỗi kỳ có một **thời hạn chốt kỳ** sau ngày cuối kỳ. Sự kiện thuộc kỳ đó, đến trong thời hạn chốt, vẫn được quy về đúng kỳ đó. Thời hạn này là tham số cấu hình và PHẢI đủ dài để bao được độ trễ thông thường của các nền tảng bên thứ ba.
 - BR-13.3: Sự kiện đến sau khi kỳ đã chốt và hóa đơn đã phát hành KHÔNG ĐƯỢC làm thay đổi hóa đơn đó. Nó được đưa vào kỳ kế tiếp và PHẢI ghi rõ trên hóa đơn kỳ kế tiếp là phần phát sinh thuộc kỳ trước — doanh nghiệp KHÔNG ĐƯỢC nhìn thấy một khoản tăng đột biến không giải thích được.
+- BR-13.3b: Phần phát sinh thuộc kỳ trước ở BR-13.3 PHẢI được tính theo **điều kiện thương mại có hiệu lực tại kỳ mà sự kiện thuộc về** — phiên bản gói, hạn mức, đơn giá vượt và các ưu đãi của kỳ đó — chứ KHÔNG theo điều kiện của kỳ mà nó xuất hiện trên hóa đơn. Nếu giữa hai kỳ doanh nghiệp đã nâng gói (BR-06.1) hoặc một ưu đãi đã hết hạn (BR-08.7), việc tính theo điều kiện kỳ sau chính là áp giá hồi tố ngược, điều NFR-16 cấm. Dòng tương ứng trên hóa đơn PHẢI nêu rõ kỳ áp dụng và điều kiện đã dùng, để doanh nghiệp không phải suy đoán vì sao cùng một loại tiêu dùng lại có hai đơn giá trên một hóa đơn.
 - BR-13.4: Múi giờ dùng để cắt kỳ là múi giờ khai báo trong hồ sơ thanh toán của doanh nghiệp, cố định trong suốt vòng đời đăng ký (BR-03.3).
 - BR-13.5: Ghi nhận bù sau sự cố PHẢI dùng lại đúng mã tham chiếu gốc của các đối tượng nghiệp vụ, để không tạo phí trùng với phần đã ghi nhận được trước đó (BR-12.1).
 - BR-13.6: Mỗi lần ghi nhận bù PHẢI để lại vết đầy đủ: ai thực hiện, khi nào, phạm vi thời gian nào, những doanh nghiệp nào, tổng số đơn vị bổ sung, và căn cứ (FEAT-29).
@@ -549,12 +589,15 @@ Ba nguyên tắc dưới đây chi phối toàn bộ Mục 3 và là lý do tài
 - BR-14.4: Đảo với căn cứ "quyết định miễn trừ thương mại" vượt ngưỡng giá trị đã cấu hình PHẢI có người phê duyệt khác người đề nghị.
 - BR-14.5: Tổng giá trị đã đảo trong kỳ, tách theo từng căn cứ, PHẢI xem được như một chỉ số vận hành. Tỷ lệ đảo tăng bất thường ở một căn cứ là dấu hiệu định nghĩa thời điểm tính phí đang sai, không phải chuyện của riêng kế toán.
 - BR-14.6: Việc phát hiện đối tượng gốc bị đánh dấu lạm dụng PHẢI kích hoạt đảo tự động, không chờ người thao tác — nếu không, doanh nghiệp phải tự phát hiện mình bị tính phí oan rồi mới khiếu nại.
+- BR-14.7: Bút toán đảo trong kỳ chưa chốt PHẢI **hoàn lại phần hạn mức tương ứng ngay lập tức**, không chờ chốt kỳ. Lượng tiêu dùng là căn cứ duy nhất để thực thi hạn mức (FEAT-16), nên nếu đảo giảm lượng tiêu dùng mà không giảm mức đã chiếm hạn mức thì một doanh nghiệp bị một đợt tin nhắn rác vừa không bị tính tiền (BR-10.5) vừa vẫn bị chặn thao tác — tức vẫn chịu trọn hậu quả của việc mình không gây ra. Hệ quả đi kèm: phần trần chi phí vượt đã bị chiếm dụng bởi các sự kiện bị đảo cũng được hoàn lại tương ứng (BR-16.5).
+- BR-14.8: Việc hoàn hạn mức ở BR-14.7 KHÔNG tự động hủy hay hoàn tiền một add-on mà doanh nghiệp đã mua trước đó vì tưởng mình hết hạn mức — phần hạn mức mua thêm đi theo điều kiện của chính add-on đó (BR-07.2). Nhưng khi một đợt đảo tự động theo BR-14.6 xảy ra trong cùng kỳ với một lần mua thêm hạn mức, hệ thống PHẢI thông báo cho Người phụ trách thanh toán để họ tự quyết định, và trường hợp này PHẢI đếm được như một chỉ số vận hành theo BR-14.5. Không có quy tắc này thì hệ thống vừa bán thêm hạn mức cho một nhu cầu do lỗi phía mình tạo ra, vừa không ai nhìn thấy điều đó đang lặp lại.
 
 **Tiêu chí chấp nhận:**
 
 - Một hội thoại bị đánh dấu spam trong kỳ không xuất hiện trên hóa đơn kỳ đó, không cần ai can thiệp.
 - Một hội thoại bị đánh dấu spam sau khi hóa đơn đã phát hành tạo ra chứng từ ghi có dẫn ngược được về hội thoại đó.
 - Không có cách nào làm mất dấu một sự kiện đã ghi nhận.
+- Một doanh nghiệp đang bị chặn vì hết hạn mức, sau khi các hội thoại rác trong kỳ bị đảo, thao tác lại được ngay mà không cần ai can thiệp và không cần mua thêm gì.
 
 ---
 
@@ -585,21 +628,35 @@ Ba nguyên tắc dưới đây chi phối toàn bộ Mục 3 và là lý do tài
 
 **Actor:** Thành viên, Quản trị viên tenant, Chủ workspace, Người phụ trách thanh toán, Tác vụ tự động.
 
+**Luồng chính:**
+
+1. Một thao tác sắp phát sinh tiêu dùng. Hệ thống xác định thao tác thuộc chiều nào: do doanh nghiệp chủ động thực hiện, hay do khách hàng của doanh nghiệp khởi xướng (BR-16.3).
+2. Với chiều do khách hàng khởi xướng: **luôn tiếp nhận và luôn ghi nhận**, không có bước kiểm tra chặn nào. Việc kiểm soát chi phí ở chiều này diễn ra ở khâu tính tiền, không ở khâu phục vụ (BR-16.8).
+3. Với chiều do doanh nghiệp chủ động: hệ thống đối chiếu khối lượng của thao tác — với thao tác theo lô là **toàn bộ khối lượng dự kiến của lô** (BR-16.9) — với hạn mức bao gồm còn lại và phần trần chi phí vượt còn lại.
+4. Đủ hạn mức bao gồm: cho phép, không thông báo gì.
+5. Hết hạn mức bao gồm: thực thi chính sách chạm trần của hạn mức đó (BR-16.2), trong khuôn khổ trần chi phí vượt của doanh nghiệp (BR-16.2b).
+6. Chạm trần chi phí vượt: dừng lại, cảnh báo, và chờ xác nhận theo BR-16.5b. Người thao tác không có quyền xem dữ liệu tài chính chỉ nhận thông báo theo BR-16.6, không thấy số tiền.
+
 **Quy tắc nghiệp vụ:**
 
 - BR-16.1: Hạn mức bao gồm tính theo từng kỳ và KHÔNG cộng dồn sang kỳ sau, trừ khi điều kiện gói ghi rõ là có cộng dồn cùng thời hạn hiệu lực của phần cộng dồn.
 - BR-16.2: Mỗi hạn mức gắn với đúng một trong ba chính sách chạm trần: **chặn** (không cho phát sinh thêm), **cho vượt và tính phí** (không giới hạn trên, trong khuôn khổ BR-16.5 và BR-16.8), hoặc **cho vượt tới trần cứng rồi chặn**.
-- BR-16.3: Chính sách chặn CHỈ được áp cho các hành vi **do doanh nghiệp chủ động thực hiện** — gửi tin nhắn mẫu, chạy chiến dịch, chạy quy trình tự động, thêm người dùng. Chính sách chặn KHÔNG ĐƯỢC áp cho việc tiếp nhận hoạt động **do khách hàng của doanh nghiệp khởi xướng**: tin nhắn khách hàng gửi tới PHẢI luôn được tiếp nhận, lưu lại và hiển thị cho Agent, kể cả khi hạn mức hội thoại đã hết. Chặn ở chiều này biến một vấn đề thương mại giữa nhà cung cấp và doanh nghiệp thành thiệt hại cho một bên thứ ba vô can, và doanh nghiệp sẽ chỉ phát hiện ra khi đã mất khách. Ngoại lệ duy nhất trong toàn tài liệu là việc ngắt kênh có thông báo trước sau khi hết thời hạn ân hạn của một tài khoản chưa từng trả tiền (BR-05.4b) — đó là kết thúc một quan hệ chưa tồn tại, không phải một biện pháp kiểm soát chi phí trong một quan hệ đang có.
+- BR-16.2b: Hai cơ chế trần cùng tồn tại và PHẢI có thứ tự ưu tiên cố định, vì chúng khác đơn vị và khác phạm vi: trần cứng của BR-16.2 tính bằng **đơn vị tiêu dùng** và áp cho **một hạn mức**; trần của BR-16.5 tính bằng **tiền** và áp cho **toàn bộ doanh nghiệp trong một kỳ**. Thứ tự áp là: **cái nào chạm trước thì cái đó dừng thao tác**. Cụ thể, một hạn mức khai chính sách "cho vượt và tính phí" vẫn bị dừng khi trần chi phí vượt của doanh nghiệp đã chạm — cụm "không giới hạn trên" ở BR-16.2 là không giới hạn *theo số đơn vị của riêng hạn mức đó*, không phải không giới hạn theo tiền. Không cố định điểm này thì hai người đọc cùng tài liệu sẽ xây ra hai hành vi khác nhau ở đúng khoảnh khắc nhạy cảm nhất của quan hệ thương mại.
+- BR-16.3: Chính sách chặn CHỈ được áp cho các hành vi **do doanh nghiệp chủ động thực hiện** — gửi tin nhắn mẫu, chạy chiến dịch, chạy quy trình tự động, thêm người dùng. Chính sách chặn KHÔNG ĐƯỢC áp cho việc tiếp nhận hoạt động **do khách hàng của doanh nghiệp khởi xướng**: tin nhắn khách hàng gửi tới PHẢI luôn được tiếp nhận, lưu lại và hiển thị cho Agent, kể cả khi hạn mức hội thoại đã hết. Chặn ở chiều này biến một vấn đề thương mại giữa nhà cung cấp và doanh nghiệp thành thiệt hại cho một bên thứ ba vô can, và doanh nghiệp sẽ chỉ phát hiện ra khi đã mất khách. Ngoại lệ được liệt kê giới hạn, gồm đúng hai trường hợp và không mở rộng thêm: (a) ngắt kênh có thông báo trước sau khi hết thời hạn ân hạn của một tài khoản **chưa từng trả tiền** (BR-05.4b); (b) ngắt kênh có thông báo trước sau khi một quan hệ trả tiền **đã kết thúc** — đăng ký đã hủy hoặc đã hết hạn (BR-24.10). Cả hai đều là kết thúc một quan hệ chứ không phải một biện pháp kiểm soát chi phí bên trong một quan hệ đang có; đó là điều phân biệt chúng với mọi tình huống còn lại. Đình chỉ vì nợ KHÔNG thuộc nhóm này (BR-22.3): ở đó quan hệ vẫn tồn tại và doanh nghiệp vẫn có thể trả tiền để khôi phục.
 - BR-16.4: Doanh nghiệp PHẢI được báo **trước khi** bắt đầu phát sinh phí vượt, không chỉ báo sau khi đã phát sinh (FEAT-17).
 - BR-16.5: Mỗi doanh nghiệp PHẢI có một trần chi phí vượt cho mỗi kỳ, mặc định tính theo bội số của phí thuê bao. **Với các loại tiêu dùng phát sinh từ hành vi doanh nghiệp chủ động thực hiện**, chạm trần này thì hệ thống PHẢI dừng lại, cảnh báo, và yêu cầu doanh nghiệp xác nhận trước khi tiếp tục phát sinh thêm. Không có trần thì một sự cố tự động hóa hoặc một chiến dịch cấu hình sai có thể tạo ra hóa đơn gấp nhiều lần bình thường — và khoản đó thực tế không thu được, chỉ tạo ra một cuộc tranh chấp. Với các loại tiêu dùng phát sinh từ hoạt động do khách hàng của doanh nghiệp khởi xướng, trần này KHÔNG thực thi được bằng cách chặn — xem BR-16.8.
+- BR-16.5b: Việc xác nhận ở BR-16.5 PHẢI là việc doanh nghiệp **nâng trần lên một mức mới cụ thể do chính họ nhập**, có hiệu lực cho phần còn lại của kỳ, và chạm mức mới đó thì hệ thống lại dừng và lại hỏi. Xác nhận KHÔNG ĐƯỢC mang nghĩa "bỏ trần cho tới hết kỳ": nếu một lần bấm đồng ý gỡ được trần thì mọi bảo vệ của BR-16.5 chấm dứt ngay tại lần chạm đầu tiên, và một quy trình tự động chạy sai vẫn nhân chi phí lên tới cuối kỳ — đúng tình huống mà quy tắc này được lập ra để chặn. Mỗi lần nâng trần là một quyết định thương mại làm thay đổi số tiền phải trả, nên PHẢI để lại vết theo BR-29.1 và PHẢI do vai trò được phép theo Mục 5 thực hiện.
 - BR-16.6: Khi một thao tác bị chặn vì hạn mức, thông báo hiển thị cho người thao tác PHẢI nêu rõ đang chạm hạn mức nào và ai trong doanh nghiệp xử lý được — KHÔNG ĐƯỢC báo lỗi chung chung khiến người dùng tưởng hệ thống hỏng.
 - BR-16.7: Kiểm tra hạn mức PHẢI cho ra cùng một kết quả dù thao tác đến từ giao diện người dùng, từ tích hợp bên ngoài hay từ tác vụ tự động.
 - BR-16.8: BR-16.3 cấm chặn ở chiều tiếp nhận, nên với các loại tiêu dùng phát sinh từ hoạt động do khách hàng của doanh nghiệp khởi xướng, trần của BR-16.5 PHẢI vận hành như một **trần tính tiền**, không phải một trần chặn: hoạt động vẫn được tiếp nhận và vẫn được ghi nhận đầy đủ (BR-32.2), nhưng phần vượt quá trần trong kỳ KHÔNG ĐƯỢC đưa vào hóa đơn khi doanh nghiệp chưa xác nhận riêng cho phần đó. Phần chênh trở thành **chi phí nhà cung cấp tự chịu**, PHẢI được đo riêng, PHẢI tạo cảnh báo vận hành và PHẢI báo cáo cùng giá vốn tiêu dùng (BR-30.3). Không có quy tắc này thì một đợt tin nhắn rác gửi tới một doanh nghiệp tạo ra một khoản nhà cung cấp thực trả cho nền tảng kênh mà vừa không chặn được (BR-16.3), vừa không tính lại cho doanh nghiệp được (BR-10.5) — tức một lỗ thất thu không có trần, đúng thứ mà BR-16.5 được lập ra để chặn. Chính sách xử lý khi mức tự chịu này vượt ngưỡng đã cấu hình PHẢI được quyết định rõ thay vì để mặc định — xem Mục 7.2.
 - BR-16.9: Một thao tác phát sinh tiêu dùng theo lô — chiến dịch gửi hàng loạt, nhập liệu hàng loạt, lượt chạy quy trình trên một tập bản ghi — PHẢI được đối chiếu **toàn bộ khối lượng dự kiến của lô** với phần hạn mức còn lại và phần trần chi phí vượt còn lại **trước khi bắt đầu**. Nếu không đủ, lô KHÔNG ĐƯỢC khởi động rồi dừng giữa chừng: hoặc bị từ chối, hoặc chỉ chạy sau khi doanh nghiệp xác nhận trên một con số cụ thể (BR-26.5). Việc xác nhận số tiền là của vai trò được phép thấy dữ liệu tài chính theo Mục 5; người thao tác không thuộc nhóm đó chỉ nhận thông báo theo BR-16.6 — nêu rõ đang chạm hạn mức nào và ai trong doanh nghiệp quyết định được — chứ KHÔNG ĐƯỢC nhìn thấy số tiền (BR-26.3). Một chiến dịch gửi được một nửa rồi dừng gây thiệt hại lớn hơn một chiến dịch không gửi — nó chia tập khách hàng thành hai nhóm nhận thông điệp khác nhau và doanh nghiệp không biết ranh giới nằm ở đâu. Quy tắc này bổ sung cho BR-32.3, vốn chỉ quy định trường hợp *không tra được* hạn mức, chứ không quy định trường hợp tra được và biết là không đủ.
+- BR-16.10: **Trần tính tiền của BR-16.8 được thực thi ở lớp thương mại, không ở lớp ghi nhận.** Đây là quy tắc duy nhất trong tài liệu buộc một lượng tiêu dùng có thật không xuất hiện trên hóa đơn, nên phải nói rõ ai làm việc đó. Hai hệ quả bắt buộc: (a) cụm "vẫn được ghi nhận đầy đủ" ở BR-16.8 bao gồm **cả việc chuyển giao sang lớp thương mại** theo FEAT-12 — giữ sự kiện lại không chuyển giao để tránh bị tính tiền là vi phạm NFR-7 và làm đối soát (FEAT-15) báo lệch giả ở mọi doanh nghiệp bị vượt trần; (b) việc cắt phần vượt trần ra khỏi hóa đơn là một **quy tắc tính tiền**, thuộc về nơi sở hữu giá và hạn mức, KHÔNG ĐƯỢC đặt vào các module nghiệp vụ của CRM — đặt ở đó thì nghiệp vụ phải biết đơn giá và trần, phá nguyên tắc nền ở Mục 2.2. Phần bị cắt ra PHẢI xuất hiện đầy đủ trong số liệu tiêu dùng mà doanh nghiệp xem được (FEAT-17), kèm ghi chú rõ là phần này không được tính tiền trong kỳ — doanh nghiệp KHÔNG ĐƯỢC thấy một khoảng trống không giải thích được giữa lượng dùng và lượng bị tính.
 
 **Tiêu chí chấp nhận:**
 
 - Một doanh nghiệp hết hạn mức hội thoại vẫn nhận được tin nhắn của khách hàng và Agent vẫn đọc được.
+- Phần tiêu dùng vượt trần bị loại khỏi hóa đơn vẫn hiện đủ trên màn hình theo dõi tiêu dùng của doanh nghiệp, kèm ghi chú vì sao nó không được tính tiền.
+- Một xác nhận nâng trần chỉ có hiệu lực tới mức đã nhập; chạm mức đó hệ thống dừng lại lần nữa.
 - Không doanh nghiệp nào nhận hóa đơn có phí vượt mà trước đó không nhận cảnh báo.
 - Một quy trình tự động chạy sai không thể tạo ra phí vượt không giới hạn.
 - Một chiến dịch không đủ hạn mức bị từ chối trọn vẹn hoặc chạy trọn vẹn sau khi doanh nghiệp xác nhận — không tồn tại ca gửi được một phần rồi dừng.
@@ -662,6 +719,44 @@ Ba nguyên tắc dưới đây chi phối toàn bộ Mục 3 và là lý do tài
 - Một doanh nghiệp cầm hóa đơn tự tính lại được tổng tiền từ các dòng trên đó, ra đúng tới đơn vị tiền nhỏ nhất của tiền tệ đang dùng.
 - Mọi hóa đơn đã phát hành đều có ngày tới hạn hiển thị trên chứng từ, và không hóa đơn nào bước vào chu trình nhắc nợ trước ngày đó.
 - Đợt chốt kỳ có lỗi hệ thống bị phát hiện ở bước chạy thử, không phải ở bước khách hàng khiếu nại.
+
+---
+
+### FEAT-18b — Vòng đời & trạng thái hóa đơn `[Yêu cầu mới]`
+
+**Mô tả nghiệp vụ:** Định nghĩa tập trạng thái của một hóa đơn và các chuyển đổi hợp lệ giữa chúng, để mọi phần còn lại của hệ thống — thu tiền, nhắc nợ, đình chỉ, ghi có, khiếu nại — đọc từ một nguồn duy nhất. FEAT-04 làm việc này cho **đăng ký**; mục này làm đúng việc đó cho **chứng từ**. Không có nó thì các quy tắc ở FEAT-19 → FEAT-23 và FEAT-27 đang viện dẫn những trạng thái chưa ai khai báo, và hai người đọc cùng tài liệu sẽ dựng ra hai vòng đời khác nhau.
+
+**Actor:** Tác vụ tự động, Kế toán nhà cung cấp.
+
+**Luồng chính:**
+
+1. Kỳ chốt, hệ thống dựng hóa đơn ở trạng thái **nháp**; nó xem trước và soát được, chưa có hiệu lực với doanh nghiệp (BR-18.1).
+2. Nếu thị trường yêu cầu thủ tục bắt buộc với cơ quan thuế, hóa đơn chuyển sang **chờ thủ tục bắt buộc** và dừng lại ở đó cho tới khi thủ tục hoàn tất (BR-19.3).
+3. Hóa đơn chuyển sang **đã phát hành**: nhận số hóa đơn, có ngày phát hành và ngày tới hạn, gửi tới doanh nghiệp, và từ đây trở thành bất biến (BR-18.2).
+4. Khi nghĩa vụ được giải quyết trọn vẹn — bằng tiền thu được, bằng số dư có bù trừ, bằng chứng từ ghi có, hoặc vì tổng phải trả bằng không — hóa đơn chuyển sang **đã thanh toán**.
+5. Một hóa đơn còn ở nháp mà không được phát hành thì kết thúc ở **đã hủy nháp**; số đã cấp cho nó không được dùng lại (BR-18.6).
+
+**Quy tắc nghiệp vụ:**
+
+- BR-18b.1: Một hóa đơn PHẢI ở đúng một trạng thái tại một thời điểm, và tập trạng thái PHẢI đủ để phân biệt năm tình huống khác nhau về mặt nghiệp vụ: **nháp** (đã dựng, chưa có hiệu lực với doanh nghiệp, còn sửa và còn hủy được), **chờ thủ tục bắt buộc** (đã chốt nội dung nhưng chưa được coi là phát hành theo quy định của thị trường), **đã phát hành** (bất biến, đã gửi, đã có ngày tới hạn), **đã thanh toán** (nghĩa vụ đã được giải quyết trọn vẹn), và **đã hủy nháp** (kết thúc, chưa từng có hiệu lực).
+- BR-18b.2: Chỉ có **một đường vào** trạng thái đã phát hành, và đường đó đi qua đầy đủ các cổng chặn đã quy định: đối soát trong ngưỡng và tồn đọng trong ngưỡng (BR-18.5), thủ tục bắt buộc đã hoàn tất nếu thị trường yêu cầu (BR-19.3). Một hóa đơn đã phát hành KHÔNG BAO GIỜ quay lại nháp, KHÔNG BAO GIỜ bị xóa và KHÔNG BAO GIỜ đổi nội dung — mọi điều chỉnh đi qua chứng từ ghi có hoặc một hóa đơn mới (BR-18.2, NFR-9).
+- BR-18b.3: Trong trạng thái chờ thủ tục bắt buộc, hóa đơn KHÔNG ĐƯỢC gửi cho doanh nghiệp, KHÔNG ĐƯỢC thu tiền, KHÔNG ĐƯỢC tính ngày tới hạn và KHÔNG ĐƯỢC bước vào chu trình nhắc nợ (BR-19.3, BR-18.9). Thủ tục thất bại PHẢI tạo cảnh báo và chuyển sang xử lý có người soát; KHÔNG ĐƯỢC để hóa đơn treo im lặng ở trạng thái này quá thời hạn đã cấu hình.
+- BR-18b.4: **Quá hạn không phải một trạng thái**, nó là một thuộc tính dẫn xuất từ việc so ngày hiện tại với ngày tới hạn của một hóa đơn đang ở trạng thái đã phát hành. Không vai trò nào và không tác vụ nào được đánh dấu một hóa đơn là quá hạn sớm hơn hoặc muộn hơn mốc đó. Cố định điểm này vì nếu quá hạn là một cờ được set thì chu trình nhắc nợ có thể khởi phát bằng một thao tác sai thay vì bằng thời gian, và BR-21.9 mất hiệu lực.
+- BR-18b.5: Hóa đơn có **tổng phải trả bằng không** tại thời điểm phát hành chuyển thẳng sang đã thanh toán, bỏ qua bước thu tiền và không bao giờ vào chu trình nhắc nợ (BR-20.11, BR-18.7).
+- BR-18b.6: **Khiếu nại gắn với từng dòng của hóa đơn, không phải với cả hóa đơn.** Một hóa đơn đang có khiếu nại mở KHÔNG chuyển sang một trạng thái riêng; phần giá trị bị khiếu nại được tạm dừng thu tiền theo BR-27.3 và BR-27.7, còn phần không bị khiếu nại vẫn tới hạn và vẫn thu bình thường. Biểu diễn khiếu nại thành một trạng thái của cả chứng từ sẽ khiến một khiếu nại vài chục nghìn đồng chặn việc thu toàn bộ hóa đơn — và đó chính là kẽ hở hoãn thanh toán mà BR-27.7 lập ra để chặn.
+- BR-18b.7: Việc chuyển sang đã thanh toán PHẢI ghi rõ nghĩa vụ được giải quyết bằng đường nào — tiền thu được, số dư có bù trừ (BR-23.5), chứng từ ghi có (BR-23.1), dung sai thanh toán (BR-20.8), hay tổng bằng không (BR-18b.5). Gộp mọi đường lại thành một trạng thái không phân biệt thì báo cáo doanh thu (FEAT-30) không tách được phần thực thu với phần giảm trừ, và đó là hai con số không được lẫn.
+- BR-18b.8: Mọi chuyển trạng thái của hóa đơn PHẢI có nguyên nhân ghi nhận được và thuộc diện nhật ký thương mại theo BR-29.1b — kể cả khi do tác vụ tự động thực hiện. Phát hành một hóa đơn và ghi nhận nó đã thanh toán đều là quyết định thương mại làm thay đổi nghĩa vụ của một doanh nghiệp.
+- BR-18b.9: Doanh nghiệp PHẢI nhìn thấy tình trạng hóa đơn của mình bằng ngôn ngữ họ hiểu, phân biệt được tối thiểu: chưa tới hạn, đã tới hạn chưa thanh toán, đang có khiếu nại chưa kết luận, đã thanh toán, và đã được giảm trừ bằng chứng từ ghi có. Trạng thái nội bộ nào không có ý nghĩa với người trả tiền thì KHÔNG ĐƯỢC hiển thị ra ngoài — nhưng cũng KHÔNG ĐƯỢC gộp hai tình huống khác nghĩa vào cùng một nhãn.
+
+**Tiêu chí chấp nhận:**
+
+- Với một hóa đơn bất kỳ, tra ra được ngay nó đang ở trạng thái nào, vào trạng thái đó từ khi nào, vì nguyên nhân gì và do ai.
+- Không hóa đơn nào ở thị trường có thủ tục bắt buộc được gửi cho doanh nghiệp hoặc bị nhắc nợ trước khi thủ tục đó hoàn tất.
+- Một khiếu nại trên một dòng không làm dừng việc thu tiền của các dòng còn lại trên cùng hóa đơn.
+- Không tồn tại hóa đơn nào ở trạng thái quá hạn trong khi ngày tới hạn của nó chưa qua.
+- Không tồn tại số hóa đơn nào được cấp hai lần, kể cả cho một hóa đơn đã hủy nháp.
+
+**Tham chiếu:** tập trạng thái phụ thuộc quyết định về thị trường phát hành và thủ tục bắt buộc — xem Mục 7.2 câu 3.
 
 ---
 
@@ -819,10 +914,14 @@ Ba nguyên tắc dưới đây chi phối toàn bộ Mục 3 và là lý do tài
 - BR-24.7: Sau khi hết thời hạn giữ dữ liệu, việc xóa PHẢI được thực hiện thật và PHẢI có bằng chứng hoàn tất — trừ phần chứng từ tài chính bắt buộc lưu theo NFR-17, và trong phạm vi ranh giới mà NFR-18 đã nêu.
 - BR-24.8: Đăng ký lại theo BR-24.6 khôi phục dữ liệu và cấu hình, nhưng **KHÔNG khôi phục điều kiện thương mại cũ**. Đây là một đăng ký mới: áp phiên bản gói đang được bán tại thời điểm đăng ký lại, mốc cắt chu kỳ tính theo ngày kích hoạt mới (BR-04.2), và các ưu đãi đã hết hạn KHÔNG sống lại (BR-08.7). Phiên bản gói cũ chỉ được chọn lại nếu nó còn đang bán — gói đã thu hồi thì không bán mới được, kể cả cho người từng dùng (BR-01.3). Điều kiện áp dụng PHẢI hiển thị rõ trước khi xác nhận, vì doanh nghiệp quay lại thường mặc định là giá cũ còn nguyên. Nếu muốn giữ giá cũ để mời khách quay lại thì đó là một ưu đãi có thời hạn theo FEAT-08, có người duyệt và có vết — không phải một hành vi mặc định của hệ thống.
 - BR-24.9: Hủy đăng ký chính chấm dứt luôn mọi add-on định kỳ gắn với nó (BR-04.6); add-on KHÔNG ĐƯỢC tiếp tục tính phí sau khi đăng ký chính kết thúc. Add-on một lần đã dùng trong kỳ vẫn phải thanh toán theo BR-24.2, và phần hạn mức mua thêm chưa dùng hết KHÔNG được hoàn tiền, KHÔNG chuyển sang đăng ký mới khi đăng ký lại — trừ khi điều kiện của chính add-on đó ghi rõ, theo BR-07.2.
+- BR-24.10: Sau khi đăng ký đã kết thúc — đã hủy hết kỳ đã trả, hoặc đã hết hạn — việc **tiếp nhận** hoạt động do khách hàng của doanh nghiệp khởi xướng vẫn PHẢI tiếp tục trong một thời hạn ân hạn đã công bố trước, để doanh nghiệp không mất một khoảng dữ liệu và có thời gian chuyển hướng khách hàng của mình. Hết thời hạn đó, các kênh kết nối PHẢI được **ngắt có thông báo trước**, đủ sớm để họ báo lại cho khách hàng của họ. Đây là ngoại lệ thứ hai và cuối cùng của nguyên tắc không-chặn-chiều-tiếp-nhận (BR-16.3), và nó tồn tại vì đúng lý do của BR-05.4b: khi quan hệ trả tiền đã kết thúc thì không còn nguồn thu nào bù cho chi phí mà nhà cung cấp thực trả cho nền tảng kênh, và giữ kênh mở vô thời hạn cho một tài khoản không còn trả tiền là một khoản lỗ không có trần. Ngắt kết nối có báo trước khác về bản chất với việc âm thầm nuốt tin nhắn — cách thứ hai bị cấm ở mọi trạng thái. Thời hạn ân hạn này PHẢI trùng với hoặc ngắn hơn thời hạn giữ dữ liệu ở BR-24.3, và độ dài cụ thể: xem Mục 7.2.
+- BR-24.11: Ngắt kênh theo BR-24.10 KHÔNG ĐƯỢC xóa dữ liệu, KHÔNG ĐƯỢC chặn việc xuất dữ liệu (BR-24.3), và KHÔNG ĐƯỢC cản trở việc đăng ký lại theo BR-24.6. Khi doanh nghiệp đăng ký lại trong thời hạn giữ dữ liệu, các kênh PHẢI kết nối lại được, nhưng việc kết nối lại là một thao tác có chủ đích của doanh nghiệp chứ KHÔNG tự động khôi phục — kênh tự sống lại mà chủ workspace không biết là một rủi ro về phía họ, không phải một tiện lợi.
 
 **Tiêu chí chấp nhận:**
 
 - Doanh nghiệp hủy được trong sản phẩm mà không cần liên hệ ai.
+- Không tồn tại doanh nghiệp đã kết thúc đăng ký nào còn kênh kết nối hoạt động quá thời hạn ân hạn đã công bố.
+- Không doanh nghiệp nào bị ngắt kênh mà trước đó không nhận thông báo nêu rõ ngày ngắt và hệ quả.
 - Doanh nghiệp hủy nhầm rồi khôi phục trong ngày không mất gì.
 - Không tồn tại dữ liệu doanh nghiệp đã hủy quá thời hạn giữ mà chưa xóa.
 - Không tồn tại add-on nào còn phát sinh phí sau khi đăng ký chính đã kết thúc.
@@ -1059,6 +1158,23 @@ Ba nguyên tắc dưới đây chi phối toàn bộ Mục 3 và là lý do tài
 
 - **NFR-17 (Chứng từ lưu đủ thời hạn luật định):** Hóa đơn, chứng từ ghi có, bằng chứng thanh toán và nhật ký thương mại được lưu ít nhất bằng thời hạn quy định nơi phát hành hóa đơn.
 - **NFR-18 (Yêu cầu xóa dữ liệu cá nhân không xóa chứng từ bắt buộc lưu):** Khi thực hiện một yêu cầu xóa dữ liệu cá nhân, phần chứng từ tài chính bắt buộc lưu theo luật vẫn được giữ, nhưng phạm vi dữ liệu cá nhân còn lại trong đó phải được thu hẹp tới mức tối thiểu mà quy định cho phép, và ranh giới này phải được nêu rõ với người yêu cầu. Đây là điểm xung đột thật giữa quyền được xóa và nghĩa vụ lưu chứng từ — hệ thống phải xử lý có chủ đích, không để mỗi bên tự hiểu một cách.
+- **NFR-18b (Yêu cầu xóa dữ liệu cá nhân áp cả lên Sự kiện tính phí):** Sự kiện tính phí không phải chứng từ tài chính, nhưng nó mang mã tham chiếu trỏ tới một đối tượng nghiệp vụ có thật và phải được lưu ít nhất bằng thời hạn khiếu nại (BR-12.6). Khi thực hiện một yêu cầu xóa dữ liệu cá nhân, phần dữ liệu định danh trong và quanh sự kiện tính phí phải được thu hẹp tới mức tối thiểu, nhưng **số lượng đơn vị tính phí và khả năng đối soát tổng của một kỳ không được mất** — nếu không, một yêu cầu xóa sẽ làm một hóa đơn đã phát hành không còn tái lập được (NFR-8) và một khiếu nại đang mở không còn căn cứ trả lời (BR-27.1). Ranh giới cụ thể giữa phần thu hẹp được và phần bắt buộc giữ phải được nêu rõ với người yêu cầu, giống cách NFR-18 làm với chứng từ tài chính.
+
+### 4.6 Tổng hợp thời hạn lưu trữ
+
+Bảng này không thêm yêu cầu nào — nó gom các mốc lưu trữ đang nằm rải rác lại một chỗ, vì mỗi mốc đều là một cam kết với bên ngoài và đều kéo theo chi phí vận hành. Cột cuối cho thấy phần lớn các mốc này **chưa có con số**, và chúng phụ thuộc lẫn nhau: thời hạn khiếu nại quyết định thời hạn lưu sự kiện, thời hạn lưu sự kiện quyết định khả năng truy vết.
+
+| Đối tượng lưu trữ | Căn cứ | Thời hạn tối thiểu | Trạng thái |
+| --- | --- | --- | --- |
+| Hóa đơn, chứng từ ghi có, bằng chứng thanh toán | NFR-17 | Theo quy định nơi phát hành hóa đơn | Chưa chốt — phụ thuộc Mục 7.2 câu 3 |
+| Nhật ký kiểm toán thương mại | BR-29.5 | ≥ thời hạn lưu chứng từ kế toán, và ≥ thời hạn khiếu nại + biên an toàn | Chưa chốt — phụ thuộc câu 3 và câu 10 |
+| Sự kiện tính phí | BR-12.6 | ≥ thời hạn khiếu nại hóa đơn + biên an toàn | Chưa chốt — phụ thuộc câu 10 |
+| Kết quả từng lần đối soát | BR-15.4, BR-15.5 | Đủ dài để nhìn được xu hướng lệch giữa các kỳ, và bao được thời hạn khiếu nại | **Chưa có quy tắc — cần chốt** |
+| Nội dung từng thông báo đã gửi | BR-31.6 | Đủ dài để đối chiếu khi doanh nghiệp nói mình không nhận được, tối thiểu bao được chu trình nhắc nợ và thời hạn khiếu nại | **Chưa có quy tắc — cần chốt** |
+| Điều kiện thương mại của phiên bản gói đã ký | BR-01.5 | Suốt thời gian đăng ký còn hiệu lực + thời hạn khiếu nại sau đó | Chưa chốt — phụ thuộc câu 10 |
+| Lịch sử tiêu dùng doanh nghiệp xem được | BR-17.5 | 12 kỳ gần nhất, hoặc toàn bộ thời gian sử dụng nếu ngắn hơn | Đã chốt |
+| Dữ liệu doanh nghiệp sau khi hủy | BR-24.3, BR-24.7 | Thời hạn đã công bố trước | Chưa chốt — Mục 7.2 câu 9 |
+| Dữ liệu doanh nghiệp sau đình chỉ kéo dài | BR-22.6 | Thời hạn đã công bố trước | Chưa chốt — Mục 7.2 câu 9 |
 
 ---
 
@@ -1096,15 +1212,19 @@ Ký hiệu: ✅ được phép · ⚪ chỉ được phép khi được cấp th
 | Tra nhật ký thương mại của chính doanh nghiệp mình (BR-29.6) | ❌ | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Tra nhật ký thương mại toàn hệ thống (FEAT-29) | ❌ | ❌ | ❌ | ❌ | ⚪ | ✅ | ✅ |
 | Xác nhận tiếp tục phát sinh khi chạm trần / duyệt lô vượt hạn mức (BR-16.5, BR-16.8, BR-16.9) | ❌ | ❌ | ✅ | ✅ | ❌ | ❌ | ❌ |
+| Xem tình trạng tồn đọng & độ mới của số liệu tiêu dùng của chính doanh nghiệp (BR-17.3, NFR-10) | ❌ | ⚪ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Nhận thông báo bắt buộc về tiền — không tắt được (BR-31.3, BR-21.4) | ❌ | ❌ | ✅ | ✅ | – | – | – |
+| Xuất dữ liệu của doanh nghiệp **trong lúc đang bị đình chỉ** (BR-22.1, BR-22.7) | ❌ | ⚪ | ✅ | ✅ | ❌ | ❌ | ❌ |
 | Truy cập công cụ quản trị của nhà cung cấp (FEAT-28) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ |
 | Cấu hình thuế & yêu cầu chứng từ theo quốc gia (FEAT-19) | ❌ | ❌ | ❌ | ❌ | ❌ | ⚪ | ✅ |
 
-Bốn nguyên tắc đọc ma trận này:
+Năm nguyên tắc đọc ma trận này:
 
 1. **Thành viên thường không thấy tiền.** Cột đầu tiên gần như toàn ❌ là có chủ đích: dữ liệu thương mại không phải thứ mọi người trong một doanh nghiệp cần thấy. Nhưng Thành viên vẫn PHẢI nhận được lý do rõ ràng khi thao tác của họ bị chặn vì hạn mức (BR-16.6) — không thấy tiền không có nghĩa là bị chặn trong mù.
 2. **Quyền tài chính và quyền nghiệp vụ không kéo theo nhau.** Người phụ trách thanh toán đi xuống được danh sách đối tượng gốc để đối chiếu số lượng nhưng không đọc được nội dung; Chủ workspace đọc được nội dung nếu vai trò nghiệp vụ của họ cho phép, không phải vì họ là người trả tiền.
 3. **Người trả lời khách hàng không phải người quyết định giảm tiền.** Chăm sóc khách hàng nhà cung cấp tra cứu được mọi thứ cần để trả lời, nhưng mọi thao tác làm thay đổi số tiền đều nằm ở Kế toán hoặc cần phê duyệt của Quản trị nhà cung cấp.
 4. **Không ai xóa được vết của chính mình.** Không vai trò nào, kể cả Quản trị nhà cung cấp, sửa hay xóa được nội dung của FEAT-29.
+5. **Tác vụ tự động không phải một vai trò được cấp quyền.** Mục 2.3 liệt kê tám vai trò, ma trận này chỉ có bảy cột — vì Tác vụ tự động không đứng ở đây. Nó không được cấp quyền, nó **thi hành chính sách đã cấu hình**, và mọi hành động của nó đều để lại vết như một chủ thể có danh tính (BR-29.1b, BR-04.4). Hệ quả ràng buộc: một hành động mà con người không được phép làm theo ma trận này thì KHÔNG ĐƯỢC thực hiện gián tiếp bằng cách để một tác vụ tự động làm thay. Tác vụ tự động mở rộng phạm vi *thời điểm* hành động (2 giờ sáng, ngày nghỉ — BR-22.4, NFR-19), không mở rộng phạm vi *thẩm quyền*.
 
 ---
 
@@ -1130,6 +1250,9 @@ Bốn nguyên tắc đọc ma trận này:
 18. **Đợt spam làm nhà cung cấp tốn tiền, nhưng khoản đó nhìn thấy được:** Một đợt tin nhắn rác đẩy tiêu dùng hội thoại của một doanh nghiệp vượt trần chi phí vượt của kỳ. Tin nhắn khách hàng vẫn được tiếp nhận vì không được phép chặn chiều này; phần vượt trần không vào hóa đơn của doanh nghiệp vì họ chưa xác nhận; và toàn bộ khoản nhà cung cấp thực trả cho nền tảng kênh hiện ra như một con số riêng trong báo cáo giá vốn ngay trong kỳ — không phải một khoản lỗ phát hiện vào cuối năm.
 19. **Khách lớn chuyển khoản thiếu vài đơn vị tiền không bị coi là con nợ:** Một doanh nghiệp chuyển khoản trả hóa đơn nhưng ngân hàng trung gian trừ phí, số về tới nơi hụt một khoản nhỏ. Khoản hụt nằm trong ngưỡng dung sai nên hóa đơn được ghi nhận đã thanh toán đủ, phần hụt vào một khoản chi phí có vết, và không có thư nhắc nợ nào được gửi. Nếu việc này lặp lại nhiều kỳ, kế toán nhận được cảnh báo để xử lý với khách — chứ hệ thống không tự nới thành một mức giảm giá ngầm.
 20. **Mọi khoản chênh lệch đều truy được về một người:** Kế toán so hai hóa đơn liên tiếp của một doanh nghiệp và thấy chênh nhau một khoản. Tra nhật ký thương mại ra ngay: một nhân viên đã áp một ưu đãi vào ngày cụ thể, với lý do cụ thể, và người phê duyệt là ai.
+21. **Trần chi phí vượt không bị vô hiệu chỉ bằng một lần bấm đồng ý:** Một cấu hình tự động hóa lỗi đẩy chi phí chạm trần của kỳ. Doanh nghiệp xác nhận nâng trần lên một mức mới do họ tự nhập để công việc không đứng lại. Cấu hình vẫn còn lỗi và chi phí chạm luôn mức mới đó trong cùng ngày — hệ thống dừng lại lần nữa và hỏi lại. Doanh nghiệp nhận ra bất thường ở lần hỏi thứ hai và đi tìm nguyên nhân, thay vì phát hiện vào cuối kỳ khi nhìn hóa đơn.
+22. **Quan hệ kết thúc thì chi phí cũng kết thúc, nhưng không đột ngột:** Một doanh nghiệp hủy đăng ký và hết kỳ đã trả. Trong thời hạn ân hạn đã công bố, khách hàng của họ vẫn nhắn tới được và dữ liệu vẫn nguyên; họ nhận thông báo nêu rõ ngày các kênh sẽ ngắt. Tới ngày đó kênh ngắt, nhưng dữ liệu vẫn tải về được và họ vẫn đăng ký lại được trong thời hạn giữ dữ liệu. Không có tin nhắn nào bị nuốt im lặng ở bất kỳ thời điểm nào của quá trình.
+23. **Số ghế của một kỳ ba năm trước dựng lại được:** Kế toán cần đối chiếu một hóa đơn cũ. Con số người dùng bị tính phí của kỳ đó được dựng lại từ mốc đầu kỳ cộng chuỗi thay đổi trạng thái người dùng, ra đúng con số đã in trên hóa đơn — kể cả với một kỳ mà doanh nghiệp không bật hay tắt người dùng nào.
 
 ---
 
@@ -1157,7 +1280,7 @@ Các câu 1 → 4 và câu 13 là các quyết định chặn: chưa chốt thì
 | 2 | **Đơn vị nhà cung cấp bị nền tảng kênh tính tiền có trùng với đơn vị bán ra cho doanh nghiệp không, và ai chịu phần chênh?** | BR-10.4 buộc phải trả lời nhưng câu trả lời chưa có. Nếu nền tảng tính theo cửa sổ hội thoại còn hệ thống bán theo từng tin nhắn mẫu, mỗi đơn vị bán ra có thể sinh lãi hoặc lỗ tùy mật độ sử dụng của từng doanh nghiệp — và không ai phát hiện ra cho tới khi đối chiếu hóa đơn của nền tảng với doanh thu. | BR-10.4, BR-30.3 |
 | 3 | **Hóa đơn phát hành ở quốc gia nào, và quốc gia đó yêu cầu gì?** Cần chốt pháp nhân phát hành, danh sách thị trường bán, và với mỗi thị trường là yêu cầu hóa đơn điện tử, thuế suất, thời hạn lưu chứng từ. | Đây là ràng buộc tiên quyết, không phải chi tiết hoàn thiện: một số thị trường yêu cầu hóa đơn được cơ quan thuế cấp mã trước khi gửi khách (BR-19.3), điều này chèn thêm một bước bắt buộc vào giữa "chốt kỳ" và "thu tiền" và làm đổi cả luồng của FEAT-18 → FEAT-21. Phát hiện muộn thì phải làm lại phần lõi. | FEAT-19, BR-18.5, NFR-17 |
 | 4 | **Bên nào đứng tên bán hàng với người mua cuối?** Nhà cung cấp tự phát hành hóa đơn, hay một bên trung gian đứng tên và chịu nghĩa vụ thuế. | Quyết định này chi phối FEAT-19 (ai kê khai thuế), FEAT-23 (ai hoàn tiền), FEAT-20 (dòng tiền chảy qua đâu) và cả nội dung hiển thị trên hóa đơn. Chọn sau khi đã xây dựng thì phải sửa cả ba. | FEAT-19, FEAT-20, FEAT-23 |
-| 5 | **Số người dùng tính theo mức cao nhất trong kỳ hay theo tỷ lệ thời gian?** BR-11.2 tạm chọn mức cao nhất. | Cách hiện tại đơn giản và chống lách, nhưng một khách hàng lớn thêm 30 người dùng vào ngày cuối kỳ sẽ trả trọn kỳ cho cả 30 — điều mà đội bán hàng gần như chắc chắn sẽ phải thương lượng lại. Cần chốt xem có mở cơ chế tính theo tỷ lệ thời gian cho một phân khúc hay không, và nếu có thì đó là ngoại lệ theo hợp đồng hay là hành vi chuẩn. | BR-11.2, FEAT-08 |
+| 5 | **Số người dùng tính theo mức cao nhất trong kỳ hay theo tỷ lệ thời gian?** BR-11.2 tạm chọn mức cao nhất. | Cách hiện tại đơn giản và chống lách, nhưng một khách hàng lớn thêm 30 người dùng vào ngày cuối kỳ sẽ trả trọn kỳ cho cả 30 — điều mà đội bán hàng gần như chắc chắn sẽ phải thương lượng lại. Cần chốt xem có mở cơ chế tính theo tỷ lệ thời gian cho một phân khúc hay không, và nếu có thì đó là ngoại lệ theo hợp đồng hay là hành vi chuẩn. **Phần cơ chế đo lường đã được chốt** ở BR-11.8, BR-11.8b và BR-11.9 (sự kiện hai chiều cộng mốc đầu kỳ, dựng lại được cho mọi kỳ quá khứ) — câu hỏi còn lại thuần túy là một lựa chọn thương mại, và nó đổi được mà không phải đổi cách đo. | BR-11.2, BR-11.8b, FEAT-08 |
 | 6 | **Trần chi phí vượt mặc định là bao nhiêu?** BR-16.5 buộc phải có một trần nhưng chưa có con số. | Đặt quá thấp thì doanh nghiệp đang dùng bình thường bị dừng giữa chừng; quá cao thì trần không bảo vệ được ai. Con số này là một cam kết với khách hàng, không phải một tham số kỹ thuật đặt đại rồi chỉnh sau. | BR-16.5 |
 | 7 | **Chính sách hoàn tiền công bố ra bên ngoài là gì?** Có hoàn tiền khi hủy giữa kỳ không, có thời hạn dùng thử hoàn tiền không. | BR-24.1 hiện chọn không hoàn tiền phần đã trả. Đây là một cam kết thương mại phải công bố trước khi bán, và đổi về sau thì phải áp dụng cho cả khách cũ. | BR-24.1, FEAT-23 |
 | 8 | **Dùng thử có bắt buộc khai báo phương thức thanh toán từ đầu không?** | Bắt buộc thì tỷ lệ đăng ký thử giảm nhưng tỷ lệ chuyển đổi tăng và ít tài khoản rác hơn; không bắt buộc thì ngược lại. Quyết định này đổi cả luồng FEAT-05 lẫn cách chống lạm dụng ở BR-05.7. | FEAT-05, BR-05.6 |
@@ -1173,5 +1296,20 @@ Các câu 1 → 4 và câu 13 là các quyết định chặn: chưa chốt thì
 | 18 | **Có mở cơ chế cộng dồn ưu đãi không, và cho những loại nào?** BR-08.8 mặc định loại trừ lẫn nhau. | Mặc định hiện tại an toàn và giải thích được cho khách, nhưng đội kinh doanh sẽ cần cộng dồn trong ít nhất một tình huống — ưu đãi theo chiến dịch chồng lên chiết khấu hợp đồng. Chốt sớm thì đây là một khai báo trên từng ưu đãi; chốt muộn thì thành một loạt ngoại lệ xử lý tay ngoài hệ thống. | BR-08.8, BR-08.9, BR-08.4 |
 | 19 | **Thời hạn hoàn tất một khoản hoàn tiền là bao lâu?** BR-23.7 buộc phải công bố trước nhưng chưa có con số, và cần tách phần nằm trong kiểm soát của nhà cung cấp với phần phụ thuộc cổng thanh toán hoặc ngân hàng. | Đây là cam kết công bố ra bên ngoài, cùng hạng với thời hạn khiếu nại. Không có nó thì mỗi khoản hoàn tiền chậm đều biến thành một khiếu nại mới, và chăm sóc khách hàng không có câu trả lời nào để đưa ra ngoài câu "đang xử lý". | BR-23.7, BR-23.2, BR-27.2 |
 | 20 | **Mức sẵn sàng cam kết cho đường thanh toán và khôi phục là bao nhiêu?** NFR-19 đòi hỏi sẵn sàng liên tục nhưng chưa có mức cam kết. | Con số này quyết định chi phí vận hành và quyết định luôn hai lời hứa ở BR-21.5 và BR-22.4 có thực thi được không. Hứa khôi phục ngay lúc 2 giờ sáng mà không có mức cam kết nào đỡ phía sau thì lời hứa đó chỉ đúng cho tới sự cố đầu tiên. | NFR-19, BR-22.4, BR-21.5 |
+| 21 | **Cửa sổ chốt kỳ cam kết với kế toán là bao lâu, và tính từ mốc nào?** NFR-13 viện dẫn "cửa sổ thời gian đã cam kết" nhưng cửa sổ đó chưa tồn tại. | Một yêu cầu phi chức năng không có đại lượng đo là một yêu cầu không nghiệm thu được: không có con số thì không ai biết đợt chốt kỳ chạy 4 giờ là đạt hay không đạt, và cũng không có căn cứ để nói cửa sổ đó "không được nới ra khi số doanh nghiệp tăng lên". Nó còn phải cộng thêm phần chờ thủ tục bắt buộc nếu thị trường yêu cầu (BR-19.3). | NFR-13, BR-18.1, FEAT-18b |
+| 22 | **Ngưỡng nào định nghĩa "một doanh nghiệp không ảnh hưởng doanh nghiệp khác"?** NFR-14 cấm việc một doanh nghiệp tăng đột biến làm chậm doanh nghiệp khác nhưng không nêu mức. | Cùng lý do câu 21. Thêm nữa, ngưỡng này quyết định một lựa chọn kiến trúc không đảo ngược rẻ: có cần cách ly luồng ghi nhận theo từng doanh nghiệp hay không. Phát hiện muộn nghĩa là phải làm lại phần chuyển giao khi đã có khách hàng lớn. | NFR-14, FEAT-12, NFR-13 |
+| 23 | **Thời hạn lưu kết quả đối soát và lưu nội dung thông báo đã gửi là bao lâu?** BR-15.4 và BR-31.6 đều buộc phải lưu nhưng không nêu thời hạn. | Hai bản ghi này là bằng chứng để trả lời khiếu nại: đối soát chứng minh con số đúng, thông báo chứng minh doanh nghiệp đã được báo trước khi bị đình chỉ. Dọn sớm hơn thời hạn khiếu nại thì đúng lúc cần nhất lại không còn — xem bảng Mục 4.6. | BR-15.4, BR-15.5, BR-31.6, BR-27.2 |
+| 24 | **Thời hạn ân hạn tiếp nhận sau khi đăng ký đã kết thúc là bao lâu?** BR-24.10 cho phép ngắt kênh có thông báo sau thời hạn này nhưng chưa có con số. | Đây là ngoại lệ thứ hai của nguyên tắc không-chặn-chiều-tiếp-nhận (BR-16.3), nên độ dài của nó là một cam kết công bố ra bên ngoài. Quá ngắn thì doanh nghiệp vừa hủy đã mất khách ngay; quá dài thì nhà cung cấp trả tiền nền tảng kênh cho một quan hệ đã chấm dứt. Cần chốt cùng câu 9 vì hai thời hạn phải nhất quán với nhau. | BR-24.10, BR-24.3, câu 9, câu 15 |
 
-**Tham chiếu:** các câu 1 → 4 và câu 13 cần được chốt trước khi mở issue xây dựng cho Nhóm A và Nhóm B; câu 1 gắn với issue [#90](https://github.com/crmsaassaudi/product-management/issues/90) của Omnichat.
+**Tham chiếu:** các câu 1 → 4 và câu 13 cần được chốt trước khi mở issue xây dựng cho Nhóm A và Nhóm B; câu 1 gắn với issue [#90](https://github.com/crmsaassaudi/product-management/issues/90) của Omnichat. Các câu 21 và 22 cần được chốt trước khi chốt thiết kế kiến trúc, vì chúng quyết định lựa chọn không đảo ngược rẻ về cách cách ly và cách chốt kỳ.
+
+---
+
+## 8. Nhật ký sửa đổi
+
+| Ngày | Nội dung | Lý do |
+| --- | --- | --- |
+| 2026-08-24 | Bản đầu tiên — FEAT-01 → FEAT-32, NFR-1 → NFR-19, Mục 5, 6, 7. | Đặc tả nghiệp vụ cho một module chưa xây dựng. |
+| 2026-08-25 | Rà soát toàn văn trước khi đóng phạm vi. **Bổ sung:** FEAT-18b (vòng đời & trạng thái hóa đơn); Mục 2.5 (bản đồ phụ thuộc & thứ tự triển khai); Mục 4.6 (tổng hợp thời hạn lưu trữ); Mục 8 này. **Sửa quy tắc:** BR-02.5 (thêm điều kiện thứ ba của gate phát hành), BR-06.8, BR-11.8 (sự kiện hai chiều), BR-11.8b, BR-11.9, BR-13.3b, BR-14.7, BR-14.8, BR-16.2b, BR-16.3 (liệt kê giới hạn hai ngoại lệ), BR-16.5b, BR-16.10, BR-24.10, BR-24.11, NFR-18b. **Sửa Mục 5:** thêm ba hàng và nguyên tắc thứ năm. **Sửa Mục 7.2:** thêm câu 21 → 24, cập nhật câu 5. | Đóng các lỗ hổng phát hiện khi rà soát: hai chỗ quy tắc không cùng đúng được (cách đo số ghế; ai thực thi trần tính tiền), một thực thể thiếu vòng đời (hóa đơn), một lỗ chi phí chưa bịt (kênh của tài khoản đã kết thúc quan hệ), và các cam kết chưa có cơ chế hoặc chưa có đại lượng đo. |
+
+**Từ 2026-08-25, phạm vi tài liệu đã đóng.** Mọi thay đổi về sau đi qua quy trình thay đổi có kiểm soát và ghi vào bảng này, kèm lý do và người quyết định.
