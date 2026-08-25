@@ -549,6 +549,20 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/75"
       ]
+    },
+    {
+      "id": "feat-76",
+      "title": "Omnichat FEAT-32 + BR-05.9/BR-05.10: Minh bạch thời gian chờ, đo tỷ lệ bỏ cuộc, và Yêu cầu liên hệ lại",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web",
+        "livechat-widget"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/76"
+      ]
     }
   ]
 }
