@@ -601,6 +601,19 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/79"
       ]
+    },
+    {
+      "id": "feat-80",
+      "title": "Omnichat FEAT-26: Giám sát và can thiệp thời gian thực cho Trưởng nhóm/Giám sát viên",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/80"
+      ]
     }
   ]
 }
