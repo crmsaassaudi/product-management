@@ -485,6 +485,19 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/70"
       ]
+    },
+    {
+      "id": "feat-71",
+      "title": "Omnichat BR-01.8: Thuộc tính kênh — thay mọi liệt kê tên kênh trong quy tắc nghiệp vụ",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/71"
+      ]
     }
   ]
 }
