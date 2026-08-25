@@ -563,6 +563,19 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/76"
       ]
+    },
+    {
+      "id": "feat-77",
+      "title": "Omnichat FEAT-19 + FEAT-20: Báo cáo dùng được để làm việc — bỏ cuộc, chuyển tiếp, bấm xuyên xuống, xuất/gửi định kỳ, xếp hạng ba mặt",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/77"
+      ]
     }
   ]
 }
