@@ -614,6 +614,19 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/80"
       ]
+    },
+    {
+      "id": "feat-81",
+      "title": "Omnichat FEAT-27: Quản lý chất lượng hội thoại (QA)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/81"
+      ]
     }
   ]
 }
