@@ -524,6 +524,19 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/73"
       ]
+    },
+    {
+      "id": "feat-74",
+      "title": "Omnichat BR-07.9 + BR-07.10: Lý do chuyển tiếp bắt buộc và thông báo cho khách khi đổi người phụ trách",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/74"
+      ]
     }
   ]
 }
