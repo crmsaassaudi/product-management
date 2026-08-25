@@ -472,6 +472,19 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/69"
       ]
+    },
+    {
+      "id": "feat-70",
+      "title": "Omnichat FEAT-25: Nhật ký thay đổi cấu hình Omnichat",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/70"
+      ]
     }
   ]
 }
