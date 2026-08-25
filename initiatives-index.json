@@ -576,6 +576,18 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/77"
       ]
+    },
+    {
+      "id": "feat-78",
+      "title": "Omnichat BR-21.10 + BR-21.11: Giữ nội dung soạn dở và thao tác hàng loạt trong màn hình Agent",
+      "primary_repo": "crm-web",
+      "affected_repos": [
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/78"
+      ]
     }
   ]
 }
