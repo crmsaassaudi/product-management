@@ -745,6 +745,393 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/90"
       ]
+    },
+    {
+      "id": "feat-91",
+      "title": "[QUYẾT ĐỊNH] Billing K1: Ai sở hữu hóa đơn và ai chạy chu trình nhắc nợ",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-manager-api",
+        "crm-lago"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/91"
+      ]
+    },
+    {
+      "id": "feat-93",
+      "title": "[QUYẾT ĐỊNH] Billing §7.2-2: Đơn vị nhà cung cấp bị nền tảng kênh tính tiền, và ai chịu phần chênh",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-manager-api"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/93"
+      ]
+    },
+    {
+      "id": "feat-94",
+      "title": "[QUYẾT ĐỊNH] Billing §7.2-3+4: Pháp nhân phát hành, thị trường bán và thủ tục hóa đơn điện tử",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-manager-api"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/94"
+      ]
+    },
+    {
+      "id": "feat-95",
+      "title": "[QUYẾT ĐỊNH] Billing §7.2-13: Có bán gói theo chu kỳ khác tháng không, và đổi chu kỳ thì xử lý thế nào",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-manager-api"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/95"
+      ]
+    },
+    {
+      "id": "feat-96",
+      "title": "[QUYẾT ĐỊNH] Billing §7.2-21: Cửa sổ chốt kỳ cam kết với kế toán (NFR-13)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-manager-api"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/96"
+      ]
+    },
+    {
+      "id": "feat-98",
+      "title": "Billing FEAT-01 + FEAT-02: Danh mục gói cước, phiên bản gói & danh mục loại tiêu dùng",
+      "primary_repo": "crm-manager-api",
+      "affected_repos": [
+        "crm-manager-api",
+        "crm-manager-web",
+        "crm-lago"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/98"
+      ]
+    },
+    {
+      "id": "feat-99",
+      "title": "Billing FEAT-03: Hồ sơ thanh toán của doanh nghiệp",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/99"
+      ]
+    },
+    {
+      "id": "feat-101",
+      "title": "Billing FEAT-05: Dùng thử, chuyển đổi sang trả phí & ân hạn tiếp nhận",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/101"
+      ]
+    },
+    {
+      "id": "feat-102",
+      "title": "Billing FEAT-06: Nâng gói, hạ gói & tính phí phần lẻ giữa kỳ",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/102"
+      ]
+    },
+    {
+      "id": "feat-103",
+      "title": "Billing FEAT-07: Add-on & mua thêm hạn mức",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/103"
+      ]
+    },
+    {
+      "id": "feat-104",
+      "title": "Billing FEAT-08: Chiết khấu, khuyến mãi & giá thương lượng riêng",
+      "primary_repo": "crm-manager-api",
+      "affected_repos": [
+        "crm-manager-api",
+        "crm-manager-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/104"
+      ]
+    },
+    {
+      "id": "feat-107",
+      "title": "Billing FEAT-11: Tính phí theo số người dùng — sự kiện hai chiều & mốc đầu kỳ",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/107"
+      ]
+    },
+    {
+      "id": "feat-109",
+      "title": "Billing FEAT-14: Bút toán đảo, hoàn hạn mức & đảo tự động khi phát hiện lạm dụng",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-manager-api"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/109"
+      ]
+    },
+    {
+      "id": "feat-110",
+      "title": "Billing FEAT-15: Đối soát tiêu dùng & cổng chặn phát hành hóa đơn",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-manager-api",
+        "crm-manager-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/110"
+      ]
+    },
+    {
+      "id": "feat-111",
+      "title": "Billing FEAT-16: Hạn mức bao gồm, phí vượt, hai loại trần & chặn theo lô",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/111"
+      ]
+    },
+    {
+      "id": "feat-112",
+      "title": "Billing FEAT-17: Theo dõi tiêu dùng, ước tính chi phí & cảnh báo ngưỡng",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/112"
+      ]
+    },
+    {
+      "id": "feat-113",
+      "title": "Billing FEAT-18 + FEAT-18b: Lập, phát hành hóa đơn cuối kỳ & vòng đời chứng từ",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-manager-api",
+        "crm-lago"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/113"
+      ]
+    },
+    {
+      "id": "feat-114",
+      "title": "Billing FEAT-19: Thuế & yêu cầu hóa đơn hợp lệ theo quốc gia",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-manager-api"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/114"
+      ]
+    },
+    {
+      "id": "feat-115",
+      "title": "Billing FEAT-20: Phương thức thanh toán, thu tiền, dung sai & khoản chưa khớp",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web",
+        "crm-manager-api"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/115"
+      ]
+    },
+    {
+      "id": "feat-116",
+      "title": "Billing FEAT-21 + FEAT-22: Nhắc nợ, đình chỉ & khôi phục dịch vụ",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/116"
+      ]
+    },
+    {
+      "id": "feat-117",
+      "title": "Billing FEAT-23: Ghi có, hoàn tiền & điều chỉnh hóa đơn",
+      "primary_repo": "crm-manager-api",
+      "affected_repos": [
+        "crm-manager-api",
+        "crm-manager-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/117"
+      ]
+    },
+    {
+      "id": "feat-118",
+      "title": "Billing FEAT-24: Hủy đăng ký, ngắt kênh sau khi kết thúc & giữ dữ liệu",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/118"
+      ]
+    },
+    {
+      "id": "feat-119",
+      "title": "Billing FEAT-25: Đa tiền tệ & giá theo vùng",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-manager-api"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/119"
+      ]
+    },
+    {
+      "id": "feat-120",
+      "title": "Billing FEAT-26: Cổng thanh toán tự phục vụ cho doanh nghiệp",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-web",
+        "crm-api"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/120"
+      ]
+    },
+    {
+      "id": "feat-121",
+      "title": "Billing FEAT-27: Truy vết từ dòng hóa đơn xuống đối tượng gốc & xử lý khiếu nại",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web",
+        "crm-manager-api",
+        "crm-manager-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/121"
+      ]
+    },
+    {
+      "id": "feat-122",
+      "title": "Billing FEAT-28: Công cụ quản trị thương mại của nhà cung cấp",
+      "primary_repo": "crm-manager-api",
+      "affected_repos": [
+        "crm-manager-api",
+        "crm-manager-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/122"
+      ]
+    },
+    {
+      "id": "feat-123",
+      "title": "Billing FEAT-29: Nhật ký kiểm toán thương mại — nguyên tắc đóng & fail-closed có ranh giới",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-manager-api"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/123"
+      ]
+    },
+    {
+      "id": "feat-124",
+      "title": "Billing FEAT-30: Báo cáo doanh thu, giá vốn tiêu dùng & chi phí nhà cung cấp tự chịu",
+      "primary_repo": "crm-manager-api",
+      "affected_repos": [
+        "crm-manager-api",
+        "crm-manager-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/124"
+      ]
+    },
+    {
+      "id": "feat-128",
+      "title": "[EPIC] Billing & Subscription — bản đồ toàn module (SRS đã đóng phạm vi)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web",
+        "crm-manager-api",
+        "crm-manager-web",
+        "crm-lago"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/128"
+      ]
     }
   ]
 }
