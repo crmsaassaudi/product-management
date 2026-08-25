@@ -653,6 +653,19 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/83"
       ]
+    },
+    {
+      "id": "feat-84",
+      "title": "Omnichat FEAT-30: Kỹ năng & định tuyến theo kỹ năng",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/84"
+      ]
     }
   ]
 }
