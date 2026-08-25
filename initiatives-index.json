@@ -705,6 +705,19 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/87"
       ]
+    },
+    {
+      "id": "feat-88",
+      "title": "Omnichat FEAT-35: Nhật ký truy cập dữ liệu khách hàng",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/88"
+      ]
     }
   ]
 }
