@@ -692,6 +692,19 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/86"
       ]
+    },
+    {
+      "id": "feat-87",
+      "title": "Omnichat FEAT-34: Chế độ thử nghiệm cấu hình",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/87"
+      ]
     }
   ]
 }
