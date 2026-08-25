@@ -718,6 +718,19 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/88"
       ]
+    },
+    {
+      "id": "feat-89",
+      "title": "Omnichat FEAT-36: Trao đổi nhiều bên trên kênh Email",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/89"
+      ]
     }
   ]
 }
