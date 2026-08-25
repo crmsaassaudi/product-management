@@ -5,8 +5,8 @@
 | **Loại tài liệu** | Software Requirements Specification — chuẩn nghiệp vụ cho một module chưa xây dựng (xem "Ghi chú về nguồn gốc tài liệu") |
 | **Module** | Billing & Subscription — đăng ký gói cước, đo lường tiêu dùng, lập hóa đơn, thu tiền và quản lý vòng đời thương mại của từng doanh nghiệp (tenant) dùng CRM |
 | **Ngày viết** | 2026-08-24 |
-| **Sửa đổi lần cuối** | 2026-08-25 — rà soát toàn văn, bổ sung FEAT-18b và các quy tắc còn thiếu (xem "Nhật ký sửa đổi") |
-| **Trạng thái phạm vi** | **ĐÃ ĐÓNG (frozen)** kể từ 2026-08-25. Phạm vi nghiệp vụ của module này không được mở rộng hay sửa đổi thêm; mọi yêu cầu phát sinh về sau đi qua quy trình thay đổi có kiểm soát và tạo phiên bản tài liệu mới, không sửa tại chỗ. Các câu hỏi ở Mục 7.2 là **quyết định cần chốt**, không phải phạm vi cần mở. |
+| **Sửa đổi lần cuối** | 2026-08-26 — thu hẹp phạm vi: bỏ lớp pháp lý và thuế, hóa đơn là chứng từ nội bộ (xem "Nhật ký sửa đổi") |
+| **Trạng thái phạm vi** | **ĐÃ ĐÓNG (frozen)** kể từ 2026-08-26 (đóng lần đầu 2026-08-25; mở lại đúng một lần ngày 2026-08-26 để thu hẹp phạm vi theo Mục 8). Phạm vi nghiệp vụ của module này không được mở rộng hay sửa đổi thêm; mọi yêu cầu phát sinh về sau đi qua quy trình thay đổi có kiểm soát và tạo phiên bản tài liệu mới, không sửa tại chỗ. Các câu hỏi ở Mục 7.2 là **quyết định cần chốt**, không phải phạm vi cần mở. |
 | **Neo phiên bản hệ thống** | Chưa xác định — module chưa có phần triển khai nào tại thời điểm viết. Khi những hạng mục đầu tiên lên môi trường thật, tài liệu PHẢI được neo lại vào commit cụ thể của (các) repo triển khai. |
 | **Tài liệu liên quan** | [`CONTEXT.md`](../CONTEXT.md) (glossary, mục "Billing & Subscription") · [`omnichat-srs.md`](./omnichat-srs.md) · [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) |
 
@@ -36,7 +36,7 @@ Tài liệu phục vụ hai nhóm mục tiêu đối lập nhau mà thiết kế
 
 **Đo lường tiêu dùng:** danh mục loại tiêu dùng tính phí và mã định danh, phát sinh Sự kiện tính phí từ các module nghiệp vụ của CRM, định nghĩa thời điểm tính phí của từng loại, tính phí theo số người dùng, chuyển sự kiện sang hệ tính phí, ghi nhận bù và sự kiện đến muộn, điều chỉnh/hủy hiệu lực sự kiện đã ghi nhận, đối soát, hạn mức bao gồm và phí vượt, theo dõi tiêu dùng và cảnh báo ngưỡng.
 
-**Hóa đơn và thu tiền:** lập và phát hành hóa đơn cuối kỳ, vòng đời và trạng thái của chứng từ đã lập, thuế và yêu cầu hóa đơn hợp lệ, phương thức thanh toán và thu tiền tự động, nhắc nợ khi thanh toán thất bại, đình chỉ và khôi phục dịch vụ, ghi có và hoàn tiền, đa tiền tệ.
+**Hóa đơn và thu tiền:** lập và phát hành hóa đơn cuối kỳ, vòng đời và trạng thái của chứng từ đã lập, phương thức thanh toán và thu tiền tự động, nhắc nợ khi thanh toán thất bại, đình chỉ và khôi phục dịch vụ, ghi có và hoàn tiền, đa tiền tệ.
 
 **Minh bạch và vận hành:** cổng thanh toán tự phục vụ, truy vết từ dòng hóa đơn xuống đối tượng gốc và xử lý khiếu nại, công cụ quản trị của nhà cung cấp, nhật ký kiểm toán thương mại, báo cáo doanh thu và sức khỏe đăng ký, thông báo về thanh toán, và nguyên tắc cách ly ảnh hưởng giữa lớp tính phí và nghiệp vụ CRM.
 
@@ -46,6 +46,7 @@ Tài liệu phục vụ hai nhóm mục tiêu đối lập nhau mà thiết kế
 - **Mô hình workspace, vai trò và cấp bậc thành viên.** Thuộc [`iam-tenant-authorization.md`](./iam-tenant-authorization.md); tài liệu này chỉ bổ sung một vai trò mới (Người phụ trách thanh toán) và quy định ai thấy được dữ liệu tài chính.
 - **Chiến lược định giá** — mức giá cụ thể của từng gói, mức chiết khấu, chính sách khuyến mãi. Tài liệu này đặc tả *hệ thống phải cho phép biểu diễn và thực thi những mô hình giá nào*, không quyết định con số.
 - **Kế toán nội bộ của nhà cung cấp** — sổ cái, đối chiếu ngân hàng, quyết toán thuế. Hệ thống cung cấp chứng từ và số liệu đầu ra; việc hạch toán do hệ thống kế toán riêng đảm nhiệm.
+- **Chứng từ pháp lý và nghĩa vụ thuế.** Hóa đơn mà hệ thống này lập là **chứng từ nội bộ** — cơ sở tính tiền và đối chiếu giữa nhà cung cấp và doanh nghiệp trả tiền. Nó KHÔNG phải hóa đơn hợp lệ theo quy định thuế của bất kỳ quốc gia nào. Việc xác định thuế suất, phát hành hóa đơn điện tử, thủ tục với cơ quan thuế và lưu trữ chứng từ pháp lý nằm ngoài phạm vi tài liệu này và sẽ có tài liệu riêng khi đến lúc. Hệ quả: mọi quy tắc trong tài liệu này nói về "hóa đơn" đều nói về chứng từ nội bộ đó.
 - **Hoa hồng đại lý và bán lại qua đối tác** — xem Mục 7.1.
 
 ### 1.3 Đối tượng đọc
@@ -125,7 +126,7 @@ Ba nguyên tắc dưới đây chi phối toàn bộ Mục 3 và là lý do tài
 | Nguyên tắc | Nội dung | Hệ quả ràng buộc |
 | --- | --- | --- |
 | **CRM là nguồn sự thật về việc đã xảy ra** | CRM sở hữu doanh nghiệp, người dùng, hội thoại, tin nhắn, quy trình, chiến dịch — và là nơi duy nhất biết một việc đáng tính phí có thực sự xảy ra hay không | Mọi con số tính phí PHẢI đối chiếu ngược được về một đối tượng có thật trong CRM (BR-10.8, FEAT-27) |
-| **CRM không sở hữu logic tính tiền** | Giá, hạn mức, chu kỳ, thuế, hóa đơn, thu tiền không phải kiến thức của module nghiệp vụ | Đổi mô hình giá hoặc đổi hệ tính phí KHÔNG ĐƯỢC buộc phải sửa module Omnichat, Workflow hay Campaign (BR-02.4, NFR-12) |
+| **CRM không sở hữu logic tính tiền** | Giá, hạn mức, chu kỳ, hóa đơn, thu tiền không phải kiến thức của module nghiệp vụ | Đổi mô hình giá hoặc đổi hệ tính phí KHÔNG ĐƯỢC buộc phải sửa module Omnichat, Workflow hay Campaign (BR-02.4, NFR-12) |
 | **Lớp sự kiện tính phí là ranh giới duy nhất** | Module nghiệp vụ chỉ phát sinh Sự kiện tính phí; không module nghiệp vụ nào được biết tới sự tồn tại của gói cước, hạn mức hay hóa đơn | Việc kiểm soát chi phí thực thi tại lớp thương mại, không rải rác trong nghiệp vụ (FEAT-16, FEAT-32) |
 
 ### 2.3 Vai trò người dùng
@@ -147,7 +148,7 @@ Ba nguyên tắc dưới đây chi phối toàn bộ Mục 3 và là lý do tài
 | --- | --- | --- |
 | **A. Nền tảng thương mại** | Gói cước, danh mục tiêu dùng, hồ sơ thanh toán, vòng đời đăng ký, dùng thử, đổi gói, add-on, chiết khấu | FEAT-01 → FEAT-08 |
 | **B. Đo lường tiêu dùng** | Phát sinh, chuyển giao, ghi nhận bù, điều chỉnh và đối soát sự kiện; hạn mức và theo dõi | FEAT-09 → FEAT-17 |
-| **C. Hóa đơn & thu tiền** | Lập hóa đơn, vòng đời chứng từ, thuế, thu tiền, nhắc nợ, đình chỉ, ghi có, hủy, đa tiền tệ | FEAT-18 → FEAT-25 (gồm FEAT-18b) |
+| **C. Hóa đơn & thu tiền** | Lập hóa đơn nội bộ, vòng đời chứng từ, thu tiền, nhắc nợ, đình chỉ, ghi có, hủy, đa tiền tệ | FEAT-18 → FEAT-25 (gồm FEAT-18b, không còn FEAT-19) |
 | **D. Minh bạch, vận hành & tuân thủ** | Cổng tự phục vụ, truy vết và khiếu nại, công cụ nhà cung cấp, nhật ký, báo cáo, thông báo, cách ly ảnh hưởng | FEAT-26 → FEAT-32 |
 
 ### 2.5 Bản đồ phụ thuộc & thứ tự triển khai
@@ -163,8 +164,8 @@ Mục này không thêm yêu cầu nào. Nó nêu **quan hệ phụ thuộc bắ
 | FEAT-15 (đối soát) | FEAT-12, FEAT-14 | So khớp phải trừ được bút toán đảo, nếu không mọi lần đảo đều thành một chênh lệch giả |
 | FEAT-16 (hạn mức & phí vượt) | FEAT-01, FEAT-04, FEAT-12 | Cần điều kiện gói, trạng thái đăng ký và số liệu tiêu dùng cùng lúc mới ra được quyết định chặn/cho phép |
 | FEAT-17 (theo dõi & cảnh báo) | FEAT-16, FEAT-12 | Không có mức tồn đọng thì không thực hiện được BR-17.3 |
-| FEAT-18 (lập & phát hành hóa đơn) | FEAT-13, FEAT-15, FEAT-19 | Thời hạn chốt kỳ, cổng chặn đối soát và thủ tục chứng từ đều nằm trước bước phát hành |
-| **FEAT-18b (vòng đời hóa đơn)** | FEAT-18, FEAT-19 | Tập trạng thái chỉ định nghĩa được sau khi biết thủ tục bắt buộc của thị trường |
+| FEAT-18 (lập & phát hành hóa đơn) | FEAT-13, FEAT-15 | Thời hạn chốt kỳ và cổng chặn đối soát đều nằm trước bước phát hành |
+| **FEAT-18b (vòng đời hóa đơn)** | FEAT-18 | Trạng thái của chứng từ chỉ định nghĩa được sau khi biết chứng từ được lập và phát hành thế nào |
 | FEAT-20 (thu tiền) | FEAT-18b | Không có ngày tới hạn và trạng thái chứng từ thì không biết khi nào được phép thu |
 | FEAT-21 (nhắc nợ) | FEAT-18b, BR-18.9 | Ngày tới hạn là mốc khởi phát duy nhất (BR-21.9) |
 | FEAT-22 (đình chỉ & khôi phục) | FEAT-21 | Đình chỉ là bước cuối của chu trình nhắc nợ |
@@ -173,7 +174,7 @@ Mục này không thêm yêu cầu nào. Nó nêu **quan hệ phụ thuộc bắ
 | FEAT-30 (báo cáo) | FEAT-18b, BR-16.8 | Doanh thu ghi theo kỳ dịch vụ cần chứng từ; giá vốn cần con số tự chịu tách riêng |
 | FEAT-29 (nhật ký) | — | Không phụ thuộc ai, nhưng mọi tính năng thuộc diện quyết định thương mại phụ thuộc nó (BR-29.2) |
 
-**Quyết định chặn ánh xạ vào tính năng nào** (Mục 7.2): câu 1 → FEAT-10 và FEAT-02; câu 2 → FEAT-02 và FEAT-30; câu 3 và 4 → FEAT-18b, FEAT-19, FEAT-20, FEAT-23; câu 13 → FEAT-04 và FEAT-06. Trước khi mở issue xây dựng cho một tính năng, PHẢI kiểm tra quyết định chặn tương ứng đã có kết luận.
+**Quyết định chặn ánh xạ vào tính năng nào** (Mục 7.2): câu 1 → FEAT-10 và FEAT-02; câu 2 → FEAT-02 và FEAT-30; câu 13 → FEAT-04 và FEAT-06. Trước khi mở issue xây dựng cho một tính năng, PHẢI kiểm tra quyết định chặn tương ứng đã có kết luận.
 
 ---
 
@@ -256,7 +257,7 @@ Mục này không thêm yêu cầu nào. Nó nêu **quan hệ phụ thuộc bắ
 **Luồng chính:**
 
 1. Khi một doanh nghiệp được tạo trong CRM, hệ thống tạo sẵn hồ sơ thanh toán tương ứng ở trạng thái chưa hoàn tất.
-2. Chủ workspace bổ sung tên pháp lý, quốc gia, địa chỉ xuất hóa đơn, mã số thuế nếu có, và chỉ định Người phụ trách thanh toán.
+2. Chủ workspace bổ sung tên pháp lý, quốc gia, địa chỉ xuất hóa đơn, và chỉ định Người phụ trách thanh toán.
 3. Hệ thống xác định tiền tệ và múi giờ cắt kỳ theo quốc gia đã khai, cho phép điều chỉnh trước khi đăng ký gói trả phí.
 4. Hồ sơ chuyển sang trạng thái đủ điều kiện đăng ký gói trả phí.
 
@@ -702,16 +703,17 @@ Mục này không thêm yêu cầu nào. Nó nêu **quan hệ phụ thuộc bắ
 
 **Quy tắc nghiệp vụ:**
 
+- BR-18.0: Hóa đơn mà mục này lập là **chứng từ nội bộ** giữa nhà cung cấp và doanh nghiệp trả tiền: nó là cơ sở để đòi tiền, để đối chiếu và để khiếu nại, KHÔNG phải chứng từ hợp lệ theo quy định thuế của một quốc gia. Mọi quy tắc về hóa đơn trong tài liệu này áp cho chứng từ nội bộ đó. Nếu về sau cần phát hành chứng từ pháp lý, đó là một tài liệu và một lớp riêng, tham chiếu ngược về hóa đơn nội bộ theo BR-18.6 — KHÔNG thay thế nó và KHÔNG sửa nó.
 - BR-18.1: Trước khi phát hành, PHẢI có bản nháp xem trước được — cho cả một doanh nghiệp cụ thể lẫn cho toàn bộ đợt chốt kỳ. Chạy thử toàn đợt là công cụ duy nhất phát hiện được lỗi hệ thống trước khi nó nhân lên trên hàng trăm hóa đơn.
 - BR-18.2: Hóa đơn đã phát hành là **bất biến**. Mọi điều chỉnh về sau thực hiện bằng chứng từ ghi có hoặc bằng một hóa đơn mới (FEAT-23). KHÔNG ĐƯỢC sửa số tiền, sửa dòng, hay xóa một hóa đơn đã phát hành.
-- BR-18.3: Hóa đơn PHẢI tách bạch từng nhóm khoản mục và không gộp: phí thuê bao (kèm kỳ áp dụng), từng loại phí vượt (kèm số lượng, hạn mức bao gồm và đơn giá), từng add-on, từng khoản ưu đãi kèm căn cứ, phần phát sinh thuộc kỳ trước theo BR-13.3, thuế, phần bù trừ từ số dư có nếu có (BR-23.5), và **ngày tới hạn thanh toán** (BR-18.9).
+- BR-18.3: Hóa đơn PHẢI tách bạch từng nhóm khoản mục và không gộp: phí thuê bao (kèm kỳ áp dụng), từng loại phí vượt (kèm số lượng, hạn mức bao gồm và đơn giá), từng add-on, từng khoản ưu đãi kèm căn cứ, phần phát sinh thuộc kỳ trước theo BR-13.3, phần bù trừ từ số dư có nếu có (BR-23.5), và **ngày tới hạn thanh toán** (BR-18.9).
 - BR-18.4: Mỗi dòng tiêu dùng trên hóa đơn PHẢI dẫn xuống được danh sách đối tượng gốc tạo nên con số đó (FEAT-27).
 - BR-18.5: Hệ thống KHÔNG ĐƯỢC phát hành hóa đơn cho một doanh nghiệp mà kết quả đối soát của kỳ đó đang báo chênh lệch vượt ngưỡng, hoặc còn sự kiện tồn đọng vượt ngưỡng. Trường hợp này PHẢI chuyển sang xử lý có người soát, không tự động bỏ qua và cũng không tự động phát hành.
-- BR-18.6: Số hóa đơn PHẢI liên tục, không trùng và không nhảy khoảng vô căn cứ. Khi một hóa đơn bị hủy trước khi phát hành, số đó KHÔNG ĐƯỢC tái sử dụng. Ở những thị trường mà số hoặc mã hóa đơn do cơ quan thuế cấp (BR-19.3), dãy số do cơ quan đó quy định là dãy số có hiệu lực; hệ thống KHÔNG ĐƯỢC duy trì một dãy số riêng song song để rồi hai dãy không khớp nhau khi đối chiếu.
+- BR-18.6: Số hóa đơn PHẢI liên tục, không trùng và không nhảy khoảng vô căn cứ. Khi một hóa đơn bị hủy trước khi phát hành, số đó KHÔNG ĐƯỢC tái sử dụng. Dãy số này là dãy số nội bộ của hệ thống; nếu về sau có một chứng từ pháp lý được phát hành cho cùng một khoản, chứng từ đó mang dãy số riêng của nó và PHẢI tham chiếu ngược được về số hóa đơn nội bộ tương ứng.
 - BR-18.7: Hóa đơn có tổng bằng không vẫn PHẢI được phát hành và gửi (ví dụ doanh nghiệp đang trong kỳ được miễn phí hoàn toàn) — để doanh nghiệp có chứng từ liên tục và để lịch sử không bị đứt quãng.
 - BR-18.8: Ngôn ngữ và định dạng số/tiền tệ trên hóa đơn PHẢI theo hồ sơ thanh toán của doanh nghiệp, không theo cấu hình của nhà cung cấp.
-- BR-18.9: Mỗi hóa đơn PHẢI có một **ngày tới hạn thanh toán**, bằng ngày hóa đơn thực sự phát hành cộng khoảng ân hạn thanh toán của phương thức đang áp dụng. Ba ràng buộc đi kèm: (a) mốc đếm là ngày **thực sự phát hành** — ở thị trường mà hóa đơn chỉ được coi là phát hành sau khi cơ quan thuế cấp mã (BR-19.3), ngày tới hạn tính từ thời điểm đó chứ KHÔNG từ ngày chốt kỳ, vì doanh nghiệp không thể trả một hóa đơn chưa nhận được; (b) khoảng ân hạn khác nhau theo phương thức và PHẢI khai báo rõ, không để mặc định ngầm; (c) ngày tới hạn PHẢI xuất hiện trên hóa đơn và trong thông báo phát hành hóa đơn (BR-31.4). Đây là mốc khởi phát duy nhất của FEAT-21 — trước đây tài liệu viện dẫn "tới hạn" mà không có quy tắc nào định nghĩa nó. Con số ân hạn: xem Mục 7.2.
-- BR-18.10: Việc làm tròn PHẢI thực hiện ở **cấp độ từng dòng khoản mục trước khi cộng tổng**, KHÔNG ĐƯỢC cộng các giá trị chưa làm tròn rồi mới làm tròn ở tổng. Trình tự bắt buộc: làm tròn từng dòng → cộng thành tổng trước thuế → áp thuế trên tổng đã làm tròn → làm tròn phần thuế → cộng ra tổng phải trả. Độ chính xác lấy theo tiền tệ của hồ sơ thanh toán (ví dụ đồng Việt Nam không có phần thập phân, đô la Mỹ có hai chữ số). Phương pháp làm tròn là **làm tròn nửa lên** cho toàn hệ thống; đây là một con số cố định trong tài liệu chứ không phải tham số, vì nó quyết định trực tiếp số tiền người trả phải trả và do đó là một cam kết, không phải một lựa chọn kỹ thuật. Quy tắc này áp cho cả phần chênh lệch tính theo tỷ lệ thời gian khi đổi gói (BR-06.1, BR-06.4). Không có nó, tiêu chí "doanh nghiệp tự tính lại được tổng tiền từ các dòng" không kiểm chứng được và mọi chênh lệch một đơn vị tiền đều trở thành một khiếu nại.
+- BR-18.9: Mỗi hóa đơn PHẢI có một **ngày tới hạn thanh toán**, bằng ngày hóa đơn thực sự phát hành cộng khoảng ân hạn thanh toán của phương thức đang áp dụng. Ba ràng buộc đi kèm: (a) mốc đếm là ngày **thực sự phát hành**, KHÔNG phải ngày chốt kỳ — doanh nghiệp không thể trả một hóa đơn chưa nhận được, nên hai mốc này lệch nhau bao nhiêu thì doanh nghiệp mất bấy nhiêu ngày ân hạn; (b) khoảng ân hạn khác nhau theo phương thức và PHẢI khai báo rõ, không để mặc định ngầm; (c) ngày tới hạn PHẢI xuất hiện trên hóa đơn và trong thông báo phát hành hóa đơn (BR-31.4). Đây là mốc khởi phát duy nhất của FEAT-21 — trước đây tài liệu viện dẫn "tới hạn" mà không có quy tắc nào định nghĩa nó. Con số ân hạn: xem Mục 7.2.
+- BR-18.10: Việc làm tròn PHẢI thực hiện ở **cấp độ từng dòng khoản mục trước khi cộng tổng**, KHÔNG ĐƯỢC cộng các giá trị chưa làm tròn rồi mới làm tròn ở tổng. Trình tự bắt buộc: làm tròn từng dòng → cộng thành tổng phải trả. Độ chính xác lấy theo tiền tệ của hồ sơ thanh toán (ví dụ đồng Việt Nam không có phần thập phân, đô la Mỹ có hai chữ số). Phương pháp làm tròn là **làm tròn nửa lên** cho toàn hệ thống; đây là một con số cố định trong tài liệu chứ không phải tham số, vì nó quyết định trực tiếp số tiền người trả phải trả và do đó là một cam kết, không phải một lựa chọn kỹ thuật. Quy tắc này áp cho cả phần chênh lệch tính theo tỷ lệ thời gian khi đổi gói (BR-06.1, BR-06.4). Không có nó, tiêu chí "doanh nghiệp tự tính lại được tổng tiền từ các dòng" không kiểm chứng được và mọi chênh lệch một đơn vị tiền đều trở thành một khiếu nại.
 
 **Tiêu chí chấp nhận:**
 
@@ -724,23 +726,22 @@ Mục này không thêm yêu cầu nào. Nó nêu **quan hệ phụ thuộc bắ
 
 ### FEAT-18b — Vòng đời & trạng thái hóa đơn `[Yêu cầu mới]`
 
-**Mô tả nghiệp vụ:** Định nghĩa tập trạng thái của một hóa đơn và các chuyển đổi hợp lệ giữa chúng, để mọi phần còn lại của hệ thống — thu tiền, nhắc nợ, đình chỉ, ghi có, khiếu nại — đọc từ một nguồn duy nhất. FEAT-04 làm việc này cho **đăng ký**; mục này làm đúng việc đó cho **chứng từ**. Không có nó thì các quy tắc ở FEAT-19 → FEAT-23 và FEAT-27 đang viện dẫn những trạng thái chưa ai khai báo, và hai người đọc cùng tài liệu sẽ dựng ra hai vòng đời khác nhau.
+**Mô tả nghiệp vụ:** Định nghĩa tập trạng thái của một hóa đơn và các chuyển đổi hợp lệ giữa chúng, để mọi phần còn lại của hệ thống — thu tiền, nhắc nợ, đình chỉ, ghi có, khiếu nại — đọc từ một nguồn duy nhất. FEAT-04 làm việc này cho **đăng ký**; mục này làm đúng việc đó cho **chứng từ**. Không có nó thì các quy tắc ở FEAT-20 → FEAT-23 và FEAT-27 đang viện dẫn những trạng thái chưa ai khai báo, và hai người đọc cùng tài liệu sẽ dựng ra hai vòng đời khác nhau.
 
 **Actor:** Tác vụ tự động, Kế toán nhà cung cấp.
 
 **Luồng chính:**
 
 1. Kỳ chốt, hệ thống dựng hóa đơn ở trạng thái **nháp**; nó xem trước và soát được, chưa có hiệu lực với doanh nghiệp (BR-18.1).
-2. Nếu thị trường yêu cầu thủ tục bắt buộc với cơ quan thuế, hóa đơn chuyển sang **chờ thủ tục bắt buộc** và dừng lại ở đó cho tới khi thủ tục hoàn tất (BR-19.3).
-3. Hóa đơn chuyển sang **đã phát hành**: nhận số hóa đơn, có ngày phát hành và ngày tới hạn, gửi tới doanh nghiệp, và từ đây trở thành bất biến (BR-18.2).
-4. Khi nghĩa vụ được giải quyết trọn vẹn — bằng tiền thu được, bằng số dư có bù trừ, bằng chứng từ ghi có, hoặc vì tổng phải trả bằng không — hóa đơn chuyển sang **đã thanh toán**.
-5. Một hóa đơn còn ở nháp mà không được phát hành thì kết thúc ở **đã hủy nháp**; số đã cấp cho nó không được dùng lại (BR-18.6).
+2. Hóa đơn chuyển sang **đã phát hành**: nhận số hóa đơn, có ngày phát hành và ngày tới hạn, gửi tới doanh nghiệp, và từ đây trở thành bất biến (BR-18.2).
+3. Khi nghĩa vụ được giải quyết trọn vẹn — bằng tiền thu được, bằng số dư có bù trừ, bằng chứng từ ghi có, hoặc vì tổng phải trả bằng không — hóa đơn chuyển sang **đã thanh toán**.
+4. Một hóa đơn còn ở nháp mà không được phát hành thì kết thúc ở **đã hủy nháp**; số đã cấp cho nó không được dùng lại (BR-18.6).
 
 **Quy tắc nghiệp vụ:**
 
-- BR-18b.1: Một hóa đơn PHẢI ở đúng một trạng thái tại một thời điểm, và tập trạng thái PHẢI đủ để phân biệt năm tình huống khác nhau về mặt nghiệp vụ: **nháp** (đã dựng, chưa có hiệu lực với doanh nghiệp, còn sửa và còn hủy được), **chờ thủ tục bắt buộc** (đã chốt nội dung nhưng chưa được coi là phát hành theo quy định của thị trường), **đã phát hành** (bất biến, đã gửi, đã có ngày tới hạn), **đã thanh toán** (nghĩa vụ đã được giải quyết trọn vẹn), và **đã hủy nháp** (kết thúc, chưa từng có hiệu lực).
-- BR-18b.2: Chỉ có **một đường vào** trạng thái đã phát hành, và đường đó đi qua đầy đủ các cổng chặn đã quy định: đối soát trong ngưỡng và tồn đọng trong ngưỡng (BR-18.5), thủ tục bắt buộc đã hoàn tất nếu thị trường yêu cầu (BR-19.3). Một hóa đơn đã phát hành KHÔNG BAO GIỜ quay lại nháp, KHÔNG BAO GIỜ bị xóa và KHÔNG BAO GIỜ đổi nội dung — mọi điều chỉnh đi qua chứng từ ghi có hoặc một hóa đơn mới (BR-18.2, NFR-9).
-- BR-18b.3: Trong trạng thái chờ thủ tục bắt buộc, hóa đơn KHÔNG ĐƯỢC gửi cho doanh nghiệp, KHÔNG ĐƯỢC thu tiền, KHÔNG ĐƯỢC tính ngày tới hạn và KHÔNG ĐƯỢC bước vào chu trình nhắc nợ (BR-19.3, BR-18.9). Thủ tục thất bại PHẢI tạo cảnh báo và chuyển sang xử lý có người soát; KHÔNG ĐƯỢC để hóa đơn treo im lặng ở trạng thái này quá thời hạn đã cấu hình.
+- BR-18b.1: Một hóa đơn PHẢI ở đúng một trạng thái tại một thời điểm, và tập trạng thái PHẢI đủ để phân biệt bốn tình huống khác nhau về mặt nghiệp vụ: **nháp** (đã dựng, chưa có hiệu lực với doanh nghiệp, còn sửa và còn hủy được), **đã phát hành** (bất biến, đã gửi, đã có ngày tới hạn), **đã thanh toán** (nghĩa vụ đã được giải quyết trọn vẹn), và **đã hủy nháp** (kết thúc, chưa từng có hiệu lực).
+- BR-18b.2: Chỉ có **một đường vào** trạng thái đã phát hành, và đường đó đi qua đầy đủ các cổng chặn đã quy định: đối soát trong ngưỡng và tồn đọng trong ngưỡng (BR-18.5). Một hóa đơn đã phát hành KHÔNG BAO GIỜ quay lại nháp, KHÔNG BAO GIỜ bị xóa và KHÔNG BAO GIỜ đổi nội dung — mọi điều chỉnh đi qua chứng từ ghi có hoặc một hóa đơn mới (BR-18.2, NFR-9).
+- BR-18b.3: *(đã bỏ ngày 2026-08-26 cùng FEAT-19 — số hiệu giữ nguyên, không tái sử dụng, xem Mục 8.)*
 - BR-18b.4: **Quá hạn không phải một trạng thái**, nó là một thuộc tính dẫn xuất từ việc so ngày hiện tại với ngày tới hạn của một hóa đơn đang ở trạng thái đã phát hành. Không vai trò nào và không tác vụ nào được đánh dấu một hóa đơn là quá hạn sớm hơn hoặc muộn hơn mốc đó. Cố định điểm này vì nếu quá hạn là một cờ được set thì chu trình nhắc nợ có thể khởi phát bằng một thao tác sai thay vì bằng thời gian, và BR-21.9 mất hiệu lực.
 - BR-18b.5: Hóa đơn có **tổng phải trả bằng không** tại thời điểm phát hành chuyển thẳng sang đã thanh toán, bỏ qua bước thu tiền và không bao giờ vào chu trình nhắc nợ (BR-20.11, BR-18.7).
 - BR-18b.6: **Khiếu nại gắn với từng dòng của hóa đơn, không phải với cả hóa đơn.** Một hóa đơn đang có khiếu nại mở KHÔNG chuyển sang một trạng thái riêng; phần giá trị bị khiếu nại được tạm dừng thu tiền theo BR-27.3 và BR-27.7, còn phần không bị khiếu nại vẫn tới hạn và vẫn thu bình thường. Biểu diễn khiếu nại thành một trạng thái của cả chứng từ sẽ khiến một khiếu nại vài chục nghìn đồng chặn việc thu toàn bộ hóa đơn — và đó chính là kẽ hở hoãn thanh toán mà BR-27.7 lập ra để chặn.
@@ -751,36 +752,11 @@ Mục này không thêm yêu cầu nào. Nó nêu **quan hệ phụ thuộc bắ
 **Tiêu chí chấp nhận:**
 
 - Với một hóa đơn bất kỳ, tra ra được ngay nó đang ở trạng thái nào, vào trạng thái đó từ khi nào, vì nguyên nhân gì và do ai.
-- Không hóa đơn nào ở thị trường có thủ tục bắt buộc được gửi cho doanh nghiệp hoặc bị nhắc nợ trước khi thủ tục đó hoàn tất.
 - Một khiếu nại trên một dòng không làm dừng việc thu tiền của các dòng còn lại trên cùng hóa đơn.
 - Không tồn tại hóa đơn nào ở trạng thái quá hạn trong khi ngày tới hạn của nó chưa qua.
 - Không tồn tại số hóa đơn nào được cấp hai lần, kể cả cho một hóa đơn đã hủy nháp.
 
-**Tham chiếu:** tập trạng thái phụ thuộc quyết định về thị trường phát hành và thủ tục bắt buộc — xem Mục 7.2 câu 3.
-
----
-
-### FEAT-19 — Thuế & yêu cầu hóa đơn hợp lệ `[Yêu cầu mới]`
-
-**Mô tả nghiệp vụ:** Đảm bảo chứng từ phát hành ra hợp lệ theo quy định nơi phát hành và nơi người mua cư trú.
-
-**Actor:** Kế toán nhà cung cấp, Tác vụ tự động.
-
-**Quy tắc nghiệp vụ:**
-
-- BR-19.1: Hồ sơ thanh toán PHẢI ghi quốc gia, địa chỉ xuất hóa đơn và mã số thuế (nếu có). Đây là căn cứ xác định thuế suất, không phải thông tin trang trí.
-- BR-19.2: Thuế áp theo quy định có hiệu lực **tại thời điểm phát hành hóa đơn**, không theo quy định tại thời điểm ký gói. Thay đổi thuế suất KHÔNG ĐƯỢC áp hồi tố lên hóa đơn đã phát hành.
-- BR-19.3: Nếu quy định nơi phát hành yêu cầu hóa đơn điện tử phải được cơ quan thuế cấp mã hoặc phê duyệt trước khi gửi người mua, thì hóa đơn KHÔNG ĐƯỢC coi là đã phát hành, KHÔNG ĐƯỢC gửi cho doanh nghiệp và KHÔNG ĐƯỢC khởi động chu trình thu tiền trước khi thủ tục đó hoàn tất. Trường hợp thủ tục thất bại PHẢI có quy trình xử lý riêng và cảnh báo, KHÔNG ĐƯỢC im lặng để hóa đơn treo.
-- BR-19.4: Doanh nghiệp PHẢI tự sửa được thông tin xuất hóa đơn cho tới trước thời điểm chốt kỳ (BR-03.4).
-- BR-19.5: Chứng từ ghi có PHẢI tuân thủ cùng bộ yêu cầu hợp lệ như hóa đơn của cùng quốc gia.
-- BR-19.6: Khi cùng một sản phẩm bán ở nhiều quốc gia có quy tắc chứng từ khác nhau, sự khác nhau đó PHẢI nằm ở cấu hình theo quốc gia, KHÔNG ĐƯỢC nằm ở việc xây riêng luồng nghiệp vụ cho từng thị trường.
-
-**Tiêu chí chấp nhận:**
-
-- Không hóa đơn nào được gửi cho doanh nghiệp khi thủ tục bắt buộc với cơ quan thuế chưa hoàn tất.
-- Bổ sung một quốc gia bán hàng mới không kéo theo thay đổi ở các FEAT khác.
-
-**Tham chiếu:** danh sách quốc gia phát hành và yêu cầu tương ứng chưa được chốt — xem Mục 7.2.
+**Tham chiếu:** BR-18.0 — hóa đơn ở đây là chứng từ nội bộ.
 
 ---
 
@@ -1216,7 +1192,6 @@ Ký hiệu: ✅ được phép · ⚪ chỉ được phép khi được cấp th
 | Nhận thông báo bắt buộc về tiền — không tắt được (BR-31.3, BR-21.4) | ❌ | ❌ | ✅ | ✅ | – | – | – |
 | Xuất dữ liệu của doanh nghiệp **trong lúc đang bị đình chỉ** (BR-22.1, BR-22.7) | ❌ | ⚪ | ✅ | ✅ | ❌ | ❌ | ❌ |
 | Truy cập công cụ quản trị của nhà cung cấp (FEAT-28) | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ | ✅ |
-| Cấu hình thuế & yêu cầu chứng từ theo quốc gia (FEAT-19) | ❌ | ❌ | ❌ | ❌ | ❌ | ⚪ | ✅ |
 
 Năm nguyên tắc đọc ma trận này:
 
@@ -1267,7 +1242,7 @@ Mục này nêu hai loại nội dung: **ranh giới phạm vi đã chốt** (đ
 3. **Chưa có định giá theo bậc thang.** Mô hình giá được hỗ trợ là phí thuê bao cố định cộng hạn mức bao gồm cộng đơn giá vượt phẳng. Đơn giá giảm dần theo sản lượng, giá theo bậc, giá theo gói dung lượng mua sẵn chưa nằm trong phạm vi.
 4. **Chưa có số dư trả trước dạng ví.** Doanh nghiệp không nạp trước một khoản để trừ dần; số dư có chỉ phát sinh từ ghi có và từ trả thừa (BR-20.7, BR-23.5).
 5. **Chưa có tự phục vụ hợp đồng năm và báo giá.** Hợp đồng nhiều năm, cam kết sản lượng tối thiểu, quy trình báo giá/duyệt mua của phía khách hàng đều xử lý ngoài hệ thống.
-6. **Chưa có thuế nhiều cấp trong một quốc gia.** Mô hình thuế hỗ trợ một mức theo quốc gia người mua; các thị trường có thuế theo bang/tỉnh chồng lên nhau chưa nằm trong phạm vi (FEAT-19).
+6. **Chưa có bất kỳ xử lý thuế nào.** Hóa đơn là chứng từ nội bộ (BR-18.0); hệ thống không tính thuế, không áp thuế suất và không sinh chứng từ hợp lệ theo quy định thuế. Khi cần, đó là một lớp riêng nằm trên, không sửa vào các quy tắc ở đây.
 7. **Chưa có dự báo chi phí cho doanh nghiệp.** Doanh nghiệp xem được tiêu dùng hiện tại và lịch sử (FEAT-17) nhưng hệ thống không dự báo hóa đơn cuối kỳ dựa trên xu hướng.
 
 ### 7.2 Câu hỏi chưa có quyết định
@@ -1278,8 +1253,6 @@ Các câu 1 → 4 và câu 13 là các quyết định chặn: chưa chốt thì
 | --- | --- | --- | --- |
 | 1 | **Một "hội thoại tính phí" là một phiên trên một kênh, hay một vụ việc của một con người?** BR-10.2 hiện tạm lấy định nghĩa thứ nhất vì đó là hành vi hệ thống hiện tại. | Đây là chính câu hỏi còn treo ở [`omnichat-srs.md`](./omnichat-srs.md) Mục 7.2 câu 1, và giờ nó có hệ quả tiền bạc trực tiếp: cùng một khách hàng nhắn trên hai kênh sẽ bị tính hai đơn vị. Nếu Omnichat về sau đổi sang mô hình vụ việc, đơn giá, hạn mức của mọi gói đã bán và mọi số liệu so sánh giữa các kỳ đều phải làm lại. Đổi mã loại tiêu dùng theo BR-02.2 là bắt buộc trong trường hợp đó. | BR-10.2, BR-02.2, FEAT-01 |
 | 2 | **Đơn vị nhà cung cấp bị nền tảng kênh tính tiền có trùng với đơn vị bán ra cho doanh nghiệp không, và ai chịu phần chênh?** | BR-10.4 buộc phải trả lời nhưng câu trả lời chưa có. Nếu nền tảng tính theo cửa sổ hội thoại còn hệ thống bán theo từng tin nhắn mẫu, mỗi đơn vị bán ra có thể sinh lãi hoặc lỗ tùy mật độ sử dụng của từng doanh nghiệp — và không ai phát hiện ra cho tới khi đối chiếu hóa đơn của nền tảng với doanh thu. | BR-10.4, BR-30.3 |
-| 3 | **Hóa đơn phát hành ở quốc gia nào, và quốc gia đó yêu cầu gì?** Cần chốt pháp nhân phát hành, danh sách thị trường bán, và với mỗi thị trường là yêu cầu hóa đơn điện tử, thuế suất, thời hạn lưu chứng từ. | Đây là ràng buộc tiên quyết, không phải chi tiết hoàn thiện: một số thị trường yêu cầu hóa đơn được cơ quan thuế cấp mã trước khi gửi khách (BR-19.3), điều này chèn thêm một bước bắt buộc vào giữa "chốt kỳ" và "thu tiền" và làm đổi cả luồng của FEAT-18 → FEAT-21. Phát hiện muộn thì phải làm lại phần lõi. | FEAT-19, BR-18.5, NFR-17 |
-| 4 | **Bên nào đứng tên bán hàng với người mua cuối?** Nhà cung cấp tự phát hành hóa đơn, hay một bên trung gian đứng tên và chịu nghĩa vụ thuế. | Quyết định này chi phối FEAT-19 (ai kê khai thuế), FEAT-23 (ai hoàn tiền), FEAT-20 (dòng tiền chảy qua đâu) và cả nội dung hiển thị trên hóa đơn. Chọn sau khi đã xây dựng thì phải sửa cả ba. | FEAT-19, FEAT-20, FEAT-23 |
 | 5 | **Số người dùng tính theo mức cao nhất trong kỳ hay theo tỷ lệ thời gian?** BR-11.2 tạm chọn mức cao nhất. | Cách hiện tại đơn giản và chống lách, nhưng một khách hàng lớn thêm 30 người dùng vào ngày cuối kỳ sẽ trả trọn kỳ cho cả 30 — điều mà đội bán hàng gần như chắc chắn sẽ phải thương lượng lại. Cần chốt xem có mở cơ chế tính theo tỷ lệ thời gian cho một phân khúc hay không, và nếu có thì đó là ngoại lệ theo hợp đồng hay là hành vi chuẩn. **Phần cơ chế đo lường đã được chốt** ở BR-11.8, BR-11.8b và BR-11.9 (sự kiện hai chiều cộng mốc đầu kỳ, dựng lại được cho mọi kỳ quá khứ) — câu hỏi còn lại thuần túy là một lựa chọn thương mại, và nó đổi được mà không phải đổi cách đo. | BR-11.2, BR-11.8b, FEAT-08 |
 | 6 | **Trần chi phí vượt mặc định là bao nhiêu?** BR-16.5 buộc phải có một trần nhưng chưa có con số. | Đặt quá thấp thì doanh nghiệp đang dùng bình thường bị dừng giữa chừng; quá cao thì trần không bảo vệ được ai. Con số này là một cam kết với khách hàng, không phải một tham số kỹ thuật đặt đại rồi chỉnh sau. | BR-16.5 |
 | 7 | **Chính sách hoàn tiền công bố ra bên ngoài là gì?** Có hoàn tiền khi hủy giữa kỳ không, có thời hạn dùng thử hoàn tiền không. | BR-24.1 hiện chọn không hoàn tiền phần đã trả. Đây là một cam kết thương mại phải công bố trước khi bán, và đổi về sau thì phải áp dụng cho cả khách cũ. | BR-24.1, FEAT-23 |
@@ -1291,12 +1264,12 @@ Các câu 1 → 4 và câu 13 là các quyết định chặn: chưa chốt thì
 | 13 | **Có bán gói theo chu kỳ khác tháng không, và đổi chu kỳ giữa chừng thì xử lý thế nào?** BR-01.1 cho phép một phiên bản gói khai báo chu kỳ riêng, nên gói năm bán được ngay cả khi Mục 7.1 câu 5 đã loại trừ phần *tự phục vụ* hợp đồng năm. | Đây là quyết định chặn vì BR-04.2 không định nghĩa được khi độ dài kỳ thay đổi: không thể vừa giữ nguyên mốc cắt kỳ vừa nhân kỳ lên 12 lần, nên chuyển tháng→năm chưa xếp được vào chiều nâng (BR-06.1) hay chiều hạ (BR-06.2). Nó còn kéo theo BR-24.1 — hủy giữa hợp đồng năm nghĩa là giữ quyền lợi tới 11 tháng còn lại — nên phải chốt cùng chính sách hoàn tiền ở câu 7. Chọn sau khi đã xây dựng thì phải sửa lại lõi cắt kỳ. | BR-04.2, BR-06.1, BR-06.2, BR-24.1, Mục 7.1 câu 5 |
 | 14 | **Khi phần chi phí nhà cung cấp tự chịu theo BR-16.8 vượt ngưỡng cấu hình thì làm gì?** Ngưỡng là bao nhiêu, và biện pháp tiếp theo là gì — thương lượng, đổi điều kiện gói, hay một biện pháp tạm thời có thông báo. | BR-16.8 buộc phải đo và cảnh báo khoản này, nhưng chưa nói làm gì với nó. Để trống thì con số vẫn hiện ra hằng ngày mà không ai có thẩm quyền hành động, và trần của BR-16.5 chỉ còn tác dụng với một nửa danh mục tiêu dùng. Đây cũng là chỗ chính sách chống lạm dụng chiều tiếp nhận phải nằm, nếu có. | BR-16.8, BR-16.5, BR-30.3 |
 | 15 | **Thời hạn ân hạn tiếp nhận sau khi hết dùng thử là bao lâu?** BR-05.4b cho phép ngắt kênh có thông báo sau thời hạn này nhưng chưa có con số. | Đây là ngoại lệ duy nhất của nguyên tắc không-chặn-chiều-tiếp-nhận (BR-16.3), nên độ dài của nó là một cam kết công bố ra bên ngoài, không phải tham số kỹ thuật. Quá ngắn thì doanh nghiệp đang cân nhắc mua bị mất khách; quá dài thì nhà cung cấp trả tiền nền tảng kênh vô thời hạn cho một tài khoản không bao giờ trả tiền. | BR-05.4b, BR-22.3, BR-16.3 |
-| 16 | **Khoảng ân hạn thanh toán của từng phương thức là bao nhiêu ngày?** BR-18.9 buộc phải có nhưng chưa có con số. | Đây là mốc khởi phát của toàn bộ FEAT-21 và FEAT-22, nên thiếu nó thì hai tính năng đó không viết được test. Nó cũng là một cam kết trong hợp đồng với khách doanh nghiệp trả sau, không phải tham số điều chỉnh sau. Cần chốt riêng cho thanh toán tự động và cho chuyển khoản, và cân nhắc mốc tính khi hóa đơn phải chờ cơ quan thuế cấp mã (BR-19.3). | BR-18.9, FEAT-21, BR-19.3 |
+| 16 | **Khoảng ân hạn thanh toán của từng phương thức là bao nhiêu ngày?** BR-18.9 buộc phải có nhưng chưa có con số. | Đây là mốc khởi phát của toàn bộ FEAT-21 và FEAT-22, nên thiếu nó thì hai tính năng đó không viết được test. Nó cũng là một cam kết trong hợp đồng với khách doanh nghiệp trả sau, không phải tham số điều chỉnh sau. Cần chốt riêng cho thanh toán tự động và cho chuyển khoản. | BR-18.9, FEAT-21 |
 | 17 | **Ngưỡng dung sai thanh toán là bao nhiêu, theo từng tiền tệ?** | BR-20.8 cần ngưỡng này để một khách chuyển khoản bị trừ phí trung gian không rơi vào chu trình nhắc nợ. Đặt quá thấp thì quy tắc vô dụng; quá cao thì nó thành một mức giảm giá ngầm mà không ai duyệt — BR-20.9 chặn hướng lạm dụng nhưng không thay được con số. | BR-20.8, BR-20.9 |
 | 18 | **Có mở cơ chế cộng dồn ưu đãi không, và cho những loại nào?** BR-08.8 mặc định loại trừ lẫn nhau. | Mặc định hiện tại an toàn và giải thích được cho khách, nhưng đội kinh doanh sẽ cần cộng dồn trong ít nhất một tình huống — ưu đãi theo chiến dịch chồng lên chiết khấu hợp đồng. Chốt sớm thì đây là một khai báo trên từng ưu đãi; chốt muộn thì thành một loạt ngoại lệ xử lý tay ngoài hệ thống. | BR-08.8, BR-08.9, BR-08.4 |
 | 19 | **Thời hạn hoàn tất một khoản hoàn tiền là bao lâu?** BR-23.7 buộc phải công bố trước nhưng chưa có con số, và cần tách phần nằm trong kiểm soát của nhà cung cấp với phần phụ thuộc cổng thanh toán hoặc ngân hàng. | Đây là cam kết công bố ra bên ngoài, cùng hạng với thời hạn khiếu nại. Không có nó thì mỗi khoản hoàn tiền chậm đều biến thành một khiếu nại mới, và chăm sóc khách hàng không có câu trả lời nào để đưa ra ngoài câu "đang xử lý". | BR-23.7, BR-23.2, BR-27.2 |
 | 20 | **Mức sẵn sàng cam kết cho đường thanh toán và khôi phục là bao nhiêu?** NFR-19 đòi hỏi sẵn sàng liên tục nhưng chưa có mức cam kết. | Con số này quyết định chi phí vận hành và quyết định luôn hai lời hứa ở BR-21.5 và BR-22.4 có thực thi được không. Hứa khôi phục ngay lúc 2 giờ sáng mà không có mức cam kết nào đỡ phía sau thì lời hứa đó chỉ đúng cho tới sự cố đầu tiên. | NFR-19, BR-22.4, BR-21.5 |
-| 21 | **Cửa sổ chốt kỳ cam kết với kế toán là bao lâu, và tính từ mốc nào?** NFR-13 viện dẫn "cửa sổ thời gian đã cam kết" nhưng cửa sổ đó chưa tồn tại. | Một yêu cầu phi chức năng không có đại lượng đo là một yêu cầu không nghiệm thu được: không có con số thì không ai biết đợt chốt kỳ chạy 4 giờ là đạt hay không đạt, và cũng không có căn cứ để nói cửa sổ đó "không được nới ra khi số doanh nghiệp tăng lên". Nó còn phải cộng thêm phần chờ thủ tục bắt buộc nếu thị trường yêu cầu (BR-19.3). | NFR-13, BR-18.1, FEAT-18b |
+| 21 | **Cửa sổ chốt kỳ cam kết với kế toán là bao lâu, và tính từ mốc nào?** NFR-13 viện dẫn "cửa sổ thời gian đã cam kết" nhưng cửa sổ đó chưa tồn tại. | Một yêu cầu phi chức năng không có đại lượng đo là một yêu cầu không nghiệm thu được: không có con số thì không ai biết đợt chốt kỳ chạy 4 giờ là đạt hay không đạt, và cũng không có căn cứ để nói cửa sổ đó "không được nới ra khi số doanh nghiệp tăng lên". | NFR-13, BR-18.1, FEAT-18b |
 | 22 | **Ngưỡng nào định nghĩa "một doanh nghiệp không ảnh hưởng doanh nghiệp khác"?** NFR-14 cấm việc một doanh nghiệp tăng đột biến làm chậm doanh nghiệp khác nhưng không nêu mức. | Cùng lý do câu 21. Thêm nữa, ngưỡng này quyết định một lựa chọn kiến trúc không đảo ngược rẻ: có cần cách ly luồng ghi nhận theo từng doanh nghiệp hay không. Phát hiện muộn nghĩa là phải làm lại phần chuyển giao khi đã có khách hàng lớn. | NFR-14, FEAT-12, NFR-13 |
 | 23 | **Thời hạn lưu kết quả đối soát và lưu nội dung thông báo đã gửi là bao lâu?** BR-15.4 và BR-31.6 đều buộc phải lưu nhưng không nêu thời hạn. | Hai bản ghi này là bằng chứng để trả lời khiếu nại: đối soát chứng minh con số đúng, thông báo chứng minh doanh nghiệp đã được báo trước khi bị đình chỉ. Dọn sớm hơn thời hạn khiếu nại thì đúng lúc cần nhất lại không còn — xem bảng Mục 4.6. | BR-15.4, BR-15.5, BR-31.6, BR-27.2 |
 | 24 | **Thời hạn ân hạn tiếp nhận sau khi đăng ký đã kết thúc là bao lâu?** BR-24.10 cho phép ngắt kênh có thông báo sau thời hạn này nhưng chưa có con số. | Đây là ngoại lệ thứ hai của nguyên tắc không-chặn-chiều-tiếp-nhận (BR-16.3), nên độ dài của nó là một cam kết công bố ra bên ngoài. Quá ngắn thì doanh nghiệp vừa hủy đã mất khách ngay; quá dài thì nhà cung cấp trả tiền nền tảng kênh cho một quan hệ đã chấm dứt. Cần chốt cùng câu 9 vì hai thời hạn phải nhất quán với nhau. | BR-24.10, BR-24.3, câu 9, câu 15 |
@@ -1310,6 +1283,7 @@ Các câu 1 → 4 và câu 13 là các quyết định chặn: chưa chốt thì
 | Ngày | Nội dung | Lý do |
 | --- | --- | --- |
 | 2026-08-24 | Bản đầu tiên — FEAT-01 → FEAT-32, NFR-1 → NFR-19, Mục 5, 6, 7. | Đặc tả nghiệp vụ cho một module chưa xây dựng. |
+| 2026-08-26 | **Thu hẹp phạm vi: bỏ toàn bộ lớp pháp lý và thuế.** Hóa đơn của hệ thống này được khai rõ là **chứng từ nội bộ** (BR-18.0 mới, Mục 1.2 "Ngoài phạm vi"). **Đã xóa:** FEAT-19 (Thuế & yêu cầu hóa đơn hợp lệ) cùng BR-19.1 → BR-19.6; BR-18b.3 (trạng thái chờ thủ tục bắt buộc); trạng thái *chờ thủ tục bắt buộc* khỏi FEAT-18b — còn bốn trạng thái; hàng FEAT-19 ở ma trận Mục 5; Mục 7.2 câu 3 và câu 4. **Đã sửa:** Mục 1.2, Mục 2 (nguyên tắc và nhóm C), Mục 2.5 (hai hàng phụ thuộc và ánh xạ quyết định chặn), FEAT-03 (bỏ mã số thuế), BR-18.3, BR-18.6 (dãy số nội bộ), BR-18.9 (ngày tới hạn không còn phụ thuộc thủ tục thuế), BR-18.10 (trình tự làm tròn bỏ bước thuế), Mục 7.1 giả định 6. | Yêu cầu của chủ sở hữu sản phẩm ngày 2026-08-26: hệ thống hiện chỉ xử lý hóa đơn nội bộ. Việc này mở lại tài liệu đã đóng phạm vi ngày 2026-08-25 — ghi nhận ở đây để vết còn nguyên. **Số hiệu quy tắc đã xóa KHÔNG được tái sử dụng** (BR-02.1 cùng tinh thần), và số hiệu câu hỏi ở Mục 7.2 giữ nguyên để mọi tham chiếu bên ngoài không gãy. Hệ quả xuống issue: #114 (FEAT-19) đóng không làm, #94 mất một nửa nội dung, #91 nửa A đơn giản lại. |
 | 2026-08-25 | Rà soát toàn văn trước khi đóng phạm vi. **Bổ sung:** FEAT-18b (vòng đời & trạng thái hóa đơn); Mục 2.5 (bản đồ phụ thuộc & thứ tự triển khai); Mục 4.6 (tổng hợp thời hạn lưu trữ); Mục 8 này. **Sửa quy tắc:** BR-02.5 (thêm điều kiện thứ ba của gate phát hành), BR-06.8, BR-11.8 (sự kiện hai chiều), BR-11.8b, BR-11.9, BR-13.3b, BR-14.7, BR-14.8, BR-16.2b, BR-16.3 (liệt kê giới hạn hai ngoại lệ), BR-16.5b, BR-16.10, BR-24.10, BR-24.11, NFR-18b. **Sửa Mục 5:** thêm ba hàng và nguyên tắc thứ năm. **Sửa Mục 7.2:** thêm câu 21 → 24, cập nhật câu 5. | Đóng các lỗ hổng phát hiện khi rà soát: hai chỗ quy tắc không cùng đúng được (cách đo số ghế; ai thực thi trần tính tiền), một thực thể thiếu vòng đời (hóa đơn), một lỗ chi phí chưa bịt (kênh của tài khoản đã kết thúc quan hệ), và các cam kết chưa có cơ chế hoặc chưa có đại lượng đo. |
 
 **Từ 2026-08-25, phạm vi tài liệu đã đóng.** Mọi thay đổi về sau đi qua quy trình thay đổi có kiểm soát và ghi vào bảng này, kèm lý do và người quyết định.

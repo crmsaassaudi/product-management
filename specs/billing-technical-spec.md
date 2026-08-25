@@ -321,24 +321,12 @@ Luồng ít chạy nhất nhưng sai một lần thì tốn kém nhất.
         ▼
    ┌───────────────────────────────────────┐
    │ Hệ tính phí dựng hóa đơn NHÁP         │  ← toán thương mại (làm tròn từng
-   │ (BR-18.1 — chạy thử được cả đợt)      │    dòng, thứ tự áp ưu đãi, thuế)
+   │ (BR-18.1 — chạy thử được cả đợt)      │    dòng, thứ tự áp ưu đãi)
    └───────────────────┬───────────────────┘    thuộc về đây, không thuộc CRM
                        │
-        ┌──────────────┴───────────────┐
-        │                              │
-  [thị trường KHÔNG có          [thị trường CÓ thủ tục
-   thủ tục bắt buộc]             bắt buộc — BR-19.3]
-        │                              │
-        │                              ▼
-        │              ┌──────────────────────────────────┐
-        │              │ CHỜ THỦ TỤC BẮT BUỘC             │
-        │              │ • chưa gửi, chưa thu, chưa tính  │
-        │              │   ngày tới hạn, chưa nhắc nợ     │
-        │              │ • thất bại → cảnh báo + người    │
-        │              │   soát, KHÔNG treo im lặng       │
-        │              └──────────────┬───────────────────┘
-        │                             │
-        └──────────────┬──────────────┘
+                       │   nhánh “chờ thủ tục bắt buộc” đã bỏ ngày 2026-08-26:
+                       │   hóa đơn là chứng từ nội bộ (BR-18.0), nháp đi thẳng
+                       │   sang đã phát hành
                        ▼
    ┌───────────────────────────────────────┐
    │ ĐÃ PHÁT HÀNH — BẤT BIẾN từ đây        │
@@ -679,20 +667,18 @@ Chỉ số 1 và 3 phải chảy ra tới màn hình của doanh nghiệp dướ
 
 ### 8.1 Quyết định chặn — phân định theo mốc, không theo giai đoạn
 
-Bảng này đã được thu hẹp lại ngày 2026-08-25. Bản trước gắn nhãn chặn cho cả cụm tính năng, dẫn tới việc thuế và nhắc nợ trông như điều kiện tiên quyết của toàn bộ lớp thương mại — chúng không phải. **Cái chặn là những điểm không sửa được sau, và hầu hết là quyết định thiết kế chứ không phải tính năng.**
+Bảng này thu hẹp lần đầu ngày 2026-08-25, thu hẹp tiếp ngày 2026-08-26 khi phạm vi bỏ lớp pháp lý và thuế (K2b và K2c không còn). Bản trước gắn nhãn chặn cho cả cụm tính năng, dẫn tới việc thuế và nhắc nợ trông như điều kiện tiên quyết của toàn bộ lớp thương mại — chúng không phải. **Cái chặn là những điểm không sửa được sau, và hầu hết là quyết định thiết kế chứ không phải tính năng.**
 
 | # | Quyết định | Chặn ở mốc nào | Nếu chốt muộn |
 | --- | --- | --- | --- |
 | **K1a** | **Hệ nào cấp số hóa đơn** — nơi phát hành và giữ dãy số chứng từ | **Hóa đơn thật đầu tiên gửi khách thật** | BR-18.2 + BR-18.6: chứng từ đã phát hành bất biến, dãy số liên tục. Đổi nơi cấp số sau đó = hai dãy song song, và không đánh số lại được chứng từ đã gửi khách |
 | **K1b** | **Ai chạy chu trình nhắc nợ** | Trước khi xây khối 6 | Không chặn phần lõi. Trước đó kế toán theo dõi hóa đơn quá hạn thủ công. Ràng buộc duy nhất phải giữ từ sớm: cổng thanh toán tắt cơ chế thử lại của chính nó ngay từ đầu, nếu không sau này có hai lịch chạy song song |
-| **K2a** | **Hóa đơn có trường ngày tới hạn, neo vào ngày THỰC SỰ phát hành** | **Hóa đơn thật đầu tiên** | Hóa đơn bất biến. Không có ngày tới hạn thì chứng từ cũ vĩnh viễn không có mốc khởi phát cho nhắc nợ. Neo vào ngày chốt kỳ cũng sai vì thủ tục thuế sẽ chèn một bước vào giữa |
-| **K2b** | **Máy trạng thái dự trữ trạng thái "chờ thủ tục bắt buộc"** | Trước khi chốt thiết kế FEAT-18b | Chèn một trạng thái vào máy trạng thái đã phát hành chứng từ thật = phải gán lại trạng thái cho hóa đơn lịch sử. Giá dự trữ bây giờ: một giá trị trạng thái đi qua thẳng |
-| **K2c** | **Thị trường phát hành và thủ tục bắt buộc tương ứng** (SRS Mục 7.2 câu 3, 4) | Trước khi xây tích hợp thuế | Không chặn phần lõi nếu K2a và K2b đã dự trữ. Nhưng nó chặn *việc bán cho một thị trường cụ thể*, và đó là ràng buộc pháp lý chứ không phải kỹ thuật |
+| **K2a** | **Hóa đơn có trường ngày tới hạn, neo vào ngày THỰC SỰ phát hành** | **Hóa đơn thật đầu tiên** | Hóa đơn bất biến. Không có ngày tới hạn thì chứng từ cũ vĩnh viễn không có mốc khởi phát cho nhắc nợ. Neo vào ngày chốt kỳ vẫn sai kể cả khi không còn thủ tục thuế: soát nháp và phát hành theo đợt vẫn tách hai mốc ra, và doanh nghiệp mất bấy nhiêu ngày ân hạn. **Đây là điểm dự trữ duy nhất còn lại** |
 | **K3** | **Có bán gói theo chu kỳ khác tháng không** (SRS Mục 7.2 câu 13) | Trước khi xây khối 3 | Cách biểu diễn mốc cắt kỳ khác hẳn nhau giữa hai phương án; đổi sau khi đã có khách là làm lại lõi cắt kỳ |
 | **K4** | **Ngưỡng cách ly giữa các doanh nghiệp** (SRS Mục 7.2 câu 22) | Trước khi xây khối 5 | Quyết định có cần cách ly luồng chuyển giao theo doanh nghiệp hay không — làm lại sau khi đã có khách hàng lớn là đắt |
 | **K5** | **Cửa sổ chốt kỳ cam kết** (SRS Mục 7.2 câu 21) | Trước khi vận hành chốt kỳ ở quy mô thật | Không có con số thì không thiết kế được mức song song của đợt chốt kỳ và không nghiệm thu được NFR-13 |
 
-**Nguyên tắc rút ra:** một hạng mục hoãn được khi nó *thêm vào* hệ thống đang chạy mà không phải sửa dữ liệu đã sinh ra. Thuế và nhắc nợ thỏa điều kiện đó — với đúng ba điểm dự trữ K1a, K2a, K2b. Ba điểm này là một trường, một giá trị trạng thái, và một cờ cấu hình.
+**Nguyên tắc rút ra:** một hạng mục hoãn được khi nó *thêm vào* hệ thống đang chạy mà không phải sửa dữ liệu đã sinh ra. Nhắc nợ thỏa điều kiện đó — với đúng **hai** điểm dự trữ **K1a** và **K2a**: một quyết định về nơi cấp số, và một trường ngày trên chứng từ. K2b và K2c đã bỏ ngày 2026-08-26 cùng FEAT-19: hóa đơn là chứng từ nội bộ (BR-18.0), không có thủ tục nào chèn vào giữa chốt kỳ và thu tiền.
 
 ### 8.2 Rủi ro đã nhận diện, có phương án giảm thiểu
 
@@ -717,7 +703,7 @@ GĐ2  vòng đời thương mại  →  setup gói · bán gói · gia hạn · 
                              · hạn mức · hóa đơn · thu tiền · tự phục vụ
                              ◄── MỐC BÁN ĐƯỢC
 GĐ3  đối soát & minh bạch →  bảo vệ toàn vẹn doanh thu, trả lời được khiếu nại
-GĐ4  pháp lý & thu hồi nợ →  thuế/HĐĐT · nhắc nợ · đình chỉ
+GĐ4  thu hồi nợ          →  nhắc nợ · đình chỉ
                              THÊM VÀO hệ thống đang chạy
 ```
 
@@ -748,13 +734,23 @@ GĐ4  pháp lý & thu hồi nợ →  thuế/HĐĐT · nhắc nợ · đình ch�
 
 **Nghiệm thu:** một đợt chốt kỳ có doanh nghiệp lệch vượt ngưỡng — hóa đơn của riêng doanh nghiệp đó bị giữ lại, các doanh nghiệp còn lại phát hành bình thường.
 
-### Giai đoạn 4 — Pháp lý & thu hồi nợ
+### Giai đoạn 4 — Thu hồi nợ
 
-**Mục tiêu:** phát hành được chứng từ hợp lệ ở thị trường có thủ tục bắt buộc, và tự động hóa việc thu hồi nợ khi số lượng doanh nghiệp vượt quá khả năng theo dõi thủ công.
-**Khối:** 6, và phần cấu hình quốc gia của 3 và 9.
-**Điều kiện tiên quyết:** K1b, K2c đã chốt. **Và quan trọng hơn: ba điểm dự trữ K1a, K2a, K2b đã đúng từ Giai đoạn 2** — nếu không, giai đoạn này không còn là "thêm vào" mà thành "sửa lại dữ liệu lịch sử", và hóa đơn đã phát hành thì không sửa được.
-**Nghiệm thu:** bật cấu hình thủ tục bắt buộc cho một quốc gia — hóa đơn mới dừng đúng ở trạng thái chờ, hóa đơn phát hành từ Giai đoạn 2 **không bị thay đổi nội dung** và ngày tới hạn của chúng vẫn đúng; chu trình nhắc nợ khởi phát đúng theo ngày tới hạn đã in trên chứng từ cũ, không phải một mốc tính lại về sau.
+**Mục tiêu:** tự động hóa việc thu hồi nợ khi số lượng doanh nghiệp vượt quá khả năng theo dõi thủ công.
+**Khối:** 6.
+**Điều kiện tiên quyết:** K1b đã chốt. **Và quan trọng hơn: hai điểm dự trữ K1a và K2a đã đúng từ Giai đoạn 2** — nếu không, giai đoạn này không còn là "thêm vào" mà thành "sửa lại dữ liệu lịch sử", và hóa đơn đã phát hành thì không sửa được.
+**Nghiệm thu:** chu trình nhắc nợ khởi phát đúng theo ngày tới hạn đã in trên hóa đơn phát hành từ Giai đoạn 2, không phải một mốc tính lại về sau; hóa đơn cũ **không bị thay đổi nội dung**.
 
-### Ràng buộc pháp lý không phải ràng buộc kiến trúc
+### Lớp pháp lý đã ra khỏi phạm vi — chỗ để nó gắn vào sau vẫn phải giữ
 
-Việc hoãn thuế tới Giai đoạn 4 là quyết định kiến trúc hợp lệ, nhưng nó không gỡ được ràng buộc pháp lý: không phát hành được chứng từ không hợp lệ. Nếu khách trả tiền ở Giai đoạn 2 là doanh nghiệp Việt Nam cần hóa đơn giá trị gia tăng hợp lệ, phải chọn một trong hai tuyến — khách đầu tiên ở tuyến không yêu cầu hóa đơn điện tử có mã, hoặc xuất hóa đơn thủ công ngoài hệ thống cho vài khách đầu và ghi nhận thanh toán theo BR-20.3. Đây là quyết định thứ tự bán hàng, cần biết trước chứ không nên phát hiện ở hóa đơn thật đầu tiên.
+Ngày 2026-08-26 phạm vi thu hẹp: hóa đơn của hệ thống là **chứng từ nội bộ** (BR-18.0), không phải chứng từ hợp lệ theo quy định thuế. FEAT-19 đã xóa khỏi SRS.
+
+Điều đó **không xóa nghĩa vụ pháp lý** nếu doanh nghiệp phát hành chứng từ cho khách hàng thật; nó chỉ đưa nghĩa vụ đó ra khỏi tài liệu này, thành một lớp riêng nằm trên, có tài liệu riêng khi đến lúc.
+
+Ba tính chất dưới đây là chỗ để lớp đó gắn vào mà không phải sửa dữ liệu lịch sử. Chúng nằm trong phạm vi hiện tại và **không được bỏ vì "giờ chỉ là hóa đơn nội bộ"**:
+
+- hóa đơn đã phát hành **bất biến** (BR-18.2)
+- dãy số **liên tục, không tái sử dụng** kể cả cho hóa đơn đã hủy nháp (BR-18.6)
+- ngày tới hạn neo vào **ngày thực sự phát hành** (BR-18.9)
+
+Chứng từ pháp lý về sau mang dãy số riêng của nó và tham chiếu ngược về số hóa đơn nội bộ — không thay thế, không sửa vào.
