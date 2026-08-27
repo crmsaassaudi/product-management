@@ -600,7 +600,7 @@
       "affected_repos": [
         "crm-web"
       ],
-      "status": "in-progress",
+      "status": "done",
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/78"
       ]
@@ -613,9 +613,11 @@
         "crm-api",
         "livechat-widget"
       ],
-      "status": "in-progress",
+      "status": "done",
       "links": [
-        "https://github.com/crmsaassaudi/product-management/issues/79"
+        "https://github.com/crmsaassaudi/product-management/issues/79",
+        "https://github.com/crmsaassaudi/crm-api/pull/72",
+        "https://github.com/crmsaassaudi/crm-livechat/pull/2"
       ]
     },
     {
