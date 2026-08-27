@@ -654,7 +654,7 @@
         "crm-api",
         "crm-web"
       ],
-      "status": "in-progress",
+      "status": "done",
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/82"
       ]
