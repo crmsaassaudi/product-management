@@ -745,7 +745,7 @@
         "crm-api",
         "crm-web"
       ],
-      "status": "in-progress",
+      "status": "done",
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/89"
       ]
@@ -876,9 +876,10 @@
         "crm-api",
         "crm-web"
       ],
-      "status": "not-started",
+      "status": "in-progress",
       "links": [
-        "https://github.com/crmsaassaudi/product-management/issues/102"
+        "https://github.com/crmsaassaudi/product-management/issues/102",
+        "https://github.com/crmsaassaudi/crm-web/tree/feat/107-seat-based-billing-ui"
       ]
     },
     {
@@ -889,9 +890,10 @@
         "crm-api",
         "crm-web"
       ],
-      "status": "not-started",
+      "status": "in-progress",
       "links": [
-        "https://github.com/crmsaassaudi/product-management/issues/103"
+        "https://github.com/crmsaassaudi/product-management/issues/103",
+        "https://github.com/crmsaassaudi/crm-web/tree/feat/107-seat-based-billing-ui"
       ]
     },
     {
@@ -915,9 +917,10 @@
         "crm-api",
         "crm-web"
       ],
-      "status": "not-started",
+      "status": "in-progress",
       "links": [
-        "https://github.com/crmsaassaudi/product-management/issues/107"
+        "https://github.com/crmsaassaudi/product-management/issues/107",
+        "https://github.com/crmsaassaudi/crm-web/tree/feat/107-seat-based-billing-ui"
       ]
     },
     {
@@ -968,9 +971,10 @@
         "crm-api",
         "crm-web"
       ],
-      "status": "not-started",
+      "status": "in-progress",
       "links": [
-        "https://github.com/crmsaassaudi/product-management/issues/112"
+        "https://github.com/crmsaassaudi/product-management/issues/112",
+        "https://github.com/crmsaassaudi/crm-web/tree/feat/107-seat-based-billing-ui"
       ]
     },
     {
@@ -982,9 +986,10 @@
         "crm-manager-api",
         "crm-lago"
       ],
-      "status": "not-started",
+      "status": "in-progress",
       "links": [
-        "https://github.com/crmsaassaudi/product-management/issues/113"
+        "https://github.com/crmsaassaudi/product-management/issues/113",
+        "https://github.com/crmsaassaudi/crm-web/tree/feat/107-seat-based-billing-ui"
       ]
     },
     {
@@ -1074,9 +1079,10 @@
         "crm-web",
         "crm-api"
       ],
-      "status": "not-started",
+      "status": "in-progress",
       "links": [
-        "https://github.com/crmsaassaudi/product-management/issues/120"
+        "https://github.com/crmsaassaudi/product-management/issues/120",
+        "https://github.com/crmsaassaudi/crm-web/tree/feat/107-seat-based-billing-ui"
       ]
     },
     {
@@ -1144,9 +1150,10 @@
         "crm-manager-web",
         "crm-lago"
       ],
-      "status": "not-started",
+      "status": "in-progress",
       "links": [
-        "https://github.com/crmsaassaudi/product-management/issues/128"
+        "https://github.com/crmsaassaudi/product-management/issues/128",
+        "https://github.com/crmsaassaudi/crm-web/tree/feat/107-seat-based-billing-ui"
       ]
     }
   ]
