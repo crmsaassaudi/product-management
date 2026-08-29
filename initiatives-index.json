@@ -1,6 +1,21 @@
 {
   "initiatives": [
     {
+      "id": "feat-138",
+      "title": "Billing 3/4 — FEAT-04: crm-manager-api/web tạo, gia hạn, hủy subscription của tenant",
+      "primary_repo": "crm-manager-api",
+      "affected_repos": [
+        "crm-manager-api",
+        "crm-manager-web"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/138",
+        "https://github.com/crmsaassaudi/crm-manager-api/pull/1",
+        "https://github.com/crmsaassaudi/crm-manager-web/pull/1"
+      ]
+    },
+    {
       "id": "feat-3",
       "title": "Object Manager: Thông báo rõ ràng khi Admin chạm hạn mức 300 trường tùy biến",
       "primary_repo": "crm-api",
