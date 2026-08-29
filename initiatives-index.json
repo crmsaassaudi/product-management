@@ -1,6 +1,21 @@
 {
   "initiatives": [
     {
+      "id": "feat-139",
+      "title": "Billing 4/4 — crm-web: hiển thị subscription hiện tại cho tenant (chỉ xem)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/139",
+        "https://github.com/crmsaassaudi/crm-api/pull/102",
+        "https://github.com/crmsaassaudi/crm-web/pull/59"
+      ]
+    },
+    {
       "id": "feat-138",
       "title": "Billing 3/4 — FEAT-04: crm-manager-api/web tạo, gia hạn, hủy subscription của tenant",
       "primary_repo": "crm-manager-api",
