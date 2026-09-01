@@ -4,7 +4,7 @@
 | --- | --- |
 | **Loại tài liệu** | Thiết kế kiến trúc — sơ đồ luồng và ranh giới khối. **Không đặc tả cấu trúc dữ liệu chi tiết, không đặc tả mã nguồn.** |
 | **Trạng thái** | Proposed / Ready for Architecture Review |
-| **Ngày viết** | 2026-08-25 |
+| **Ngày viết** | 2026-08-25, cập nhật 2026-08-29 (§2.1: bỏ bản chụp/danh mục gói phía CRM, xem lý do trong mục đó) |
 | **Căn cứ nghiệp vụ** | [`billing-subscription-srs.md`](../srs/billing-subscription-srs.md) — **phạm vi đã đóng từ 2026-08-25** |
 | **Quyết định kiến trúc** | [`ADR-0004`](../docs/adr/0004-billing-engine-boundary.md) — trạng thái `accepted-with-open-commercial-decision` |
 | **Phạm vi triển khai** | `crm-api` · `crm-manager-api` · `crm-web` · `crm-manager-web` · `crm-lago` (vận hành hệ tính phí) |
@@ -47,7 +47,7 @@
 | --- | --- | --- | --- |
 | Sự kiện tính phí | **CRM** | Hệ tính phí nhận để tổng hợp | Outbox đẩy + mã tham chiếu chống trùng |
 | Danh mục loại tiêu dùng | **CRM (quản trị nhà cung cấp)** | Hệ tính phí nhận bản đồng bộ | Đẩy khi phát hành, một chiều |
-| Danh mục gói & phiên bản gói | **CRM (quản trị nhà cung cấp)** | Hệ tính phí là nơi thực thi giá | Đẩy khi phát hành + CRM giữ bản chụp bất biến |
+| Danh mục gói, phiên bản gói & add-on | **Hệ tính phí (Lago)** | CRM không giữ bản sao nào, kể cả bất biến | CRM đọc trực tiếp qua Khối 9 mỗi khi cần hiển thị/xác nhận (Đường thứ ba, §1.2) |
 | Vòng đời đăng ký — tính toán thương mại | **Hệ tính phí** | — | — |
 | Vòng đời đăng ký — trạng thái thực thi runtime | **CRM** | — | Webhook + quét chủ động định kỳ |
 | Hóa đơn & chứng từ ghi có | **Hệ tính phí** | CRM giữ bản chiếu chỉ đọc | Webhook theo từng chuyển trạng thái |
@@ -55,11 +55,11 @@
 | Nhật ký kiểm toán thương mại | **CRM** | — | — |
 | Khiếu nại hóa đơn | **CRM** | Kết luận giảm trừ đẩy sang hệ tính phí thành chứng từ ghi có | CRM đẩy khi có kết luận |
 
-### 2.1 Hai chỗ cố ý lệch khỏi mô hình "một chủ sở hữu duy nhất"
+### 2.1 Một chỗ cố ý lệch khỏi mô hình "một chủ sở hữu duy nhất" — và một chỗ đã từng cân nhắc rồi bỏ
 
-**Danh mục gói do CRM sở hữu, không do hệ tính phí sở hữu.** ADR-0004 đặt mục tiêu hoán đổi được nhà cung cấp, nhưng BR-01.5 hứa doanh nghiệp xem lại được nguyên văn điều kiện đã ký suốt vòng đời đăng ký cộng thời hạn khiếu nại, và NFR-8 đòi mọi con số trên hóa đơn tái lập được. Nếu điều kiện gói chỉ sống trong hệ tính phí thì đổi engine là mất cả hai lời hứa. Vì vậy CRM là nơi khai báo và là nơi **giữ bản chụp bất biến** của điều kiện tại thời điểm mỗi doanh nghiệp ký; hệ tính phí nhận bản đồng bộ để thực thi giá.
+**Đã cân nhắc và BỎ (quyết định 2026-08-29): không để CRM giữ bất kỳ bản sao nào của danh mục gói.** Bản nháp đầu (2026-08-25) từng đề xuất CRM tự khai báo gói và giữ bản chụp bất biến điều kiện đã ký, với lý do BR-01.5 (doanh nghiệp xem lại được nguyên văn điều kiện đã ký) và NFR-8 (mọi số trên hóa đơn tái lập được) — sợ nếu điều kiện gói chỉ sống trong Lago thì đổi nhà cung cấp sau này sẽ mất khả năng tái lập hóa đơn cũ. Đề xuất đó bị bác: giữ một bản sao ở CRM — dù chỉ đọc — vẫn là một module billing thứ hai, đúng kiểu phân mảnh mà ADR-0004 muốn tránh. Quyết định cuối: **danh mục gói, phiên bản gói và add-on sống DUY NHẤT trong Lago.** CRM (`crm-manager-api`, `crm-manager-web`) không lưu, không cache — mỗi lần cần hiển thị hay xác nhận điều kiện gói (màn hình quản trị gói, xem lại hợp đồng đã ký) đều gọi thẳng Lago qua Khối 9, theo đúng "Đường thứ ba" ở §1.2 (đồng bộ, do người dùng khởi xướng, không nằm trên đường phục vụ nghiệp vụ hằng ngày). Rủi ro mất khả năng tái lập hóa đơn cũ nếu đổi nhà cung cấp khỏi Lago được **chấp nhận có chủ đích** — xem lại ở §8.2 — và giảm nhẹ một phần nhờ chính Lago tự giữ lịch sử phiên bản gói bất biến (BR-01.2) trong khi còn dùng Lago.
 
-**Trạng thái đăng ký có hai chủ sở hữu, phân theo trách nhiệm.** Hệ tính phí sở hữu phần tính toán và lịch chuyển trạng thái theo hợp đồng thương mại; CRM sở hữu phần trạng thái dùng để ra quyết định chặn hay cho phép tại runtime. Đây không phải trùng lặp mà là hai câu hỏi khác nhau: "theo hợp đồng thì họ đang ở đâu" và "ngay bây giờ có cho họ gửi tin không". Câu thứ hai không được phép chờ mạng (BR-32.4).
+**Còn giữ lại: trạng thái đăng ký có hai chủ sở hữu, phân theo trách nhiệm.** Hệ tính phí sở hữu phần tính toán và lịch chuyển trạng thái theo hợp đồng thương mại; CRM sở hữu phần trạng thái dùng để ra quyết định chặn hay cho phép tại runtime. Đây KHÔNG phải một bản sao dữ liệu thương mại (không phải giá, không phải điều kiện gói) — chỉ là một ảnh chụp rất mỏng (ví dụ: đang đình chỉ hay không, còn hạn mức bao nhiêu) để trả lời "ngay bây giờ có cho họ gửi tin không" mà không được phép chờ mạng (BR-04.5, BR-32.4). Hai câu hỏi khác nhau: "theo hợp đồng thì họ đang ở đâu" (hỏi Lago) và "ngay bây giờ có chặn không" (đọc cục bộ) — giữ cả hai không phải phân mảnh, mà là SRS bắt buộc (BR-04.5 cấm phụ thuộc mạng tại thời điểm quyết định).
 
 ---
 
@@ -90,8 +90,9 @@
 ║                  │ đọc                                 │ ghi                     ║
 ║  ┌───────────────┴─────────────────────────────────────▼─────────────────────┐   ║
 ║  │   KHỐI 3  Trạng thái thương mại cục bộ                                    │   ║
-║  │   • ảnh chụp đăng ký & hạn mức    • kho sự kiện tính phí (chỉ thêm mới)   │   ║
-║  │   • bản chụp điều kiện gói đã ký  • bản chiếu hóa đơn (chỉ đọc)           │   ║
+║  │   • ảnh chụp đăng ký & hạn mức (mỏng, chỉ để chặn/cho phép runtime)       │   ║
+║  │   • kho sự kiện tính phí (chỉ thêm mới)  • bản chiếu hóa đơn (chỉ đọc)    │   ║
+║  │   (KHÔNG có danh mục gói/add-on — sống duy nhất ở Lago, xem §2.1)         │   ║
 ║  └───────────────▲──────────────────────────────────▲───────────────────────┘    ║
 ║                  │                                  │                            ║
 ║  ┌───────────────┴──────────┐  ┌────────────────────┴────────────────────────┐   ║
@@ -144,6 +145,43 @@
 **Module nghiệp vụ chỉ phụ thuộc khối 1 và khối 2.** Chúng không biết khối 3 → 9 tồn tại. Đây là điều làm cho việc đổi mô hình giá không phải sửa Omnichat (BR-02.4, NFR-12).
 
 **Chỉ khối 9 biết tên nhà cung cấp.** Không controller, không màn hình, không tác vụ nền nào khác được gọi thẳng ra ngoài. Vi phạm điều này là mất luôn khả năng hoán đổi mà ADR-0004 đặt ra.
+
+### 3.3 Khối 9 trong thực tế triển khai — app nào gọi, gọi gì, ai nhận webhook
+
+Khối 9 là một **khái niệm kiến trúc**, không phải một dịch vụ chạy riêng. `crm-api` và `crm-manager-api` là hai ứng dụng triển khai độc lập (hai tiến trình, hai repo), nên Khối 9 tồn tại thành **hai cài đặt mỏng**, một trong mỗi app — không dùng chung tiến trình, nhưng cùng tuân một hợp đồng khái niệm (đổi Lago sang engine khác nghĩa là sửa đúng hai chỗ này, không sửa rải rác). Cả hai cài đặt đều **không lưu bất kỳ dữ liệu thương mại nào** — chỉ chuyển tiếp lời gọi.
+
+**Ai gọi khối 9 của ai:**
+
+| App | Vai trò | Gọi Lago để làm gì | Đồng bộ/Bất đồng bộ |
+| --- | --- | --- | --- |
+| `crm-api` | Runtime tenant-facing | Đẩy sự kiện tiêu dùng (Luồng A, đã có: `LagoMeteringAdapter`) · tự phục vụ: xem gói hiện tại, đăng ký, đổi gói, xem trước phần lẻ, xem hóa đơn, mở cổng thẻ (Luồng B/C nhánh tenant) · nhận webhook · quét chủ động định kỳ để bù Khối 3 | Đẩy sự kiện: bất đồng bộ. Tự phục vụ: đồng bộ, do tenant khởi xướng (Đường thứ ba, §1.2) |
+| `crm-manager-api` | Quản trị nhà cung cấp | Tạo/sửa/phát hành gói, add-on, ưu đãi · tra cứu subscription/hóa đơn của mọi tenant cho màn hình vận hành · đối soát (Khối 4) · phát hành chứng từ ghi có theo kết luận khiếu nại | Toàn bộ đồng bộ, do nhân sự nhà cung cấp khởi xướng — không có webhook riêng (xem lý do bên dưới) |
+| `crm-web` | Giao diện tenant | **Không bao giờ gọi Lago.** Luôn gọi API của `crm-api`, thứ tự: `crm-web → crm-api → Khối 9 (crm-api) → Lago` | — |
+| `crm-manager-web` | Giao diện quản trị | **Không bao giờ gọi Lago.** Luôn gọi API của `crm-manager-api`, thứ tự: `crm-manager-web → crm-manager-api → Khối 9 (crm-manager-api) → Lago` | — |
+
+**Webhook chỉ có MỘT nơi nhận: `crm-api`.** Lý do: Khối 3 (ảnh chụp runtime — đình chỉ, hạn mức) sống ở `crm-api` và là thứ cần cập nhật nhanh nhất khi Lago báo thay đổi. Nếu `crm-manager-api` cũng tự đăng ký nhận cùng một webhook thì có hai nơi xử lý cùng một sự kiện — hai cơ chế chống trùng, hai chỗ để lệch pha nhau (đúng vấn đề "một lớp không đủ" ở §6.1, nhân đôi thay vì giải quyết). `crm-manager-api` không cần webhook: màn hình quản trị không nhạy độ trễ như đường phục vụ khách hàng, nên đọc trực tiếp từ Lago theo yêu cầu (đồng bộ) hoặc qua vòng đối soát định kỳ của chính nó (Khối 4) — không qua `crm-api`.
+
+**Giao diện khái niệm của mỗi cài đặt Khối 9** (tinh chỉnh từ phác thảo `BillingProviderAdapter` ở ADR-0004 §4, phản ánh mô hình tập trung hoàn toàn vào Lago đã chốt ở §2.1 — đây vẫn là danh sách trách nhiệm, không phải chữ ký hàm cuối cùng):
+
+*Phía `crm-api` (runtime + tự phục vụ tenant):*
+
+- Đẩy một sự kiện tiêu dùng (đã có).
+- Lấy gói & điều kiện đang áp dụng của một tenant (đọc trực tiếp, không cache — thay cho "bản chụp điều kiện gói" đã bỏ ở §2.1).
+- Đăng ký gói mới / đổi gói / xem trước phần lẻ giữa kỳ cho một tenant.
+- Liệt kê hóa đơn, lấy hóa đơn sắp tới của một tenant.
+- Mở phiên quản lý phương thức thanh toán (ủy quyền sang cổng thanh toán, không đi qua Lago).
+- Nhận một webhook đã xác thực chữ ký, trả về ngay sau khi ghi nhận đã nhận (chống xử lý lặp), xử lý cập nhật Khối 3 ở tiến trình nền.
+- Kéo một ảnh chụp trạng thái subscription/hạn mức của một tenant (dùng cho quét chủ động định kỳ, Luồng F).
+
+*Phía `crm-manager-api` (quản trị nhà cung cấp):*
+
+- Tạo / sửa (khi còn nháp) / phát hành / thu hồi một phiên bản gói.
+- Tạo add-on, ưu đãi.
+- Tra cứu subscription/hóa đơn theo tenant hoặc theo lô (cho màn hình vận hành, báo cáo).
+- Phát hành chứng từ ghi có tham chiếu một hóa đơn, sau khi có kết luận khiếu nại hoặc miễn trừ thương mại.
+- Kéo dữ liệu tiêu dùng/hóa đơn của Lago theo lô, phục vụ Khối 4 (đối soát định kỳ).
+
+Không cài đặt nào có phương thức tính chu kỳ, tính phần lẻ hay tính tiền — những phép tính đó xảy ra bên trong Lago, hai cài đặt trên chỉ hỏi kết quả.
 
 ---
 
@@ -581,9 +619,8 @@ Bảng này nêu **thực thể nào phải tồn tại và tính chất bất b
 | Sự kiện cách ly | 3 | Nơi giữ sự kiện không xác định được doanh nghiệp, chờ xử lý tay. Không được gán doanh nghiệp mặc định | BR-09.7 |
 | Hồ sơ thanh toán | 3 | Một doanh nghiệp một hồ sơ. Tiền tệ và múi giờ cắt kỳ bất biến trong vòng đời đăng ký | BR-03.1 · BR-03.3 |
 | Danh mục loại tiêu dùng | 3 | **Là dữ liệu cấu hình, không phải mã nguồn.** Mã đã phát hành không đổi tên, không tái sử dụng, không xóa. Mang cách gộp trong kỳ | BR-02.1 · BR-02.3 · NFR-12 |
-| Danh mục gói & phiên bản gói | 3 | Là dữ liệu cấu hình. Phiên bản đã có khách không sửa tại chỗ | BR-01.2 · BR-01.8 |
-| Bản chụp điều kiện gói đã ký | 3 | Bất biến. Giữ suốt đăng ký cộng thời hạn khiếu nại. Là căn cứ để tái lập hóa đơn cũ khi đã đổi nhà cung cấp | BR-01.5 · NFR-8 |
-| Ảnh chụp đăng ký & hạn mức | 3 | Đọc được cục bộ với độ trễ thấp, không phụ thuộc mạng ra ngoài. Có nguồn bền vững phía sau lớp đọc nhanh | BR-04.5 · BR-32.4 |
+| Danh mục gói, phiên bản gói & add-on | **Lago, không thuộc CRM** | Là dữ liệu cấu hình. Phiên bản đã có khách không sửa tại chỗ. CRM đọc trực tiếp khi cần (§2.1), không cache | BR-01.2 · BR-01.8 |
+| Ảnh chụp đăng ký & hạn mức | 3 | Đọc được cục bộ với độ trễ thấp, không phụ thuộc mạng ra ngoài. Mỏng — chỉ đủ để chặn/cho phép, KHÔNG chứa điều kiện gói. Có nguồn bền vững phía sau lớp đọc nhanh | BR-04.5 · BR-32.4 |
 | Thay đổi đã lên lịch | 3 | Hạ gói, hủy add-on, hủy đăng ký — có hiệu lực đầu kỳ sau. Điều kiện phải được **kiểm lại tại mốc cắt kỳ**, không thỏa thì không có hiệu lực | BR-06.2 · BR-06.6b · BR-07.4 |
 | Bản chiếu hóa đơn | 3 | Chỉ đọc. Mang ngày tới hạn và trạng thái theo FEAT-18b. CRM không tự phát hành, không tự sửa | BR-18.2 · FEAT-18b |
 | Chứng từ ghi có & biến động số dư có | 3 | Số dư có là **chuỗi biến động**, không phải một con số bị ghi đè — nếu không thì không tái lập được | BR-20.7 · BR-23.5 · NFR-8 |
@@ -646,7 +683,7 @@ Chỉ số 1 và 3 phải chảy ra tới màn hình của doanh nghiệp dướ
 | NFR-3 Quyền tài chính tách quyền nghiệp vụ | Hai trục quyền độc lập, kiểm ở Luồng G | Người có quyền tài chính đếm được nhưng không đọc được nội dung |
 | NFR-6 Không tính phí trùng | Chống trùng hai lớp (§6.1) | Gửi lặp cùng mã tham chiếu qua nhiều tiến trình song song |
 | NFR-7 Không mất tiêu dùng | Ghi trước chuyển sau + thử lại + danh sách chờ xử lý tay | Ngắt hệ tính phí nhiều giờ, đối soát sau khi khôi phục |
-| NFR-8 Con số tái lập được | Kho sự kiện chỉ thêm mới + bản chụp điều kiện gói + biến động số dư dạng chuỗi | Dựng lại một hóa đơn cũ từ dữ liệu gốc, so với bản đã phát hành |
+| NFR-8 Con số tái lập được | Kho sự kiện chỉ thêm mới ở CRM + lịch sử phiên bản gói bất biến giữ trong Lago (BR-01.2) + biến động số dư dạng chuỗi. **Chỉ đúng khi còn dùng Lago** — xem rủi ro chấp nhận ở §8.2 | Dựng lại một hóa đơn cũ từ dữ liệu gốc, so với bản đã phát hành |
 | NFR-9 Bất biến chứng từ | Hóa đơn do hệ tính phí sở hữu; CRM chỉ giữ bản chiếu chỉ đọc | Thử sửa một hóa đơn đã phát hành qua mọi đường |
 | NFR-10 Số liệu thiếu phải thấy được | Mức tồn đọng chảy ra tới màn hình doanh nghiệp (§6.6) | Tạo tồn đọng, kiểm mọi màn hình hiển thị tiêu dùng |
 | NFR-11 Lỗi tính phí không lan sang nghiệp vụ | Không lời gọi đồng bộ ra ngoài trên đường nghiệp vụ (§1.2, Luồng A) | Ngắt hệ tính phí, đo độ trễ và tỷ lệ lỗi của nghiệp vụ |
@@ -654,7 +691,7 @@ Chỉ số 1 và 3 phải chảy ra tới màn hình của doanh nghiệp dướ
 | NFR-13 Chốt kỳ trong cửa sổ cam kết | Chốt kỳ chặn theo từng doanh nghiệp, không chặn cả đợt (Luồng C) | **Chưa kiểm chứng được — chưa có con số** (SRS Mục 7.2 câu 21) |
 | NFR-14 Một doanh nghiệp không ảnh hưởng doanh nghiệp khác | Cách ly ở khối 5 (§6.5) | **Chưa kiểm chứng được — chưa có ngưỡng** (SRS Mục 7.2 câu 22) |
 | NFR-15 Mọi con số giải thích được | Luồng G, dựa trên kho sự kiện giữ đủ thời hạn | Mọi dòng trên mọi hóa đơn trong thời hạn khiếu nại đi xuống được chi tiết |
-| NFR-16 Không có giá hồi tố | Bản chụp điều kiện gói + BR-13.3b (khoản kỳ trước tính theo điều kiện kỳ đó) | Đổi giá gói rồi kiểm hóa đơn của khách cũ |
+| NFR-16 Không có giá hồi tố | Lịch sử phiên bản gói bất biến trong Lago + BR-13.3b (khoản kỳ trước tính theo điều kiện kỳ đó) | Đổi giá gói rồi kiểm hóa đơn của khách cũ |
 | NFR-17 Chứng từ lưu đủ thời hạn luật định | Bảng thời hạn lưu trữ ở Mục 4.6 của SRS | **Phần lớn chưa chốt** — xem bảng đó |
 | NFR-18 / 18b Xóa dữ liệu cá nhân | Thu hẹp dữ liệu định danh nhưng giữ được số lượng và khả năng đối soát tổng | Thực hiện một yêu cầu xóa, kiểm hóa đơn cũ còn tái lập được không |
 | NFR-19 Đường thanh toán luôn sẵn sàng | Khôi phục tự động không phụ thuộc giờ làm việc (Luồng D) | **Chưa có mức cam kết** (SRS Mục 7.2 câu 20) |
@@ -684,7 +721,7 @@ Bảng này thu hẹp lần đầu ngày 2026-08-25, thu hẹp tiếp ngày 2026
 
 | Rủi ro | Giảm thiểu |
 | --- | --- |
-| Đổi nhà cung cấp về sau làm mất khả năng tái lập hóa đơn cũ | CRM sở hữu danh mục gói và giữ bản chụp điều kiện đã ký (§2.1) |
+| Đổi nhà cung cấp về sau làm mất khả năng tái lập hóa đơn cũ | **Rủi ro chấp nhận có chủ đích** (quyết định 2026-08-29, §2.1) — đổi lại là tránh được một module billing thứ hai ở CRM. Nếu về sau rời Lago, phải xuất/lưu trữ lịch sử phiên bản gói của Lago TRƯỚC khi tắt Lago, như một bước di trú rõ ràng — không phải một cơ chế kiến trúc thường trực |
 | Webhook thất lạc làm trạng thái cục bộ sai | Quét chủ động định kỳ, phạm vi tối thiểu nêu ở Luồng F |
 | Ảnh chụp cục bộ hết hạn bị hiểu là "không có vấn đề" | Nguồn dự phòng là bản bền vững ở khối 3, không phải giá trị mặc định (Luồng B) |
 | Đối soát báo lệch giả vì hai bên chia kỳ khác nhau | Ranh giới kỳ phải đồng nhất hai bên; kiểm điều này ở bước tích hợp đầu tiên, không để tới lúc chốt kỳ thật |
@@ -717,7 +754,7 @@ GĐ4  thu hồi nợ          →  nhắc nợ · đình chỉ
 ### Giai đoạn 2 — Vòng đời thương mại ◄ mốc bán được
 
 **Mục tiêu:** một doanh nghiệp tự đi hết vòng — chọn gói, dùng, chạm hạn mức, mua thêm add-on, nâng gói, nhận hóa đơn, trả tiền, gia hạn sang kỳ sau — mà không cần nhân viên nhà cung cấp can thiệp bước nào.
-**Khối:** 1, 3 (đăng ký & hạn mức, bản chụp điều kiện gói, bản chiếu hóa đơn), 8 (cổng tự phục vụ), 9 (phần thanh toán).
+**Khối:** 1, 3 (đăng ký & hạn mức, bản chiếu hóa đơn), 8 (cổng tự phục vụ), 9 (phần thanh toán, phần đọc danh mục gói trực tiếp từ Lago).
 **Điều kiện tiên quyết:** K1a đã chốt trước hóa đơn thật đầu tiên; K2a và K2b được xác nhận trong thiết kế FEAT-18b.
 **Chưa cần ở giai đoạn này:** tích hợp cơ quan thuế, chu trình nhắc nợ tự động, đình chỉ tự động. Thu tiền chưa được thì kế toán theo dõi danh sách hóa đơn quá hạn và đòi thủ công — với vài chục doanh nghiệp đầu tiên đó là cách đúng, không phải cách tạm.
 **Nghiệm thu:** vòng đời trên chạy trọn vẹn không cần can thiệp; đặt hạn mức về không thì khách hàng của doanh nghiệp vẫn nhắn tới được và một lô gửi hàng loạt bị từ chối **trọn vẹn** thay vì chạy nửa chừng; mọi hóa đơn phát hành ra đều đã mang ngày tới hạn dù chưa có chu trình nhắc nợ nào chạy.

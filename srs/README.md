@@ -29,3 +29,17 @@ Khác với [`specs/`](../specs/README.md) (spec/PRD nháp *trước khi* code, 
 - SRS viết theo văn phong Business Analyst: theo tính năng/use case, quy tắc nghiệp vụ bằng ngôn ngữ nghiệp vụ - **không** trích dẫn code, tên hàm, hay `file:line`. Vẫn cần đọc code/khảo sát hệ thống thật trước khi viết (để mô tả đúng hành vi), nhưng phần đó không xuất hiện trong thân tài liệu.
 - Thuật ngữ chốt trong lúc viết/review SRS ghi vào [`../CONTEXT.md`](../CONTEXT.md) (glossary dùng chung cho mọi SRS ở đây, theo nhóm subheading từng module) - không định nghĩa lại thuật ngữ khác đi giữa các SRS.
 - Quyết định khó đảo ngược/có đánh đổi thật phát sinh trong lúc review (ví dụ đổi chính sách phân giải xung đột phân quyền) ghi thành ADR tại [`../docs/adr/`](../docs/adr/), đánh số tuần tự - xem tiêu chí "khi nào cần ADR" trong skill `domain-modeling`.
+
+## Danh mục tài liệu SRS
+
+| File | Phân hệ / Module | Trạng thái | Ngày cập nhật |
+| --- | --- | --- | --- |
+| [`onboarding-srs.md`](./onboarding-srs.md) | Tiếp nhận & Khởi tạo Không gian làm việc (Onboarding & Provisioning) | Version 2.0 (Target Standard) | 2026-08-28 |
+| [`contacts-srs.md`](./contacts-srs.md) | Quản lý Khách hàng & Danh bạ Doanh nghiệp (Contacts & Accounts) | Version 2.2 (Standardized Business SRS) | 2026-08-29 |
+| [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) | Quản lý Cơ hội & Phễu Bán hàng (Deals & Pipelines) | Version 2.2 (Standardized Business SRS) | 2026-08-29 |
+| [`tickets-srs.md`](./tickets-srs.md) | Quản lý Vé Hỗ trợ & Dịch vụ Khách hàng (Tickets & Customer Service) | Version 2.2 (Standardized Business SRS) | 2026-08-29 |
+| [`tasks-srs.md`](./tasks-srs.md) | Quản lý Công việc & Hoạt động (Tasks & Activities) | Version 2.2 (Standardized Business SRS) | 2026-08-29 |
+| [`campaigns-srs.md`](./campaigns-srs.md) | Quản lý Chiến dịch Tiếp thị & Truyền thông Đa kênh (Marketing Campaigns) | Version 2.2 (Standardized Business SRS) | 2026-08-29 |
+| [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) | Phân quyền & Quản trị Không gian làm việc (IAM & ABAC) | Baseline | 2026-08-25 |
+| [`object-manager-srs.md`](./object-manager-srs.md) | Quản trị Đối tượng & Bố cục Trường dữ liệu (Object Manager & FLS) | Baseline | 2026-08-24 |
+| [`omnichat-srs.md`](./omnichat-srs.md) | Hội thoại Đa kênh & Hộp thư Tiếp nhận (Omnichannel Inbox) | Baseline | 2026-08-24 |

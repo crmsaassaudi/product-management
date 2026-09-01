@@ -133,3 +133,268 @@ _Avoid_: Coi đình chỉ là "khóa tài khoản" — giữ dữ liệu làm co
 **Người phụ trách thanh toán (Billing Contact)**:
 Vai trò trong một doanh nghiệp chịu trách nhiệm về hóa đơn, phương thức thanh toán và khiếu nại. Có thể là một người không tham gia vận hành CRM hằng ngày. Quyền xem dữ liệu tài chính của vai trò này **không** kéo theo quyền đọc nội dung nghiệp vụ: khi đối chiếu một dòng hóa đơn, họ thấy số lượng và định danh đối tượng nhưng không đọc được nội dung hội thoại.
 _Avoid_: Gộp vai trò này vào Chủ workspace — chúng có thể là hai người, và hệ thống không bao giờ được ở trạng thái không có ai nhận thông báo về tiền.
+
+## Onboarding & Khởi tạo Không gian làm việc
+
+**Quy trình Đăng ký Tự phục vụ (Self-Serve / PLG Onboarding)**:
+Quy trình nhiều bước (multi-step wizard) cho phép khách hàng tự đăng ký tài khoản, khai báo thông tin doanh nghiệp, chọn mục tiêu sử dụng và chờ hệ thống tự động khởi tạo không gian làm việc (workspace) mà không cần sự can thiệp thủ công của đội ngũ vận hành nền tảng.
+
+**Quy trình Khởi tạo Doanh nghiệp (Enterprise / SLG Onboarding)**:
+Quy trình khởi tạo không gian làm việc dành cho khách hàng doanh nghiệp lớn thông qua cổng quản trị nội bộ hoặc API hệ thống, tạo trước tài khoản quản trị chưa có mật khẩu và gửi email kích hoạt bảo mật để thiết lập mật khẩu lần đầu.
+
+**Tên miền phụ tổ chức (Tenant Subdomain / Alias)**:
+Chuỗi định danh duy nhất toàn hệ thống đại diện cho không gian làm việc của một tổ chức trên Internet (ví dụ: `acme.crmsaudi.dev`). Có thể được sinh tự động từ tên doanh nghiệp (hỗ trợ chuyển đổi tiếng Việt có dấu) hoặc do người dùng tự chỉnh sửa theo quy chuẩn URL-safe.
+
+**Chuỗi giao dịch bù trừ (Provisioning Saga & Compensation Rollback)**:
+Mô hình điều phối chuỗi tác vụ khởi tạo không gian làm việc phân tán qua nhiều hệ thống độc lập (Keycloak, MongoDB, crm-bot, Redis). Nếu một bước gặp lỗi không thể khắc phục, hệ thống sẽ thực thi các tác vụ hoàn tác (compensating transactions) theo thứ tự ngược lại để dọn sạch tài nguyên rác và đảm bảo tính nhất quán dữ liệu.
+
+**Khởi tạo Cấu hình Nền tảng (Baseline Seeding)**:
+Tập hợp các bước tự động thiết lập cấu hình nghiệp vụ chuẩn ngay sau khi không gian làm việc được tạo thành công, bao gồm thiết lập CRM mặc định, quy trình bán hàng (Deal Pipeline & Stages), quy trình hỗ trợ (Ticket Workflow), quy tắc điều phối (Assignment Rules), vai trò hệ thống dựng sẵn (System Roles), đơn vị tổ chức gốc (HQ) và nhóm chủ sở hữu (Owner Group).
+
+**Dữ liệu Mẫu Định hướng (Tailored Sample Data)**:
+Tập hợp dữ liệu mẫu (Khách hàng, Doanh nghiệp, Cơ hội bán hàng) được khởi tạo tự động phù hợp với mục tiêu sử dụng (`onboardingGoal`) mà người dùng đã chọn trong quy trình đăng ký, giúp rút ngắn thời gian tiếp cận giá trị sản phẩm (Time-to-Value).
+
+**Tài khoản Khởi tạo Dở dang / Mồ côi (Orphan Account)**:
+Tài khoản người dùng đã bắt đầu bước 1 của quy trình đăng ký nhưng rời bỏ mà không hoàn tất việc tạo không gian làm việc. Được hệ thống tự động quét và thu hồi định kỳ sau 24 giờ để tránh lãng phí định danh và tài nguyên.
+
+**Bộ chọn Không gian làm việc (Workspace Switcher / Tenant Picker)**:
+Giao diện hiển thị danh sách tất cả các không gian làm việc mà một người dùng đang là thành viên, cho phép chuyển đổi qua lại giữa các tổ chức hoặc tự động điều hướng trực tiếp vào không gian làm việc nếu người dùng chỉ thuộc đúng 1 tổ chức.
+
+**Dùng thử Miễn phí 14 ngày (14-Day Free Trial)**:
+Chính sách tự động cấp quyền trải nghiệm toàn bộ các tính năng cao cấp của gói chuyên nghiệp (Pro/Enterprise) trong 14 ngày ngay sau khi đăng ký tự phục vụ, không yêu cầu thẻ tín dụng, nhằm tối đa hóa cơ hội chứng minh giá trị sản phẩm trước khi chuyển đổi trả phí.
+
+**Bảng tiến độ Tiếp nhận Tương tác (In-App Onboarding Checklist & FTUX)**:
+Thành phần giao diện tương tác hiển thị trên màn hình chính sau khi đăng nhập lần đầu, gồm danh sách 5 tác vụ cốt lõi (kết nối kênh, mời đồng nghiệp, nhập danh bạ, tạo cơ hội, tải ứng dụng) kèm thanh phần trăm hoàn thành và phần thưởng khích lệ để dẫn dắt người dùng đạt trạng thái kích hoạt (Product Activation).
+
+**Trình Quản lý Dữ liệu Mẫu & Xóa 1-Click (Sample Data Manager & Purge)**:
+Tính năng cho phép người dùng chủ động bật/tắt hiển thị hoặc xóa sạch toàn bộ các bản ghi dữ liệu mẫu (Contacts, Accounts, Deals) đã nạp ban đầu chỉ bằng 1 thao tác bấm nút khi doanh nghiệp sẵn sàng đưa dữ liệu kinh doanh thật vào vận hành.
+
+**Tên miền Riêng Tùy chỉnh (Custom Domain CNAME)**:
+Khả năng cho phép tổ chức sử dụng tên miền thương hiệu riêng của doanh nghiệp (ví dụ: `crm.congty.vn`) thay cho tên miền phụ mặc định (`congty.crmsaudi.dev`), thông qua việc cấu hình bản ghi DNS CNAME và cơ chế tự động cấp phát chứng chỉ bảo mật SSL/TLS.
+
+**Phễu Bán hàng Đặc thù theo Ngành (Industry-Specific Pipeline)**:
+Quy trình các giai đoạn bán hàng được tùy biến cấu trúc tự động dựa trên ngành nghề kinh doanh mà khách hàng đã chọn (Bất động sản, Bán lẻ, Dịch vụ B2B, Tài chính), thay vì chỉ áp dụng một phễu bán hàng chung chung cho mọi lĩnh vực.
+
+**Cảnh báo Khách hàng Doanh nghiệp Tiềm năng (Enterprise Sales Alert)**:
+Cơ chế tự động chấm điểm và phát sinh thông báo tức thì tới đội ngũ kinh doanh nội bộ khi một khách hàng đăng ký có quy mô nhân sự lớn (`200+`) hoặc thuộc ngành mục tiêu chiến lược, giúp đội ngũ bán hàng chủ động liên hệ tư vấn chuyên sâu.
+
+**Chiến dịch Email Nuôi dưỡng Tự động (Onboarding Drip Email Campaign)**:
+Chuỗi thông điệp email được hệ thống tự động gửi định kỳ vào các mốc thời gian then chốt (ngày 1, ngày 3, ngày 7, ngày 12) sau khi đăng ký, cung cấp hướng dẫn nghiệp vụ và thúc đẩy người dùng hoàn thành các mốc kích hoạt sản phẩm.
+
+## Quản lý Khách hàng & Danh bạ (Contacts & Accounts)
+
+**Khách hàng Cá nhân (Contact)**:
+Thực thể đại diện cho một con người cụ thể trong CRM (khách hàng tiềm năng, người liên hệ của doanh nghiệp, người mua lẻ, đối tác). Lưu trữ thông tin định danh, các kênh liên lạc có thể tiếp cận, lịch sử tương tác và mối quan hệ với các doanh nghiệp/cá nhân khác.
+
+**Tổ chức / Doanh nghiệp (Account)**:
+Thực thể đại diện cho một pháp nhân, công ty, tập đoàn hoặc cơ quan tổ chức mà doanh nghiệp đang có quan hệ kinh doanh. Quản lý thông tin mã số thuế, ngành nghề, quy mô, doanh thu, cây cấu trúc Công ty Mẹ - Công ty Con và danh sách các nhân sự liên hệ thuộc tổ chức.
+
+**Giai đoạn Vòng đời Khách hàng (Lifecycle Stage)**:
+Trạng thái định vị mức độ gắn kết và trưởng thành của khách hàng trong hành trình chuyển đổi doanh nghiệp (chuẩn 7 giai đoạn: *Subscriber -> Lead -> Marketing Qualified Lead / MQL -> Sales Qualified Lead / SQL -> Opportunity -> Customer -> Evangelist*).
+
+**Chuyển đổi Khách hàng Tiềm năng (Lead Qualification & Conversion)**:
+Quy trình nghiệp vụ thẩm định và nâng cấp một Khách hàng tiềm năng (Lead) đã đủ điều kiện kinh doanh thành Liên hệ chính thức (Contact), tự động liên kết hoặc tạo mới Doanh nghiệp (Account) và tạo Cơ hội bán hàng (Deal) tương ứng chỉ bằng một thao tác nguyên tử.
+
+**Nhận diện & Gộp Trùng lặp (Duplicate Detection & Merge)**:
+Cơ chế tự động phát hiện các bản ghi trùng nhau (theo Email, Số điện thoại, Mã số thuế) và cho phép người dùng xem trước (Preview Merge), lựa chọn bản ghi chính (Master Record), kế thừa dữ liệu và chuyển giao toàn bộ lịch sử tương tác/bản ghi con trước khi gộp.
+
+**Sổ cái Hoàn tác Gộp (Unmerge Ledger)**:
+Cơ chế lưu trữ vết lịch sử gộp bản ghi cho phép người dùng có thẩm quyền đảo ngược hoàn toàn một giao dịch gộp trước đó (Unmerge), khôi phục lại bản ghi đã mất và phân bổ lại đúng các mối liên kết gốc.
+
+**Mối quan hệ Đa tổ chức (Multi-Affiliations)**:
+Khả năng liên kết một cá nhân (Contact) với nhiều doanh nghiệp (Accounts) khác nhau cùng lúc với các chức danh, vai trò (Chính / Phụ / Cố vấn) và khoảng thời gian công tác riêng biệt.
+
+**Quan hệ Giữa các Cá nhân (Person Relations)**:
+Liên kết mạng lưới quan hệ trực tiếp giữa hai con người trong CRM (Quản lý trực tiếp / Reports-to, Người giới thiệu / Referred-by, Thành viên gia đình / Household, Đối tác kinh doanh / Partner).
+
+**Dòng thời gian Hoạt động 360 độ (360-Degree Unified Timeline)**:
+Bảng luồng thông tin hợp nhất hiển thị toàn bộ lịch sử tương tác của khách hàng (Email, Cuộc gọi, Ghi chú, Tin nhắn đa kênh, Vé hỗ trợ, Cơ hội bán hàng, Nhiệm vụ, Lịch sử đổi giai đoạn) theo thứ tự thời gian đảo ngược.
+
+**Điểm Tiềm năng Khách hàng (Lead Score)**:
+Điểm số định lượng tự động tính toán dựa trên mức độ phù hợp hồ sơ (Profile Fit) và mức độ tương tác thực tế (Engagement Activity), có cơ chế suy giảm điểm theo thời gian (Score Decay) để ưu tiên chăm sóc các cơ hội nóng.
+
+**Khách hàng Đã rời bỏ (Churned Customer / Former Customer)**:
+Trạng thái vòng đời của một khách hàng cá nhân hoặc doanh nghiệp đã từng mua hàng nhưng sau đó hủy hợp đồng, chấm dứt gói thuê bao hoặc không còn phát sinh bất kỳ giao dịch nào trong thời gian dài. Khách hàng ở trạng thái này bị loại khỏi các chiến dịch tiếp thị thông thường và chỉ được tiếp cận qua các chiến dịch giữ chân/tái kích hoạt (Win-Back Campaigns) được phê duyệt riêng.
+
+**Lead Bị loại (Disqualified Lead)**:
+Trạng thái vòng đời dành cho các khách hàng tiềm năng không phù hợp với tiêu chí khách hàng mục tiêu (sai ngành nghề, không đủ ngân sách, thông tin liên lạc giả mạo, spam). Lead bị loại được lưu trữ để phân tích chất lượng nguồn marketing nhưng bị loại bỏ khỏi danh sách phân bổ cho nhân viên kinh doanh.
+
+**Phân bổ Lead Tự động (Lead Routing / Auto-Assignment)**:
+Quy tắc tự động gán Người phụ trách (Owner) cho các khách hàng tiềm năng mới đổ về từ các kênh số (Website form, Chatbot, Facebook Ads, API) dựa trên thuật toán chia đều vòng (Round-robin), phân chia theo vùng địa lý (Territory) hoặc chuyên môn ngành nghề (Industry specialization).
+
+**Tham số Nguồn gốc Tiếp thị (UTM Source Tracking)**:
+Tập hợp các tham số theo dõi nguồn gốc (`utm_source`, `utm_medium`, `utm_campaign`, `utm_term`, `utm_content`) được hệ thống tự động ghi nhận tại thời điểm Lead đăng ký lần đầu để phục vụ phân tích hiệu quả kênh tiếp thị (Marketing Attribution) và tính toán tỷ suất sinh lời trên chi phí (ROI).
+
+**Trợ lý Nhập Dữ liệu Thông minh (Smart Data Import Wizard)**:
+Trình nhập khẩu dữ liệu từ tệp Excel (.xlsx) hoặc CSV dung lượng lớn (tới 50MB) qua hàng đợi bất đồng bộ, có tính năng tự động nhận diện cột (Auto Field Mapping), kiểm tra tính hợp lệ từng dòng và xuất tệp báo cáo lỗi chi tiết.
+
+**Trạng thái Đồng thuận & Khả năng Tiếp cận (Consent & Deliverability)**:
+Theo dõi tình trạng đồng thuận nhận tin quảng bá/tiếp thị (Opt-in Consent theo chuẩn GDPR/Anti-spam), đánh dấu kênh chính (Primary) và trạng thái kỹ thuật của địa chỉ liên lạc (Verified / Bounced / Inactive).
+
+## Quản lý Cơ hội & Phễu Bán hàng (Deals & Pipelines)
+
+**Cơ hội Bán hàng (Deal / Opportunity)**:
+Thực thể đại diện cho một giao dịch kinh doanh tiềm năng giữa doanh nghiệp và khách hàng cá nhân hoặc tổ chức, có giá trị tiền tệ dự kiến, ngày dự kiến đóng và gắn liền với một giai đoạn cụ thể trên phễu bán hàng.
+
+**Phễu Bán hàng (Sales Pipeline)**:
+Quy trình trực quan hóa toàn bộ các bước từ khi tiếp cận cơ hội đến khi chốt hợp đồng thành công. Một không gian làm việc có thể sở hữu nhiều phễu bán hàng độc lập (Multiple Pipelines) cho các dòng sản phẩm, dịch vụ hoặc thị trường khác nhau.
+
+**Giai đoạn Bán hàng & Xác suất Thành công (Stage & Win Probability)**:
+Các cột mốc tuần tự trên phễu bán hàng (ví dụ: *Tiếp cận -> Khảo sát nhu cầu -> Báo giá -> Đàm phán -> Ký hợp đồng / Thất bại*), mỗi giai đoạn được gán một tỷ lệ xác suất thành công từ 0% đến 100% để tính toán dự báo doanh thu.
+
+**Bảng Kanban Cơ hội (Deals Kanban Board)**:
+Giao diện trực quan dạng bảng thẻ kéo thả phân chia theo các cột giai đoạn bán hàng, hiển thị số lượng và tổng giá trị cơ hội trên từng cột theo thời gian thực.
+
+**Thời gian Lưu tại Giai đoạn (Time in Stage / Stage Duration)**:
+Chỉ số đo lường chính xác số ngày/giờ mà một cơ hội bán hàng đã nằm yên tại một giai đoạn cụ thể, dùng để phát hiện điểm nghẽn quy trình và tính toán vận tốc bán hàng (Sales Velocity).
+
+**Cơ hội Nguội Lạnh (Stale Deal)**:
+Cơ hội bán hàng không có bất kỳ hoạt động tương tác nào (không có cuộc gọi, email, ghi chú hay chuyển giai đoạn) vượt quá ngưỡng thời gian quy định (ví dụ >14 ngày), được hệ thống tự động đánh dấu cảnh báo để người phụ trách kịp thời xử lý.
+
+**Nhắc nhở Chăm sóc Tiếp theo (Follow-up Reminder)**:
+Thời điểm cam kết tương tác tiếp theo với khách hàng (`nextFollowUpAt`) do nhân viên kinh doanh thiết lập, hệ thống sẽ tự động phát sinh thông báo nhắc nhở trước hạn chót để không bao giờ bỏ quên khách hàng.
+
+**Lý do Thất bại (Loss Reason)**:
+Danh mục nguyên nhân được chuẩn hóa (ví dụ: *Giá quá cao, Chọn đối thủ cạnh tranh, Hết ngân sách, Không có nhu cầu*) bắt buộc người dùng phải khai báo khi chuyển cơ hội sang trạng thái Đóng Thất bại (Closed Lost) để phục vụ phân tích cải tiến sản phẩm.
+
+**Doanh thu Dự báo có Trọng số (Weighted Pipeline Forecast)**:
+Doanh thu kỳ vọng được tính bằng tổng của: $\text{Giá trị cơ hội} \times \text{Xác suất thành công của giai đoạn}$ ($\sum (\text{Value} \times \text{Probability})$) theo từng tháng hoặc quý.
+
+**Vai trò Liên hệ trong Cơ hội (Contact Roles on Deals)**:
+Khả năng gắn nhiều nhân sự liên hệ vào cùng một Cơ hội bán hàng với các vai trò quyết định khác nhau (Người ra quyết định / Decision Maker, Người đánh giá kỹ thuật / Technical Evaluator, Người bảo trợ nội bộ / Champion, Người mua hàng / Buyer).
+
+**Lưu trữ & Di chuyển Phễu (Pipeline Archival & Migration)**:
+Quy trình đóng một phễu bán hàng không còn sử dụng, yêu cầu di chuyển toàn bộ các cơ hội đang mở sang một phễu khác hoặc đóng băng chúng ở chế độ chỉ đọc (Read-Only) để bảo toàn lịch sử báo cáo tài chính.
+
+**Danh mục Sản phẩm & Chi tiết Báo giá trên Deal (Deal Products & Line Items)**:
+Danh sách các mặt hàng, gói dịch vụ đính kèm trong một Cơ hội bán hàng, bao gồm mã SKU, tên sản phẩm, số lượng, đơn giá niêm yết, tỷ lệ chiết khấu (%) và thuế suất (%), được dùng làm căn cứ tự động tính toán tổng giá trị giao dịch (`value`).
+
+**Lý do Thành công (Win Reason)**:
+Danh mục nguyên nhân chuẩn hóa (ví dụ: *Giá cả cạnh tranh, Tính năng vượt trội, Uy tín thương hiệu, Dịch vụ chăm sóc xuất sắc*) được ghi nhận khi chuyển cơ hội sang trạng thái Đóng Thành công (Closed Won) để phân tích chiến lược kinh doanh.
+
+**Ma trận Ánh xạ Giai đoạn (Stage Mapping Matrix)**:
+Bảng quy chuẩn thiết lập tương quan giữa các giai đoạn của phễu cũ và phễu mới khi thực hiện di chuyển phễu bán hàng, đảm bảo các cơ hội được di chuyển vào đúng giai đoạn tương đương thay vì dồn tất cả về một giai đoạn duy nhất.
+
+**Điều kiện Chuyển Giai đoạn (Stage-Gate Rules / Stage Entry Requirements)**:
+Bộ quy tắc kiểm soát chất lượng dữ liệu bắt buộc phải hoàn thành (nhập các trường bắt buộc, đính kèm tài liệu hợp đồng, hoặc có phê duyệt của quản lý) trước khi cơ hội bán hàng được phép chuyển từ giai đoạn này sang giai đoạn kế tiếp trên phễu.
+
+**Tạm ngưng Cơ hội (On Hold Deal Status)**:
+Trạng thái đặt lên cơ hội bán hàng khi thương vụ bị hoãn tạm thời do khách hàng chờ ngân sách hoặc chờ duyệt nội bộ, cho phép ẩn khỏi dự báo doanh thu (Forecast) và tạm ngưng cảnh báo cơ hội nguội mà không phải đánh dấu Thất bại.
+
+**Người cộng tác Cơ hội (Deal Collaborator)**:
+Nhân sự thuộc các phòng ban hỗ trợ (Pre-sales, Kỹ thuật, Pháp chế, Kế toán) được thêm vào cơ hội bán hàng để cùng xem thông tin, thêm ghi chú và trao đổi nội bộ nhưng không có quyền thay đổi giá trị, chiết khấu hoặc chuyển giai đoạn bán hàng.
+
+**Quy trình Phê duyệt Chiết khấu (Discount Approval Workflow)**:
+Quy trình kiểm soát giá bán yêu cầu nhân viên kinh doanh phải gửi yêu cầu và nhận được sự phê duyệt của Quản lý bán hàng hoặc Giám đốc trước khi áp dụng mức chiết khấu vượt trần quy định cho khách hàng.
+
+## Quản lý Vé Hỗ trợ & Dịch vụ Khách hàng (Tickets & Customer Service)
+
+**Vé Hỗ trợ (Ticket / Support Case)**:
+Thực thể đại diện cho một yêu cầu trợ giúp, phản ánh sự cố kỹ thuật, thắc mắc hoặc khiếu nại của khách hàng gửi tới doanh nghiệp qua các kênh liên lạc (Email, Livechat, WhatsApp, Biểu mẫu, Điện thoại), có mã định danh duy nhất (ví dụ: `TK-10023`) và được theo dõi từ khi tiếp nhận đến khi xử lý hoàn tất.
+
+**Cam kết Chất lượng Dịch vụ (SLA - Service Level Agreement)**:
+Chính sách thỏa thuận về thời gian xử lý yêu cầu giữa doanh nghiệp và khách hàng, bao gồm hai chỉ số cốt lõi: **Thời hạn Phản hồi Đầu tiên (First Response Time Due)** và **Thời hạn Giải quyết Xong (Resolution Time Due)** tùy theo mức độ ưu tiên của vé.
+
+**Vi phạm SLA (SLA Breach)**:
+Trạng thái cảnh báo khi nhân viên hỗ trợ không phản hồi hoặc không giải quyết xong vé trong khoảng thời gian cam kết của chính sách SLA, dùng để kích hoạt quy trình leo thang quản lý (Escalation).
+
+**Tạm dừng / Tiếp tục Tính giờ SLA (SLA Pause & Resume)**:
+Cơ chế tự động đóng băng đồng hồ đếm ngược SLA khi vé chuyển sang trạng thái "Đang chờ khách hàng phản hồi" hoặc "Chờ bên thứ ba", và tiếp tục đếm giờ khi khách hàng phản hồi lại, đảm bảo tính công bằng khi đánh giá KPI nhân viên.
+
+**Khảo sát Mức độ Hài lòng (CSAT - Customer Satisfaction Score)**:
+Khảo sát đánh giá chất lượng dịch vụ (thang điểm 1-5 sao kèm nhận xét) được hệ thống tự động gửi tới khách hàng ngay sau khi vé hỗ trợ được đánh dấu Đã giải quyết (Resolved).
+
+**Mã Phân loại Giải pháp (Resolution Code)**:
+Danh mục nguyên nhân & giải pháp chuẩn hóa (ví dụ: *Đã hướng dẫn sử dụng, Đã sửa lỗi phần mềm, Lỗi do cấu hình người dùng, Hoàn tiền*) bắt buộc nhân viên hỗ trợ phải khai báo khi giải quyết vé để phục vụ phân tích chất lượng sản phẩm.
+
+**Cấu trúc Vé Cha - Vé Con (Parent-Child Ticket Hierarchy)**:
+Mô hình liên kết một sự cố lớn (Vé Cha / Major Incident) với nhiều yêu cầu khiếu nại của từng khách hàng riêng lẻ (Vé Con / Sub-tickets), cho phép cập nhật trạng thái và phản hồi hàng loạt tới tất cả các vé con khi sự cố cha được khắc phục.
+
+**Gộp Vé Hỗ trợ (Ticket Merge)**:
+Thao tác hợp nhất các vé hỗ trợ trùng lặp từ cùng một khách hàng về một vé duy nhất (Master Ticket), chuyển toàn bộ lịch sử trao đổi và đóng vé phụ để tránh trùng lặp công việc cho đội ngũ hỗ trợ.
+
+**Ghi chú Nội bộ vs Phản hồi Công khai (Internal Note vs Public Reply)**:
+Hai chế độ trao đổi trên vé hỗ trợ: *Ghi chú Nội bộ* chỉ hiển thị cho nhân viên trong công ty để phối hợp xử lý; *Phản hồi Công khai* sẽ gửi trực tiếp thông điệp tới khách hàng qua email/kênh chat.
+
+**Lịch làm việc trong Cam kết SLA (SLA Operating Hours & Business Calendar)**:
+Khung thời gian được tính vào đồng hồ đếm ngược SLA, hỗ trợ 2 chế độ: Hỗ trợ liên tục 24/7 (mọi ngày, kể cả ngày nghỉ/lễ) cho mức độ Khẩn cấp; và Giờ hành chính 8x5 (08:00 - 17:30 Thứ 2 - Thứ 6) cho các mức độ thông thường, tự động tạm dừng tính giờ vào ban đêm, cuối tuần và các ngày lễ quốc gia.
+
+**Phân bổ Vé Tự động (Ticket Auto-Assignment)**:
+Quy tắc tự động gán vé hỗ trợ mới tiếp nhận cho nhóm kỹ năng chuyên môn phù hợp và điều phối theo thuật toán chia đều (Round-robin) dựa trên khối lượng công việc hiện tại của nhân viên hỗ trợ.
+
+**Trạng thái Chờ Bên thứ ba (Pending 3rd Party)**:
+Trạng thái đặt lên vé hỗ trợ khi tiến độ giải quyết phụ thuộc vào phản hồi từ nhà cung cấp bên ngoài (Vendor, Nhà mạng viễn thông, Đối tác vận chuyển), cho phép tự động tạm dừng đồng hồ tính SLA để không phạt oan nhân viên hỗ trợ.
+
+**Ma trận Leo thang SLA (SLA Escalation Matrix)**:
+Bộ quy tắc phân cấp hành động tự động (gửi cảnh báo quản lý, tự động chuyển quyền sở hữu vé, gắn cờ ưu tiên khẩn cấp) khi một vé hỗ trợ tiếp cận hoặc vượt quá giới hạn thời gian cam kết chất lượng dịch vụ.
+
+## Quản lý Công việc & Hoạt động (Tasks & Activities)
+
+**Công việc / Tác vụ (Task / To-do)**:
+Thực thể đại diện cho một hành động cần hoàn thành của nhân viên (gọi điện thoại, gửi báo giá, họp trực tuyến, demo sản phẩm, ký hợp đồng), có tiêu đề, mô tả, hạn chót (`dueDate`), mức độ ưu tiên và người chịu trách nhiệm thực thi (`ownerId`).
+
+**Loại Hoạt động Bán hàng (Activity Type)**:
+Phân loại chuẩn hóa các hình thức tương tác với khách hàng: **Cuộc gọi (Call)**, **Email**, **Cuộc họp (Meeting)**, **Trình diễn Sản phẩm (Demo)**, **Chăm sóc Tiếp theo (Follow-up)**, **Việc cần làm (To-do)**.
+
+**Công việc Lặp lại Định kỳ (Recurring Task)**:
+Quy tắc tự động sinh ra công việc mới theo chu kỳ định sẵn (Hằng ngày / Hằng tuần / Hằng tháng / Hằng năm) sau khi công việc kỳ trước được đánh dấu Hoàn tất hoặc theo lịch cố định (ví dụ: Chăm sóc khách hàng VIP định kỳ ngày 15 hằng tháng).
+
+**Hạn chót & Nhắc nhở Tự động (Due Date & Task Reminder)**:
+Mốc thời gian cam kết hoàn thành công việc kèm thời điểm phát chuông thông báo nhắc nhở (`reminderAt`) trước thời hạn (15 phút, 1 giờ, 1 ngày) để nhân viên không bao giờ bỏ sót công việc quan trọng.
+
+**Trạng thái Công việc (Task Lifecycle Status)**:
+Vòng đời thực thi của một nhiệm vụ: **Chờ thực hiện (`PENDING`)** -> **Đang thực hiện (`IN_PROGRESS`)** -> **Đã hoàn thành (`COMPLETED`)** hoặc **Đã hủy (`CANCELLED`)**.
+
+**Liên kết Đa Thực thể (Multi-Entity Association)**:
+Khả năng gắn một công việc vào đồng thời nhiều thực thể nghiệp vụ liên quan: vừa thuộc về một Khách hàng cá nhân (`contactId`), vừa thuộc Doanh nghiệp (`accountId`), vừa phục vụ Cơ hội bán hàng (`dealId`) hoặc xử lý Vé hỗ trợ (`ticketId`).
+
+**Nhật ký Hoạt động (Activity Feed)**:
+Luồng dữ liệu lưu vết chi tiết từng sự kiện tương tác phát sinh (Ai đã gọi cho ai lúc mấy giờ, kết quả cuộc gọi ra sao, email đã gửi với nội dung gì) để toàn bộ đội ngũ nắm bắt tiến độ công việc chung.
+
+**Người theo dõi Công việc (Task Watcher / Collaborator)**:
+Thành viên nội bộ được gắn vào công việc để theo dõi tiến độ và nhận thông báo khi công việc hoàn thành hoặc thay đổi hạn chót mà không phải là người trực tiếp chịu trách nhiệm thực thi.
+
+**Danh sách Kiểm tra Công việc (Task Checklist)**:
+Tập hợp các đầu mục việc con cần hoàn thành bên trong một nhiệm vụ chính, cho phép theo dõi tiến độ % và áp dụng ràng buộc bắt buộc hoàn thành tất cả các mục trước khi đóng nhiệm vụ.
+
+## Quản lý Chiến dịch Tiếp thị & Truyền thông Đa kênh (Marketing Campaigns)
+
+**Chiến dịch Tiếp thị Đa kênh (Marketing Campaign)**:
+Thực thể đại diện cho một đợt phát sóng thông điệp hàng loạt (quảng bá sản phẩm, bản tin ưu đãi, thông báo bảo trì, chúc mừng sinh nhật) tới một tập đối tượng khách hàng mục tiêu thông qua các kênh Email, WhatsApp, Zalo hoặc SMS.
+
+**Kênh Phát sóng Tiếp thị (Campaign Broadcast Channels)**:
+Các phương thức truyền thông được hỗ trợ trong chiến dịch: **Email Marketing**, **WhatsApp Broadcast**, **Zalo ZNS / Zalo OA**, **SMS Brandname**.
+
+**Phân khúc Khách hàng Mục tiêu (Audience Segmentation)**:
+Bộ lọc động kết hợp nhiều tiêu chí linh hoạt (Thẻ phân loại, Giai đoạn vòng đời, Điểm tiềm năng, Trường tùy biến, Khu vực địa lý) để xác định danh sách khách hàng nhận tin.
+
+**Số lượng Tiếp cận Khả dụng (Estimated Reachable Audience)**:
+Chỉ số tính toán số lượng khách hàng thực tế có thể nhận tin nhắn sau khi đã tự động loại trừ các địa chỉ bị hỏng (`BOUNCED`), khách hàng đã từ chối nhận tin (`OPT_OUT`) hoặc thiếu định danh hợp lệ của kênh tương ứng.
+
+**Gửi Thử nghiệm (Test Send)**:
+Tính năng cho phép người tạo chiến dịch gửi trước 1 tin nhắn thử nghiệm tới địa chỉ cá nhân của mình để kiểm tra hiển thị nội dung, hình ảnh và nút liên kết thực tế trước khi bấm phát sóng chính thức.
+
+**Sổ cái Người nhận Tin (Campaign Send Ledger)**:
+Bảng lưu trữ chi tiết nhật ký trạng thái gửi tới từng khách hàng riêng lẻ (`PENDING`, `SENT`, `DELIVERED`, `OPENED`, `CLICKED`, `FAILED`, `BOUNCED`, `REFUSED`) kèm lý do lỗi chi tiết nếu gửi không thành công.
+
+**Chỉ số Đo lường Hiệu quả Tiếp thị (Campaign Performance Metrics)**:
+Tập hợp các chỉ số theo dõi thời gian thực: Tỷ lệ gửi thành công (Delivery Rate), Tỷ lệ mở xem (Open Rate), Tỷ lệ nhấp liên kết (Click-Through Rate - CTR), Tỷ lệ hỏng (Bounce Rate) và Tỷ lệ hủy nhận tin (Unsubscribe Rate).
+
+**Cơ chế Chống Thư rác & Hủy Đăng ký (Anti-Spam & Unsubscribe Compliance)**:
+Quy chuẩn bắt buộc tự động chèn liên kết hủy đăng ký (Unsubscribe Link) vào chân trang email và cơ chế tự động chặn gửi tới những khách hàng đã hủy nhận tin theo chuẩn GDPR/CAN-SPAM.
+
+**Hủy nhận tin theo từng Kênh riêng biệt (Channel-Specific Opt-out)**:
+Cơ chế cho phép khách hàng hủy nhận tin trên một kênh cụ thể (ví dụ: không nhận Email quảng cáo) nhưng vẫn duy trì đồng thuận nhận tin qua các kênh khác (Zalo, SMS, WhatsApp), tránh việc mất liên lạc hoàn toàn với khách hàng.
+
+**Giới hạn Tần suất Tiếp cận (Frequency Capping / Anti-Fatigue)**:
+Quy tắc giới hạn số lượng thông điệp tiếp thị tối đa mà một khách hàng có thể nhận trong một khoảng thời gian (ví dụ: tối đa 2 tin/tuần/kênh), tự động loại trừ các khách hàng đã chạm ngưỡng khỏi tệp phát sóng để bảo vệ trải nghiệm khách hàng.
+
+**Dự phòng Kênh Gửi Tin (Channel Fallback)**:
+Cơ chế tự động chuyển hướng gửi tin nhắn sang kênh thay thế dự phòng (ví dụ: Zalo gửi thất bại -> chuyển sang SMS -> chuyển sang Email) khi kênh phát sóng chính gặp lỗi kỹ thuật hoặc bị từ chối phát sóng.
+
+**Khử trùng lặp Danh sách Người nhận (Audience Deduplication)**:
+Cơ chế tự động loại trừ các bản ghi trùng lặp trong tệp phát sóng khi một khách hàng thuộc về nhiều phân khúc (segments) khác nhau trong cùng một chiến dịch, đảm bảo khách hàng chỉ nhận tối đa 1 tin nhắn duy nhất.
+
+**Phê duyệt Kép Chiến dịch (Dual Approval / Four-Eyes Principle)**:
+Chính sách an toàn truyền thông bắt buộc người duyệt phát sóng chiến dịch phải là một nhân sự quản lý độc lập khác với người biên soạn bản nháp, ngăn ngừa rủi ro phát sóng nhầm nội dung sai lệch ra diện rộng.
+
