@@ -31,6 +31,18 @@
       ]
     },
     {
+      "id": "feat-178",
+      "title": "audit-log: sổ sự kiện nhật ký theo danh mục đóng NFR-07",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/178"
+      ]
+    },
+    {
       "id": "feat-180",
       "title": "Contacts: ma trận chuyển đổi 10 giai đoạn vòng đời — 9 quy tắc mới",
       "primary_repo": "crm-api",
