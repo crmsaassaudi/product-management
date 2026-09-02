@@ -46,6 +46,18 @@
       ]
     },
     {
+      "id": "feat-179",
+      "title": "data-visibility: trao quyền theo quan hệ với bản ghi (chính người dùng / người phụ trách / người đang xử lý vé)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/179"
+      ]
+    },
+    {
       "id": "feat-180",
       "title": "Contacts: ma trận chuyển đổi 10 giai đoạn vòng đời — 9 quy tắc mới",
       "primary_repo": "crm-api",
