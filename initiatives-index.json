@@ -35,11 +35,14 @@
       "title": "audit-log: sổ sự kiện nhật ký theo danh mục đóng NFR-07",
       "primary_repo": "crm-api",
       "affected_repos": [
-        "crm-api"
+        "crm-api",
+        "crm-web"
       ],
       "status": "done",
       "links": [
-        "https://github.com/crmsaassaudi/product-management/issues/178"
+        "https://github.com/crmsaassaudi/product-management/issues/178",
+        "https://github.com/crmsaassaudi/crm-api/pull/138",
+        "https://github.com/crmsaassaudi/crm-web/pull/67"
       ]
     },
     {
