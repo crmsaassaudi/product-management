@@ -1,6 +1,292 @@
 {
   "initiatives": [
     {
+      "id": "feat-176",
+      "title": "crm-settings: cơ chế tham số cấu hình theo tenant có sàn bắt buộc không nới được",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/176"
+      ]
+    },
+    {
+      "id": "feat-177",
+      "title": "Contacts: danh mục dữ liệu chuẩn Phụ lục A (19 danh mục) — seeding và quản trị giá trị",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/177"
+      ]
+    },
+    {
+      "id": "feat-180",
+      "title": "Contacts: ma trận chuyển đổi 10 giai đoạn vòng đời — 9 quy tắc mới",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/180"
+      ]
+    },
+    {
+      "id": "feat-181",
+      "title": "Contacts: lịch sử chuyển giai đoạn và lý do bắt buộc khi chuyển ngược",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/181"
+      ]
+    },
+    {
+      "id": "feat-182",
+      "title": "Contacts: quy tắc bắt buộc và chuẩn hoá dữ liệu khi tạo/sửa hồ sơ",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/182"
+      ]
+    },
+    {
+      "id": "feat-183",
+      "title": "Contacts: nhận diện trùng lặp — ngưỡng cấu hình và chặn tạo trùng",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/183"
+      ]
+    },
+    {
+      "id": "feat-184",
+      "title": "Contacts: gộp bản ghi — 7 quy tắc mới, gồm sàn \"OPT_OUT thắng khi gộp\"",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/184"
+      ]
+    },
+    {
+      "id": "feat-186",
+      "title": "Contacts/Accounts: thùng rác, ảnh hưởng thực thể con và chốt an toàn trước dọn vĩnh viễn",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/186"
+      ]
+    },
+    {
+      "id": "feat-187",
+      "title": "Accounts: cây doanh nghiệp mẹ-con — chống vòng lặp và ảnh hưởng khi xoá nhánh",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/187"
+      ]
+    },
+    {
+      "id": "feat-188",
+      "title": "Contacts: quan hệ đa doanh nghiệp và trạng thái liên hệ OBSOLETE",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/188"
+      ]
+    },
+    {
+      "id": "feat-189",
+      "title": "Contacts: bằng chứng đồng thuận và cơ sở đồng thuận khi nhập khẩu",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/189"
+      ]
+    },
+    {
+      "id": "feat-190",
+      "title": "Contacts: hạn mức mở mặt nạ dữ liệu nhạy cảm và cảnh báo truy cập bất thường",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/190"
+      ]
+    },
+    {
+      "id": "feat-192",
+      "title": "Contacts: xuất dữ liệu — giới hạn mục đích và định danh KYC",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/192"
+      ]
+    },
+    {
+      "id": "feat-193",
+      "title": "Contacts: chuyển đổi Khách hàng Tiềm năng 1-click và hoàn tác trong 24 giờ",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/193"
+      ]
+    },
+    {
+      "id": "feat-194",
+      "title": "Contacts: theo dõi nguồn gốc khách hàng tiềm năng theo UTM",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/194"
+      ]
+    },
+    {
+      "id": "feat-195",
+      "title": "Contacts: động cơ phân bổ Khách hàng Tiềm năng tự động",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/195"
+      ]
+    },
+    {
+      "id": "feat-196",
+      "title": "Contacts: chấm điểm tiềm năng — ngưỡng MQL/SQL và chuyển giao Marketing→Sales",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/196"
+      ]
+    },
+    {
+      "id": "feat-199",
+      "title": "Contacts: chuyển giao quyền phụ trách và bàn giao khi nhân viên rời tổ chức",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/199"
+      ]
+    },
+    {
+      "id": "feat-200",
+      "title": "Contacts: ghi chú nội bộ và bản ghi hoạt động khách hàng",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/200"
+      ]
+    },
+    {
+      "id": "feat-201",
+      "title": "Contacts: chia sẻ bản ghi có thời hạn và Đội ngũ Phụ trách Khách hàng",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/201"
+      ]
+    },
+    {
+      "id": "feat-202",
+      "title": "Contacts: trợ lý tự động ánh xạ cột khi nhập khẩu Excel/CSV",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/202"
+      ]
+    },
+    {
+      "id": "feat-204",
+      "title": "Contacts: cơ chế tiếp nhận và xử lý yêu cầu quyền chủ thể dữ liệu",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/204"
+      ]
+    },
+    {
       "id": "feat-139",
       "title": "Billing 4/4 — crm-web: hiển thị subscription hiện tại cho tenant (chỉ xem)",
       "primary_repo": "crm-api",
