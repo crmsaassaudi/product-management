@@ -68,7 +68,9 @@
       ],
       "status": "done",
       "links": [
-        "https://github.com/crmsaassaudi/product-management/issues/180"
+        "https://github.com/crmsaassaudi/product-management/issues/180",
+        "https://github.com/crmsaassaudi/crm-api/pull/140",
+        "https://github.com/crmsaassaudi/crm-web/pull/68"
       ]
     },
     {
