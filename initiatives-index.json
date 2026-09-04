@@ -134,6 +134,19 @@
       ]
     },
     {
+      "id": "feat-185",
+      "title": "Contacts: sổ cái hoàn tác gộp — thời hạn hoàn tác cấu hình được",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/185",
+        "https://github.com/crmsaassaudi/crm-api/pull/145"
+      ]
+    },
+    {
       "id": "feat-186",
       "title": "Contacts/Accounts: thùng rác, ảnh hưởng thực thể con và chốt an toàn trước dọn vĩnh viễn",
       "primary_repo": "crm-api",
