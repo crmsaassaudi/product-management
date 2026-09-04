@@ -154,7 +154,7 @@
         "crm-api",
         "crm-web"
       ],
-      "status": "not-started",
+      "status": "in-progress",
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/186"
       ]
