@@ -245,9 +245,11 @@
         "crm-api",
         "crm-web"
       ],
-      "status": "not-started",
+      "status": "done",
       "links": [
-        "https://github.com/crmsaassaudi/product-management/issues/193"
+        "https://github.com/crmsaassaudi/product-management/issues/193",
+        "https://github.com/crmsaassaudi/crm-api/pull/153",
+        "https://github.com/crmsaassaudi/crm-web/pull/80"
       ]
     },
     {
