@@ -317,10 +317,11 @@
       "affected_repos": [
         "product-management"
       ],
-      "status": "in-progress",
+      "status": "completed",
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/198",
-        "https://github.com/crmsaassaudi/product-management/pull/207"
+        "https://github.com/crmsaassaudi/product-management/pull/207",
+        "https://github.com/crmsaassaudi/product-management/pull/209"
       ]
     },
     {
