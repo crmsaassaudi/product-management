@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 ---
 
 # Hợp đồng nghiệp vụ giữa Contacts, Omnichat và Tickets: thực thi quyền xoá theo mã khách hàng
@@ -84,3 +84,11 @@ Chủ sở hữu `tickets-srs.md` bổ sung một quy tắc thoả **cả bốn*
 **Chờ cả hai chủ sở hữu ký rồi mới chốt.** Loại: hai tài liệu **không có vòng ký** để chờ. Chờ một chữ ký không tồn tại là cách chắc chắn nhất để sàn treo vô thời hạn — đúng kết cục vấn đề #12 yêu cầu tránh.
 
 **Tự bổ sung quy tắc vào `tickets-srs.md`.** Loại: tài liệu đó ngoài phạm vi của tài liệu này, và viết quy tắc thay chủ sở hữu là lặp lại chính vấn đề — một cam kết không ai nhận.
+
+---
+
+**Xác nhận:** 2026-09-12. Cùng lý do như [ADR-0007](./0007-record-sharing-and-permission-precedence-contract.md): `omnichat-srs.md` và `tickets-srs.md` **đều không có vòng ký** để chờ, và chính vấn đề #12 mục 7 yêu cầu không để sàn treo không ai chịu.
+
+Hợp đồng đã được thi hành ở FEAT-33 ([#204](https://github.com/crmsaassaudi/product-management/issues/204)): điều khoản 2 hiện thành cờ `covered: false` trên dòng Vé hỗ trợ của Biên bản Hoàn tất Xử lý, và điều khoản 3 thành trạng thái thứ năm `suspendedByLegalHold` giữ yêu cầu ở trạng thái chưa hoàn tất. Cả hai có test khoá trong `completion-record.spec.ts`.
+
+**Điều khoản 2 vẫn là một cam kết còn mở về phía `tickets-srs.md`** — trạng thái `accepted` ở đây nghĩa là *hợp đồng đã chốt*, không phải *sàn đã được phủ*. Khi chủ sở hữu tài liệu đó bổ sung quy tắc thoả bốn vế tại điều khoản 5, ADR này được cập nhật và điều khoản 2 hết hiệu lực.
