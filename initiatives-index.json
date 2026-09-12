@@ -384,6 +384,19 @@
       ]
     },
     {
+      "id": "feat-203",
+      "title": "Contacts: hợp đồng xoá dữ liệu theo mã khách hàng với omnichat và tickets",
+      "primary_repo": "product-management",
+      "affected_repos": [
+        "product-management"
+      ],
+      "status": "completed",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/203",
+        "https://github.com/crmsaassaudi/product-management/pull/208"
+      ]
+    },
+    {
       "id": "feat-204",
       "title": "Contacts: cơ chế tiếp nhận và xử lý yêu cầu quyền chủ thể dữ liệu",
       "primary_repo": "crm-api",
