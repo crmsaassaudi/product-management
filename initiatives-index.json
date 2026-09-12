@@ -298,6 +298,19 @@
       ]
     },
     {
+      "id": "feat-197",
+      "title": "Contacts: suy giảm điểm tiềm năng theo thời gian",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api"
+      ],
+      "status": "completed",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/197",
+        "https://github.com/crmsaassaudi/crm-api/pull/157"
+      ]
+    },
+    {
       "id": "feat-199",
       "title": "Contacts: chuyển giao quyền phụ trách và bàn giao khi nhân viên rời tổ chức",
       "primary_repo": "crm-api",
