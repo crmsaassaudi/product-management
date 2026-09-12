@@ -311,6 +311,19 @@
       ]
     },
     {
+      "id": "feat-198",
+      "title": "Contacts: chốt hợp đồng nghiệp vụ chia sẻ bản ghi với iam-tenant-authorization (ADR)",
+      "primary_repo": "product-management",
+      "affected_repos": [
+        "product-management"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/198",
+        "https://github.com/crmsaassaudi/product-management/pull/207"
+      ]
+    },
+    {
       "id": "feat-199",
       "title": "Contacts: chuyển giao quyền phụ trách và bàn giao khi nhân viên rời tổ chức",
       "primary_repo": "crm-api",
