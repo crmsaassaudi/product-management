@@ -412,6 +412,23 @@
       ]
     },
     {
+      "id": "feat-205",
+      "title": "crm-test: tự động hoá 22 kịch bản UAT của phân hệ Khách hàng",
+      "primary_repo": "crm-monitoring",
+      "affected_repos": [
+        "crm-monitoring",
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "completed",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/205",
+        "https://github.com/crmsaassaudi/crm-monitoring/pull/2",
+        "https://github.com/crmsaassaudi/crm-api/pull/163",
+        "https://github.com/crmsaassaudi/crm-web/pull/89"
+      ]
+    },
+    {
       "id": "feat-139",
       "title": "Billing 4/4 — crm-web: hiển thị subscription hiện tại cho tenant (chỉ xem)",
       "primary_repo": "crm-api",
