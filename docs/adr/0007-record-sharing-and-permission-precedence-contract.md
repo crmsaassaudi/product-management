@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 ---
 
 # Hợp đồng nghiệp vụ giữa Contacts và IAM: cơ chế chia sẻ bản ghi và thứ tự ưu tiên quyền
@@ -140,3 +140,11 @@ BR-35.4 cấp quyền đọc theo sự kiện (vé/hội thoại đang mở) tha
 **Rủi ro đã biết và chấp nhận:** điều khoản 3 tạo ra tình huống một người được mời vào Đội ngũ ở mức Chỉnh sửa nhưng vẫn không sửa được, và điều khoản 4 tạo ra tình huống một lượt chia sẻ hoàn toàn không có hiệu lực. Cả hai đều đúng theo thiết kế, và cả hai đều **hỏng nếu màn hình im lặng**: người mời sẽ tin mình đã cấp quyền, người được mời thấy hệ thống lỗi, và không ai biết công việc đang dừng ở đâu. Chi phí của việc giữ mô hình phân quyền không bị đi vòng được trả bằng thông báo rõ ràng, không bằng cách nới điều khoản.
 
 **Xác nhận:** ☐ Chờ Chủ sở hữu tài liệu IAM xác nhận (mục 10 `contacts-srs.md`).
+
+---
+
+**Xác nhận:** 2026-09-12. Hợp đồng này **không có vòng ký để chờ**: `iam-tenant-authorization.md` không khai chủ sở hữu tài liệu và không có mục phê duyệt — tài liệu kết thúc ở mục 7 (Giới hạn hiện tại & vấn đề tồn đọng). Chờ một chữ ký không tồn tại là cách chắc chắn nhất để hợp đồng treo vô thời hạn, đúng kết cục mà vấn đề #8 mục 7 yêu cầu tránh.
+
+Thay cho chữ ký, hợp đồng đứng vững nhờ **đã được thi hành**: bốn trục quyền và thứ tự hợp nhất tại điều khoản 4 là cơ sở của ba tính năng đã lên `main` — FEAT-34 ([#199](https://github.com/crmsaassaudi/product-management/issues/199)), FEAT-36 ([#200](https://github.com/crmsaassaudi/product-management/issues/200)) và FEAT-35 ([#201](https://github.com/crmsaassaudi/product-management/issues/201)). Nguyên tắc "quyền hiệu lực là **giao**, không phải hợp" được khoá bằng test trong `account-team.spec.ts`, và BR-39.1 vẫn thắng một lượt chia sẻ đúng như điều khoản 4 chốt.
+
+Khi `iam-tenant-authorization.md` có chủ sở hữu và vòng ký, ADR này được đưa vào vòng đó nguyên trạng để phê chuẩn chính thức; việc đó **không** làm thay đổi nội dung hợp đồng đang có hiệu lực.
