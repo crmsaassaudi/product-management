@@ -1085,6 +1085,8 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 - `BR-44.3 (Nhật ký không sửa được)`: Nhật ký thay đổi là bất biến, kể cả Quản trị viên cũng không xóa hay sửa được — nếu sửa được thì nhật ký mất giá trị làm bằng chứng đối soát.
 - `BR-44.4 (Ghi vết thao tác xuất dữ liệu)`: Mỗi lần xuất dữ liệu vé ra tệp đều được ghi lại (ai xuất, lúc nào, phạm vi dữ liệu nào), phục vụ kiểm soát rủi ro rò rỉ thông tin khách hàng.
 
+**Quyền đọc nhật ký:** `NFR-14` (phân hệ Contacts, mục 4.3) là **sàn bắt buộc** và thắng mọi mô tả quyền khác trong tài liệu này. Theo đó chỉ Chủ sở hữu Workspace và Người phụ trách Bảo vệ Dữ liệu đọc được toàn bộ nhật ký; Quản trị viên chỉ đọc nhật ký của đúng bản ghi đang có yêu cầu chủ thể dữ liệu hoặc thao tác gộp/khôi phục đang mở; Trưởng phòng, Trưởng nhóm và Tư vấn viên **không** được tra cứu nhật ký toàn hệ thống. Họ vẫn xem được nhật ký thay đổi của từng vé mà mình có quyền trên màn hình chi tiết vé — đủ cho Kịch bản 21, vốn là đối soát một vé cụ thể với khách hàng, không phải truy vấn toàn kho. Ghi chú này tồn tại vì bảng phân quyền trước đây cấp "Toàn quyền" cho Trưởng phòng, mâu thuẫn trực tiếp với `NFR-14`.
+
 **Tiêu chí chấp nhận:** Xem Kịch bản 21 (mục 6).
 
 ---
@@ -1186,7 +1188,7 @@ Cột "Hệ thống" không phải một actor người dùng — đây là ký 
 | `FEAT-41` | Tách Vé | Nhận thông báo vé mới | Scope gán | Scope PB | **Toàn quyền** | — | **Toàn quyền** | — |
 | `FEAT-42` | Bảng điều khiển Hàng đợi | — | — | Scope PB | **Toàn quyền** | — | **Toàn quyền** | — |
 | `FEAT-43` | Báo cáo Hiệu suất & Tuân thủ | — | Xem chỉ số của chính mình | Scope PB | **Toàn quyền** | — | **Toàn quyền** | ✔ (gửi báo cáo định kỳ) |
-| `FEAT-44` | Nhật ký Thay đổi | — | — | Scope PB | **Toàn quyền** | — | **Toàn quyền** | ✔ (ghi nhật ký) |
+| `FEAT-44` | Nhật ký Thay đổi | — | — | Nhật ký của từng vé đang xử lý | Nhật ký của từng vé đang xử lý | — | Toàn bộ nhật ký (Chủ sở hữu/DPO); theo từng bản ghi (Quản trị viên) | ✔ (ghi nhật ký) |
 | `FEAT-45` | Vòng đời Dữ liệu & Ẩn danh hóa | — | — | — | **Toàn quyền** | — | **Toàn quyền** | ✔ (thực thi chính sách lưu trữ) |
 
 *Chú giải "quyền resolve":* Là quyền được phép chuyển vé sang trạng thái kết thúc dạng "đã xử lý xong" hoặc mở lại một vé đã kết thúc (FEAT-19, FEAT-21) — tách biệt với quyền "sửa" (edit) thông thường, vì đây là thao tác thay đổi tình trạng cam kết SLA của vé chứ không chỉ chỉnh sửa nội dung.
