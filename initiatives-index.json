@@ -1670,6 +1670,21 @@
         "https://github.com/crmsaassaudi/crm-api/tree/feat/213-ticket-merge-rules",
         "https://github.com/crmsaassaudi/crm-web/tree/feat/213-ticket-merge-rules"
       ]
+    },
+    {
+      "id": "feat-214",
+      "title": "Tickets: lưu trữ, ẩn danh hóa và xử lý yêu cầu xóa dữ liệu cá nhân theo Nghị định 13",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/214",
+        "https://github.com/crmsaassaudi/crm-api/tree/feat/214-ticket-anonymization",
+        "https://github.com/crmsaassaudi/crm-web/tree/feat/214-ticket-anonymization"
+      ]
     }
   ]
 }
