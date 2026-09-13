@@ -1655,6 +1655,21 @@
         "https://github.com/crmsaassaudi/crm-api/tree/feat/212-ticket-audit-trail",
         "https://github.com/crmsaassaudi/crm-web/tree/feat/212-ticket-audit-trail"
       ]
+    },
+    {
+      "id": "feat-213",
+      "title": "Tickets: chặn gộp vé khác khách hàng, hoàn tác gộp nhầm và thông báo khách hàng vé phụ",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/213",
+        "https://github.com/crmsaassaudi/crm-api/tree/feat/213-ticket-merge-rules",
+        "https://github.com/crmsaassaudi/crm-web/tree/feat/213-ticket-merge-rules"
+      ]
     }
   ]
 }
