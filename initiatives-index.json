@@ -1640,6 +1640,21 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/211"
       ]
+    },
+    {
+      "id": "feat-212",
+      "title": "Tickets: nhật ký thay đổi và truy vết thao tác trên vé",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/212",
+        "https://github.com/crmsaassaudi/crm-api/tree/feat/212-ticket-audit-trail",
+        "https://github.com/crmsaassaudi/crm-web/tree/feat/212-ticket-audit-trail"
+      ]
     }
   ]
 }
