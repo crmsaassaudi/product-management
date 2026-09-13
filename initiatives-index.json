@@ -1627,6 +1627,19 @@
       "links": [
         "https://github.com/crmsaassaudi/product-management/issues/210"
       ]
+    },
+    {
+      "id": "feat-211",
+      "title": "Tickets: báo cáo tuân thủ SLA, hiệu suất tư vấn viên và khối lượng công việc",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/211"
+      ]
     }
   ]
 }
