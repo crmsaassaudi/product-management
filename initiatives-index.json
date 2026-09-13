@@ -1614,6 +1614,19 @@
         "https://github.com/crmsaassaudi/product-management/issues/128",
         "https://github.com/crmsaassaudi/crm-web/tree/feat/107-seat-based-billing-ui"
       ]
+    },
+    {
+      "id": "feat-210",
+      "title": "Tickets: bảng điều khiển hàng đợi thời gian thực",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/210"
+      ]
     }
   ]
 }
