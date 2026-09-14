@@ -1730,6 +1730,21 @@
         "https://github.com/crmsaassaudi/crm-api/tree/feat/217-ticket-bulk-reassign",
         "https://github.com/crmsaassaudi/crm-web/tree/feat/217-ticket-bulk-reassign"
       ]
+    },
+    {
+      "id": "feat-218",
+      "title": "Tickets: giới hạn thời gian mở lại vé và tự động đóng vé sau thời gian không phản hồi",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/218",
+        "https://github.com/crmsaassaudi/crm-api/tree/feat/218-ticket-auto-close-reopen",
+        "https://github.com/crmsaassaudi/crm-web/tree/feat/218-ticket-auto-close-reopen"
+      ]
     }
   ]
 }

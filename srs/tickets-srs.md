@@ -181,8 +181,8 @@ Quyền thao tác vé hỗ trợ (xem/tạo/sửa/xóa/gán/xử lý/nhập/xu�
 | | `FEAT-39` | Leo thang Thủ công & Xử lý Khiếu nại về Chất lượng Phục vụ (Manual Escalation) | `[Yêu cầu mới]` |
 | **G. Đóng Vé & Khảo sát Hài lòng** | `FEAT-19` | Quy trình Giải quyết & Ghi nhận Nguyên nhân Xử lý (Resolution Code) | `[Đã triển khai]` |
 | | `FEAT-20` | Khảo sát Đánh giá Sự Hài lòng 1-5 Sao (CSAT Survey) | `[Đã triển khai một phần]` |
-| | `FEAT-21` | Quy định Mở lại Vé đã Giải quyết (Ticket Reopening) | `[Đã triển khai một phần]` |
-| | `FEAT-22` | Tự động Đóng Vé sau Thời gian Không Phản hồi (Auto-Close) | `[Yêu cầu mới]` |
+| | `FEAT-21` | Quy định Mở lại Vé đã Giải quyết (Ticket Reopening) | `[Đã triển khai]` |
+| | `FEAT-22` | Tự động Đóng Vé sau Thời gian Không Phản hồi (Auto-Close) | `[Đã triển khai]` |
 | **H. Hàng loạt, Nhập/Xuất & Thùng rác** | `FEAT-23` | Gắn Nhãn Hàng loạt cho Nhiều Vé (Bulk Tagging) | `[Đã triển khai]` |
 | | `FEAT-24` | Nhập Dữ liệu Vé Hỗ trợ từ Tệp (Ticket Import) | `[Đã triển khai]` |
 | | `FEAT-25` | Xuất Báo cáo Vé Hỗ trợ Bảo mật qua Đường dẫn Tải có Thời hạn (Secure Export) | `[Đã triển khai]` |
@@ -764,7 +764,7 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 
 ---
 
-### FEAT-21 — Quy định Mở lại Vé đã Giải quyết (Ticket Reopening) `[Đã triển khai một phần]`
+### FEAT-21 — Quy định Mở lại Vé đã Giải quyết (Ticket Reopening) `[Đã triển khai]`
 
 **Mô tả nghiệp vụ:** Nếu khách hàng phản hồi lại sau khi vé đã ở trạng thái kết thúc, người có quyền resolve có thể mở lại vé, đưa về trạng thái đang xử lý bình thường. Vì một vé được coi là "đã xử lý xong" đã được tính vào các chỉ số tuân thủ SLA, việc mở lại cần có giới hạn thời gian hợp lý để không làm sai lệch ý nghĩa của các chỉ số đó và không để một vé bị "treo" mở-đóng nhiều lần trong thời gian dài.
 
@@ -773,29 +773,27 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 **Quy tắc nghiệp vụ:**
 - `BR-21.1 (Xác nhận mở lại)`: Thao tác mở lại vé yêu cầu xác nhận rõ ràng, tránh mở lại nhầm do thao tác vội.
 - `BR-21.2 (Đếm số lần mở lại)`: Hệ thống ghi nhận số lần vé đã từng được mở lại và thời điểm mở lại gần nhất, phục vụ theo dõi chất lượng xử lý.
-- `BR-21.3 (Giới hạn thời gian mở lại)`: Doanh nghiệp cấu hình khoảng thời gian tối đa được phép mở lại kể từ khi vé chuyển sang trạng thái kết thúc (mặc định 7 ngày). Trong khoảng thời gian đó, khách hàng phản hồi lại sẽ mở lại đúng vé cũ. Quá khoảng thời gian đó, hệ thống phải tạo một vé mới và tự động liên kết tham chiếu tới vé cũ, thay vì mở lại vé đã đóng từ lâu.
+- `BR-21.3 (Giới hạn thời gian mở lại)`: Doanh nghiệp cấu hình khoảng thời gian tối đa được phép mở lại kể từ khi vé chuyển sang trạng thái kết thúc (mặc định 7 ngày theo `CFG-21-01`). Trong khoảng thời gian đó, khách hàng phản hồi lại sẽ mở lại đúng vé cũ. Quá khoảng thời gian đó, hệ thống chặn mở lại vé cũ (ném `TICKET_REOPEN_WINDOW_EXPIRED`), thay vào đó tạo một vé mới liên kết tham chiếu (`precedingTicketId` / `relatedTo`) và nhận SLA mới từ đầu.
 
-**Khoảng cách cần bổ sung:** Hệ thống hiện đáp ứng BR-21.1 và BR-21.2. BR-21.3 (giới hạn thời gian mở lại và tự động tạo vé mới liên kết khi quá hạn) **chưa được xây dựng** — hiện vé có thể mở lại vào bất kỳ thời điểm nào sau khi đã xử lý xong. Đây là khoảng cách ảnh hưởng tới độ tin cậy của chỉ số tuân thủ SLA khi báo cáo cho khách hàng.
-
+**Hiện trạng triển khai:** Đã triển khai đầy đủ BR-21.1, BR-21.2 và BR-21.3 (Refs `crmsaassaudi/product-management#218`).
 
 **Tiêu chí chấp nhận:** Xem Kịch bản 8 và Kịch bản 8b (mục 6).
 
 ---
 
-### FEAT-22 — Tự động Đóng Vé sau Thời gian Không Phản hồi `[Yêu cầu mới]`
+### FEAT-22 — Tự động Đóng Vé sau Thời gian Không Phản hồi `[Đã triển khai]`
 
 **Mô tả nghiệp vụ:** Sau khi vé được xử lý xong, nếu khách hàng không phản hồi thêm trong một khoảng thời gian do doanh nghiệp cấu hình, hệ thống tự động chuyển vé sang trạng thái đóng hoàn tất. Không có cơ chế này, các vé đã xử lý xong sẽ tồn đọng vô thời hạn, làm sai lệch số liệu vé đang mở và khiến Trưởng nhóm không nhìn đúng khối lượng công việc thực tế.
 
 **Actor:** Support Manager, Administrator (cấu hình thời hạn); Tiến trình Hệ thống (thực hiện đóng tự động).
 
 **Quy tắc nghiệp vụ:**
-- `BR-22.1 (Thời hạn chờ)`: Doanh nghiệp cấu hình số giờ chờ kể từ khi vé chuyển sang "đã xử lý xong" (mặc định 48 giờ làm việc).
+- `BR-22.1 (Thời hạn chờ)`: Doanh nghiệp cấu hình số giờ chờ kể từ khi vé chuyển sang "đã xử lý xong" (mặc định 48 giờ làm việc theo `CFG-22-01`).
 - `BR-22.2 (Khách hàng phản hồi làm dừng đếm)`: Nếu khách hàng phản hồi trong thời gian chờ, vé không bị đóng tự động mà quay lại luồng xử lý bình thường (xem FEAT-21).
-- `BR-22.3 (Thông báo trước khi đóng)`: Trước khi đóng tự động, hệ thống gửi thông báo nhắc khách hàng rằng vé sắp được đóng và họ có thể phản hồi nếu vấn đề chưa được giải quyết triệt để.
+- `BR-22.3 (Thông báo trước khi đóng)`: Trước khi đóng tự động (mặc định 12 giờ làm việc trước mốc đóng theo `CFG-22-02`), hệ thống gửi thông báo nhắc khách hàng rằng vé sắp được đóng và họ có thể phản hồi nếu vấn đề chưa được giải quyết triệt để.
 - `BR-22.4 (Đóng tự động không ảnh hưởng chỉ số tuân thủ)`: Thời điểm tính tuân thủ cam kết xử lý dứt điểm là lúc vé chuyển sang "đã xử lý xong", không phải lúc đóng tự động.
 
-*Ghi chú hiện trạng:* Cơ chế tương tự đã tồn tại cho hội thoại đa kênh (module Omnichat), nhưng chưa được áp dụng cho vé hỗ trợ. Hiện tại việc đóng vé đã xử lý xong là thao tác thủ công.
-
+**Hiện trạng triển khai:** Đã triển khai đầy đủ qua BullMQ `ticket-auto-close` queue, tính thời gian làm việc qua `BusinessHoursService`, phát sự kiện nhắc `ticket.auto_close_reminder` và chuyển vé sang `closed` bảo toàn `resolvedAt` (Refs `crmsaassaudi/product-management#218`).
 
 **Tiêu chí chấp nhận:** Xem Kịch bản 29 (mục 6).
 
