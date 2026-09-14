@@ -1745,6 +1745,21 @@
         "https://github.com/crmsaassaudi/crm-api/tree/feat/218-ticket-auto-close-reopen",
         "https://github.com/crmsaassaudi/crm-web/tree/feat/218-ticket-auto-close-reopen"
       ]
+    },
+    {
+      "id": "feat-219",
+      "title": "Tickets: gửi khảo sát hài lòng tự động và xử lý vé mở lại khi khảo sát còn hiệu lực",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/219",
+        "https://github.com/crmsaassaudi/crm-api/tree/feat/219-ticket-auto-csat",
+        "https://github.com/crmsaassaudi/crm-web/tree/feat/219-ticket-auto-csat"
+      ]
     }
   ]
 }

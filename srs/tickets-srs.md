@@ -180,7 +180,7 @@ Quyền thao tác vé hỗ trợ (xem/tạo/sửa/xóa/gán/xử lý/nhập/xu�
 | | `FEAT-18` | Tự động Leo thang khi Vi phạm SLA (Escalation: Cảnh báo cấp Quản lý / Tự động Chuyển việc) | `[Đã triển khai]` |
 | | `FEAT-39` | Leo thang Thủ công & Xử lý Khiếu nại về Chất lượng Phục vụ (Manual Escalation) | `[Yêu cầu mới]` |
 | **G. Đóng Vé & Khảo sát Hài lòng** | `FEAT-19` | Quy trình Giải quyết & Ghi nhận Nguyên nhân Xử lý (Resolution Code) | `[Đã triển khai]` |
-| | `FEAT-20` | Khảo sát Đánh giá Sự Hài lòng 1-5 Sao (CSAT Survey) | `[Đã triển khai một phần]` |
+| | `FEAT-20` | Khảo sát Đánh giá Sự Hài lòng 1-5 Sao (CSAT Survey) | `[Đã triển khai]` |
 | | `FEAT-21` | Quy định Mở lại Vé đã Giải quyết (Ticket Reopening) | `[Đã triển khai]` |
 | | `FEAT-22` | Tự động Đóng Vé sau Thời gian Không Phản hồi (Auto-Close) | `[Đã triển khai]` |
 | **H. Hàng loạt, Nhập/Xuất & Thùng rác** | `FEAT-23` | Gắn Nhãn Hàng loạt cho Nhiều Vé (Bulk Tagging) | `[Đã triển khai]` |
@@ -743,7 +743,7 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 
 ---
 
-### FEAT-20 — Khảo sát Đánh giá Sự Hài lòng 1-5 Sao (CSAT) `[Đã triển khai một phần]`
+### FEAT-20 — Khảo sát Đánh giá Sự Hài lòng 1-5 Sao (CSAT) `[Đã triển khai]`
 
 **Mô tả nghiệp vụ:** Khi vé kết thúc, hệ thống tự động chuẩn bị và gửi tới khách hàng một đường dẫn khảo sát dành riêng cho vé đó. Khách hàng chấm điểm 1-5 sao kèm nhận xét qua đường dẫn này. Kết quả được ghi nhận vào vé và vào hồ sơ hiệu suất của tư vấn viên đã xử lý.
 
@@ -757,8 +757,7 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 - `BR-20.5 (Mốc gửi khảo sát trong vòng đời hai trạng thái kết thúc)`: Khảo sát được gửi tại thời điểm vé chuyển sang trạng thái kết thúc dạng **"đã xử lý xong"** — tức ngay sau khi tư vấn viên hoàn tất công việc, khi trải nghiệm phục vụ còn mới trong trí nhớ khách hàng. Không chờ tới khi vé chuyển sang "đã đóng hoàn tất" theo FEAT-22, vì mốc đó cách thời điểm phục vụ nhiều ngày làm việc và tỷ lệ khách hàng phản hồi sẽ sụt mạnh. Nếu vé đi thẳng sang "đã đóng hoàn tất" mà không qua "đã xử lý xong", khảo sát được gửi tại mốc đó.
 - `BR-20.6 (Vé mở lại trong khi khảo sát còn hiệu lực)`: Khi vé được mở lại (FEAT-21) trong lúc đường dẫn khảo sát chưa hết hạn, đường dẫn đó bị vô hiệu hóa ngay và điểm đã chấm (nếu có) được gỡ khỏi cách tính KPI-03. Lý do: khách hàng chấm điểm cho một lần phục vụ chưa thực sự giải quyết xong vấn đề thì điểm đó không phản ánh đúng chất lượng. Khi vé kết thúc lần kế tiếp, hệ thống gửi **một** khảo sát mới — đây là ngoại lệ duy nhất của BR-20.3, và ngoại lệ này chỉ áp dụng khi khảo sát trước đã bị vô hiệu hóa, nên khách hàng không bao giờ nhận hai khảo sát còn hiệu lực cùng lúc.
 
-**Khoảng cách cần bổ sung:** Hệ thống hiện tự động chuẩn bị đường dẫn khảo sát khi vé kết thúc (đáp ứng BR-20.1, BR-20.3), nhưng **việc gửi khảo sát tới khách hàng chưa được tự động hóa** — chưa đáp ứng BR-20.2. Đây là khoảng cách ảnh hưởng trực tiếp tới độ tin cậy của KPI-03: chừng nào việc gửi còn phụ thuộc thao tác thủ công, số liệu CSAT thu được không đại diện cho toàn bộ khách hàng đã phục vụ.
-
+**Hiện trạng triển khai:** Đã triển khai đầy đủ BR-20.1, BR-20.2, BR-20.3, BR-20.4, BR-20.5 và BR-20.6 (Refs `crmsaassaudi/product-management#219`).
 
 **Tiêu chí chấp nhận:** Xem Kịch bản 4 (mục 6).
 
