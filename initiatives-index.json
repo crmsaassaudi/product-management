@@ -1760,6 +1760,21 @@
         "https://github.com/crmsaassaudi/crm-api/tree/feat/219-ticket-auto-csat",
         "https://github.com/crmsaassaudi/crm-web/tree/feat/219-ticket-auto-csat"
       ]
+    },
+    {
+      "id": "feat-220",
+      "title": "Tickets: leo thang thủ công và xử lý khiếu nại về chất lượng phục vụ",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/220",
+        "https://github.com/crmsaassaudi/crm-api/tree/feat/220-ticket-escalation-complaint",
+        "https://github.com/crmsaassaudi/crm-web/tree/feat/220-ticket-escalation-complaint"
+      ]
     }
   ]
 }

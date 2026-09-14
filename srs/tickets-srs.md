@@ -178,7 +178,7 @@ Quyền thao tác vé hỗ trợ (xem/tạo/sửa/xóa/gán/xử lý/nhập/xu�
 | | `FEAT-38` | Cảnh báo Trùng Thao tác khi Nhiều Người cùng Xử lý Một Vé (Collision Detection) | `[Yêu cầu mới]` |
 | **F. Leo thang & Cảnh báo Vi phạm** | `FEAT-17` | Cảnh báo Sớm Nguy cơ Vi phạm SLA trước khi hết hạn (SLA Warning) | `[Đã triển khai]` |
 | | `FEAT-18` | Tự động Leo thang khi Vi phạm SLA (Escalation: Cảnh báo cấp Quản lý / Tự động Chuyển việc) | `[Đã triển khai]` |
-| | `FEAT-39` | Leo thang Thủ công & Xử lý Khiếu nại về Chất lượng Phục vụ (Manual Escalation) | `[Yêu cầu mới]` |
+| | `FEAT-39` | Leo thang Thủ công & Xử lý Khiếu nại về Chất lượng Phục vụ (Manual Escalation) | `[Đã triển khai]` |
 | **G. Đóng Vé & Khảo sát Hài lòng** | `FEAT-19` | Quy trình Giải quyết & Ghi nhận Nguyên nhân Xử lý (Resolution Code) | `[Đã triển khai]` |
 | | `FEAT-20` | Khảo sát Đánh giá Sự Hài lòng 1-5 Sao (CSAT Survey) | `[Đã triển khai]` |
 | | `FEAT-21` | Quy định Mở lại Vé đã Giải quyết (Ticket Reopening) | `[Đã triển khai]` |
@@ -709,7 +709,9 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 
 ---
 
-### FEAT-39 — Leo thang Thủ công & Xử lý Khiếu nại về Chất lượng Phục vụ `[Yêu cầu mới]`
+### FEAT-39 — Leo thang Thủ công & Xử lý Khiếu nại về Chất lượng Phục vụ `[Đã triển khai]`
+
+**Hiện trạng triển khai:** Đã triển khai đầy đủ BR-39.1, BR-39.2, BR-39.3 và BR-39.4 (Refs crmsaassaudi/product-management#220).
 
 **Mô tả nghiệp vụ:** Không phải mọi tình huống cần quản lý can thiệp đều gắn với vi phạm thời hạn. Khách hàng có thể bức xúc, đe dọa chấm dứt hợp đồng, hoặc khiếu nại về chính thái độ của tư vấn viên đang phục vụ họ — những trường hợp này cần chuyển lên quản lý ngay, không chờ đồng hồ SLA chạy hết.
 
