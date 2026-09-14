@@ -1685,6 +1685,21 @@
         "https://github.com/crmsaassaudi/crm-api/tree/feat/214-ticket-anonymization",
         "https://github.com/crmsaassaudi/crm-web/tree/feat/214-ticket-anonymization"
       ]
+    },
+    {
+      "id": "feat-215",
+      "title": "Tickets: hàng đợi chung, ca trực và trạng thái sẵn sàng của tư vấn viên",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/215",
+        "https://github.com/crmsaassaudi/crm-api/tree/feat/215-ticket-queue-shifts",
+        "https://github.com/crmsaassaudi/crm-web/tree/feat/215-ticket-queue-shifts"
+      ]
     }
   ]
 }
