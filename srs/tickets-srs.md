@@ -174,7 +174,7 @@ Quyền thao tác vé hỗ trợ (xem/tạo/sửa/xóa/gán/xử lý/nhập/xu�
 | | `FEAT-14` | Ghi chú Nội bộ Bảo mật giữa Nhân viên (Internal Notes) | `[Đã triển khai]` |
 | | `FEAT-15` | Đính kèm Tài liệu & Hình ảnh (Attachments) | `[Đã triển khai]` |
 | | `FEAT-16` | Thư viện Câu trả lời Mẫu Soạn sẵn (Canned Responses / Macros) | `[Yêu cầu mới]` |
-| | `FEAT-37` | Thông báo cho Tư vấn viên về Vé được Gán & Khách hàng Phản hồi | `[Yêu cầu mới]` |
+| | `FEAT-37` | Thông báo cho Tư vấn viên về Vé được Gán & Khách hàng Phản hồi | `[Đã triển khai]` |
 | | `FEAT-38` | Cảnh báo Trùng Thao tác khi Nhiều Người cùng Xử lý Một Vé (Collision Detection) | `[Yêu cầu mới]` |
 | **F. Leo thang & Cảnh báo Vi phạm** | `FEAT-17` | Cảnh báo Sớm Nguy cơ Vi phạm SLA trước khi hết hạn (SLA Warning) | `[Đã triển khai]` |
 | | `FEAT-18` | Tự động Leo thang khi Vi phạm SLA (Escalation: Cảnh báo cấp Quản lý / Tự động Chuyển việc) | `[Đã triển khai]` |
@@ -514,8 +514,6 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 - Người nhận không còn hoạt động trong hệ thống (nghỉ việc, bị khóa tài khoản): hệ thống từ chối thao tác chuyển và yêu cầu chọn người khác.
 - Người nhận đã đạt hạn mức năng lực tối đa: hệ thống cảnh báo nhưng vẫn cho phép Trưởng nhóm chuyển nếu xác nhận, vì bàn giao thủ công là quyết định có chủ đích của quản lý.
 
-**Phụ thuộc chưa sẵn sàng:** BR-12.3 chờ FEAT-37 và BR-12.4 chờ FEAT-34. Trong thời gian chờ, người nhận vé **không được báo là mình vừa được giao việc** — họ chỉ biết khi tự mở danh sách vé, làm chậm thời điểm bắt tay xử lý trong khi đồng hồ cam kết vẫn chạy; và vé bị từ chối chưa có hàng đợi chung để quay về.
-
 **Tiêu chí chấp nhận:** Xem Kịch bản 9 (mục 6).
 
 ---
@@ -601,8 +599,6 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 - `BR-14.2 (Nhắc tên đồng nghiệp)`: Trong ghi chú nội bộ, tư vấn viên nhắc tên được đồng nghiệp để xin hỗ trợ; người được nhắc tên nhận thông báo (xem FEAT-37) kèm đường dẫn tới vé.
 - `BR-14.3 (Không tính vào cam kết phản hồi)`: Ghi chú nội bộ không được tính là phản hồi đầu tiên tới khách hàng — đồng hồ cam kết phản hồi chỉ dừng khi có phản hồi công khai thực sự gửi đi.
 
-**Phụ thuộc chưa sẵn sàng:** BR-14.2 chờ FEAT-37. Trong thời gian chờ, tư vấn viên nhắc tên được đồng nghiệp trong ghi chú nhưng **người được nhắc không nhận được thông báo nào** — việc xin hỗ trợ nội bộ vẫn phải kèm một cuộc gọi hoặc tin nhắn ngoài hệ thống mới có tác dụng.
-
 **Tiêu chí chấp nhận:** Xem Kịch bản 32 (mục 6).
 
 ---
@@ -640,7 +636,7 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 
 ---
 
-### FEAT-37 — Thông báo cho Tư vấn viên về Vé được Gán & Khách hàng Phản hồi `[Yêu cầu mới]`
+### FEAT-37 — Thông báo cho Tư vấn viên về Vé được Gán & Khách hàng Phản hồi `[Đã triển khai]`
 
 **Mô tả nghiệp vụ:** Tư vấn viên cần được báo ngay khi có vé mới được gán cho mình, khi khách hàng phản hồi trên vé họ đang giữ, hoặc khi đồng nghiệp nhắc tên họ trong ghi chú nội bộ. Nếu phải tự mở danh sách vé để kiểm tra thủ công, vé sẽ bị bỏ sót và cam kết phản hồi bị vi phạm.
 

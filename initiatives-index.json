@@ -1700,6 +1700,21 @@
         "https://github.com/crmsaassaudi/crm-api/tree/feat/215-ticket-queue-shifts",
         "https://github.com/crmsaassaudi/crm-web/tree/feat/215-ticket-queue-shifts"
       ]
+    },
+    {
+      "id": "feat-216",
+      "title": "Tickets: thông báo cho tư vấn viên, kênh đánh thức ngoài giờ và xử lý gửi thất bại",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/216",
+        "https://github.com/crmsaassaudi/crm-api/tree/feat/216-ticket-notifications",
+        "https://github.com/crmsaassaudi/crm-web/tree/feat/216-ticket-notifications"
+      ]
     }
   ]
 }
