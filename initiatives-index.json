@@ -1715,6 +1715,21 @@
         "https://github.com/crmsaassaudi/crm-api/tree/feat/216-ticket-notifications",
         "https://github.com/crmsaassaudi/crm-web/tree/feat/216-ticket-notifications"
       ]
+    },
+    {
+      "id": "feat-217",
+      "title": "Tickets: chuyển vé hàng loạt khi nhân sự vắng mặt hoặc nghỉ việc",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/217",
+        "https://github.com/crmsaassaudi/crm-api/tree/feat/217-ticket-bulk-reassign",
+        "https://github.com/crmsaassaudi/crm-web/tree/feat/217-ticket-bulk-reassign"
+      ]
     }
   ]
 }

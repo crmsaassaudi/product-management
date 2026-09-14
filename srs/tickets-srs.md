@@ -169,7 +169,7 @@ Quyền thao tác vé hỗ trợ (xem/tạo/sửa/xóa/gán/xử lý/nhập/xu�
 | | `FEAT-12` | Bàn giao & Phân công Lại Vé (Reassignment) | `[Đã triển khai]` |
 | | `FEAT-34` | Hàng đợi Chung & Giám sát Vé Chưa có Người Xử lý (Unassigned Queue) | `[Yêu cầu mới]` |
 | | `FEAT-35` | Trạng thái Sẵn sàng & Ca trực của Tư vấn viên (Agent Availability & Shift) | `[Yêu cầu mới]` |
-| | `FEAT-36` | Chuyển Vé Hàng loạt khi Nhân sự Vắng mặt hoặc Nghỉ việc (Bulk Reassignment) | `[Yêu cầu mới]` |
+| | `FEAT-36` | Chuyển Vé Hàng loạt khi Nhân sự Vắng mặt hoặc Nghỉ việc (Bulk Reassignment) | `[Đã triển khai]` |
 | **E. Tác nghiệp Xử lý & Phản hồi** | `FEAT-13` | Dòng Trao đổi Vé Hỗ trợ (Conversation Thread) | `[Đã triển khai]` |
 | | `FEAT-14` | Ghi chú Nội bộ Bảo mật giữa Nhân viên (Internal Notes) | `[Đã triển khai]` |
 | | `FEAT-15` | Đính kèm Tài liệu & Hình ảnh (Attachments) | `[Đã triển khai]` |
@@ -553,7 +553,7 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 
 ---
 
-### FEAT-36 — Chuyển Vé Hàng loạt khi Nhân sự Vắng mặt hoặc Nghỉ việc `[Yêu cầu mới]`
+### FEAT-36 — Chuyển Vé Hàng loạt khi Nhân sự Vắng mặt hoặc Nghỉ việc `[Đã triển khai]`
 
 **Mô tả nghiệp vụ:** Khi một tư vấn viên nghỉ ốm đột xuất, nghỉ phép dài ngày hoặc nghỉ việc, toàn bộ vé đang mở của họ phải được chuyển cho người khác nhanh chóng. Nếu phải mở từng vé để chuyển thủ công, đồng hồ SLA của tất cả các vé đó vẫn chạy trong lúc Trưởng nhóm thao tác — đây là tình huống xảy ra thường xuyên và trực tiếp gây vi phạm cam kết.
 
