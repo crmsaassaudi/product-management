@@ -1805,6 +1805,21 @@
         "https://github.com/crmsaassaudi/crm-api/tree/feat/222-ticket-tiered-sla",
         "https://github.com/crmsaassaudi/crm-web/tree/feat/222-ticket-tiered-sla"
       ]
+    },
+    {
+      "id": "feat-223",
+      "title": "Tickets: thư viện câu trả lời mẫu và ma trận đánh giá mức độ ưu tiên",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/223",
+        "https://github.com/crmsaassaudi/crm-api/tree/feat/223-ticket-canned-response-matrix",
+        "https://github.com/crmsaassaudi/crm-web/tree/feat/223-ticket-canned-response-matrix"
+      ]
     }
   ]
 }

@@ -159,7 +159,7 @@ Quyền thao tác vé hỗ trợ (xem/tạo/sửa/xóa/gán/xử lý/nhập/xu�
 | | `FEAT-03` | Liên kết Khách hàng Cá nhân & Doanh nghiệp (Contact & Account Linking) | `[Đã triển khai]` |
 | **B. Phân loại & Tùy biến** | `FEAT-04` | Danh mục Phân loại Nhiều Cấp (Category Path, tối đa 5 cấp) | `[Đã triển khai]` |
 | | `FEAT-05` | Trường Dữ liệu Tùy biến cho Vé Hỗ trợ (Custom Fields) | `[Đã triển khai]` |
-| | `FEAT-06` | Ma trận Đánh giá Mức độ Tác động & Nghiêm trọng (Impact & Severity Matrix) | `[Yêu cầu mới]` |
+| | `FEAT-06` | Ma trận Đánh giá Mức độ Tác động & Nghiêm trọng (Impact & Severity Matrix) | `[Đã triển khai]` |
 | **C. Cam kết Chất lượng SLA** | `FEAT-07` | Động cơ Đo lường Đồng hồ SLA (First Response & Resolution SLA) | `[Đã triển khai]` |
 | | `FEAT-08` | Lịch Làm việc Doanh nghiệp Cấu hình được (Business Hours theo tenant) | `[Đã triển khai]` |
 | | `FEAT-09` | Tự động Tạm dừng Đồng hồ SLA theo Trạng thái Vé (SLA Clock Pause) | `[Đã triển khai]` |
@@ -173,7 +173,7 @@ Quyền thao tác vé hỗ trợ (xem/tạo/sửa/xóa/gán/xử lý/nhập/xu�
 | **E. Tác nghiệp Xử lý & Phản hồi** | `FEAT-13` | Dòng Trao đổi Vé Hỗ trợ (Conversation Thread) | `[Đã triển khai]` |
 | | `FEAT-14` | Ghi chú Nội bộ Bảo mật giữa Nhân viên (Internal Notes) | `[Đã triển khai]` |
 | | `FEAT-15` | Đính kèm Tài liệu & Hình ảnh (Attachments) | `[Đã triển khai]` |
-| | `FEAT-16` | Thư viện Câu trả lời Mẫu Soạn sẵn (Canned Responses / Macros) | `[Yêu cầu mới]` |
+| | `FEAT-16` | Thư viện Câu trả lời Mẫu Soạn sẵn (Canned Responses / Macros) | `[Đã triển khai]` |
 | | `FEAT-37` | Thông báo cho Tư vấn viên về Vé được Gán & Khách hàng Phản hồi | `[Đã triển khai]` |
 | | `FEAT-38` | Cảnh báo Trùng Thao tác khi Nhiều Người cùng Xử lý Một Vé (Collision Detection) | `[Yêu cầu mới]` |
 | **F. Leo thang & Cảnh báo Vi phạm** | `FEAT-17` | Cảnh báo Sớm Nguy cơ Vi phạm SLA trước khi hết hạn (SLA Warning) | `[Đã triển khai]` |
@@ -363,7 +363,7 @@ Quyền thao tác vé hỗ trợ (xem/tạo/sửa/xóa/gán/xử lý/nhập/xu�
 
 ---
 
-### FEAT-06 — Ma trận Đánh giá Mức độ Tác động & Nghiêm trọng `[Yêu cầu mới]`
+### FEAT-06 — Ma trận Đánh giá Mức độ Tác động & Nghiêm trọng `[Đã triển khai]`
 
 **Mô tả nghiệp vụ:** Mức độ ưu tiên do tư vấn viên tự chọn thường thiếu nhất quán giữa các người khác nhau. Tính năng này giúp chuẩn hóa: tư vấn viên chỉ cần đánh giá hai yếu tố khách quan, hệ thống tự suy ra mức ưu tiên theo ma trận doanh nghiệp đã thống nhất.
 - **Mức độ Tác động (Impact):** Cá nhân / Phòng ban / Toàn công ty.
@@ -626,7 +626,7 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 
 ---
 
-### FEAT-16 — Thư viện Câu trả lời Mẫu Soạn sẵn (Canned Responses / Macros) `[Yêu cầu mới]`
+### FEAT-16 — Thư viện Câu trả lời Mẫu Soạn sẵn (Canned Responses / Macros) `[Đã triển khai]`
 
 **Mô tả nghiệp vụ:** Chèn nhanh các câu trả lời chuẩn từ thư viện mẫu có sẵn để tăng tốc độ phản hồi các câu hỏi thường gặp và đảm bảo tính nhất quán trong cách trả lời khách hàng giữa các tư vấn viên.
 
