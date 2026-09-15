@@ -159,7 +159,7 @@ Quyền thao tác vé hỗ trợ (xem/tạo/sửa/xóa/gán/xử lý/nhập/xu�
 | | `FEAT-03` | Liên kết Khách hàng Cá nhân & Doanh nghiệp (Contact & Account Linking) | `[Đã triển khai]` |
 | **B. Phân loại & Tùy biến** | `FEAT-04` | Danh mục Phân loại Nhiều Cấp (Category Path, tối đa 5 cấp) | `[Đã triển khai]` |
 | | `FEAT-05` | Trường Dữ liệu Tùy biến cho Vé Hỗ trợ (Custom Fields) | `[Đã triển khai]` |
-| | `FEAT-06` | Ma trận Đánh giá Mức độ Tác động & Nghiêm trọng (Impact & Severity Matrix) | `[Đã triển khai]` |
+| | `FEAT-06` | Ma trận Đánh giá Mức độ Tác động & Nghiêm trọng (Impact & Severity Matrix) | `[Đã triển khai một phần]` |
 | **C. Cam kết Chất lượng SLA** | `FEAT-07` | Động cơ Đo lường Đồng hồ SLA (First Response & Resolution SLA) | `[Đã triển khai]` |
 | | `FEAT-08` | Lịch Làm việc Doanh nghiệp Cấu hình được (Business Hours theo tenant) | `[Đã triển khai]` |
 | | `FEAT-09` | Tự động Tạm dừng Đồng hồ SLA theo Trạng thái Vé (SLA Clock Pause) | `[Đã triển khai]` |
@@ -363,7 +363,7 @@ Quyền thao tác vé hỗ trợ (xem/tạo/sửa/xóa/gán/xử lý/nhập/xu�
 
 ---
 
-### FEAT-06 — Ma trận Đánh giá Mức độ Tác động & Nghiêm trọng `[Đã triển khai]`
+### FEAT-06 — Ma trận Đánh giá Mức độ Tác động & Nghiêm trọng `[Đã triển khai một phần]`
 
 **Mô tả nghiệp vụ:** Mức độ ưu tiên do tư vấn viên tự chọn thường thiếu nhất quán giữa các người khác nhau. Tính năng này giúp chuẩn hóa: tư vấn viên chỉ cần đánh giá hai yếu tố khách quan, hệ thống tự suy ra mức ưu tiên theo ma trận doanh nghiệp đã thống nhất.
 - **Mức độ Tác động (Impact):** Cá nhân / Phòng ban / Toàn công ty.
@@ -376,6 +376,12 @@ Quyền thao tác vé hỗ trợ (xem/tạo/sửa/xóa/gán/xử lý/nhập/xu�
 - `BR-06.2 (Cho phép ghi đè có lý do)`: Trưởng nhóm ghi đè được mức ưu tiên hệ thống đề xuất, nhưng phải nhập lý do và việc ghi đè được ghi vào nhật ký thay đổi — vì thay đổi mức ưu tiên làm thay đổi cam kết dịch vụ với khách hàng.
 - `BR-06.3 (Áp dụng lại cam kết khi đổi ưu tiên)`: Khi mức ưu tiên thay đổi, hạn chót cam kết được tính lại theo chính sách tương ứng, tính từ thời điểm tạo vé ban đầu chứ không phải từ lúc đổi ưu tiên.
 
+
+**Trạng thái triển khai:** Đã triển khai `BR-06.2` và `BR-06.3` theo GitHub Issue #223 (`crmsaassaudi/product-management#223`).
+- `BR-06.2`: ghi đè bắt buộc nhập lý do, lưu người và thời điểm ghi đè.
+- `BR-06.3`: đổi mức ưu tiên tính lại hạn chót từ thời điểm tạo vé (`rebaseFromStart`), theo lịch làm việc hiện hành; vé đã quá hạn vẫn giữ nguyên trạng thái vi phạm.
+
+**Khoảng cách cần bổ sung:** `BR-06.1` **chưa cấu hình được theo từng doanh nghiệp**. Ma trận 3×3 hiện là hằng số trong mã (`PRIORITY_MATRIX`), không nhận tham số `tenantId` và không có màn hình cấu hình — mọi doanh nghiệp dùng chung một bộ giá trị, trái với câu chữ của quy tắc và tiêu chí hoàn thành của Issue #223. Cần đưa ma trận về danh mục cấu hình theo từng doanh nghiệp trước khi coi FEAT-06 là hoàn tất.
 
 **Tiêu chí chấp nhận:** Xem Kịch bản 28 (mục 6).
 
@@ -636,6 +642,11 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 - `BR-16.1 (Mẫu dùng chung và mẫu cá nhân)`: Doanh nghiệp có thư viện mẫu dùng chung do quản lý duyệt; mỗi tư vấn viên cũng có thể tạo mẫu riêng cho mình. Mẫu dùng chung đảm bảo tính nhất quán; mẫu cá nhân giúp người dùng tối ưu cách làm việc riêng.
 - `BR-16.2 (Điền tự động thông tin vé)`: Mẫu hỗ trợ các trường thông tin tự động điền từ vé và hồ sơ khách hàng (tên khách hàng, mã số vé, tên tư vấn viên), tránh lỗi xưng hô sai khi sao chép thủ công.
 - `BR-16.3 (Nội dung vẫn chỉnh sửa được trước khi gửi)`: Sau khi chèn mẫu, tư vấn viên vẫn phải chỉnh sửa được nội dung trước khi gửi — mẫu là điểm khởi đầu, không phải câu trả lời bắt buộc gửi nguyên văn.
+
+**Trạng thái triển khai:** Đã triển khai đầy đủ theo GitHub Issue #223 (`crmsaassaudi/product-management#223`).
+- `BR-16.1`: mẫu dùng chung và mẫu cá nhân, phân biệt phạm vi, hỗ trợ phím tắt.
+- `BR-16.2`: tự động điền biến từ ngữ cảnh vé; biến không phân giải được được giữ nguyên dấu ngoặc và cảnh báo cho tư vấn viên trước khi gửi, thay vì bị thay bằng chuỗi rỗng.
+- `BR-16.3`: chỉ OWNER/ADMIN/SUPPORT_MANAGER/TEAM_LEAD được quản lý mẫu dùng chung; vai trò nghiệp vụ phân giải qua `withSystemRoleKeys`, không đọc từ CLS.
 
 **Tiêu chí chấp nhận:** Xem Kịch bản 14 (mục 6).
 
