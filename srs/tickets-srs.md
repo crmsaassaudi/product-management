@@ -163,7 +163,7 @@ Quyền thao tác vé hỗ trợ (xem/tạo/sửa/xóa/gán/xử lý/nhập/xu�
 | **C. Cam kết Chất lượng SLA** | `FEAT-07` | Động cơ Đo lường Đồng hồ SLA (First Response & Resolution SLA) | `[Đã triển khai]` |
 | | `FEAT-08` | Lịch Làm việc Doanh nghiệp Cấu hình được (Business Hours theo tenant) | `[Đã triển khai]` |
 | | `FEAT-09` | Tự động Tạm dừng Đồng hồ SLA theo Trạng thái Vé (SLA Clock Pause) | `[Đã triển khai]` |
-| | `FEAT-40` | Chính sách SLA theo Hạng Khách hàng & Hợp đồng Dịch vụ (Tiered SLA) | `[Đã triển khai]` |
+| | `FEAT-40` | Chính sách SLA theo Hạng Khách hàng & Hợp đồng Dịch vụ (Tiered SLA) | `[Đã triển khai một phần]` |
 | **D. Phân công & Điều phối** | `FEAT-10` | Phân bổ Tự động Xoay vòng theo Hạn mức Năng lực (Round-Robin Capacity) | `[Đã triển khai]` |
 | | `FEAT-11` | Phân bổ Thông minh theo Kỹ năng Chuyên môn (Skill-Based Routing) | `[Đã triển khai]` |
 | | `FEAT-12` | Bàn giao & Phân công Lại Vé (Reassignment) | `[Đã triển khai]` |
@@ -440,7 +440,7 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 
 ---
 
-### FEAT-40 — Chính sách SLA theo Hạng Khách hàng & Hợp đồng Dịch vụ `[Đã triển khai]`
+### FEAT-40 — Chính sách SLA theo Hạng Khách hàng & Hợp đồng Dịch vụ `[Đã triển khai một phần]`
 
 **Mô tả nghiệp vụ:** Trong kinh doanh B2B, cam kết dịch vụ khác nhau theo từng hợp đồng: khách hàng gói cao cấp được cam kết phản hồi trong 1 giờ, khách hàng gói phổ thông là 8 giờ — kể cả khi hai vé có cùng mức độ ưu tiên. Doanh nghiệp cần gán chính sách SLA theo hạng khách hàng hoặc theo từng hợp đồng cụ thể, không chỉ theo mức ưu tiên của vé.
 
@@ -450,6 +450,13 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 - `BR-40.1 (Thứ tự ưu tiên áp dụng chính sách)`: Khi tạo vé, hệ thống chọn chính sách SLA theo thứ tự: (1) chính sách riêng của hợp đồng khách hàng đó nếu có, (2) chính sách theo hạng khách hàng, (3) chính sách chung theo mức ưu tiên của vé. Chính sách cụ thể hơn luôn thắng chính sách chung hơn.
 - `BR-40.2 (Ghi nhận chính sách đã áp dụng)`: Vé lưu lại chính sách SLA đã áp dụng tại thời điểm tạo. Nếu sau đó doanh nghiệp sửa chính sách, các vé đang mở vẫn giữ cam kết ban đầu — tránh việc thay đổi chính sách làm vé đang chạy đột ngột chuyển thành vi phạm.
 - `BR-40.3 (Hiển thị cam kết cho tư vấn viên)`: Màn hình xử lý vé hiển thị rõ hạng khách hàng và thời hạn cam kết đang áp dụng, để tư vấn viên biết mức độ ưu tiên thực tế khi sắp xếp công việc.
+
+**Trạng thái triển khai:** Đã triển khai tầng 2 và tầng 3 của BR-40.1 theo GitHub Issue #222 (`crmsaassaudi/product-management#222`).
+- `BR-40.1` tầng 2 (hạng khách hàng) và tầng 3 (mức ưu tiên): phân giải theo phân khúc `VIP:<mức ưu tiên>` → `VIP` → `<mức ưu tiên>`; tài khoản doanh nghiệp VIP thắng liên hệ cá nhân VIP.
+- `BR-40.2`: sửa chính sách không đụng vé đang mở; đổi hạng khách hàng tính lại cam kết cho vé đang mở.
+- `BR-40.3`: màn hình vé hiển thị hạng khách hàng và tầng cam kết đang áp dụng.
+
+**Khoảng cách cần bổ sung:** `BR-40.1` **tầng 1 — chính sách riêng theo hợp đồng dịch vụ — chưa xây dựng**, vì hai phụ thuộc ngoài phân hệ chưa tồn tại: chưa có thực thể hợp đồng dịch vụ, và chưa có trường gán chính sách SLA cho từng khách hàng. Trường `ticket.slaPolicyId` **không dùng được cho mục đích này**: đó là đầu ra do engine SLA ghi lại chính sách đã phân giải, không phải đầu vào theo hợp đồng. Khi hai phụ thuộc trên sẵn sàng, tầng 1 cần một trường riêng và kiểm thử riêng theo yêu cầu của Issue #222.
 
 **Tiêu chí chấp nhận:** Xem Kịch bản 13 (mục 6).
 
