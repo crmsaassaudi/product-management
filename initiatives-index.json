@@ -1775,6 +1775,21 @@
         "https://github.com/crmsaassaudi/crm-api/tree/feat/220-ticket-escalation-complaint",
         "https://github.com/crmsaassaudi/crm-web/tree/feat/220-ticket-escalation-complaint"
       ]
+    },
+    {
+      "id": "feat-221",
+      "title": "Tickets: xử lý hàng loạt sự cố diện rộng theo mô hình vé cha - vé con",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/221",
+        "https://github.com/crmsaassaudi/crm-api/tree/feat/221-ticket-major-incident",
+        "https://github.com/crmsaassaudi/crm-web/tree/feat/221-ticket-major-incident"
+      ]
     }
   ]
 }

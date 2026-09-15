@@ -189,7 +189,7 @@ Quyền thao tác vé hỗ trợ (xem/tạo/sửa/xóa/gán/xử lý/nhập/xu�
 | | `FEAT-26` | Thùng rác Vé Hỗ trợ & Phục hồi Bản ghi (Recycle Bin) | `[Đã triển khai]` |
 | **I. Quản trị Quy trình Nâng cao** | `FEAT-27` | Gộp Vé Trùng lặp (Ticket Merging) | `[Đã triển khai một phần]` |
 | | `FEAT-41` | Tách Vé khi Một Yêu cầu Chứa Nhiều Vấn đề (Ticket Splitting) | `[Yêu cầu mới]` |
-| | `FEAT-28` | Quản lý Sự cố Diện rộng theo Mô hình Vé Cha - Vé Con (Major Incident Management) | `[Đã triển khai một phần]` |
+| | `FEAT-28` | Quản lý Sự cố Diện rộng theo Mô hình Vé Cha - Vé Con (Major Incident Management) | `[Đã triển khai]` |
 | | `FEAT-29` | Liên kết Thủ công Vé Hỗ trợ với Cơ hội Bán hàng (Deal Linking) | `[Đã triển khai]` |
 | | `FEAT-30` | Bắn Cờ Cảnh báo Rủi ro Kỹ thuật Tự động sang Bảng Kanban Deals | `[Yêu cầu mới]` |
 | | `FEAT-31` | Chuyển đổi Giải pháp Xử lý thành Bài viết Tri thức (Draft to KB) | `[Yêu cầu mới]` |
@@ -921,7 +921,7 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 
 ---
 
-### FEAT-28 — Quản lý Sự cố Diện rộng theo Mô hình Vé Cha - Vé Con (Major Incident Management) `[Đã triển khai một phần]`
+### FEAT-28 — Quản lý Sự cố Diện rộng theo Mô hình Vé Cha - Vé Con (Major Incident Management) `[Đã triển khai]`
 
 **Mô tả nghiệp vụ:** Khi một sự cố duy nhất (ví dụ lỗi hệ thống thanh toán, sập dịch vụ) khiến nhiều khách hàng cùng tạo vé báo lỗi, Team Lead cần một cách xử lý tập trung: tạo một Vé Sự cố (vé cha) đại diện cho sự việc, gán các vé của từng khách hàng làm vé con, và khi sự cố được khắc phục, cập nhật một lần duy nhất trên vé cha để toàn bộ vé con liên quan được xử lý đồng loạt — thay vì phải vào từng vé một để trả lời hàng trăm khách hàng giống hệt nhau.
 
@@ -935,7 +935,13 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 - `BR-28.5 (Thông tin kết thúc của vé con lấy từ vé cha)`: Khi đóng hàng loạt theo BR-28.3, nguyên nhân xử lý, tóm tắt giải pháp và các trường bắt buộc của từng vé con được lấy từ vé cha, thay vì bắt Team Lead nhập lại 150 lần. Như vậy BR-19.1 và BR-05.1 vẫn được đáp ứng — vé con vẫn có đủ thông tin kết thúc, chỉ khác ở chỗ thông tin đó nhập một lần trên vé cha. Vé con bị bỏ chọn theo BR-28.4 vẫn phải nhập riêng như vé thông thường.
 - `BR-28.6 (Vé con và hạn mức năng lực)`: Vé con của một sự cố diện rộng **không tính vào hạn mức năng lực** của người phụ trách theo BR-10.1, vì chúng được xử lý tập trung qua vé cha chứ không tiêu tốn thời gian riêng. Vé cha vẫn được tính bình thường. Không có quy tắc này, một sự cố 150 vé sẽ chiếm hết năng lực của 15 tư vấn viên và đẩy mọi vé mới không liên quan vào hàng đợi chung — đúng lúc doanh nghiệp cần năng lực xử lý nhất.
 
-**Khoảng cách cần bổ sung:** Hệ thống hiện tại chỉ đáp ứng BR-28.1 (gán và tra cứu quan hệ vé cha - vé con). **Chưa đáp ứng BR-28.2 tới BR-28.6** — cập nhật hoặc đổi trạng thái trên vé cha không tự động lan truyền xuống vé con, không có danh sách xác nhận đóng hàng loạt cùng cơ chế loại trừ vé cần xử lý riêng, thông tin kết thúc chưa lấy được từ vé cha, và vé con vẫn bị tính vào hạn mức năng lực của người phụ trách. Team Lead vẫn phải vào xử lý từng vé con một cách thủ công. Đây là khoảng cách nghiêm trọng cần bổ sung sớm: đúng use-case sự cố diện rộng mà tính năng này hướng tới (hàng trăm khách hàng cùng báo một lỗi), thiếu các quy tắc trên khiến tính năng gần như không tạo ra giá trị năng suất nào so với việc không có vé cha-con.
+**Trạng thái triển khai:** Đã triển khai đầy đủ theo GitHub Issue #221 (`crmsaassaudi/product-management#221`).
+- `BR-28.1`: Gán vé con, liên kết quan hệ phân cấp vé.
+- `BR-28.2 & NFR-08`: Lan truyền cập nhật tiến độ công khai từ vé cha xuống toàn bộ vé con trong vòng 5 phút (hỗ trợ quy mô 500 vé con); tính là phản hồi công khai của từng vé con (BR-19.2) và hoàn tất mốc SLA Phản hồi Đầu tiên (BR-07.3) ghi nhận tại thời điểm đăng trên vé cha.
+- `BR-28.3`: Đóng hàng loạt vé con khi vé cha giải quyết xong; mỗi khách hàng nhận khảo sát CSAT riêng của vé mình.
+- `BR-28.4`: Xem trước danh sách vé con mở, loại trừ vé con cần xử lý riêng; vé con có `hasStandaloneIssue: true` mặc định không bị chọn / không bị đóng theo vé cha.
+- `BR-28.5`: Thông tin kết thúc của vé con (`resolutionCodeId`, `resolutionNotes`) kế thừa từ vé cha.
+- `BR-28.6`: Vé con không tính vào hạn mức năng lực (`BR-10.1`, `LOAD_SOURCES.Ticket`) của tư vấn viên.
 
 
 **Tiêu chí chấp nhận:** Xem Kịch bản 6 (mục 6).
