@@ -937,9 +937,9 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 
 **Trạng thái triển khai:** Đã triển khai đầy đủ theo GitHub Issue #221 (`crmsaassaudi/product-management#221`).
 - `BR-28.1`: Gán vé con, liên kết quan hệ phân cấp vé.
-- `BR-28.2 & NFR-08`: Lan truyền cập nhật tiến độ công khai từ vé cha xuống toàn bộ vé con trong vòng 5 phút (hỗ trợ quy mô 500 vé con); tính là phản hồi công khai của từng vé con (BR-19.2) và hoàn tất mốc SLA Phản hồi Đầu tiên (BR-07.3) ghi nhận tại thời điểm đăng trên vé cha.
+- `BR-28.2 & NFR-08`: Lan truyền cập nhật tiến độ công khai từ vé cha xuống toàn bộ vé con **đang mở** trong vòng 5 phút (hỗ trợ quy mô 500 vé con); tính là phản hồi công khai của từng vé con (BR-19.2) và hoàn tất mốc SLA Phản hồi Đầu tiên (BR-07.3) ghi nhận tại thời điểm đăng trên vé cha. Vé con đã đóng không nhận lan truyền, để số liệu tuân thủ đã chốt của vé đó không bị ghi đè.
 - `BR-28.3`: Đóng hàng loạt vé con khi vé cha giải quyết xong; mỗi khách hàng nhận khảo sát CSAT riêng của vé mình.
-- `BR-28.4`: Xem trước danh sách vé con mở, loại trừ vé con cần xử lý riêng; vé con có `hasStandaloneIssue: true` mặc định không bị chọn / không bị đóng theo vé cha.
+- `BR-28.4`: Xem trước danh sách vé con mở, loại trừ vé con cần xử lý riêng; vé con có `hasStandaloneIssue: true` mặc định không được chọn và **bị máy chủ từ chối đóng kể cả khi mã vé được gửi lên** — quy tắc kiểm ở tầng dữ liệu, không phụ thuộc ô tích trên giao diện.
 - `BR-28.5`: Thông tin kết thúc của vé con (`resolutionCodeId`, `resolutionNotes`) kế thừa từ vé cha.
 - `BR-28.6`: Vé con không tính vào hạn mức năng lực (`BR-10.1`, `LOAD_SOURCES.Ticket`) của tư vấn viên.
 
