@@ -1790,6 +1790,21 @@
         "https://github.com/crmsaassaudi/crm-api/tree/feat/221-ticket-major-incident",
         "https://github.com/crmsaassaudi/crm-web/tree/feat/221-ticket-major-incident"
       ]
+    },
+    {
+      "id": "feat-222",
+      "title": "Tickets: chính sách cam kết theo hạng khách hàng và hợp đồng dịch vụ",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/222",
+        "https://github.com/crmsaassaudi/crm-api/tree/feat/222-ticket-tiered-sla",
+        "https://github.com/crmsaassaudi/crm-web/tree/feat/222-ticket-tiered-sla"
+      ]
     }
   ]
 }

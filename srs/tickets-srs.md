@@ -163,7 +163,7 @@ Quyền thao tác vé hỗ trợ (xem/tạo/sửa/xóa/gán/xử lý/nhập/xu�
 | **C. Cam kết Chất lượng SLA** | `FEAT-07` | Động cơ Đo lường Đồng hồ SLA (First Response & Resolution SLA) | `[Đã triển khai]` |
 | | `FEAT-08` | Lịch Làm việc Doanh nghiệp Cấu hình được (Business Hours theo tenant) | `[Đã triển khai]` |
 | | `FEAT-09` | Tự động Tạm dừng Đồng hồ SLA theo Trạng thái Vé (SLA Clock Pause) | `[Đã triển khai]` |
-| | `FEAT-40` | Chính sách SLA theo Hạng Khách hàng & Hợp đồng Dịch vụ (Tiered SLA) | `[Yêu cầu mới]` |
+| | `FEAT-40` | Chính sách SLA theo Hạng Khách hàng & Hợp đồng Dịch vụ (Tiered SLA) | `[Đã triển khai]` |
 | **D. Phân công & Điều phối** | `FEAT-10` | Phân bổ Tự động Xoay vòng theo Hạn mức Năng lực (Round-Robin Capacity) | `[Đã triển khai]` |
 | | `FEAT-11` | Phân bổ Thông minh theo Kỹ năng Chuyên môn (Skill-Based Routing) | `[Đã triển khai]` |
 | | `FEAT-12` | Bàn giao & Phân công Lại Vé (Reassignment) | `[Đã triển khai]` |
@@ -401,8 +401,6 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 - `BR-07.5 (Tính theo lịch làm việc)`: Mọi phép tính thời hạn và thời gian đã trôi qua đều dựa trên lịch làm việc đang áp dụng (FEAT-08), không dùng thời gian thực tế liên tục.
 - `BR-07.6 (Hiển thị thời gian còn lại)`: Màn hình xử lý vé và danh sách vé hiển thị thời gian còn lại tới từng hạn chót, để tư vấn viên tự sắp xếp thứ tự công việc mà không phải nhẩm tính.
 
-**Phụ thuộc chưa sẵn sàng:** BR-07.1 chờ FEAT-40 để áp dụng cam kết khác nhau theo hạng khách hàng. Trong thời gian chờ, mọi khách hàng dùng chung một bộ thời hạn theo mức ưu tiên — doanh nghiệp **chưa ký được hợp đồng có mức cam kết riêng cho khách hàng cao cấp**.
-
 **Tiêu chí chấp nhận:** Xem Kịch bản 1 và Kịch bản 24 (mục 6).
 
 ---
@@ -442,7 +440,7 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 
 ---
 
-### FEAT-40 — Chính sách SLA theo Hạng Khách hàng & Hợp đồng Dịch vụ `[Yêu cầu mới]`
+### FEAT-40 — Chính sách SLA theo Hạng Khách hàng & Hợp đồng Dịch vụ `[Đã triển khai]`
 
 **Mô tả nghiệp vụ:** Trong kinh doanh B2B, cam kết dịch vụ khác nhau theo từng hợp đồng: khách hàng gói cao cấp được cam kết phản hồi trong 1 giờ, khách hàng gói phổ thông là 8 giờ — kể cả khi hai vé có cùng mức độ ưu tiên. Doanh nghiệp cần gán chính sách SLA theo hạng khách hàng hoặc theo từng hợp đồng cụ thể, không chỉ theo mức ưu tiên của vé.
 
@@ -1686,7 +1684,7 @@ Mục này tổng hợp lại các khoảng cách đã nêu trong từng FEAT �
 6. **Hoàn tác gộp vé nhầm (FEAT-27, BR-27.5)** và **loại vé đã gộp khỏi thống kê cam kết (BR-27.6)**.
 7. **Tự động đóng vé sau thời gian không phản hồi (FEAT-22):** Vé đã xử lý xong tồn đọng vô thời hạn, làm sai lệch số liệu vé đang mở.
 8. **Giới hạn thời gian mở lại vé (FEAT-21, BR-21.3):** Ảnh hưởng độ tin cậy của chỉ số tuân thủ cam kết đã công bố.
-9. **Chính sách cam kết theo hạng khách hàng (FEAT-40):** Hiện chỉ áp dụng cam kết theo mức ưu tiên, không ký được hợp đồng có mức cam kết khác nhau cho từng hạng khách hàng — hạn chế trực tiếp khả năng bán gói dịch vụ cao cấp.
+9. **Chính sách cam kết theo hạng khách hàng (FEAT-40) `[Đã xử lý tại #222]`:** Đã hỗ trợ phân cấp cam kết 3 tầng (Hợp đồng dịch vụ > Hạng khách hàng VIP > Mức ưu tiên chung), tính lại khi đổi hạng khách hàng và hiển thị huy hiệu VIP.
 10. **Gửi khảo sát hài lòng tự động (FEAT-20, BR-20.2):** Chừng nào việc gửi còn thủ công, số liệu hài lòng thu được không đại diện và không dùng làm căn cứ đánh giá được.
 11. **Cảnh báo rủi ro tự động sang Cơ hội bán hàng (FEAT-30):** Liên kết hiện là thủ công, phụ thuộc việc nhân viên có nhớ tra cứu hay không.
 12. **Kênh đánh thức người trực ngoài giờ (FEAT-37, BR-37.4) và ràng buộc lịch trực phủ lịch cam kết (FEAT-35, BR-35.5):** Không có hai mục này, doanh nghiệp vẫn ký được cam kết phục vụ liên tục cả ngày đêm nhưng không thực hiện được — vé phát sinh ban đêm chạy đồng hồ mà không ai được báo. Rủi ro lộ ra chỉ khi đã vi phạm với khách hàng.
