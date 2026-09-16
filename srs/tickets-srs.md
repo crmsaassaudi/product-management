@@ -681,6 +681,14 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 - `BR-38.3 (Cảnh báo trước khi gửi chồng)`: Nếu vé đã thay đổi trong lúc một người đang soạn — có phản hồi mới được gửi, hoặc có thay đổi ở trạng thái, mức ưu tiên, người phụ trách — hệ thống cảnh báo và yêu cầu người đó xem lại thay đổi mới trước khi gửi. Không chỉ xét phản hồi mới, vì vé có thể đã được người khác đóng hoặc chuyển đi trong lúc này và nội dung đang soạn không còn phù hợp.
 - `BR-38.4 (Hai người cùng sửa một trường)`: Khi hai người cùng thay đổi một trường của vé cách nhau **không quá 60 giây** (cấu hình được), thay đổi đến sau được ghi nhận và ghi đè, nhưng hệ thống báo cho người thao tác sau biết giá trị vừa bị họ thay thế là do ai đặt và lúc nào, để họ tự quyết định có giữ thay đổi của mình hay không. Ngoài cửa sổ đó, thay đổi được ghi nhận bình thường không kèm cảnh báo — vì hai thao tác cách nhau đủ xa thì người sau đã nhìn thấy giá trị hiện hành trên màn hình, không phải tình huống ghi đè ngoài ý muốn. Cả hai lần thay đổi đều nằm trong nhật ký theo BR-44.1, nên không có thao tác nào biến mất khỏi hồ sơ truy vết.
 
+**Trạng thái triển khai:** Đã triển khai đầy đủ theo GitHub Issue #224 (`crmsaassaudi/product-management#224`).
+- `BR-38.1`: hiển thị người đang xem cùng vé theo thời gian thực (heartbeat 25 giây, Redis có dự phòng bộ nhớ).
+- `BR-38.2`: cảnh báo người đang soạn phản hồi, tự gỡ khi gửi hoặc sau thời gian không thao tác theo `CFG-38-02`; mốc hết hạn lưu trên bản ghi nên áp dụng cả khi mất kết nối.
+- `BR-38.3`: cảnh báo trước khi gửi chồng, đối chiếu `updatedAt` nên bắt được cả đổi trạng thái, mức ưu tiên và người phụ trách, không chỉ phản hồi mới.
+- `BR-38.4`: ghi đè cùng một trường trong cửa sổ theo `CFG-38-01` thì người sau được báo ai đặt giá trị cũ, lúc nào và giá trị đó là gì. Cả hai lần thay đổi đều vào nhật ký theo BR-44.1 qua đường cập nhật chuẩn.
+
+**Cấu hình liên quan (Phụ lục B):** `CFG-38-01` cửa sổ cảnh báo ghi đè (mặc định 60 giây, 10–600), `CFG-38-02` thời gian không thao tác trước khi gỡ cảnh báo đang soạn (mặc định 120 giây, 30–600). Cả hai được đọc theo từng doanh nghiệp lúc chạy.
+
 **Tiêu chí chấp nhận:** Xem Kịch bản 16 và Kịch bản 42 (mục 6).
 
 ---
@@ -932,6 +940,12 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 - `BR-41.2 (Giữ liên kết hai chiều)`: Vé mới và vé gốc được liên kết tham chiếu với nhau để tra cứu bối cảnh đầy đủ. Nội dung đã tách vẫn hiển thị trên vé gốc (không bị xóa khỏi lịch sử), kèm ghi chú rằng nội dung này đã được chuyển sang vé nào xử lý.
 - `BR-41.3 (Cam kết SLA của vé mới)`: Vé mới nhận cam kết SLA tính từ thời điểm tách, không kế thừa hạn chót của vé gốc — vì đây là một vấn đề mới được nhận diện, không phải vấn đề đã tồn tại từ đầu.
 - `BR-41.4 (Thông báo khách hàng)`: Khách hàng nhận được thông báo về vé mới được tạo kèm mã số, để họ biết vấn đề thứ hai đang được xử lý riêng và theo dõi đúng chỗ.
+
+**Trạng thái triển khai:** Đã triển khai đầy đủ theo GitHub Issue #224 (`crmsaassaudi/product-management#224`).
+- `BR-41.1`: tách nội dung sang vé mới có mã riêng, liên kết hai chiều qua `splitFromTicketId` và `splitTicketCount`.
+- `BR-41.2`: nội dung đã tách **vẫn ở lại vé gốc** kèm `splitToTicketNumber` và `splitAt`; không xóa khỏi lịch sử.
+- `BR-41.3`: vé mới nhận cam kết tính từ thời điểm tách.
+- `BR-41.4`: khách hàng được báo mã vé mới trên đúng kênh họ gửi yêu cầu, qua `OmniEvents.TICKET_SPLIT_NOTICE` → `SystemReplyListener` (thừa hưởng cơ chế thử lại BR-37.5). Thao tác tách ghi vết theo BR-44.1 trên cả hai vé.
 
 **Tiêu chí chấp nhận:** Xem Kịch bản 18 (mục 6).
 
