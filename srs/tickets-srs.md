@@ -1008,6 +1008,11 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 - `BR-30.3 (Xem nhanh bối cảnh)`: Nhân viên kinh doanh xem được danh sách vé gây ra cảnh báo (mã số, mức ưu tiên, tình trạng) trong phạm vi quyền của mình, để biết mức độ nghiêm trọng trước khi liên hệ khách hàng.
 
 
+**Trạng thái triển khai:** Đã triển khai đầy đủ theo GitHub Issue #225 (`crmsaassaudi/product-management#225`).
+- `BR-30.1`: điều kiện bắn cờ do doanh nghiệp cấu hình — `CFG-30-03` mức ưu tiên tối thiểu (mặc định HIGH) và `CFG-30-04` chỉ bắn khi vé vi phạm cam kết (mặc định tắt). Tình trạng vi phạm đọc từ `isSlaBreached`.
+- `BR-30.2`: cờ hiển thị trên thẻ cơ hội bán hàng kèm số vé vi phạm và vé ưu tiên cao đang mở.
+- `BR-30.3`: cờ tự gỡ khi không còn vé nào thỏa điều kiện.
+
 **Tiêu chí chấp nhận:** Xem Kịch bản 36 (mục 6).
 
 ---
@@ -1025,6 +1030,12 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 - `BR-31.4 (Giữ liên kết nguồn)`: Bài viết lưu tham chiếu tới vé gốc để tra cứu bối cảnh đầy đủ khi cần cập nhật nội dung.
 
 
+**Trạng thái triển khai:** Đã triển khai đầy đủ theo GitHub Issue #225 (`crmsaassaudi/product-management#225`).
+- `BR-31.1`: tạo bản nháp từ vé đã xử lý, điền sẵn tiêu đề, mô tả vấn đề và giải pháp.
+- `BR-31.2`: **không có đường nào xuất bản được** khi người duyệt chưa xác nhận đã rà soát và loại bỏ thông tin định danh khách hàng.
+- `BR-31.3`: vòng đời `draft` → `in_review` → `published`, lưu tham chiếu ngược tới vé nguồn.
+- `BR-31.4`: **chỉ quản lý hoặc trưởng nhóm** mới xuất bản được, nên người soạn không tự duyệt bài của mình.
+
 **Tiêu chí chấp nhận:** Xem Kịch bản 39 (mục 6).
 
 ---
@@ -1041,6 +1052,11 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 - `BR-32.3 (Ghi nhận phục vụ đào tạo)`: Các phiên hướng dẫn được ghi nhận để quản lý theo dõi tiến bộ của nhân viên qua thời gian.
 
 
+**Trạng thái triển khai:** Đã triển khai đầy đủ theo GitHub Issue #225 (`crmsaassaudi/product-management#225`).
+- `BR-32.1`: **chỉ quản lý hoặc trưởng nhóm** mở được phiên giám sát; toàn bộ tính năng bật/tắt theo `CFG-32-01` để doanh nghiệp áp chính sách nội bộ của mình.
+- `BR-32.2`: tư vấn viên thấy chỉ báo đang được giám sát **trong suốt phiên** (giao diện hỏi trạng thái mỗi 10 giây), không chỉ lúc bắt đầu.
+- `BR-32.3`: ghi nhận phiên hướng dẫn kèm đánh giá và ghi chú đào tạo. Nhắc bài hậu trường lưu dưới dạng ghi chú nội bộ (`kind: note`) nên khách hàng không nhìn thấy.
+
 **Tiêu chí chấp nhận:** Xem Kịch bản 40 (mục 6).
 
 ---
@@ -1056,6 +1072,12 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 - `BR-33.2 (Phân biệt giờ tính phí)`: Mỗi khoản thời gian được đánh dấu là có tính phí hay không, theo điều khoản hợp đồng dịch vụ của khách hàng đó.
 - `BR-33.3 (Duyệt trước khi tính phí)`: Giờ tính phí phải được quản lý duyệt trước khi chuyển sang bộ phận xuất hóa đơn, tránh sai lệch khi đối soát với khách hàng.
 
+
+**Trạng thái triển khai:** Đã triển khai tới bước xuất tệp bàn giao theo GitHub Issue #225 (`crmsaassaudi/product-management#225`).
+- `BR-33.1`, `BR-33.2`: bấm giờ và nhập tay kèm mô tả công việc; đánh dấu giờ tính phí kèm đơn giá tại thời điểm ghi nhận.
+- `BR-33.3`: **chỉ quản lý** mới duyệt được giờ tính phí, và chỉ giờ đã duyệt mới vào tệp bàn giao cho khâu xuất hóa đơn.
+
+*Lưu ý phạm vi:* khâu xuất hóa đơn (Billing) nằm ngoài phạm vi tài liệu này, nên tính năng dừng ở bước xuất tệp đối soát.
 
 **Tiêu chí chấp nhận:** Xem Kịch bản 41 (mục 6).
 
