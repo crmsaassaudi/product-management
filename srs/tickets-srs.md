@@ -483,6 +483,12 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 - `BR-10.4 (Khi mọi người đều đầy hạn mức)`: Nếu tất cả tư vấn viên trong nhóm đều đã đạt hạn mức, vé được đưa vào hàng đợi chung (FEAT-34) và Trưởng nhóm được cảnh báo ngay, thay vì gán ép cho người đã quá tải hoặc để vé rơi vào trạng thái không xác định.
 - `BR-10.5 (Duy trì thứ tự xoay vòng)`: Thứ tự xoay vòng được duy trì liên tục, không bị thiết lập lại mỗi ngày hay mỗi lần hệ thống khởi động lại, để đảm bảo công bằng dài hạn giữa các tư vấn viên.
 
+**Cập nhật theo Issue #226:** `BR-10.1` nay hỗ trợ **hạn mức riêng cho từng tư vấn viên** (`user.ticketMaxCapacity`), thay vì một con số chung cho cả doanh nghiệp.
+- Phân giải ba cấp: hạn mức riêng của người → `assignment_settings.defaultMaxCapacity` → 10.
+- Để trống nghĩa là **kế thừa động**: đổi mặc định doanh nghiệp áp dụng ngay cho người đang kế thừa, không phải giá trị sao chép cứng lúc tạo tài khoản. Tài khoản đang chạy không cần migration.
+- Hạn mức áp **ở engine phân công** chứ không chỉ ở tầng đọc; `BR-11.3` giữ nguyên thứ tự — lọc theo kỹ năng trước, hạn mức sau.
+- Bảng điều khiển hàng đợi (`BR-42.1`) hiển thị mẫu số riêng của từng người.
+
 **Phụ thuộc chưa sẵn sàng:** BR-10.3 chờ FEAT-35 và BR-10.4 chờ FEAT-34. Trong thời gian chờ, việc phân bổ **không biết ai đang thực sự trong ca trực** — vé vẫn có thể được gán cho người đã hết ca hoặc đang nghỉ phép, và khi mọi người đều đầy hạn mức thì chưa có hàng đợi chung để vé nằm chờ an toàn. Đây là hạn chế lớn nhất với doanh nghiệp vận hành nhiều ca.
 
 **Tiêu chí chấp nhận:** Xem Kịch bản 23 (mục 6).
