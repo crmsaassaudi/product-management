@@ -175,7 +175,7 @@ Quyền thao tác vé hỗ trợ (xem/tạo/sửa/xóa/gán/xử lý/nhập/xu�
 | | `FEAT-15` | Đính kèm Tài liệu & Hình ảnh (Attachments) | `[Đã triển khai]` |
 | | `FEAT-16` | Thư viện Câu trả lời Mẫu Soạn sẵn (Canned Responses / Macros) | `[Đã triển khai]` |
 | | `FEAT-37` | Thông báo cho Tư vấn viên về Vé được Gán & Khách hàng Phản hồi | `[Đã triển khai]` |
-| | `FEAT-38` | Cảnh báo Trùng Thao tác khi Nhiều Người cùng Xử lý Một Vé (Collision Detection) | `[Yêu cầu mới]` |
+| | `FEAT-38` | Cảnh báo Trùng Thao tác khi Nhiều Người cùng Xử lý Một Vé (Collision Detection) | `[Đã triển khai]` |
 | **F. Leo thang & Cảnh báo Vi phạm** | `FEAT-17` | Cảnh báo Sớm Nguy cơ Vi phạm SLA trước khi hết hạn (SLA Warning) | `[Đã triển khai]` |
 | | `FEAT-18` | Tự động Leo thang khi Vi phạm SLA (Escalation: Cảnh báo cấp Quản lý / Tự động Chuyển việc) | `[Đã triển khai]` |
 | | `FEAT-39` | Leo thang Thủ công & Xử lý Khiếu nại về Chất lượng Phục vụ (Manual Escalation) | `[Đã triển khai]` |
@@ -188,7 +188,7 @@ Quyền thao tác vé hỗ trợ (xem/tạo/sửa/xóa/gán/xử lý/nhập/xu�
 | | `FEAT-25` | Xuất Báo cáo Vé Hỗ trợ Bảo mật qua Đường dẫn Tải có Thời hạn (Secure Export) | `[Đã triển khai]` |
 | | `FEAT-26` | Thùng rác Vé Hỗ trợ & Phục hồi Bản ghi (Recycle Bin) | `[Đã triển khai]` |
 | **I. Quản trị Quy trình Nâng cao** | `FEAT-27` | Gộp Vé Trùng lặp (Ticket Merging) | `[Đã triển khai một phần]` |
-| | `FEAT-41` | Tách Vé khi Một Yêu cầu Chứa Nhiều Vấn đề (Ticket Splitting) | `[Yêu cầu mới]` |
+| | `FEAT-41` | Tách Vé khi Một Yêu cầu Chứa Nhiều Vấn đề (Ticket Splitting) | `[Đã triển khai]` |
 | | `FEAT-28` | Quản lý Sự cố Diện rộng theo Mô hình Vé Cha - Vé Con (Major Incident Management) | `[Đã triển khai]` |
 | | `FEAT-29` | Liên kết Thủ công Vé Hỗ trợ với Cơ hội Bán hàng (Deal Linking) | `[Đã triển khai]` |
 | | `FEAT-30` | Bắn Cờ Cảnh báo Rủi ro Kỹ thuật Tự động sang Bảng Kanban Deals | `[Yêu cầu mới]` |
@@ -669,7 +669,7 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 
 ---
 
-### FEAT-38 — Cảnh báo Trùng Thao tác khi Nhiều Người cùng Xử lý Một Vé `[Yêu cầu mới]`
+### FEAT-38 — Cảnh báo Trùng Thao tác khi Nhiều Người cùng Xử lý Một Vé `[Đã triển khai]`
 
 **Mô tả nghiệp vụ:** Khi hai tư vấn viên cùng mở một vé và cùng soạn phản hồi, khách hàng sẽ nhận hai câu trả lời khác nhau cho cùng một câu hỏi — tình huống gây mất uy tín và hay xảy ra ở các đội đông người dùng chung hàng đợi.
 
@@ -921,7 +921,7 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 
 ---
 
-### FEAT-41 — Tách Vé khi Một Yêu cầu Chứa Nhiều Vấn đề `[Yêu cầu mới]`
+### FEAT-41 — Tách Vé khi Một Yêu cầu Chứa Nhiều Vấn đề `[Đã triển khai]`
 
 **Mô tả nghiệp vụ:** Khách hàng thường gửi một yêu cầu duy nhất nhưng bên trong chứa nhiều vấn đề khác nhau (ví dụ vừa báo lỗi kỹ thuật, vừa thắc mắc về hóa đơn). Mỗi vấn đề cần được xử lý bởi người khác nhau, có thời hạn khác nhau và kết thúc ở thời điểm khác nhau. Nếu buộc phải xử lý chung trong một vé, chỉ số đo lường bị sai lệch và một vấn đề đã xong vẫn phải chờ vấn đề còn lại.
 
