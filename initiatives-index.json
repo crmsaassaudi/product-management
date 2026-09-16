@@ -1850,6 +1850,21 @@
         "https://github.com/crmsaassaudi/crm-api/tree/feat/225-ticket-external-deps",
         "https://github.com/crmsaassaudi/crm-web/tree/feat/225-ticket-external-deps"
       ]
+    },
+    {
+      "id": "feat-226",
+      "title": "Tickets: hạn mức năng lực riêng cho từng tư vấn viên (per-agent capacity)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/226",
+        "https://github.com/crmsaassaudi/crm-api/tree/feat/226-ticket-per-agent-capacity",
+        "https://github.com/crmsaassaudi/crm-web/tree/feat/226-ticket-per-agent-capacity"
+      ]
     }
   ]
 }

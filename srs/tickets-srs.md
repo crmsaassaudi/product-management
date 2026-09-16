@@ -1832,6 +1832,7 @@ Phụ lục này mô tả các thực thể nghiệp vụ và thông tin chúng 
 | Tên tham số cấu hình | Giá trị mặc định | Ý nghĩa nghiệp vụ |
 | --- | :---: | --- |
 | Hạn mức số vé đang giữ tối đa / tư vấn viên | 10 vé | Ngưỡng dừng phân bổ thêm cho một người (BR-10.1) |
+| Hạn mức số vé tối đa riêng cho từng tư vấn viên | Không đặt (kế thừa hạn mức doanh nghiệp) | Cho phép ghi đè hạn mức tối đa cho từng tư vấn viên theo năng lực (BR-10.1, Issue #226) |
 | Ngưỡng cảnh báo sắp tới hạn cam kết | 75% thời hạn đã trôi qua | Mốc phát cảnh báo sớm (BR-17.1) |
 | Ngưỡng cảnh báo vé tồn đọng trong hàng đợi chung | 15 phút | Thời gian không ai nhận vé thì cảnh báo Trưởng nhóm (BR-34.3) |
 | Số lần tạm dừng cam kết tối đa trước khi cảnh báo | 3 lần | Phát hiện lạm dụng tạm dừng (BR-09.4) |
