@@ -1835,6 +1835,21 @@
         "https://github.com/crmsaassaudi/crm-api/tree/feat/224-ticket-split-collision",
         "https://github.com/crmsaassaudi/crm-web/tree/feat/224-ticket-split-collision"
       ]
+    },
+    {
+      "id": "feat-225",
+      "title": "Tickets: giờ tính phí, bài viết tri thức, giám sát hướng dẫn và cảnh báo rủi ro sang Deals",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/225",
+        "https://github.com/crmsaassaudi/crm-api/tree/feat/225-ticket-external-deps",
+        "https://github.com/crmsaassaudi/crm-web/tree/feat/225-ticket-external-deps"
+      ]
     }
   ]
 }

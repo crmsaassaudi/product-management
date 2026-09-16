@@ -191,10 +191,10 @@ Quyền thao tác vé hỗ trợ (xem/tạo/sửa/xóa/gán/xử lý/nhập/xu�
 | | `FEAT-41` | Tách Vé khi Một Yêu cầu Chứa Nhiều Vấn đề (Ticket Splitting) | `[Đã triển khai]` |
 | | `FEAT-28` | Quản lý Sự cố Diện rộng theo Mô hình Vé Cha - Vé Con (Major Incident Management) | `[Đã triển khai]` |
 | | `FEAT-29` | Liên kết Thủ công Vé Hỗ trợ với Cơ hội Bán hàng (Deal Linking) | `[Đã triển khai]` |
-| | `FEAT-30` | Bắn Cờ Cảnh báo Rủi ro Kỹ thuật Tự động sang Bảng Kanban Deals | `[Yêu cầu mới]` |
-| | `FEAT-31` | Chuyển đổi Giải pháp Xử lý thành Bài viết Tri thức (Draft to KB) | `[Yêu cầu mới]` |
-| | `FEAT-32` | Giám sát Trực tiếp & Nhắc nhở Hậu trường (Whisper Coaching) | `[Yêu cầu mới]` |
-| | `FEAT-33` | Theo dõi Thời lượng Hỗ trợ Thực tế & Giờ Tính phí (Support Time Tracking) | `[Yêu cầu mới]` |
+| | `FEAT-30` | Bắn Cờ Cảnh báo Rủi ro Kỹ thuật Tự động sang Bảng Kanban Deals | `[Đã triển khai]` |
+| | `FEAT-31` | Chuyển đổi Giải pháp Xử lý thành Bài viết Tri thức (Draft to KB) | `[Đã triển khai]` |
+| | `FEAT-32` | Giám sát Trực tiếp & Nhắc nhở Hậu trường (Whisper Coaching) | `[Đã triển khai]` |
+| | `FEAT-33` | Theo dõi Thời lượng Hỗ trợ Thực tế & Giờ Tính phí (Support Time Tracking) | `[Đã triển khai]` |
 | **J. Báo cáo & Giám sát Hiệu suất** | `FEAT-42` | Bảng điều khiển Hàng đợi Thời gian thực (Real-time Queue Dashboard) | `[Yêu cầu mới]` |
 | | `FEAT-43` | Báo cáo Tuân thủ SLA, Hiệu suất Tư vấn viên & Khối lượng Công việc | `[Yêu cầu mới]` |
 | **K. Nhật ký Thao tác** | `FEAT-44` | Nhật ký Thay đổi & Truy vết Thao tác trên Vé (Audit Trail) | `[Yêu cầu mới]` |
@@ -996,7 +996,7 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 
 ---
 
-### FEAT-30 — Bắn Cờ Cảnh báo Rủi ro Kỹ thuật Tự động sang Bảng Kanban Deals `[Yêu cầu mới]`
+### FEAT-30 — Bắn Cờ Cảnh báo Rủi ro Kỹ thuật Tự động sang Bảng Kanban Deals `[Đã triển khai]`
 
 **Mô tả nghiệp vụ:** Khi một khách hàng có vé hỗ trợ mức ưu tiên cao đang mở chưa xử lý xong, hệ thống tự động hiển thị cảnh báo trên thẻ Cơ hội bán hàng tương ứng, nhắc nhân viên kinh doanh phối hợp giải quyết sự cố trước khi tiếp tục đàm phán. Đây là cơ chế chủ động, khắc phục hạn chế của liên kết thủ công ở FEAT-29 (phụ thuộc việc nhân viên có nhớ tra cứu hay không).
 
@@ -1012,7 +1012,7 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 
 ---
 
-### FEAT-31 — Chuyển đổi Giải pháp Xử lý thành Bài viết Tri thức `[Yêu cầu mới]`
+### FEAT-31 — Chuyển đổi Giải pháp Xử lý thành Bài viết Tri thức `[Đã triển khai]`
 
 **Mô tả nghiệp vụ:** Những giải pháp hay khi xử lý vé thường chỉ nằm lại trong vé đó và mất đi. Tính năng này cho phép chuyển nội dung câu hỏi và giải pháp vừa xử lý thành bản nháp bài viết tri thức, để tái sử dụng cho các trường hợp tương tự và giảm dần khối lượng vé lặp lại.
 
@@ -1029,7 +1029,7 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 
 ---
 
-### FEAT-32 — Giám sát Trực tiếp & Nhắc nhở Hậu trường (Whisper Coaching) `[Yêu cầu mới]`
+### FEAT-32 — Giám sát Trực tiếp & Nhắc nhở Hậu trường (Whisper Coaching) `[Đã triển khai]`
 
 **Mô tả nghiệp vụ:** Cho phép quản lý theo dõi cách nhân viên mới đang xử lý vé và gửi chỉ dẫn riêng cho họ ngay trong lúc làm việc, mà khách hàng không nhìn thấy. Công cụ đào tạo tại chỗ này giúp rút ngắn thời gian nhân viên mới đạt chuẩn phục vụ, đồng thời tránh sai sót với khách hàng.
 
@@ -1045,7 +1045,7 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 
 ---
 
-### FEAT-33 — Theo dõi Thời lượng Hỗ trợ Thực tế & Giờ Tính phí `[Yêu cầu mới]`
+### FEAT-33 — Theo dõi Thời lượng Hỗ trợ Thực tế & Giờ Tính phí `[Đã triển khai]`
 
 **Mô tả nghiệp vụ:** Ghi nhận thời gian tư vấn viên bỏ ra để xử lý vé và đánh dấu giờ tính phí dịch vụ đối với các hợp đồng bảo trì có tính phí, làm căn cứ xuất hóa đơn dịch vụ và đánh giá chi phí phục vụ từng khách hàng.
 
