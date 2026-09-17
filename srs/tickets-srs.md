@@ -167,8 +167,8 @@ Quyền thao tác vé hỗ trợ (xem/tạo/sửa/xóa/gán/xử lý/nhập/xu�
 | **D. Phân công & Điều phối** | `FEAT-10` | Phân bổ Tự động Xoay vòng theo Hạn mức Năng lực (Round-Robin Capacity) | `[Đã triển khai]` |
 | | `FEAT-11` | Phân bổ Thông minh theo Kỹ năng Chuyên môn (Skill-Based Routing) | `[Đã triển khai]` |
 | | `FEAT-12` | Bàn giao & Phân công Lại Vé (Reassignment) | `[Đã triển khai]` |
-| | `FEAT-34` | Hàng đợi Chung & Giám sát Vé Chưa có Người Xử lý (Unassigned Queue) | `[Yêu cầu mới]` |
-| | `FEAT-35` | Trạng thái Sẵn sàng & Ca trực của Tư vấn viên (Agent Availability & Shift) | `[Yêu cầu mới]` |
+| | `FEAT-34` | Hàng đợi Chung & Giám sát Vé Chưa có Người Xử lý (Unassigned Queue) | `[Đã triển khai]` |
+| | `FEAT-35` | Trạng thái Sẵn sàng & Ca trực của Tư vấn viên (Agent Availability & Shift) | `[Đã triển khai]` |
 | | `FEAT-36` | Chuyển Vé Hàng loạt khi Nhân sự Vắng mặt hoặc Nghỉ việc (Bulk Reassignment) | `[Đã triển khai]` |
 | **E. Tác nghiệp Xử lý & Phản hồi** | `FEAT-13` | Dòng Trao đổi Vé Hỗ trợ (Conversation Thread) | `[Đã triển khai]` |
 | | `FEAT-14` | Ghi chú Nội bộ Bảo mật giữa Nhân viên (Internal Notes) | `[Đã triển khai]` |
@@ -195,10 +195,10 @@ Quyền thao tác vé hỗ trợ (xem/tạo/sửa/xóa/gán/xử lý/nhập/xu�
 | | `FEAT-31` | Chuyển đổi Giải pháp Xử lý thành Bài viết Tri thức (Draft to KB) | `[Đã triển khai]` |
 | | `FEAT-32` | Giám sát Trực tiếp & Nhắc nhở Hậu trường (Whisper Coaching) | `[Đã triển khai]` |
 | | `FEAT-33` | Theo dõi Thời lượng Hỗ trợ Thực tế & Giờ Tính phí (Support Time Tracking) | `[Đã triển khai]` |
-| **J. Báo cáo & Giám sát Hiệu suất** | `FEAT-42` | Bảng điều khiển Hàng đợi Thời gian thực (Real-time Queue Dashboard) | `[Yêu cầu mới]` |
-| | `FEAT-43` | Báo cáo Tuân thủ SLA, Hiệu suất Tư vấn viên & Khối lượng Công việc | `[Yêu cầu mới]` |
-| **K. Nhật ký Thao tác** | `FEAT-44` | Nhật ký Thay đổi & Truy vết Thao tác trên Vé (Audit Trail) | `[Yêu cầu mới]` |
-| **L. Vòng đời Dữ liệu & Tuân thủ** | `FEAT-45` | Lưu trữ, Ẩn danh hóa & Xử lý Yêu cầu Xóa Dữ liệu Cá nhân (Nghị định 13) | `[Yêu cầu mới]` |
+| **J. Báo cáo & Giám sát Hiệu suất** | `FEAT-42` | Bảng điều khiển Hàng đợi Thời gian thực (Real-time Queue Dashboard) | `[Đã triển khai một phần]` |
+| | `FEAT-43` | Báo cáo Tuân thủ SLA, Hiệu suất Tư vấn viên & Khối lượng Công việc | `[Đã triển khai]` |
+| **K. Nhật ký Thao tác** | `FEAT-44` | Nhật ký Thay đổi & Truy vết Thao tác trên Vé (Audit Trail) | `[Đã triển khai]` |
+| **L. Vòng đời Dữ liệu & Tuân thủ** | `FEAT-45` | Lưu trữ, Ẩn danh hóa & Xử lý Yêu cầu Xóa Dữ liệu Cá nhân (Nghị định 13) | `[Đã triển khai]` |
 
 ---
 
@@ -535,7 +535,7 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 
 ---
 
-### FEAT-34 — Hàng đợi Chung & Giám sát Vé Chưa có Người Xử lý `[Yêu cầu mới]`
+### FEAT-34 — Hàng đợi Chung & Giám sát Vé Chưa có Người Xử lý `[Đã triển khai]`
 
 **Mô tả nghiệp vụ:** Không phải vé nào cũng được gán ngay cho một tư vấn viên cụ thể. Những vé mới tiếp nhận chưa qua điều phối, vé bị từ chối, hoặc vé của người đã vắng mặt sẽ nằm ở **hàng đợi chung** — nơi cả nhóm cùng nhìn thấy và có thể nhận việc. Trưởng nhóm cần biết ngay khi có vé nằm quá lâu trong hàng đợi mà chưa ai nhận, vì đây là nguyên nhân phổ biến nhất khiến vi phạm cam kết phản hồi lần đầu.
 
@@ -552,7 +552,7 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 
 ---
 
-### FEAT-35 — Trạng thái Sẵn sàng & Ca trực của Tư vấn viên `[Yêu cầu mới]`
+### FEAT-35 — Trạng thái Sẵn sàng & Ca trực của Tư vấn viên `[Đã triển khai]`
 
 **Mô tả nghiệp vụ:** Với đội hỗ trợ nhiều người làm theo ca, hệ thống cần biết ai đang thực sự trực để phân bổ vé đúng người. Tư vấn viên tự đặt trạng thái sẵn sàng của mình trong ca (đang trực, tạm rời chỗ, bận họp), và doanh nghiệp khai báo lịch trực cùng các ngày nghỉ phép đã duyệt.
 
@@ -766,10 +766,12 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 **Actor:** Người có quyền resolve (xem mục 1.5).
 
 **Quy tắc nghiệp vụ:**
-- `BR-19.1 (Thông tin bắt buộc khi kết thúc)`: Phải có nguyên nhân xử lý và tóm tắt giải pháp trước khi tư vấn viên chuyển vé sang trạng thái kết thúc dạng **"đã xử lý xong"**. Không cho phép đóng vé trống thông tin, vì sẽ làm mất giá trị của toàn bộ báo cáo nguyên nhân. Cũng như BR-05.1, ràng buộc này không chặn tiến trình tự động chuyển vé sang "đã đóng hoàn tất" theo FEAT-22.
+- `BR-19.1 (Thông tin bắt buộc khi kết thúc)`: Danh mục trạng thái vé có thuộc tính cấu hình `requiresResolutionReason` (cho phép doanh nghiệp quyết định trạng thái nào bắt buộc ghi nhận nguyên nhân xử lý, ví dụ "Đã giải quyết", trong khi trạng thái "Đóng hoàn tất" hoặc "Đóng do spam" có thể không bắt buộc). Khi chuyển vé sang một trạng thái có `requiresResolutionReason = true`, hệ thống bắt buộc phải có nguyên nhân xử lý (`resolutionCodeId`). Hệ thống ưu tiên lấy `resolutionCodeId` từ dữ liệu gửi lên trong yêu cầu chuyển trạng thái; nếu dữ liệu gửi lên không kèm trường này, hệ thống kiểm tra giá trị `resolutionCodeId` hiện có sẵn trên vé. Nếu cả hai đều không có, thao tác chuyển trạng thái bị từ chối bằng lỗi `BadRequestException`. Vé đã có sẵn nguyên nhân xử lý được phép chuyển trạng thái thành công mà không cần gửi lại. Ràng buộc này không chặn các thao tác chuyển sang trạng thái không đánh dấu bắt buộc và không chặn tiến trình tự động chuyển vé sang "đã đóng hoàn tất" theo FEAT-22.
 - `BR-19.2 (Phải có phản hồi công khai trước khi kết thúc)`: Không được chuyển vé sang trạng thái kết thúc nếu chưa từng có phản hồi công khai nào gửi tới khách hàng. Lý do: đóng vé mà chưa hề trả lời khách hàng là tình huống phục vụ không chấp nhận được, dù sự cố có thể đã tự hết.
 - `BR-19.3 (Danh mục nguyên nhân cấu hình được)`: Doanh nghiệp tự định nghĩa danh mục nguyên nhân xử lý theo đặc thù dịch vụ của mình.
 - `BR-19.4 (Ghi nhận thời điểm và người xử lý)`: Hệ thống ghi lại thời điểm kết thúc và người thực hiện, làm căn cứ tính chỉ số tuân thủ cam kết và hiệu suất cá nhân.
+
+**Hiện trạng triển khai:** Đã triển khai đầy đủ BR-19.1 (với thuộc tính `requiresResolutionReason` trên trạng thái vé), BR-19.2, BR-19.3, BR-19.4 (Refs `crmsaassaudi/product-management#230`).
 
 **Tiêu chí chấp nhận:** Xem Kịch bản 4 (mục 6).
 
@@ -896,7 +898,7 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 **Actor:** Support Manager, Administrator (xóa và phục hồi); Tiến trình Hệ thống (xóa vĩnh viễn khi hết hạn lưu trữ).
 
 **Quy tắc nghiệp vụ:**
-- `BR-26.1 (Thời hạn lưu trong Thùng rác)`: Vé đã xóa được lưu 30 ngày (cấu hình được), sau đó hệ thống tự động xóa vĩnh viễn.
+- `BR-26.1 (Thời hạn lưu trong Thùng rác)`: Vé đã xóa được lưu 30 ngày, sau đó hệ thống tự động xóa vĩnh viễn. *(Khoảng cách ghi nhận: thời hạn lưu trữ Thùng rác hiện là biến môi trường của toàn hệ thống `TICKET_RECYCLE_BIN_RETENTION_DAYS`, chưa phải tham số cấu hình riêng theo từng doanh nghiệp).*
 - `BR-26.2 (Phục hồi nguyên trạng)`: Khi phục hồi, vé trở lại đúng trạng thái, người phụ trách và toàn bộ lịch sử trao đổi như trước khi xóa. Ngoại lệ: vé đã bị ẩn danh hóa trong lúc nằm trong Thùng rác (BR-45.6) được phục hồi ở dạng đã ẩn danh — dữ liệu cá nhân đã gỡ bỏ không được khôi phục lại trong bất kỳ trường hợp nào.
 - `BR-26.3 (Quyền phục hồi ngang quyền xóa)`: Chỉ người có quyền xóa mới có quyền phục hồi, và chỉ phục hồi được những vé mà họ vốn có quyền nhìn thấy — tránh việc dùng Thùng rác như đường vòng để tiếp cận dữ liệu ngoài phạm vi.
 - `BR-26.4 (Không xóa vé đang là vé cha)`: Vé đang có vé con trực thuộc không xóa được cho tới khi gỡ hết quan hệ cha - con, tránh để lại các vé con mồ côi không truy vết được bối cảnh.
@@ -1091,11 +1093,15 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 
 ## J. BÁO CÁO & GIÁM SÁT HIỆU SUẤT
 
-### FEAT-42 — Bảng điều khiển Hàng đợi Thời gian thực `[Yêu cầu mới]`
+### FEAT-42 — Bảng điều khiển Hàng đợi Thời gian thực `[Đã triển khai một phần]`
 
 **Mô tả nghiệp vụ:** Trưởng nhóm cần một màn hình duy nhất cho biết tình hình hàng đợi ngay lúc này để điều phối kịp thời: còn bao nhiêu vé chưa ai nhận, vé nào sắp tới hạn, ai đang quá tải, vé nào có khách hàng bức xúc. Nếu chỉ có danh sách vé thô, Trưởng nhóm phải tự lọc và ước lượng bằng mắt, dẫn tới phát hiện vấn đề quá muộn.
 
 **Actor:** Team Lead, Support Manager, Administrator.
+
+**Hiện trạng triển khai:** Đã triển khai bảng điều khiển với đầy đủ các chỉ số hàng đợi, cập nhật theo chu kỳ 30 giây (polling).
+
+**Khoảng cách cần bổ sung:** Cơ chế đẩy dữ liệu tức thời (WebSocket / Server-Sent Events) thay vì cập nhật theo chu kỳ 30 giây.
 
 **Quy tắc nghiệp vụ:**
 - `BR-42.1 (Các chỉ số hiển thị tối thiểu)`: Bảng điều khiển hiển thị theo thời gian thực: số vé chưa có người xử lý trong hàng đợi chung, số vé đang mở theo từng trạng thái, số vé đã qua ngưỡng cảnh báo sớm nhưng chưa vi phạm (theo BR-17.1), số vé đã vi phạm cam kết, số vé đang mang cờ khách hàng bức xúc, và số vé đang mở của từng tư vấn viên so với hạn mức năng lực.
@@ -1107,11 +1113,13 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 
 ---
 
-### FEAT-43 — Báo cáo Tuân thủ SLA, Hiệu suất Tư vấn viên & Khối lượng Công việc `[Yêu cầu mới]`
+### FEAT-43 — Báo cáo Tuân thủ SLA, Hiệu suất Tư vấn viên & Khối lượng Công việc `[Đã triển khai]`
 
 **Mô tả nghiệp vụ:** Trưởng phòng cần bộ báo cáo định kỳ để đánh giá chất lượng dịch vụ, làm căn cứ đánh giá nhân sự, xếp lịch trực và báo cáo mức độ tuân thủ cam kết cho khách hàng theo hợp đồng. Đây là nơi toàn bộ các chỉ số thành công ở mục 2.4 được đo lường thực tế.
 
 **Actor:** Team Lead (phạm vi nhóm), Support Manager, Administrator (toàn bộ).
+
+**Hiện trạng triển khai:** Đã triển khai đầy đủ các chỉ số vé, đo lường tuân thủ SLA và phân tích khối lượng công việc.
 
 **Quy tắc nghiệp vụ:**
 - `BR-43.1 (Báo cáo tuân thủ cam kết dịch vụ)`: Báo cáo tỷ lệ tuân thủ cam kết phản hồi đầu tiên và cam kết xử lý dứt điểm, lọc được theo khoảng thời gian, theo nhóm, theo tư vấn viên, theo hạng khách hàng và theo từng khách hàng cụ thể (để gửi kèm báo cáo hợp đồng).
@@ -1132,11 +1140,13 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 
 ## K. NHẬT KÝ THAO TÁC & TRUY VẾT
 
-### FEAT-44 — Nhật ký Thay đổi & Truy vết Thao tác trên Vé `[Yêu cầu mới]`
+### FEAT-44 — Nhật ký Thay đổi & Truy vết Thao tác trên Vé `[Đã triển khai]`
 
 **Mô tả nghiệp vụ:** Khi có tranh chấp với khách hàng về việc "ai đã hứa gì, khi nào" hoặc khi cần rà soát nội bộ vì một vé bị xử lý sai, doanh nghiệp cần biết chính xác ai đã thay đổi gì trên vé và vào lúc nào. Nội dung trao đổi đã bất biến (BR-13.1), nhưng các trường quan trọng như mức ưu tiên, người phụ trách, trạng thái, hạn chót cam kết thì vẫn sửa được và cần được ghi vết.
 
 **Actor:** Support Manager, Administrator (xem nhật ký); Tiến trình Hệ thống (ghi nhật ký).
+
+**Hiện trạng triển khai:** Đã triển khai phân hệ nhật ký kiểm toán dùng chung, bất biến, áp dụng cho vé theo NFR-14.
 
 **Quy tắc nghiệp vụ:**
 - `BR-44.1 (Các thay đổi phải ghi vết)`: Tối thiểu ghi lại thay đổi của: trạng thái, mức ưu tiên, người phụ trách, nhóm phụ trách, danh mục phân loại, chính sách cam kết áp dụng, hạn chót cam kết, và các thao tác gộp/tách/gán vé cha - con.
@@ -1152,11 +1162,13 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 
 ## L. VÒNG ĐỜI DỮ LIỆU & TUÂN THỦ BẢO VỆ DỮ LIỆU CÁ NHÂN
 
-### FEAT-45 — Lưu trữ, Ẩn danh hóa & Xử lý Yêu cầu Xóa Dữ liệu Cá nhân `[Yêu cầu mới]`
+### FEAT-45 — Lưu trữ, Ẩn danh hóa & Xử lý Yêu cầu Xóa Dữ liệu Cá nhân `[Đã triển khai]`
 
 **Mô tả nghiệp vụ:** Vé hỗ trợ chứa nhiều dữ liệu cá nhân của khách hàng (họ tên, số điện thoại, địa chỉ email, nội dung trao đổi, tệp đính kèm). Theo Nghị định 13/2023/NĐ-CP về bảo vệ dữ liệu cá nhân, doanh nghiệp phải có khả năng đáp ứng yêu cầu xóa dữ liệu của chủ thể dữ liệu và không được lưu trữ dữ liệu cá nhân lâu hơn mức cần thiết. Yêu cầu này mâu thuẫn bề mặt với nguyên tắc bất biến của lịch sử vé, nên cần một quy tắc xử lý rõ ràng.
 
 **Actor:** Support Manager, Administrator (tiếp nhận và thực thi yêu cầu); Tiến trình Hệ thống (thực thi chính sách lưu trữ tự động).
+
+**Hiện trạng triển khai:** Đã triển khai quy trình tiếp nhận yêu cầu xóa dữ liệu cá nhân, ẩn danh hóa dữ liệu có xem trước, lưu trữ và xóa định kỳ theo Nghị định 13.
 
 **Quy tắc nghiệp vụ:**
 - `BR-45.1 (Thời hạn lưu trữ vé đã đóng)`: Doanh nghiệp cấu hình thời hạn lưu trữ vé đã đóng (mặc định 36 tháng). Hết thời hạn, vé được chuyển sang trạng thái lưu trữ dài hạn: không còn hiển thị trong danh sách làm việc hàng ngày nhưng vẫn tra cứu được khi cần đối soát.
@@ -1722,51 +1734,22 @@ Cột "Hệ thống" không phải một actor người dùng — đây là ký 
 
 ## 7. Khoảng cách Triển khai & Đề xuất Bổ sung
 
-Mục này tổng hợp lại các khoảng cách đã nêu trong từng FEAT ở mục 3, xếp theo mức độ ảnh hưởng kinh doanh, để Trưởng phòng Dịch vụ Khách hàng và PM ưu tiên kế hoạch phát triển. Không nên cam kết các mục dưới đây với khách hàng cho tới khi hoàn thành.
+Mục này tổng hợp lại các khoảng cách kỹ thuật và nghiệp vụ thực tế còn lại sau đợt rà soát và kiểm chứng mã nguồn (16/09/2026), xếp theo mức độ ảnh hưởng, làm căn cứ cho các giai đoạn phát triển tiếp theo.
 
-### 7.1 Chặn vận hành — không có thì đội hỗ trợ nhiều người không làm việc được
+> **Ghi chú về các hạng mục đã hoàn thành:** Đợt rà soát thực tế mã nguồn cho thấy phần lớn các tính năng từng liệt kê ở phiên bản trước nay đã được triển khai hoàn chỉnh và có kiểm thử bảo vệ: Thư viện câu trả lời mẫu (`FEAT-16`), Tách vé (`FEAT-41`), Cảnh báo trùng thao tác (`FEAT-38`), Leo thang thủ công (`FEAT-39`), Chuyển vé hàng loạt (`FEAT-36`), Thông báo cho tư vấn viên (`FEAT-37`), Cảnh báo rủi ro sang Deals (`FEAT-30`), Chuyển giải pháp sang bài viết tri thức (`FEAT-31`), Giám sát hướng dẫn whisper (`FEAT-32`), Theo dõi giờ tính phí (`FEAT-33`), Gửi khảo sát CSAT tự động (`FEAT-20`), Tự động đóng vé (`FEAT-22`), Giới hạn thời gian mở lại vé (`FEAT-21`), Chặn gộp vé khác khách hàng (`BR-27.4`), Hàng đợi chung (`FEAT-34`), Ca trực & sẵn sàng (`FEAT-35`), Báo cáo tuân thủ & hiệu suất (`FEAT-43`), Nhật ký thay đổi & truy vết (`FEAT-44`), Vòng đời dữ liệu cá nhân Nghị định 13 (`FEAT-45`).
 
-Đây là nhóm ưu tiên cao nhất: thiếu các tính năng này, doanh nghiệp không thể vận hành một phòng CSKH có nhiều nhân sự làm theo ca, và các chỉ số cam kết ở mục 2.4 không đo được.
+### 7.1 Khoảng cách nghiệp vụ & cấu hình còn lại
 
-1. **Báo cáo & Bảng điều khiển (FEAT-42, FEAT-43):** Hiện không có nơi nào trong hệ thống hiển thị các chỉ số ở mục 2.4. Thiếu nhóm này, Trưởng phòng không đo được chất lượng dịch vụ, không có số liệu báo cáo khách hàng theo hợp đồng, và không phát hiện được vé tồn đọng trước khi vi phạm.
-2. **Hàng đợi chung & giám sát vé chưa ai nhận (FEAT-34):** Không có khái niệm vé chưa có người phụ trách và không có cảnh báo vé tồn đọng — vé nằm im cho tới khi đã vi phạm cam kết mới có người biết.
-3. **Trạng thái sẵn sàng & ca trực (FEAT-35):** Cơ chế phân bổ tự động hiện không biết ai đang thực sự trực, nên có thể gán vé cho người đang nghỉ phép hoặc đã hết ca.
-4. **Chuyển vé hàng loạt khi nhân sự vắng mặt (FEAT-36):** Nhân viên nghỉ ốm đột xuất với nhiều vé đang giữ là tình huống xảy ra thường xuyên; hiện phải chuyển thủ công từng vé trong khi đồng hồ cam kết vẫn chạy.
-5. **Thông báo cho tư vấn viên (FEAT-37):** Tư vấn viên hiện không được báo khi được gán vé hoặc khi khách hàng phản hồi, phải tự kiểm tra thủ công — nguyên nhân trực tiếp gây bỏ sót vé.
+1. **Cơ chế đẩy tức thời cho Bảng điều khiển Hàng đợi (FEAT-42):** Bảng điều khiển hàng đợi thời gian thực hiện đang hoạt động theo cơ chế thăm dò định kỳ (polling 30 giây/lần). Khoảng cách còn lại là xây dựng hạ tầng kết nối thời gian thực (WebSocket hoặc Server-Sent Events) để đẩy các biến động hàng đợi ngay lập tức khi phát sinh.
+2. **Cấu hình thời hạn lưu Thùng rác theo doanh nghiệp (FEAT-26, BR-26.1):** Thời hạn lưu trữ vé trong Thùng rác trước khi bị xóa vĩnh viễn hiện được thiết lập qua biến môi trường toàn hệ thống (`TICKET_RECYCLE_BIN_RETENTION_DAYS`, mặc định 30 ngày), chưa hỗ trợ cấu hình động riêng cho từng doanh nghiệp qua giao diện cài đặt.
+3. **Chính sách SLA theo Hợp đồng Dịch vụ (FEAT-40, BR-40.1 tầng 1):** Phân cấp chính sách cam kết dịch vụ hiện đã hỗ trợ tầng 2 (Hạng khách hàng VIP) và tầng 3 (Mức ưu tiên mặc định). Tầng 1 (áp dụng chính sách riêng theo hợp đồng dịch vụ cụ thể) phụ thuộc vào thực thể Hợp đồng thuộc phân hệ Hợp đồng & Thanh toán (ngoài phân hệ Vé).
+4. **Ma trận Mức độ Ưu tiên Cấu hình được (FEAT-06, BR-06.1 — GAP-04):** Ma trận suy ra mức độ ưu tiên từ tổ hợp Tác động × Khẩn cấp hiện đang dùng bảng giá trị cố định chuẩn trong mã nguồn, chưa có màn hình quản trị để doanh nghiệp tự tùy biến ma trận riêng.
+5. **Chính sách bồi thường khi vi phạm cam kết:** Tự động tính khoản bù trừ khi mức vi phạm vượt ngưỡng cam kết SLA trong hợp đồng — thuộc phân hệ Billing & Contract Management, nằm ngoài phân hệ Vé Hỗ trợ nhưng cần đồng bộ khi triển khai gói dịch vụ cao cấp.
 
-### 7.2 Rủi ro với cam kết hợp đồng, dữ liệu khách hàng và tuân thủ pháp lý
+### 7.2 Đề xuất cải tiến giai đoạn sau
 
-1. **Chặn gộp vé của hai khách hàng khác nhau (FEAT-27, BR-27.4):** Đây là rủi ro lộ dữ liệu giữa hai khách hàng — cần xử lý sớm nhất trong nhóm này.
-2. **Vòng đời dữ liệu & tuân thủ Nghị định 13 (FEAT-45):** Hệ thống chưa có cơ chế đáp ứng yêu cầu xóa dữ liệu cá nhân của khách hàng, chưa có chính sách lưu trữ dài hạn. Đây là rủi ro pháp lý có thể chặn ký hợp đồng với khách hàng doanh nghiệp lớn.
-3. **Nhật ký thay đổi & truy vết (FEAT-44):** Không có bằng chứng đối soát khi tranh chấp với khách hàng về việc ai đã thay đổi cam kết, và không kiểm soát được ai đã xuất dữ liệu khách hàng ra ngoài.
-4. **Cập nhật & xử lý hàng loạt cho sự cố diện rộng (FEAT-28, BR-28.2 & BR-28.3):** Đúng lúc cần nhất (sự cố ảnh hưởng hàng trăm khách hàng), Trưởng nhóm vẫn phải xử lý thủ công từng vé.
-5. **Thông báo cho khách hàng khi vé bị gộp (FEAT-27, BR-27.3):** Khách hàng của vé phụ không được báo yêu cầu của mình đã chuyển đi đâu.
-6. **Hoàn tác gộp vé nhầm (FEAT-27, BR-27.5)** và **loại vé đã gộp khỏi thống kê cam kết (BR-27.6)**.
-7. **Tự động đóng vé sau thời gian không phản hồi (FEAT-22):** Vé đã xử lý xong tồn đọng vô thời hạn, làm sai lệch số liệu vé đang mở.
-8. **Giới hạn thời gian mở lại vé (FEAT-21, BR-21.3):** Ảnh hưởng độ tin cậy của chỉ số tuân thủ cam kết đã công bố.
-9. **Chính sách cam kết theo hạng khách hàng (FEAT-40) `[Đã xử lý tại #222]`:** Đã hỗ trợ phân cấp cam kết 3 tầng (Hợp đồng dịch vụ > Hạng khách hàng VIP > Mức ưu tiên chung), tính lại khi đổi hạng khách hàng và hiển thị huy hiệu VIP.
-10. **Gửi khảo sát hài lòng tự động (FEAT-20, BR-20.2):** Chừng nào việc gửi còn thủ công, số liệu hài lòng thu được không đại diện và không dùng làm căn cứ đánh giá được.
-11. **Cảnh báo rủi ro tự động sang Cơ hội bán hàng (FEAT-30):** Liên kết hiện là thủ công, phụ thuộc việc nhân viên có nhớ tra cứu hay không.
-12. **Kênh đánh thức người trực ngoài giờ (FEAT-37, BR-37.4) và ràng buộc lịch trực phủ lịch cam kết (FEAT-35, BR-35.5):** Không có hai mục này, doanh nghiệp vẫn ký được cam kết phục vụ liên tục cả ngày đêm nhưng không thực hiện được — vé phát sinh ban đêm chạy đồng hồ mà không ai được báo. Rủi ro lộ ra chỉ khi đã vi phạm với khách hàng.
-13. **Bảo vệ cấu hình trạng thái vé đang được sử dụng (FEAT-01, BR-01.4 & BR-01.5):** Hiện một thao tác cấu hình sai có thể khiến hàng loạt vé đang mở đột ngột đổi cách tính cam kết hoặc mất trạng thái.
-14. **Chính sách bồi thường khi vi phạm cam kết:** Tự động tính khoản bù trừ khi mức vi phạm vượt ngưỡng hợp đồng — thuộc phân hệ Billing & Contract Management, nằm ngoài phạm vi tài liệu này nhưng cần thống nhất khi đàm phán hợp đồng dịch vụ.
-
-### 7.3 Ảnh hưởng hiệu quả vận hành hàng ngày
-
-1. **Thư viện câu trả lời mẫu (FEAT-16):** Với đội đông người, đây là công cụ nền tảng để đảm bảo tốc độ và tính nhất quán khi trả lời; thiếu nó, chất lượng phụ thuộc hoàn toàn vào từng cá nhân.
-2. **Tách vé khi một yêu cầu chứa nhiều vấn đề (FEAT-41):** Hiện phải tạo vé mới và sao chép thủ công, làm mất lịch sử và sai lệch cách tính cam kết.
-3. **Cảnh báo trùng thao tác (FEAT-38):** Hai tư vấn viên cùng trả lời một vé khiến khách hàng nhận hai câu trả lời khác nhau.
-4. **Leo thang thủ công & xử lý khiếu nại chất lượng phục vụ (FEAT-39):** Hiện chỉ leo thang tự động theo mốc thời gian, không có đường xử lý cho tình huống khách hàng bức xúc hoặc khiếu nại về chính nhân viên.
-5. **Ma trận đánh giá tác động & nghiêm trọng (FEAT-06):** Chuẩn hóa cách xác định mức ưu tiên giữa các tư vấn viên.
-6. **Trường tùy biến động theo từng danh mục con (FEAT-05 mở rộng).**
-7. **Cập nhật trạng thái hàng loạt (FEAT-23 mở rộng).**
-
-### 7.4 Giá trị gia tăng — lên kế hoạch theo nhu cầu từng khách hàng
-
-1. **Chuyển đổi giải pháp xử lý thành bài viết tri thức (FEAT-31).**
-2. **Giám sát trực tiếp & nhắc nhở hậu trường (FEAT-32).**
-3. **Theo dõi thời lượng hỗ trợ & giờ tính phí (FEAT-33)** — lưu ý: trở thành nhóm ưu tiên cao nếu doanh nghiệp có hợp đồng bảo trì tính phí theo giờ.
-4. **Tự động trả lời các câu hỏi thường gặp bằng trợ lý ảo:** Đề xuất tích hợp qua phân hệ AI Service Bot ở giai đoạn sau.
+1. **Tự động trả lời và gợi ý giải pháp bằng AI / Trợ lý ảo:** Tích hợp với phân hệ AI Service Bot để tự động phân loại, gợi ý câu trả lời mẫu hoặc giải pháp dựa trên cơ sở tri thức đã xây dựng từ các vé đã giải quyết.
+2. **Kênh đánh thức chuyên biệt ngoài giờ (FEAT-37, BR-37.4):** Bổ sung tích hợp cuộc gọi tự động (Automated Voice Call) hoặc SMS cảnh báo khẩn cấp cho nhân sự trực ca đêm khi phát sinh vé cam kết 24/7.
 
 ---
 
