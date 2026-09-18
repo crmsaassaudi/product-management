@@ -1,6 +1,19 @@
 {
   "initiatives": [
     {
+      "id": "feat-232",
+      "title": "Tasks: FEAT-01 Tạo mới & Quản lý Công việc",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/232"
+      ]
+    },
+    {
       "id": "feat-176",
       "title": "crm-settings: cơ chế tham số cấu hình theo tenant có sàn bắt buộc không nới được",
       "primary_repo": "crm-api",
