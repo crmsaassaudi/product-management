@@ -1,6 +1,19 @@
 {
   "initiatives": [
     {
+      "id": "feat-234",
+      "title": "Tasks: FEAT-03 Phân loại Mức độ Ưu tiên",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/234"
+      ]
+    },
+    {
       "id": "feat-233",
       "title": "Tasks: FEAT-02 Gắn Công việc vào Ngữ cảnh Khách hàng",
       "primary_repo": "crm-api",
