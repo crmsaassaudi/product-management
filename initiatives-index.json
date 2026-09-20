@@ -1,6 +1,19 @@
 {
   "initiatives": [
     {
+      "id": "feat-235",
+      "title": "Tasks: FEAT-04 Quản lý Hạn chót & Cảnh báo Quá hạn",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/235"
+      ]
+    },
+    {
       "id": "feat-234",
       "title": "Tasks: FEAT-03 Phân loại Mức độ Ưu tiên",
       "primary_repo": "crm-api",
