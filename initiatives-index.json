@@ -1,6 +1,19 @@
 {
   "initiatives": [
     {
+      "id": "feat-238",
+      "title": "Tasks: FEAT-15 Ghi nhận Cuộc gọi",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/238"
+      ]
+    },
+    {
       "id": "feat-237",
       "title": "Tasks: FEAT-09 Giao việc & Thẩm định Người nhận",
       "primary_repo": "crm-api",
