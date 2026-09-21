@@ -1,6 +1,19 @@
 {
   "initiatives": [
     {
+      "id": "feat-236",
+      "title": "Tasks: FEAT-05 Vòng đời Trạng thái & Bảo toàn Kết quả",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/236"
+      ]
+    },
+    {
       "id": "feat-235",
       "title": "Tasks: FEAT-04 Quản lý Hạn chót & Cảnh báo Quá hạn",
       "primary_repo": "crm-api",
