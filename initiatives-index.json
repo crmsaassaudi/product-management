@@ -1,6 +1,19 @@
 {
   "initiatives": [
     {
+      "id": "feat-243",
+      "title": "Tasks: FEAT-25 Đánh thức Quan hệ Khách hàng",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/243"
+      ]
+    },
+    {
       "id": "feat-242",
       "title": "Tasks: FEAT-19 Nhật ký Tin nhắn",
       "primary_repo": "crm-api",
