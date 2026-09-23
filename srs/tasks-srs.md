@@ -1429,6 +1429,7 @@ Xem Mục 2.3.
 4. **Kỳ vọng nghiệm thu:** Công việc trở lại đúng trạng thái "Đang làm", vẫn gắn Cơ hội Y, hiện lại trên dòng thời gian của Y, toàn bộ lịch sử còn nguyên.
 
 ---
+
 ### UAT-13 — Nhân viên bị vô hiệu hóa, công việc không chìm vào im lặng *(FEAT-09, BR-09.2)*
 
 1. Nhân viên A đang phụ trách 5 công việc đang mở, 10 công việc đã kết thúc và 1 công việc mẫu định kỳ hằng tuần.
