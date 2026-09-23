@@ -113,7 +113,7 @@ Hệ quả bắt buộc:
 | --- | --- | --- | --- |
 | [`onboarding-srs.md`](./onboarding-srs.md) | Tiếp nhận & Khởi tạo Không gian làm việc (Onboarding & Provisioning) | Version 2.0 (Target Standard) | 2026-08-28 |
 | [`contacts-srs.md`](./contacts-srs.md) | Quản lý Khách hàng & Danh bạ Doanh nghiệp (Contacts & Accounts) | Version 2.2 (Standardized Business SRS) | 2026-08-29 |
-| [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) | Quản lý Cơ hội & Phễu Bán hàng (Deals & Pipelines) | Version 2.2 (Standardized Business SRS) | 2026-08-29 |
+| [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) | Quản lý Cơ hội & Phễu Bán hàng (Deals & Pipelines) | Version 6.0 (Chuẩn hóa Nghiệp vụ Thuần túy) | 2026-09-23 |
 | [`tickets-srs.md`](./tickets-srs.md) | Quản lý Vé Hỗ trợ & Dịch vụ Khách hàng (Tickets & Customer Service) | Version 2.2 (Standardized Business SRS) | 2026-08-29 |
 | [`tasks-srs.md`](./tasks-srs.md) | Quản lý Công việc, Lịch trình & Ghi nhận Tương tác (Tasks, Calendar & Activity Logging) | Version 6.0 (Chuẩn hóa Nghiệp vụ Thuần túy) | 2026-09-17 |
 | [`campaigns-srs.md`](./campaigns-srs.md) | Quản lý Chiến dịch Tiếp thị & Truyền thông Đa kênh (Marketing Campaigns) | Version 2.2 (Standardized Business SRS) | 2026-08-29 |

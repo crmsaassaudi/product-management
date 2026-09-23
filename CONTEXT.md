@@ -237,55 +237,57 @@ Theo dõi tình trạng đồng thuận nhận tin quảng bá/tiếp thị (Opt
 Thực thể đại diện cho một giao dịch kinh doanh tiềm năng giữa doanh nghiệp và khách hàng cá nhân hoặc tổ chức, có giá trị tiền tệ dự kiến, ngày dự kiến đóng và gắn liền với một giai đoạn cụ thể trên phễu bán hàng.
 
 **Phễu Bán hàng (Sales Pipeline)**:
-Quy trình trực quan hóa toàn bộ các bước từ khi tiếp cận cơ hội đến khi chốt hợp đồng thành công. Một không gian làm việc có thể sở hữu nhiều phễu bán hàng độc lập (Multiple Pipelines) cho các dòng sản phẩm, dịch vụ hoặc thị trường khác nhau.
+Quy trình trực quan hóa toàn bộ các bước từ khi tiếp cận cơ hội đến khi chốt hợp đồng thành công. Một không gian làm việc có thể sở hữu nhiều phễu bán hàng độc lập cho các dòng sản phẩm, dịch vụ hoặc thị trường khác nhau.
 
-**Giai đoạn Bán hàng & Xác suất Thành công (Stage & Win Probability)**:
-Các cột mốc tuần tự trên phễu bán hàng (ví dụ: *Tiếp cận -> Khảo sát nhu cầu -> Báo giá -> Đàm phán -> Ký hợp đồng / Thất bại*), mỗi giai đoạn được gán một tỷ lệ xác suất thành công từ 0% đến 100% để tính toán dự báo doanh thu.
+**Giai đoạn Phễu & Xác suất Thắng (Stage & Win Probability)**:
+Các cột mốc tuần tự trên phễu bán hàng, mỗi giai đoạn được gán một tỷ lệ xác suất thắng từ 0% đến 100% để tính toán doanh thu dự báo có trọng số.
 
 **Bảng Kanban Cơ hội (Deals Kanban Board)**:
-Giao diện trực quan dạng bảng thẻ kéo thả phân chia theo các cột giai đoạn bán hàng, hiển thị số lượng và tổng giá trị cơ hội trên từng cột theo thời gian thực.
+Giao diện dạng bảng thẻ kéo thả phân chia theo các cột giai đoạn bán hàng, hiển thị số lượng và tổng giá trị cơ hội trên từng cột theo thời gian thực.
 
 **Thời gian Lưu tại Giai đoạn (Time in Stage / Stage Duration)**:
-Chỉ số đo lường chính xác số ngày/giờ mà một cơ hội bán hàng đã nằm yên tại một giai đoạn cụ thể, dùng để phát hiện điểm nghẽn quy trình và tính toán vận tốc bán hàng (Sales Velocity).
+Khoảng thời gian một cơ hội đã nằm yên tại một giai đoạn cụ thể trước khi chuyển sang giai đoạn khác, dùng để phát hiện điểm nghẽn quy trình và tính toán vận tốc bán hàng.
 
 **Cơ hội Nguội Lạnh (Stale Deal)**:
-Cơ hội bán hàng không có bất kỳ hoạt động tương tác nào (không có cuộc gọi, email, ghi chú hay chuyển giai đoạn) vượt quá ngưỡng thời gian quy định (ví dụ >14 ngày), được hệ thống tự động đánh dấu cảnh báo để người phụ trách kịp thời xử lý.
+Cơ hội bán hàng không có bất kỳ tương tác nào vượt quá ngưỡng thời gian quy định, cần được hệ thống tự động đánh dấu cảnh báo để người phụ trách kịp thời xử lý. **Trạng thái triển khai:** chưa có trong hệ thống — xem `FEAT-17` tại [`deals-pipeline-srs.md`](./srs/deals-pipeline-srs.md); hiện chỉ có sẵn trường "thời điểm tương tác gần nhất" làm nền tảng để xây tính năng này.
+_Avoid_: Mô tả tính năng này như đã vận hành — SRS v5.1 từng gắn nhãn "Đã triển khai" sai; đối chiếu mã nguồn 2026-09-23 xác nhận chưa tồn tại.
 
-**Nhắc nhở Chăm sóc Tiếp theo (Follow-up Reminder)**:
-Thời điểm cam kết tương tác tiếp theo với khách hàng (`nextFollowUpAt`) do nhân viên kinh doanh thiết lập, hệ thống sẽ tự động phát sinh thông báo nhắc nhở trước hạn chót để không bao giờ bỏ quên khách hàng.
+**Lịch Chăm sóc Tiếp theo (Follow-up Reminder)**:
+Thời điểm cam kết tương tác tiếp theo với khách hàng do người phụ trách thiết lập; hệ thống chủ động quét và nhắc khi đến hạn, đồng thời tạo một Công việc mới giao cho người phụ trách (không chỉ là một thông báo thoáng qua).
 
 **Lý do Thất bại (Loss Reason)**:
-Danh mục nguyên nhân được chuẩn hóa (ví dụ: *Giá quá cao, Chọn đối thủ cạnh tranh, Hết ngân sách, Không có nhu cầu*) bắt buộc người dùng phải khai báo khi chuyển cơ hội sang trạng thái Đóng Thất bại (Closed Lost) để phục vụ phân tích cải tiến sản phẩm.
+Nội dung giải thích bắt buộc phải khai báo khi chuyển cơ hội sang Đóng Thất bại. **Trạng thái triển khai:** hiện là văn bản tự do; danh mục lý do chuẩn hóa để chọn (kèm khái niệm "đối thủ cạnh tranh") là nhu cầu nghiệp vụ mới, chưa triển khai — xem `FEAT-20`.
 
 **Doanh thu Dự báo có Trọng số (Weighted Pipeline Forecast)**:
-Doanh thu kỳ vọng được tính bằng tổng của: $\text{Giá trị cơ hội} \times \text{Xác suất thành công của giai đoạn}$ ($\sum (\text{Value} \times \text{Probability})$) theo từng tháng hoặc quý.
+Doanh thu kỳ vọng của một giai đoạn hoặc toàn phễu, bằng tổng của (giá trị từng cơ hội đang mở nhân với xác suất thắng của giai đoạn đang chứa nó). Báo cáo hiện **không quy đổi tiền tệ** khi một không gian làm việc có cơ hội thuộc nhiều loại tiền tệ khác nhau — chỉ cảnh báo trộn lẫn, không tự động chuẩn hóa về một đồng tiền cơ sở (xem `BR-02.2`).
+_Avoid_: Viết công thức bằng ký hiệu toán học trong văn bản nghiệp vụ — phát biểu bằng lời như trên.
 
 **Vai trò Liên hệ trong Cơ hội (Contact Roles on Deals)**:
-Khả năng gắn nhiều nhân sự liên hệ vào cùng một Cơ hội bán hàng với các vai trò quyết định khác nhau (Người ra quyết định / Decision Maker, Người đánh giá kỹ thuật / Technical Evaluator, Người bảo trợ nội bộ / Champion, Người mua hàng / Buyer).
+Khả năng gắn nhiều nhân sự liên hệ vào cùng một Cơ hội bán hàng với vai trò cụ thể trong quá trình ra quyết định mua hàng. Danh mục vai trò **do từng không gian làm việc tự định nghĩa** (dùng chung với vai trò liên hệ trên hồ sơ Khách hàng), không phải một danh sách cố định của hệ thống.
+_Avoid_: Liệt kê một bộ vai trò cố định (Decision Maker/Champion/...) như thể đó là giá trị enum đóng kín của hệ thống — đó chỉ là ví dụ minh họa, tenant có thể định nghĩa khác.
 
-**Lưu trữ & Di chuyển Phễu (Pipeline Archival & Migration)**:
-Quy trình đóng một phễu bán hàng không còn sử dụng, yêu cầu di chuyển toàn bộ các cơ hội đang mở sang một phễu khác hoặc đóng băng chúng ở chế độ chỉ đọc (Read-Only) để bảo toàn lịch sử báo cáo tài chính.
+**Đóng Phễu An toàn & Di chuyển Cơ hội (Pipeline Archival & Migration)**:
+Quy trình đóng một phễu bán hàng không còn dùng, bắt buộc chọn đúng một trong hai phương án loại trừ lẫn nhau cho các cơ hội đang mở: di chuyển theo ma trận ánh xạ giai đoạn sang phễu khác, hoặc đóng băng chỉ đọc để bảo toàn lịch sử. **Giới hạn đã biết:** hai bước "di chuyển dữ liệu" và "đánh dấu phễu đã đóng" hiện chạy tuần tự, chưa được bọc trong một giao dịch nguyên tử duy nhất — xem `BR-07.3`.
+_Avoid_: Khẳng định thao tác này có đảm bảo toàn vẹn giao dịch tuyệt đối — đây là khoảng cách kỹ thuật thật đang tồn tại, không phải giả định an toàn.
 
-**Danh mục Sản phẩm & Chi tiết Báo giá trên Deal (Deal Products & Line Items)**:
-Danh sách các mặt hàng, gói dịch vụ đính kèm trong một Cơ hội bán hàng, bao gồm mã SKU, tên sản phẩm, số lượng, đơn giá niêm yết, tỷ lệ chiết khấu (%) và thuế suất (%), được dùng làm căn cứ tự động tính toán tổng giá trị giao dịch (`value`).
+**Rào cản Giai đoạn (Stage-Gate Rules / Stage Entry Requirements)**:
+Bộ điều kiện dữ liệu bắt buộc phải thỏa mãn trước khi một cơ hội được coi là đủ điều kiện ở một giai đoạn. **Phạm vi hiện tại chỉ gồm trường dữ liệu bắt buộc** (kể cả trường tùy biến), tích lũy qua mọi giai đoạn bị bỏ qua khi nhảy cóc. Yêu cầu đính kèm tài liệu bắt buộc và yêu cầu khai báo vai trò liên hệ bắt buộc là nhu cầu nghiệp vụ đã ghi nhận nhưng **chưa triển khai** — xem `BR-13.4`.
+_Avoid_: Gộp khái niệm này với một quy trình phê duyệt có người ký duyệt — rào cản giai đoạn chỉ kiểm tra dữ liệu, không phải cơ chế phê duyệt (xem Nguyên tắc 2, Mục 2.4 của SRS).
 
-**Lý do Thành công (Win Reason)**:
-Danh mục nguyên nhân chuẩn hóa (ví dụ: *Giá cả cạnh tranh, Tính năng vượt trội, Uy tín thương hiệu, Dịch vụ chăm sóc xuất sắc*) được ghi nhận khi chuyển cơ hội sang trạng thái Đóng Thành công (Closed Won) để phân tích chiến lược kinh doanh.
+**Khóa Nhảy cóc Giai đoạn (Sequential Stage Enforcement)**:
+Tham số cấu hình theo từng phễu (không phải theo toàn không gian làm việc), khi bật sẽ chặn một cơ hội tiến thẳng qua nhiều giai đoạn mà bỏ qua giai đoạn ở giữa; không áp dụng khi lùi giai đoạn hoặc khi đóng cơ hội (Thắng/Thua). Mặc định tắt.
 
-**Ma trận Ánh xạ Giai đoạn (Stage Mapping Matrix)**:
-Bảng quy chuẩn thiết lập tương quan giữa các giai đoạn của phễu cũ và phễu mới khi thực hiện di chuyển phễu bán hàng, đảm bảo các cơ hội được di chuyển vào đúng giai đoạn tương đương thay vì dồn tất cả về một giai đoạn duy nhất.
+**Đóng băng Ghi dữ liệu khi Di chuyển Dữ liệu nền (Migration Freeze)**:
+Cờ theo không gian làm việc, khi bật sẽ chặn mọi yêu cầu sửa cơ hội của người dùng trong lúc một tiến trình di chuyển dữ liệu quy mô lớn đang chạy, để tránh xung đột ghi đè giữa người dùng và tiến trình nền.
 
-**Điều kiện Chuyển Giai đoạn (Stage-Gate Rules / Stage Entry Requirements)**:
-Bộ quy tắc kiểm soát chất lượng dữ liệu bắt buộc phải hoàn thành (nhập các trường bắt buộc, đính kèm tài liệu hợp đồng, hoặc có phê duyệt của quản lý) trước khi cơ hội bán hàng được phép chuyển từ giai đoạn này sang giai đoạn kế tiếp trên phễu.
+**Chống Tạo Cơ hội Trùng khi Chuyển đổi (Deal Conversion Guard)**:
+Cơ chế tự động phát hiện khi một doanh nghiệp đã có cơ hội đang mở trên cùng phễu lúc chuyển đổi từ khách hàng tiềm năng; mặc định gộp vào cơ hội có sẵn thay vì tạo mới, trừ khi người thực hiện chủ động xác nhận vẫn muốn tạo riêng.
 
-**Tạm ngưng Cơ hội (On Hold Deal Status)**:
-Trạng thái đặt lên cơ hội bán hàng khi thương vụ bị hoãn tạm thời do khách hàng chờ ngân sách hoặc chờ duyệt nội bộ, cho phép ẩn khỏi dự báo doanh thu (Forecast) và tạm ngưng cảnh báo cơ hội nguội mà không phải đánh dấu Thất bại.
+**Tái phân loại Cơ hội Đã đóng (Deal Reclassification)**:
+Nghiệp vụ mở lại một cơ hội đã đóng để sửa kết quả Thắng/Thua, tách biệt hoàn toàn khỏi quyền sửa hoặc chuyển giai đoạn cơ hội thông thường — đòi hỏi một quyền hạn riêng, để kết quả doanh số đã chốt không bị đảo ngược tùy tiện.
 
-**Người cộng tác Cơ hội (Deal Collaborator)**:
-Nhân sự thuộc các phòng ban hỗ trợ (Pre-sales, Kỹ thuật, Pháp chế, Kế toán) được thêm vào cơ hội bán hàng để cùng xem thông tin, thêm ghi chú và trao đổi nội bộ nhưng không có quyền thay đổi giá trị, chiết khấu hoặc chuyển giai đoạn bán hàng.
-
-**Quy trình Phê duyệt Chiết khấu (Discount Approval Workflow)**:
-Quy trình kiểm soát giá bán yêu cầu nhân viên kinh doanh phải gửi yêu cầu và nhận được sự phê duyệt của Quản lý bán hàng hoặc Giám đốc trước khi áp dụng mức chiết khấu vượt trần quy định cho khách hàng.
+**Nhu cầu nghiệp vụ chưa triển khai (ghi nhận nhưng chưa đủ chín muồi để đặc tả):** Bảng giá & Chi tiết Dòng sản phẩm (CPQ), Quy trình Phê duyệt Chiết khấu, Trạng thái Tạm ngưng Cơ hội (On Hold), Phân chia Doanh số Đồng phụ trách, Nhóm Dự báo theo mức độ tin cậy (Forecast Categories), Hạn ngạch Doanh số (Sales Quota). Xem Mục 7 của [`deals-pipeline-srs.md`](./srs/deals-pipeline-srs.md) cho lý do hoãn từng nhu cầu.
+_Avoid_: "Deal Collaborator"/"Người cộng tác Cơ hội" như một vai trò ABAC có thật trong hệ thống — SRS v5.1 mô tả khái niệm này nhưng đối chiếu mã nguồn 2026-09-23 không tìm thấy vai trò này tồn tại; nếu cần, đây thuộc nhu cầu mới chưa thiết kế, không phải hành vi hiện tại.
 
 ## Quản lý Vé Hỗ trợ & Dịch vụ Khách hàng (Tickets & Customer Service)
 
