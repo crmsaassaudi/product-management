@@ -223,7 +223,7 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
   **Lý do nghiệp vụ:** Nếu chỉ đồng bộ một lần tại thời điểm gắn, đổi tên doanh nghiệp (sáp nhập, đổi thương hiệu) sẽ để lại tên cũ trên mọi cơ hội lịch sử, gây nhầm lẫn khi tra cứu báo cáo theo tên doanh nghiệp.
 
-- **`BR-01.4` (Chống tạo cơ hội trùng lặp khi tạo thủ công):** Áp dụng cho đường **tạo cơ hội thủ công trực tiếp** (không qua chuyển đổi khách hàng tiềm năng). Hệ thống từ chối tạo một cơ hội mới có cùng tên và cùng Doanh nghiệp với một cơ hội **đang mở** đã tồn tại, trừ khi người dùng chủ động xác nhận vẫn muốn tạo cơ hội riêng biệt.
+- **`BR-01.4` (Chống tạo cơ hội trùng lặp khi tạo thủ công):** Áp dụng cho đường **tạo cơ hội thủ công trực tiếp** (không qua chuyển đổi khách hàng tiềm năng). Hệ thống từ chối tạo một cơ hội mới có cùng tên và cùng Doanh nghiệp với một cơ hội **đang mở** đã tồn tại **trong phạm vi dữ liệu của người đang tạo** (`BR-01.5`), trừ khi người dùng chủ động xác nhận vẫn muốn tạo cơ hội riêng biệt. Nếu cơ hội trùng nằm **ngoài phạm vi** của người đang tạo, quy tắc này không kích hoạt — hệ thống cho tạo bình thường, không gợi ý, không nêu tên hay bất kỳ chi tiết nào của cơ hội ngoài phạm vi đó, theo nguyên tắc chung tại `BR-01.8`.
 
   Khi cơ hội được tạo **qua chuyển đổi khách hàng tiềm năng**, quy tắc áp dụng duy nhất là `BR-33.1` (theo Doanh nghiệp + cùng phễu, không xét tên) — `BR-01.4` không chạy song song trên luồng đó, để tránh hai quy tắc cho hai kết quả khác nhau trên cùng một thao tác.
 
@@ -239,6 +239,10 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
   **Lý do nghiệp vụ:** Không có phát hiện xung đột, hai người cùng sửa tỷ lệ chia doanh số đồng thời có thể ra tổng khác 100% mà không ai biết (vi phạm `BR-24.1`), và hai yêu cầu đóng cơ hội gần như đồng thời (một Thắng, một Thua) có thể tạo ra kết quả không xác định tùy thứ tự xử lý ngẫu nhiên của hệ thống — một sai sót không thể chấp nhận được với dữ liệu quyết định hoa hồng.
 
+- **`BR-01.8` (Không dò được sự tồn tại của cơ hội ngoài phạm vi qua đường gián tiếp):** Mọi cơ chế đối chiếu, gợi ý, cảnh báo trùng lặp hoặc báo lỗi có thể tham chiếu tới một cơ hội khác — chống trùng khi tạo thủ công (`BR-01.4`), gộp khi chuyển đổi (`BR-33.1`), báo cáo lỗi khi nhập dữ liệu hàng loạt (`FEAT-29`) — chỉ được đối chiếu và hiển thị kết quả trong **phạm vi dữ liệu của người thực hiện thao tác**. Nếu phát hiện trùng với một cơ hội ngoài phạm vi, hệ thống không tiết lộ tên, giá trị, người phụ trách hay bất kỳ chi tiết nào của cơ hội đó, và không tự động gộp hay liên kết dữ liệu vào cơ hội đó; nếu cần báo hiệu cho người dùng, chỉ dùng một thông báo chung không định danh (ví dụ "có thể đã tồn tại dữ liệu tương tự thuộc phạm vi khác, liên hệ quản lý để xác nhận").
+
+  **Lý do nghiệp vụ:** Đây là hệ quả trực tiếp của `BR-01.5` (không xem hoặc sửa được cơ hội ngoài phạm vi) và nguyên tắc "không tiết lộ sự tồn tại" đã áp dụng khi truy cập trực tiếp — một cơ chế tự động rò rỉ đúng thông tin đó qua đường gián tiếp (thử tạo trùng tên, chuyển đổi một khách hàng tiềm năng) sẽ vô hiệu hóa hoàn toàn mục đích của việc giữ kín trực tiếp.
+
 **Tiêu chí Chấp nhận:**
 
 | Mã AC | Bối cảnh | Hành động | Kết quả mong đợi |
@@ -249,8 +253,10 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 | `AC-01.2.2` | Quản lý phòng A giao cơ hội cho nhân viên B thuộc phòng B | Lưu cơ hội với người phụ trách là B | Cơ hội thuộc phòng B; Trưởng phòng B nhìn thấy cơ hội trong danh sách phòng mình |
 | `AC-01.2.3` | Cơ hội đang thuộc phòng B | Đổi người phụ trách sang nhân viên phòng C | Cơ hội chuyển sang thuộc phòng C ngay lập tức |
 | `AC-01.3.1` | Cơ hội đang gắn Doanh nghiệp X, tên hiển thị là "Công ty X" | Doanh nghiệp X đổi tên thành "Công ty X Mới" | Tên hiển thị trên cơ hội tự động cập nhật thành "Công ty X Mới" |
-| `AC-01.4.1` | Cơ hội "Hợp đồng Q3" đang mở, gắn Doanh nghiệp Y | Tạo cơ hội mới cùng tên "Hợp đồng Q3" cùng gắn Doanh nghiệp Y | Từ chối, gợi ý cơ hội trùng đã tồn tại, cho phép xác nhận vẫn tạo riêng |
+| `AC-01.4.1` | Cơ hội "Hợp đồng Q3" đang mở, gắn Doanh nghiệp Y, thuộc phạm vi của người đang tạo | Tạo cơ hội mới cùng tên "Hợp đồng Q3" cùng gắn Doanh nghiệp Y | Từ chối, gợi ý cơ hội trùng đã tồn tại, cho phép xác nhận vẫn tạo riêng |
 | `AC-01.4.2` | Tiếp nối AC-01.4.1 | Người dùng xác nhận vẫn muốn tạo cơ hội riêng | Tạo thành công, cả hai cơ hội cùng tồn tại độc lập |
+| `AC-01.4.3` | Cơ hội "Hợp đồng Q3" đang mở, gắn Doanh nghiệp Y, thuộc phòng ban khác, ngoài phạm vi của người đang tạo | Người này tạo cơ hội mới cùng tên "Hợp đồng Q3" cùng gắn Doanh nghiệp Y | Tạo thành công ngay, không có gợi ý hay cảnh báo trùng nào — không tiết lộ sự tồn tại của cơ hội ngoài phạm vi |
+| `AC-01.8.1` | Doanh nghiệp Y có một cơ hội đang mở ngoài phạm vi của người chuyển đổi | Người này chuyển đổi một khách hàng tiềm năng của Doanh nghiệp Y qua `FEAT-33` | Hệ thống tạo cơ hội mới, không gợi ý gộp vào cơ hội ngoài phạm vi, không tiết lộ chi tiết cơ hội đó |
 | `AC-01.5.1` | Nhân viên A có phạm vi dữ liệu Cá nhân, đang phụ trách 3 cơ hội; phòng ban có tổng 20 cơ hội | A mở danh sách cơ hội | Chỉ thấy đúng 3 cơ hội mình phụ trách |
 | `AC-01.5.2` | Tiếp nối AC-01.5.1 | A mở trực tiếp đường dẫn tới một cơ hội của đồng nghiệp cùng phòng | Từ chối truy cập, không tiết lộ sự tồn tại của cơ hội đó |
 | `AC-01.5.3` | Trưởng phòng B có phạm vi dữ liệu Phòng ban | Mở danh sách cơ hội | Thấy toàn bộ cơ hội của mọi nhân viên trong phòng B, không thấy cơ hội phòng khác |
@@ -298,38 +304,50 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 #### FEAT-03 — Bảo vệ Dữ liệu Tài chính Nhạy cảm
 
-**Mô tả nghiệp vụ:** Ẩn giá trị và xác suất thắng của cơ hội đối với người dùng không có quyền xem đầy đủ dữ liệu tài chính.
+**Mô tả nghiệp vụ:** Ẩn giá trị của cơ hội đối với người dùng không có quyền xem đầy đủ dữ liệu tài chính.
 
 **Quy tắc nghiệp vụ:**
 
-- **`BR-03.1` (Che số liệu theo quyền):** Giá trị cơ hội và xác suất thắng thuộc nhóm dữ liệu nhạy cảm do hệ thống định nghĩa sẵn. Người dùng không có quyền "xem đầy đủ" tương ứng thấy hai trường này bị **ẩn hoàn toàn** — không hiển thị bất kỳ chữ số nào, chứ không phải che bớt một phần. Quyền "xem đầy đủ" là một quyền hạn **riêng biệt**, không tự động đi kèm quyền xem hồ sơ cơ hội nói chung. Cơ chế che, danh mục trường nhạy cảm và cách cấp quyền "xem đầy đủ" thuộc [`iam-tenant-authorization.md`](./iam-tenant-authorization.md); phân hệ này chỉ đặc tả **phạm vi áp dụng trên dữ liệu Cơ hội bán hàng**.
+- **`BR-03.1` (Che số liệu theo quyền):** Giá trị cơ hội thuộc nhóm dữ liệu nhạy cảm do hệ thống định nghĩa sẵn. Người dùng không có quyền "xem đầy đủ" tương ứng thấy trường này bị **ẩn hoàn toàn** — không hiển thị bất kỳ chữ số nào, chứ không phải che bớt một phần. Quyền "xem đầy đủ" là một quyền hạn **riêng biệt**, không tự động đi kèm quyền xem hồ sơ cơ hội nói chung. Cơ chế che, danh mục trường nhạy cảm và cách cấp quyền "xem đầy đủ" thuộc [`iam-tenant-authorization.md`](./iam-tenant-authorization.md); phân hệ này chỉ đặc tả **phạm vi áp dụng trên dữ liệu Cơ hội bán hàng**.
+
+  **Xác suất thắng không thuộc diện che:** Xác suất thắng là một thuộc tính cấu hình của **giai đoạn** (`BR-06.1`), không phải của riêng một cơ hội — nó công khai trong cấu hình phễu (`FEAT-06`) mà mọi vai trò xem cấu hình đều thấy được, và suy ra được ngay từ tên giai đoạn hiển thị trên mọi thẻ Kanban. Che nó riêng trên hồ sơ cơ hội trong khi để nguyên trong cấu hình phễu là một cơ chế che vô nghĩa, tự mâu thuẫn với chính nguyên tắc "một đường rò duy nhất làm vô hiệu toàn bộ cơ chế" tại `BR-03.2`.
 
   **Lý do ẩn hoàn toàn thay vì che một phần:** Với một con số tiền tệ, che một phần vẫn làm lộ độ lớn của giao dịch — biết một hợp đồng có chử số hàng tỷ hay hàng triệu đã là thông tin cạnh tranh đáng kể. Khác với số điện thoại hay email (che một phần vẫn đủ để đối chiếu đúng người), giá trị hợp đồng không có nhu cầu đối chiếu tương tự nên không có lý do để lộ một phần.
 
   **Lý do nghiệp vụ:** Giá trị hợp đồng là dữ liệu tài chính nhạy cảm nhất trên một cơ hội. Tách quyền xem hồ sơ khỏi quyền xem số liệu thật cho phép nhân sự hỗ trợ (ví dụ Pre-sales) tham gia xử lý cơ hội mà không cần biết giá trị hợp đồng.
 
-- **`BR-03.2` (Che nhất quán trên mọi nơi số liệu xuất hiện):** Việc che số liệu tài chính áp dụng đồng nhất ở **mọi nơi giá trị cơ hội xuất hiện**, không chỉ trên hồ sơ chi tiết: thẻ trên Bảng Kanban, **tổng giá trị đầu mỗi cột Kanban** (`FEAT-09`), danh sách cơ hội, báo cáo dự báo doanh thu (`FEAT-25`), báo cáo hiệu suất (`FEAT-26`), dòng thời gian (`FEAT-30`) và **tệp dữ liệu xuất ra** (`FEAT-29`).
+- **`BR-03.2` (Che nhất quán trên mọi nơi giá trị đi ra khỏi hệ thống hoặc tới người dùng):** Việc che giá trị tài chính là một **nguyên tắc đóng**, áp dụng cho mọi hình thức con số đó tiếp cận người dùng, không giới hạn ở danh sách cụ thể: màn hình (thẻ Kanban, **tổng giá trị đầu mỗi cột Kanban** tại `FEAT-09`, danh sách cơ hội, hồ sơ Doanh nghiệp/Khách hàng có hiển thị cơ hội liên quan), báo cáo (dự báo doanh thu `FEAT-25`, hiệu suất `FEAT-26`, hạn ngạch và độ phủ phễu `FEAT-27`), dòng thời gian (`FEAT-30`), thông báo hệ thống (nhắc lịch chăm sóc `FEAT-16`, thông báo cho Người theo dõi `FEAT-35`, thông báo bàn giao `FEAT-37`), nhật ký kiểm toán (`NFR-08` — quyền đọc nhật ký chứa giá trị tài chính là một quyền riêng, không đi kèm quyền đọc nhật ký nói chung), kết quả tìm kiếm/gợi ý tự động, tệp dữ liệu xuất ra (`FEAT-29`), và bất kỳ dữ liệu nào phân hệ này cấp cho một phân hệ khác sử dụng.
 
-  **Lý do nghiệp vụ:** Che số liệu chỉ trên màn hình chi tiết là vô nghĩa nếu người dùng vẫn đọc được con số thật ở chỗ khác. Nguy hiểm nhất là hai đường rò rỉ gián tiếp: **tổng giá trị đầu cột Kanban** (cột chỉ có một cơ hội thì tổng chính là giá trị cơ hội đó) và **tệp xuất dữ liệu** (một lần xuất là mang toàn bộ số liệu ra ngoài hệ thống). Một đường rò duy nhất làm vô hiệu toàn bộ cơ chế.
+  **Lý do nghiệp vụ:** Che số liệu chỉ trên một danh sách cố định các màn hình là vô nghĩa nếu bất kỳ đường nào khác — kể cả những đường phát sinh sau này khi thêm tính năng mới — vẫn để lộ con số thật. Nguy hiểm nhất trong số các đường đã biết là hai đường rò rỉ gián tiếp: **tổng giá trị đầu cột Kanban** (cột chỉ có một cơ hội thì tổng chính là giá trị cơ hội đó) và **tệp xuất dữ liệu** (một lần xuất là mang toàn bộ số liệu ra ngoài hệ thống). Một đường rò duy nhất làm vô hiệu toàn bộ cơ chế — nên nguyên tắc phải phát biểu ở dạng đóng (áp dụng cho mọi nơi) thay vì liệt kê hữu hạn các nơi đã biết tại thời điểm viết đặc tả.
 
 - **`BR-03.3` (Hệ quả trên lọc và sắp xếp):** Với người dùng đang bị che giá trị cơ hội, hệ thống **không cho lọc hoặc sắp xếp danh sách theo giá trị**.
 
   **Lý do nghiệp vụ:** Sắp xếp tăng dần theo giá trị rồi đọc thứ tự là suy ra được tương quan độ lớn giữa các cơ hội; lọc theo khoảng giá trị rồi thu hẹp dần là dò ra được con số thật. Hai thao tác này vô hiệu hóa việc che dù giá trị không bao giờ hiện ra màn hình.
 
+- **`BR-03.4` (Thông báo không được tiết lộ trạng thái của trường bị che):** Với người dùng đang bị che giá trị, mọi thông báo lỗi hoặc cảnh báo liên quan tới điều kiện dữ liệu của trường bị che (ví dụ điều kiện đóng thắng tại `BR-18.1` đòi giá trị lớn hơn 0, hoặc cờ thiếu dữ liệu bắt buộc tại `BR-13.1b`) chỉ hiển thị một thông báo chung — không nêu cụ thể trường nào đang thiếu, sai, hay có giá trị bao nhiêu. Người có quyền xem đầy đủ tiếp tục nhận thông báo chi tiết như bình thường.
+
+  **Lý do nghiệp vụ:** Một thông báo "giá trị phải lớn hơn 0" gián tiếp cho người bị che biết giá trị hiện đang trống hoặc bằng 0 — một hình thức rò rỉ trạng thái dù không rò rỉ đúng con số. Cờ thiếu dữ liệu bật rồi tự tắt cũng cho biết chính xác thời điểm trường ẩn được người khác nhập — đủ để suy luận thêm trong một số bối cảnh nghiệp vụ nhạy cảm.
+
 **Tiêu chí Chấp nhận:**
 
 | Mã AC | Bối cảnh | Hành động | Kết quả mong đợi |
 | --- | --- | --- | --- |
-| `AC-03.1.1` | Người dùng có quyền xem cơ hội nhưng không có quyền xem đầy đủ dữ liệu tài chính | Mở hồ sơ cơ hội | Giá trị và xác suất thắng bị ẩn hoàn toàn — không hiển thị chữ số nào |
+| `AC-03.1.1` | Người dùng có quyền xem cơ hội nhưng không có quyền xem đầy đủ dữ liệu tài chính | Mở hồ sơ cơ hội | Giá trị bị ẩn hoàn toàn — không hiển thị chữ số nào |
 | `AC-03.1.2` | Người dùng có cả hai quyền | Mở hồ sơ cơ hội | Giá trị hiển thị đầy đủ |
+| `AC-03.1.3` | Người dùng không có quyền xem đầy đủ dữ liệu tài chính | Mở hồ sơ cơ hội, xem tên giai đoạn hiện tại | Tên giai đoạn hiển thị bình thường; nếu mở cấu hình phễu (khi có quyền xem cấu hình), xác suất thắng của giai đoạn đó vẫn hiển thị — không bị che |
 | `AC-03.2.1` | Người dùng không có quyền xem đầy đủ | Mở Bảng Kanban | Giá trị trên từng thẻ bị ẩn |
 | `AC-03.2.2` | Người dùng không có quyền xem đầy đủ, cột "Đàm phán" chỉ có đúng 1 cơ hội | Mở Bảng Kanban, nhìn tổng giá trị đầu cột | Tổng giá trị đầu cột cũng bị ẩn — không suy ra được giá trị cơ hội duy nhất trong cột |
 | `AC-03.2.3` | Người dùng không có quyền xem đầy đủ | Mở báo cáo dự báo doanh thu (`FEAT-25`) | Số liệu dự báo bị ẩn, không đọc được giá trị thật |
 | `AC-03.2.4` | Người dùng không có quyền xem đầy đủ nhưng có quyền xuất dữ liệu | Xuất danh sách cơ hội ra tệp | Cột giá trị trong tệp xuất không chứa số thật |
 | `AC-03.2.5` | Người dùng không có quyền xem đầy đủ | Mở báo cáo hiệu suất người phụ trách (`FEAT-26`) | Các cột giá trị tiền tệ bị ẩn |
 | `AC-03.2.6` | Người dùng không có quyền xem đầy đủ | Mở danh sách cơ hội và dòng thời gian của một cơ hội | Giá trị bị ẩn ở cả hai màn hình |
+| `AC-03.2.7` | Người dùng không có quyền xem đầy đủ, cơ hội của họ có lịch chăm sóc quá hạn vượt ngưỡng leo thang | Nhận thông báo leo thang (`BR-16.5`) | Nội dung thông báo không nêu giá trị cơ hội |
+| `AC-03.2.8` | Người dùng không có quyền xem đầy đủ nhưng có quyền đọc nhật ký kiểm toán nói chung | Mở nhật ký kiểm toán (`NFR-08`) của một cơ hội có lịch sử đổi giá trị | Các dòng ghi giá trị cũ/mới bị ẩn; các dòng ghi sự kiện không liên quan giá trị (đổi người phụ trách, đổi giai đoạn) vẫn hiển thị bình thường |
+| `AC-03.2.9` | Người dùng không có quyền xem đầy đủ | Mở báo cáo hạn ngạch và độ phủ phễu (`FEAT-27`) | Các số liệu giá trị bị ẩn |
 | `AC-03.3.1` | Người dùng không có quyền xem đầy đủ | Mở danh sách cơ hội, thử sắp xếp theo cột giá trị | Chức năng sắp xếp theo giá trị không khả dụng |
 | `AC-03.3.2` | Cùng bối cảnh AC-03.3.1 | Thử lọc theo khoảng giá trị | Chức năng lọc theo giá trị không khả dụng |
+| `AC-03.4.1` | Người dùng bị che giá trị, cơ hội chưa có giá trị nào được nhập | Cố gắng đóng thắng | Từ chối với thông báo chung "Chưa đủ điều kiện dữ liệu tài chính, cần người có thẩm quyền bổ sung" — không nêu rõ là thiếu giá trị |
+| `AC-03.4.2` | Người có quyền xem đầy đủ | Cố gắng đóng thắng cơ hội chưa có giá trị | Nhận thông báo chi tiết như bình thường: "Giá trị cơ hội phải lớn hơn 0" |
 
 ---
 
@@ -349,7 +367,9 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
   **Lý do nghiệp vụ:** Vé hỗ trợ và Công việc là bản ghi độc lập có vòng đời riêng của khách hàng — xóa cơ hội không có nghĩa là các tương tác đó chưa từng xảy ra. Nhật ký kiểm toán phải sống lâu hơn bản ghi mà nó ghi nhận, nếu không việc điều tra "ai đã xóa cơ hội này" sẽ tự mất bằng chứng ngay khi cơ hội biến mất hoàn toàn.
 
-- **`BR-04.4` (Phục hồi):** Phục hồi cơ hội trả nó về đúng vị trí giai đoạn cũ với toàn bộ lịch sử giai đoạn còn nguyên vẹn.
+- **`BR-04.4` (Phục hồi, kèm rà soát lại bối cảnh quyền):** Phục hồi cơ hội trả nó về đúng vị trí giai đoạn cũ với toàn bộ lịch sử giai đoạn còn nguyên vẹn. Vì cơ hội có thể đã nằm trong thùng rác một thời gian, hệ thống **rà soát lại** ngay khi phục hồi: nếu người phụ trách cũ không còn thuộc Không gian làm việc, cơ hội chuyển sang trạng thái Chưa phân công theo `BR-37.3`; mọi Người theo dõi (`FEAT-35`) không còn thuộc Không gian làm việc bị loại khỏi danh sách theo dõi.
+
+  **Lý do nghiệp vụ:** Nếu không rà soát, phục hồi một cơ hội có thể đưa nó về đúng một người phụ trách đã rời tổ chức từ lâu, khiến cơ hội đó lọt khỏi mọi báo cáo và mọi cơ chế bàn giao — một hình thức bản ghi vô chủ âm thầm mà `FEAT-37` được thiết kế để ngăn chặn cho các trường hợp khác.
 
 **Tiêu chí Chấp nhận:**
 
@@ -362,6 +382,7 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 | `AC-04.3.1` | Cơ hội đã ở thùng rác đủ thời hạn, có gắn 1 Công việc đang mở | Tiến trình dọn dẹp chạy | Công việc vẫn tồn tại trong danh sách việc cần làm, không còn liên kết tới cơ hội đã xóa |
 | `AC-04.3.2` | Cơ hội đã ở thùng rác đủ thời hạn, có dòng thời gian với nhiều ghi chú/hoạt động | Tiến trình dọn dẹp chạy | Toàn bộ bản ghi dòng thời gian của cơ hội đó bị xóa theo, không còn tra cứu được |
 | `AC-04.4.1` | Cơ hội đang ở thùng rác, trước đó ở giai đoạn "Đàm phán" | Phục hồi | Cơ hội quay lại đúng giai đoạn "Đàm phán", lịch sử giai đoạn đầy đủ |
+| `AC-04.4.2` | Cơ hội bị xóa mềm khi người phụ trách A còn hoạt động; A rời tổ chức trong lúc cơ hội nằm ở thùng rác | Phục hồi cơ hội | Cơ hội ở trạng thái Chưa phân công, không gán lại cho A |
 
 ---
 
@@ -867,7 +888,9 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 **Quy tắc nghiệp vụ:**
 
-- **`BR-24.1` (Tổng tỷ lệ bằng 100%):** Tổng tỷ lệ phân chia giữa các nhân viên tham gia một cơ hội phải bằng chính xác 100%. Mặc định khi chưa phân chia: người phụ trách nhận 100%.
+- **`BR-24.1` (Tổng tỷ lệ bằng 100%, đặt bởi người có thẩm quyền riêng):** Tổng tỷ lệ phân chia giữa các nhân viên tham gia một cơ hội phải bằng chính xác 100%. Mặc định khi chưa phân chia: người phụ trách nhận 100%. Đặt hoặc sửa tỷ lệ chia là một **quyền hạn riêng biệt**, không tự động đi kèm quyền sửa cơ hội thông thường; Nhân viên Kinh doanh **không** tự đặt được tỷ lệ chia trên chính cơ hội mình phụ trách.
+
+  **Lý do nghiệp vụ:** Tỷ lệ chia quyết định trực tiếp hoa hồng của nhiều người. Nếu người phụ trách tự đặt được tỷ lệ trên chính cơ hội của mình — đặc biệt ngay trước khi đóng — họ có thể tự cho mình 100% bất kể ai thực sự đã tham gia chốt thương vụ, không qua bất kỳ kiểm soát nào.
 
 - **`BR-24.2` (Chốt tỷ lệ khi đóng thắng):** Tỷ lệ phân chia tại thời điểm cơ hội được đóng thắng được **chốt cứng**. Thay đổi người tham gia hay tỷ lệ sau đó không làm thay đổi doanh số đã ghi nhận, trừ khi cơ hội được tái phân loại theo `FEAT-21`.
 
@@ -886,6 +909,7 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 | `AC-24.1.1` | Cơ hội có 2 người tham gia | Đặt tỷ lệ 70%/30% | Lưu thành công |
 | `AC-24.1.2` | Cơ hội có 2 người tham gia | Đặt tỷ lệ 70%/20% (tổng 90%) | Từ chối, báo tổng tỷ lệ phải bằng 100% |
 | `AC-24.1.3` | Cơ hội mới tạo, chưa phân chia | Xem thông tin phân chia doanh số | Người phụ trách nhận 100% |
+| `AC-24.1.4` | Nhân viên A là người phụ trách cơ hội, không có quyền riêng đặt tỷ lệ chia | A cố gắng tự đặt tỷ lệ 100% cho mình trên chính cơ hội đó | Từ chối; chức năng đặt tỷ lệ chia không khả dụng với A |
 | `AC-24.2.1` | Cơ hội chia 70%/30% cho A và B, đã đóng thắng | Quản lý đổi tỷ lệ thành 50%/50% | Từ chối — tỷ lệ đã chốt khi đóng thắng, không sửa được |
 | `AC-24.3.1` | Nhân viên B có 30% trên một cơ hội đã thắng và 20% trên một cơ hội đang mở | B rời khỏi Không gian làm việc | Cơ hội đã thắng giữ nguyên 30% cho B trong báo cáo lịch sử; cơ hội đang mở chuyển 20% đó sang người phụ trách, có dấu vết |
 | `AC-24.3.2` | Cơ hội đang mở có người phụ trách A (70%) và người đồng phụ trách B (30%) | A và B cùng rời Không gian làm việc trong một đợt cắt giảm nhân sự; cơ hội được bàn giao cho C theo `BR-37.1` | Sau khi bàn giao, C là người phụ trách mới và nhận cả 30% của B (không chuyển cho A đã rời); toàn bộ có dấu vết ghi nhận |
@@ -1025,6 +1049,13 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
   **Lý do nghiệp vụ:** Xuất dữ liệu hàng loạt ra một tệp tải về là điểm rò rỉ dữ liệu có rủi ro cao hơn hẳn việc xem từng cơ hội riêng lẻ trên giao diện — một người có quyền xem cơ hội trong phạm vi phòng ban không mặc nhiên được phép mang toàn bộ dữ liệu đó ra khỏi hệ thống dưới dạng tệp.
 
+- **`BR-29.5` (Ràng buộc đường dẫn tải xuất đúng người, kiểm quyền tại cả hai thời điểm, và thu hồi khi mất quyền):**
+  - **Đúng người:** Đường dẫn tải tệp xuất chỉ tải được khi người đang truy cập đã đăng nhập đúng là người đã yêu cầu xuất — không phải một đường dẫn mở cho bất kỳ ai có được liên kết.
+  - **Kiểm quyền hai lần:** Phạm vi dữ liệu và mức che số liệu tài chính (`FEAT-03`) được áp dụng **tại thời điểm tạo tệp** theo quyền hiện hành lúc đó; hệ thống **kiểm lại quyền xuất** (`BR-29.4`) một lần nữa tại thời điểm người dùng thực sự tải tệp — nếu quyền xuất đã bị thu hồi trong khoảng chờ, việc tải bị từ chối dù đường dẫn còn hạn.
+  - **Thu hồi khi rời tổ chức:** Khi người yêu cầu bị gỡ khỏi Không gian làm việc hoặc mất quyền xuất dữ liệu, mọi tác vụ nhập/xuất đang chờ xử lý và mọi đường dẫn tải về còn hiệu lực của người đó bị **hủy ngay lập tức**, không chờ tới thời hạn tự nhiên.
+
+  **Lý do nghiệp vụ:** Một đường dẫn tải xuất không ràng buộc đúng người là một cách chuyển quyền truy cập dữ liệu cho bất kỳ ai cầm được liên kết, kể cả ngoài tổ chức. Không thu hồi khi rời tổ chức có nghĩa là một nhân viên vừa bị chấm dứt hợp đồng vẫn tải được toàn bộ dữ liệu bán hàng cho tới khi đường dẫn tự hết hạn — đúng lúc rủi ro rò rỉ dữ liệu là cao nhất.
+
 **Tiêu chí Chấp nhận:**
 
 | Mã AC | Bối cảnh | Hành động | Kết quả mong đợi |
@@ -1033,6 +1064,9 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 | `AC-29.2.1` | Tệp nhập có dòng ánh xạ vào cơ hội đã đóng thắng | Chạy nhập | Dòng đó bị từ chối, báo cáo lỗi chi tiết ghi rõ lý do |
 | `AC-29.3.1` | Xuất dữ liệu xong, nhận đường dẫn tải về | Truy cập đường dẫn sau khi hết hạn | Từ chối truy cập |
 | `AC-29.4.1` | Người dùng có quyền xem cơ hội trong phạm vi phòng ban nhưng không có quyền xuất dữ liệu | Cố gắng xuất danh sách cơ hội | Từ chối; chức năng xuất không khả dụng trên giao diện |
+| `AC-29.5.1` | Nhân viên A yêu cầu xuất, nhận đường dẫn còn hiệu lực | Một người khác (không phải A) có được đường dẫn và cố gắng tải | Từ chối, yêu cầu đăng nhập đúng người đã yêu cầu |
+| `AC-29.5.2` | Nhân viên A yêu cầu xuất, tệp đang xử lý trong hàng đợi | A bị gỡ khỏi Không gian làm việc trước khi tệp xử lý xong | Tác vụ xuất bị hủy ngay, không tạo tệp |
+| `AC-29.5.3` | Nhân viên A đã nhận đường dẫn tải về còn hiệu lực | Quyền xuất dữ liệu của A bị thu hồi | Đường dẫn không còn tải được, dù chưa tới thời hạn tự nhiên |
 
 ---
 
@@ -1046,11 +1080,17 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 - **`BR-30.1` (Nguồn hợp nhất):** Dòng thời gian gộp hoạt động ghi nhận thủ công, ghi chú, vé hỗ trợ liên quan, công việc liên quan, cuộc gọi, cuộc họp, email và lịch sử chuyển giai đoạn — theo đúng thứ tự thời gian xảy ra.
 
+- **`BR-30.2` (Nội dung từ phân hệ khác chịu đúng quyền của phân hệ sở hữu):** Với mỗi mục trên dòng thời gian có nguồn từ một phân hệ khác (vé hỗ trợ, công việc, email), nội dung chi tiết chỉ hiển thị khi người xem **có quyền trên chính bản ghi gốc đó** theo quy tắc phân quyền của phân hệ sở hữu nó — quyền xem được cơ hội không tự động cấp quyền xem nội dung của mọi bản ghi liên kết. Nếu người xem không có quyền trên bản ghi gốc, dòng thời gian chỉ hiển thị loại sự kiện và thời điểm xảy ra, không hiển thị nội dung chi tiết, cùng cách xử lý với cảnh báo vé hỗ trợ tại `BR-31.2`. Áp dụng cho mọi người xem, kể cả Người theo dõi (`FEAT-35`).
+
+  **Lý do nghiệp vụ:** Một vé hỗ trợ hay một email có thể chứa dữ liệu nhạy cảm (khiếu nại, thông tin hợp đồng khác) mà người xem cơ hội không có quyền đọc ở chính phân hệ sở hữu nó; gộp nguyên nội dung vào dòng thời gian là một đường vòng để đọc dữ liệu đó mà không qua bất kỳ kiểm soát phân quyền nào của phân hệ gốc.
+
 **Tiêu chí Chấp nhận:**
 
 | Mã AC | Bối cảnh | Hành động | Kết quả mong đợi |
 | --- | --- | --- | --- |
 | `AC-30.1.1` | Cơ hội có cả ghi chú, 1 lần chuyển giai đoạn và 1 vé hỗ trợ liên kết | Mở dòng thời gian | Cả ba loại sự kiện hiển thị đúng thứ tự thời gian xảy ra |
+| `AC-30.2.1` | Người xem có quyền xem cơ hội nhưng không có quyền xem vé hỗ trợ liên kết (theo phân quyền của `tickets-srs.md`) | Mở dòng thời gian | Mục vé hỗ trợ chỉ hiển thị loại sự kiện và thời điểm, không hiển thị nội dung vé |
+| `AC-30.2.2` | Người theo dõi (`FEAT-35`) không có quyền xem một Công việc liên kết với cơ hội | Mở dòng thời gian | Nội dung Công việc đó bị ẩn tương tự AC-30.2.1 |
 
 ---
 
@@ -1106,9 +1146,9 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 **Quy tắc nghiệp vụ:**
 
-- **`BR-33.1` (Gộp vào cơ hội có sẵn theo mặc định):** Nếu doanh nghiệp liên quan đã có **đúng một** cơ hội đang mở trên cùng phễu, hệ thống mặc định gắn khách hàng tiềm năng vào cơ hội đó thay vì tạo mới.
+- **`BR-33.1` (Gộp vào cơ hội có sẵn theo mặc định):** Nếu doanh nghiệp liên quan đã có **đúng một** cơ hội đang mở trên cùng phễu **trong phạm vi dữ liệu của người thực hiện chuyển đổi**, hệ thống mặc định gắn khách hàng tiềm năng vào cơ hội đó thay vì tạo mới. Nếu cơ hội đang mở duy nhất đó nằm **ngoài phạm vi** của người thực hiện, áp dụng `BR-01.8` — hệ thống tạo cơ hội mới, không gợi ý gộp và không tiết lộ chi tiết cơ hội ngoài phạm vi.
   - **Nếu khách hàng tiềm năng không liên kết với Doanh nghiệp nào** (chuyển đổi không kèm Doanh nghiệp), quy tắc này không áp dụng — luôn tạo cơ hội mới, vì không có căn cứ nào để xác định cơ hội "có sẵn" của cùng một bên mua.
-  - **Nếu doanh nghiệp liên quan có nhiều hơn một cơ hội đang mở trên cùng phễu** (tình huống hợp lệ theo `BR-33.2`), hệ thống **không tự chọn** một cơ hội để gộp — luôn hiển thị danh sách các cơ hội đang mở đó và bắt buộc người thực hiện chuyển đổi tự chọn gộp vào cơ hội nào, hoặc chọn tạo cơ hội mới.
+  - **Nếu doanh nghiệp liên quan có nhiều hơn một cơ hội đang mở trên cùng phễu trong phạm vi của người thực hiện** (tình huống hợp lệ theo `BR-33.2`), hệ thống **không tự chọn** một cơ hội để gộp — luôn hiển thị danh sách các cơ hội đang mở đó (chỉ trong phạm vi của người thực hiện) và bắt buộc người thực hiện chuyển đổi tự chọn gộp vào cơ hội nào, hoặc chọn tạo cơ hội mới.
 
 - **`BR-33.2` (Cho phép chủ động tạo riêng):** Người thực hiện chuyển đổi có thể chủ động chọn vẫn tạo một cơ hội riêng biệt; quyết định này được ghi nhận lại.
 
@@ -1166,6 +1206,14 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 - **`BR-35.4` (Dấu vết):** Mỗi lượt thêm hoặc gỡ Người theo dõi đều được ghi lại kèm người thực hiện và thời điểm.
 
+- **`BR-35.5` (Thu hồi và rà soát quyền Người theo dõi):**
+  - **Chấm dứt khi rời tổ chức:** Quyền Người theo dõi tự động chấm dứt ngay khi người đó bị gỡ khỏi Không gian làm việc. Nếu người đó được mời lại sau này, quyền cũ **không tự khôi phục** — phải được thêm lại như một lượt mới.
+  - **Rà soát khi bàn giao:** Khi một cơ hội được bàn giao sang người phụ trách mới (`FEAT-37`), người kế nhiệm nhìn thấy danh sách Người theo dõi hiện có và phải chủ động xác nhận giữ hoặc gỡ từng người trong lần đầu mở cơ hội sau khi nhận bàn giao — danh sách không tự động tiếp tục hiệu lực vô thời hạn mà không có xác nhận.
+  - **Ai được gỡ:** Người phụ trách hiện tại của cơ hội, quản lý của đơn vị tổ chức đang giữ cơ hội, và chính người đang là Người theo dõi (tự gỡ mình) đều gỡ được. Người theo dõi **không** thêm được Người theo dõi khác — chỉ người có quyền sửa cơ hội thông thường mới thêm được.
+  - **Thời hạn sau khi cơ hội đóng:** Quyền Người theo dõi trên một cơ hội đã đóng tự động hết hiệu lực sau một khoảng thời gian là tham số cấu hình theo Không gian làm việc (Phụ lục B, `CFG-DEAL-10`), mặc định **90 ngày** kể từ thời điểm đóng.
+
+  **Lý do nghiệp vụ:** Một quyền xem cấp theo bối cảnh cụ thể (một thương vụ, một giai đoạn phối hợp) mà không có điểm kết thúc sẽ dần trở thành một danh sách quyền truy cập không ai còn nhớ lý do cấp — đúng loại rủi ro tuân thủ mà mô hình phạm vi dữ liệu ở `BR-01.5` được thiết kế để tránh. Không rà soát khi bàn giao đặc biệt rủi ro: người kế nhiệm thừa hưởng nguyên một danh sách người ngoài đơn vị được xem dữ liệu mà chính họ chưa từng đồng ý cấp.
+
 **Tiêu chí Chấp nhận:**
 
 | Mã AC | Bối cảnh | Hành động | Kết quả mong đợi |
@@ -1176,6 +1224,10 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 | `AC-35.2.2` | K là Người theo dõi, không có quyền xem đầy đủ dữ liệu tài chính | K mở hồ sơ cơ hội | Giá trị vẫn bị ẩn theo `BR-03.1` |
 | `AC-35.2.3` | K là Người theo dõi | K thêm một ghi chú nội bộ | Lưu thành công, ghi chú hiện trên dòng thời gian |
 | `AC-35.3.1` | Cơ hội có 1 Người phụ trách và 3 Người theo dõi, đã đóng thắng | Mở báo cáo hiệu suất người phụ trách | Chỉ Người phụ trách được ghi nhận, 3 Người theo dõi không xuất hiện |
+| `AC-35.5.1` | K là Người theo dõi một cơ hội | K bị gỡ khỏi Không gian làm việc, sau đó được mời lại | K không còn là Người theo dõi cơ hội đó; phải được thêm lại như một lượt mới |
+| `AC-35.5.2` | Cơ hội có 2 Người theo dõi, được bàn giao từ A sang B | B mở cơ hội lần đầu sau khi nhận bàn giao | Hệ thống hiển thị danh sách 2 Người theo dõi, yêu cầu B xác nhận giữ hoặc gỡ từng người trước khi tiếp tục |
+| `AC-35.5.3` | K là Người theo dõi, không phải người phụ trách và không quản lý đơn vị giữ cơ hội | K cố gắng thêm một người khác làm Người theo dõi | Từ chối |
+| `AC-35.5.4` | Cơ hội đã đóng Thắng 91 ngày trước, K vẫn là Người theo dõi | K mở lại cơ hội | Cơ hội không còn hiển thị trong danh sách của K — quyền Người theo dõi đã hết hiệu lực |
 
 ---
 
@@ -1213,7 +1265,7 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 **Quy tắc nghiệp vụ:**
 
-- **`BR-37.1` (Bàn giao hàng loạt theo người):** Quản lý hoặc Quản trị viên chọn một người phụ trách và chuyển toàn bộ cơ hội **đang mở** của người đó sang một hoặc nhiều người kế nhiệm trong một thao tác, bắt buộc ghi lý do.
+- **`BR-37.1` (Bàn giao hàng loạt theo người):** Quản lý hoặc Quản trị viên chọn một người phụ trách và chuyển toàn bộ cơ hội **đang mở** của người đó sang một hoặc nhiều người kế nhiệm trong một thao tác, bắt buộc ghi lý do. Nếu người kế nhiệm thuộc một đơn vị tổ chức khác với người thực hiện bàn giao, quản lý của đơn vị tổ chức tiếp nhận **được thông báo** về lượt bàn giao — đơn vị đó nhận thêm dữ liệu vào phạm vi quản lý của mình mà quản lý ở đó cần biết, dù người thực hiện bàn giao có đủ thẩm quyền thực hiện mà không cần xin phép trước.
 
 - **`BR-37.2` (Cơ hội đã đóng giữ nguyên người phụ trách):** Cơ hội **đã đóng** không đổi người phụ trách khi bàn giao, và **giữ nguyên đơn vị tổ chức tại thời điểm đóng** — đây là ngoại lệ có chủ đích của Nguyên tắc 4.
 
@@ -1228,6 +1280,7 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 | Mã AC | Bối cảnh | Hành động | Kết quả mong đợi |
 | --- | --- | --- | --- |
 | `AC-37.1.1` | Nhân viên A đang phụ trách 40 cơ hội đang mở và 15 cơ hội đã đóng | Quản lý bàn giao toàn bộ cơ hội của A sang nhân viên B, nhập lý do | 40 cơ hội đang mở chuyển sang B; 15 cơ hội đã đóng vẫn ghi A là người phụ trách |
+| `AC-37.1.2` | Nhân viên A thuộc Phòng X, nhân viên B (người nhận bàn giao) thuộc Phòng Y | Quản lý Phòng X bàn giao cơ hội của A sang B | Quản lý Phòng Y nhận được thông báo về lượt bàn giao vào đơn vị của mình |
 | `AC-37.2.1` | Tiếp nối AC-37.1.1, A thuộc phòng X, B thuộc phòng Y | Mở báo cáo doanh số quý trước của phòng X | Doanh số từ 15 cơ hội đã đóng của A vẫn thuộc phòng X, không chuyển sang phòng Y |
 | `AC-37.3.1` | Nhân viên A thuộc phòng X bị gỡ khỏi Không gian làm việc mà chưa bàn giao | Tiến trình hệ thống xử lý | Cơ hội đang mở của A chuyển sang Chưa phân công, vẫn hiển thị trong danh sách của phòng X; quản lý phòng X nhận thông báo |
 
@@ -1275,17 +1328,15 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 - **NFR-06 (Phân quyền dữ liệu & che số liệu tài chính):** Áp dụng nghiêm ngặt phạm vi dữ liệu (`BR-01.5`) và che số liệu tài chính (`FEAT-03`). Người dùng không có quyền không thể xem hoặc kéo thả cơ hội ngoài phạm vi.
 - **NFR-07 (Bảo mật đường dẫn xuất dữ liệu):** Đường dẫn tải tệp xuất được bảo vệ và tự động hết hiệu lực sau thời hạn quy định (`BR-29.3`).
-- **NFR-08 (Nhật ký kiểm toán bắt buộc cho mọi thay đổi ảnh hưởng số liệu tài chính):** Mọi thay đổi trên các trường và tham số sau được ghi vào nhật ký kiểm toán bất biến (không sửa, không xóa được), gồm tối thiểu: người thực hiện, thời điểm, giá trị cũ, giá trị mới:
-  - Giá trị cơ hội, mã tiền tệ và ngày dự kiến đóng của một cơ hội.
-  - Tỷ lệ chia doanh số giữa những người tham gia (`FEAT-24`).
-  - Xác suất thắng gán cho một giai đoạn (`BR-06.1`) — vì thay đổi này tác động hồi tố tới dự báo doanh thu của mọi cơ hội đang mở tại giai đoạn đó.
-  - Tỷ giá quy đổi (`BR-02.4`) và đồng tiền cơ sở (`CFG-DEAL-08`).
-  - Mục tiêu hạn ngạch doanh số (`BR-27.1`).
-  - Mọi thao tác của `FEAT-21` (tái phân loại).
+- **NFR-08 (Nhật ký kiểm toán bắt buộc cho thay đổi số liệu tài chính và sự kiện quyền truy cập):** Mọi bản ghi nhật ký kiểm toán bất biến (không sửa, không xóa được) ghi tối thiểu: **tác nhân trực tiếp** (người thực hiện, hoặc Tiến trình Hệ thống), **người khởi phát** (nếu thao tác của Tiến trình Hệ thống hoặc của một người khác là hệ quả gián tiếp từ hành động của một người — ví dụ 40 cơ hội chuyển Chưa phân công vì Quản trị viên gỡ một nhân viên, hoặc di chuyển hàng loạt vì một Quản trị viên đóng phễu), **nguồn** (giao diện người dùng, thao tác hàng loạt, nhập dữ liệu, tiến trình nền, hay đồng bộ tự động từ nguồn tỷ giá bên ngoài), thời điểm, giá trị cũ và giá trị mới.
 
-  Nhật ký này giữ vĩnh viễn, không bị dọn dẹp theo thời hạn lưu trữ của bất kỳ bản ghi nghiệp vụ nào mà nó ghi nhận, kể cả khi cơ hội liên quan đã bị xóa vĩnh viễn — nhất quán với `BR-04.3`.
+  **Nhóm sự kiện bắt buộc ghi:**
+  - Thay đổi số liệu tài chính: giá trị cơ hội, mã tiền tệ, ngày dự kiến đóng, tỷ lệ chia doanh số (`FEAT-24`), xác suất thắng của giai đoạn (`BR-06.1`), tỷ giá quy đổi (`BR-02.4`), đồng tiền cơ sở (`CFG-DEAL-08`), mục tiêu hạn ngạch (`BR-27.1`), mọi thao tác của `FEAT-21` (tái phân loại).
+  - Thay đổi quyền truy cập: đổi người phụ trách (đơn lẻ, hàng loạt, bàn giao `FEAT-37`, chuyển Chưa phân công tự động `BR-37.3`); thêm hoặc gỡ Người theo dõi (`BR-35.4`) — ghi trong nhật ký kiểm toán này, không chỉ trên dòng thời gian của cơ hội, để không bị xóa theo `BR-04.3` khi cơ hội bị xóa vĩnh viễn; mỗi lượt xuất dữ liệu (ai, phạm vi nào, có bị che số liệu hay không); xóa mềm, phục hồi, xóa vĩnh viễn; thay đổi cấu hình rào cản giai đoạn, đóng phễu, xóa giai đoạn; thay đổi bất kỳ tham số `CFG-DEAL-*` nào.
 
-  **Lý do nghiệp vụ:** Đây là những con số quyết định trực tiếp hoa hồng, hạn ngạch và báo cáo tài chính đã công bố. Không ghi vết đầy đủ nghĩa là không thể trả lời câu hỏi kiểm toán cơ bản nhất — "ai đã đổi con số này, từ bao nhiêu thành bao nhiêu, và khi nào" — biến toàn bộ hệ thống báo cáo doanh số thành thứ không thể tin cậy khi có tranh chấp.
+  Nhật ký này giữ vĩnh viễn, không bị dọn dẹp theo thời hạn lưu trữ của bất kỳ bản ghi nghiệp vụ nào mà nó ghi nhận, kể cả khi cơ hội liên quan đã bị xóa vĩnh viễn — nhất quán với `BR-04.3`. Nội dung nhật ký chứa giá trị tài chính chịu đúng mức che của `FEAT-03` theo quyền của người đọc nhật ký; quyền đọc nhật ký kiểm toán là một quyền hạn riêng, không đi kèm quyền đọc dữ liệu nghiệp vụ nói chung.
+
+  **Lý do nghiệp vụ:** Đây là những con số và những quyền quyết định trực tiếp hoa hồng, hạn ngạch, báo cáo tài chính đã công bố và ai đã xem/kiểm soát được dữ liệu nào. Không ghi vết đầy đủ nghĩa là không thể trả lời câu hỏi kiểm toán cơ bản nhất — "ai đã đổi con số này", "ai đã có quyền xem dữ liệu nào, trong bao lâu", "hành động này là ai chủ động hay là hệ quả của một hành động khác" — biến toàn bộ hệ thống thành thứ không thể tin cậy khi có tranh chấp hoặc điều tra bảo mật.
 
 ---
 
@@ -1309,16 +1360,21 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 | `FEAT-14` | Báo cáo Vận tốc & Điểm nghẽn | — | Đơn vị của mình | **Toàn quyền** | **Toàn quyền** | **Toàn quyền** | — |
 | `FEAT-15` | Đặt Lịch Chăm sóc | Chỉ của mình | Đơn vị của mình | **Toàn quyền** | **Toàn quyền** | **Toàn quyền** | — |
 | `FEAT-16` | Nhận Nhắc nhở Lịch Chăm sóc | **Cho phép** | **Cho phép** | **Cho phép** | **Cho phép** | **Cho phép** | Quét & tạo tự động |
+| `FEAT-17` | Xem Cảnh báo Cơ hội Nguội Lạnh | **Cho phép** trên cơ hội của mình | **Cho phép**, cộng cấu hình ngưỡng (`CFG-DEAL-04`) | **Toàn quyền** | **Toàn quyền** | **Toàn quyền** | Quét & đánh dấu tự động |
 | `FEAT-18` | Đóng Cơ hội Thắng | Chỉ của mình | Đơn vị của mình | **Toàn quyền** | **Toàn quyền** | **Toàn quyền** | — |
 | `FEAT-19` | Đóng Cơ hội Thua | Chỉ của mình | Đơn vị của mình | **Toàn quyền** | **Toàn quyền** | **Toàn quyền** | — |
+| `FEAT-20` | Cấu hình Danh mục Lý do Thất bại | Xem danh sách | Xem danh sách | Xem danh sách | **Toàn quyền** | **Toàn quyền** | — |
 | `FEAT-21` | Tái phân loại Cơ hội Đã đóng | — | Cần quyền riêng | **Toàn quyền** | **Toàn quyền** | **Toàn quyền** | — |
 | `FEAT-22` | Gắn Vai trò Liên hệ | Chỉ của mình | Đơn vị của mình | **Toàn quyền** | **Toàn quyền** | **Toàn quyền** | — |
 | `FEAT-23` | Xem Nguồn gốc Tiếp thị | Chỉ của mình | Đơn vị của mình | **Toàn quyền** | **Toàn quyền** | **Toàn quyền** | — |
+| `FEAT-24` | Phân chia Doanh số Đồng phụ trách | Cần quyền riêng, không tự đặt tỷ lệ cho chính mình | Đơn vị của mình | **Toàn quyền** | **Toàn quyền** | **Toàn quyền** | Chuyển tỷ lệ khi người tham gia rời tổ chức |
 | `FEAT-25` | Xem Dự báo Doanh thu | — | Đơn vị của mình | **Toàn quyền** | **Toàn quyền** | **Toàn quyền** | — |
-| `FEAT-26` | Báo cáo Hiệu suất & Nguồn | — | Đơn vị của mình | **Toàn quyền** | **Toàn quyền** | **Toàn quyền** | — |
+| `FEAT-26` | Báo cáo Hiệu suất & Nguồn | Chỉ của mình | Đơn vị của mình | **Toàn quyền** | **Toàn quyền** | **Toàn quyền** | — |
+| `FEAT-27` | Hạn ngạch Doanh số | Xem hạn ngạch của chính mình | Đặt mục tiêu và xem báo cáo Đơn vị của mình | **Toàn quyền** | **Toàn quyền** | **Toàn quyền** | — |
 | `FEAT-28` | Thao tác Hàng loạt | — | Đơn vị của mình | **Toàn quyền** | **Toàn quyền** | **Toàn quyền** | — |
 | `FEAT-29` | Nhập / Xuất Dữ liệu | — | Cần quyền riêng | **Toàn quyền** | **Toàn quyền** | **Toàn quyền** | — |
 | `FEAT-30` | Dòng thời gian Hợp nhất | Chỉ của mình | Đơn vị của mình | **Toàn quyền** | **Toàn quyền** | **Toàn quyền** | — |
+| `FEAT-31` | Xem Cảnh báo Vé Hỗ trợ Khẩn cấp | **Cho phép** trên cơ hội của mình | **Cho phép**, phạm vi Đơn vị của mình | **Toàn quyền** | **Toàn quyền** | **Toàn quyền** | Tính điều kiện & hiển thị tự động |
 | `FEAT-32` | Đóng băng Di chuyển Dữ liệu nền | — | — | — | — | — | **Toàn quyền** |
 | `FEAT-33` | Chuyển đổi Khách hàng Tiềm năng | Chỉ của mình | Đơn vị của mình | **Toàn quyền** | **Toàn quyền** | **Toàn quyền** | — |
 | `FEAT-34` | Sửa Cấu hình Phễu (khóa đồng thời) | — | — | — | **Toàn quyền** | **Toàn quyền** | — |
@@ -1451,6 +1507,7 @@ Mục này chỉ chứa các nhu cầu **chưa quyết định được điều 
 | `CFG-DEAL-07` | `BR-15.1` | Tự động đặt lịch chăm sóc mặc định khi tạo cơ hội mới | Tắt *(không tự đặt)* | Bật / Tắt | Quản lý Kinh doanh | **Tự do** |
 | `CFG-DEAL-08` | `BR-02.2` | Đồng tiền cơ sở dùng để hợp nhất mọi báo cáo tổng hợp | Theo quốc gia đăng ký của doanh nghiệp | Một mã tiền tệ chuẩn quốc tế | Chủ sở hữu Không gian làm việc | **Cố định sau khi có dữ liệu** — xem ghi chú |
 | `CFG-DEAL-09` | `BR-02.4` | Nguồn cập nhật tỷ giá quy đổi giữa các loại tiền tệ | Tự nhập thủ công | Tự nhập thủ công / Đồng bộ tự động từ nguồn tham chiếu bên ngoài | Quản trị viên Không gian làm việc | **Tự do** |
+| `CFG-DEAL-10` | `BR-35.5` | Thời hạn hiệu lực quyền Người theo dõi sau khi cơ hội đóng | 90 ngày | 0–365 ngày (0 nghĩa là hết hiệu lực ngay khi đóng) | Quản trị viên Không gian làm việc | **Tự do** |
 
 *Ghi chú về thẩm quyền:* Thẩm quyền đổi tham số là **một trục quyền riêng**, không suy ra được từ ma trận phân quyền trên dữ liệu nghiệp vụ tại Mục 5. Các tham số điều chỉnh **nhịp độ vận hành bán hàng** (`CFG-DEAL-03`, `04`, `06`, `07`) thuộc thẩm quyền Quản lý Kinh doanh vì đây là lựa chọn điều hành đội thường nhật. Các tham số **ràng buộc toàn vẹn dữ liệu hoặc quy trình** (`CFG-DEAL-02`, `05`, `09`) thuộc Quản trị viên. Hai tham số chạm tới dữ liệu tài chính và khả năng mất dữ liệu (`CFG-DEAL-01`, `08`) thuộc Chủ sở hữu.
 
