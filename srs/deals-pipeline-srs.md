@@ -131,9 +131,12 @@ Tài liệu bao gồm 11 nhóm chức năng:
 
 ### 2.3 Quy ước thời gian nghiệp vụ
 
-Toàn bộ mốc thời gian nghiệp vụ trong tài liệu này — *cơ hội nguội lạnh*, *quá hạn lịch chăm sóc*, *giờ chạy tiến trình nền* — được xác định theo **múi giờ cấu hình của Không gian làm việc**, không theo múi giờ máy chủ và không theo múi giờ của từng người dùng, nhất quán với quy ước đã áp dụng ở [`tasks-srs.md`](./tasks-srs.md#23-quy-ước-thời-gian-nghiệp-vụ).
+Tài liệu phân biệt hai loại khái niệm thời gian, xử lý khác nhau:
 
-**Lý do nghiệp vụ:** Một lịch chăm sóc "9 giờ sáng mai" phải quá hạn vào cùng một thời điểm đối với mọi thành viên trong cùng đội bán hàng. Nếu tính theo múi giờ cá nhân, báo cáo của Quản lý Kinh doanh sẽ không đối chiếu được giữa các nhân viên.
+- **Mốc hẹn cụ thể** (lịch chăm sóc tiếp theo, ngày dự kiến đóng): là một **thời điểm tuyệt đối** — khi người phụ trách nhập "9 giờ sáng mai", hệ thống ghi nhận đúng một thời điểm duy nhất trên trục thời gian. Người dùng **nhập và xem lại mốc hẹn theo múi giờ cá nhân của chính mình**; thời điểm quá hạn của mốc đó là một sự kiện khách quan, xảy ra tại cùng một thời điểm tuyệt đối bất kể ai đang xem, nên không đối chiếu được kiểu "báo cáo không khớp giữa các nhân viên" — vì mọi người đang xem cùng một thời điểm, chỉ hiển thị theo giờ địa phương khác nhau.
+- **Khái niệm tính theo "ngày"** (*số ngày không tương tác để tính nguội lạnh*, *số ngày quá hạn trước khi leo thang*, *giờ chạy tiến trình quét nền*): được xác định theo **múi giờ cấu hình của Không gian làm việc**, không theo múi giờ máy chủ và không theo múi giờ của từng người dùng — cùng cách [`tasks-srs.md`](./tasks-srs.md#23-quy-ước-thời-gian-nghiệp-vụ) xử lý các mốc dạng ngày như hạn chót "hết ngày". Khác biệt duy nhất giữa hai tài liệu là `tasks-srs.md` chỉ có mốc dạng ngày; ở đây có thêm mốc hẹn dạng giờ cụ thể (lịch chăm sóc), thuộc nhóm đầu tiên ở trên.
+
+**Lý do nghiệp vụ:** Một doanh nghiệp có đội bán hàng ở nhiều múi giờ khác nhau (ví dụ trụ sở tại Việt Nam, chi nhánh tại Trung Đông) là khách hàng thật của một CRM đa vùng. Nếu mốc hẹn bị ép hiển thị và diễn giải theo múi giờ Không gian làm việc thay vì múi giờ cá nhân, một nhân viên đặt "9 giờ sáng mai" sẽ nhận nhắc việc lệch nhiều giờ so với ý định thật — đúng lỗi mà mục tiêu "chống thất lạc cơ hội" (Mục 2.1) cần ngăn. Ngược lại, ranh giới ngày (nguội lạnh, leo thang) bắt buộc phải neo vào một múi giờ chung duy nhất, nếu không "14 ngày không tương tác" sẽ kết thúc vào các thời điểm khác nhau tùy người xem.
 
 ### 2.4 Nguyên tắc nghiệp vụ nền tảng
 
@@ -272,7 +275,9 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 **Quy tắc nghiệp vụ:**
 
-- **`BR-02.1` (Tiền tệ theo cơ hội):** Mỗi cơ hội lưu đúng một mã tiền tệ chuẩn quốc tế.
+- **`BR-02.1` (Tiền tệ theo cơ hội, độ chính xác theo từng loại):** Mỗi cơ hội lưu đúng một mã tiền tệ chuẩn quốc tế. Số chữ số thập phân được nhập và hiển thị theo đúng **đơn vị nhỏ nhất chuẩn quốc tế của từng loại tiền tệ** — ví dụ 0 chữ số thập phân cho Đồng Việt Nam và Yên Nhật, 2 chữ số cho Đô la Mỹ, 3 chữ số cho Dinar Kuwait/Bahrain/Oman — không áp một số chữ số thập phân cố định cho mọi loại tiền tệ. Khi quy đổi sang đồng tiền cơ sở (`BR-02.2`), giá trị đã quy đổi được làm tròn theo đơn vị nhỏ nhất của đồng tiền cơ sở, làm tròn ở từng cơ hội trước khi cộng dồn vào bất kỳ báo cáo tổng hợp nào.
+
+  **Lý do nghiệp vụ:** Nếu hệ thống ngầm định cố định 2 chữ số thập phân cho mọi loại tiền tệ, giá trị bằng Dinar Kuwait (3 chữ số) bị cắt ngay khi nhập, làm sai lệch chính giá trị hợp đồng ngay từ đầu — một sai số không thể sửa lại sau khi đã chốt vào ảnh chụp kết quả (`BR-27.5`). Làm tròn ở từng cơ hội trước khi cộng dồn (thay vì cộng dồn rồi mới làm tròn một lần) bảo đảm tổng của các báo cáo khác nhau (Kanban, dự báo, hạn ngạch) luôn khớp nhau tới đơn vị nhỏ nhất, vì mọi báo cáo đều cộng từ cùng một tập số đã làm tròn giống nhau.
 
 - **`BR-02.2` (Đồng tiền cơ sở và quy đổi bắt buộc trong báo cáo hợp nhất):** Mỗi Không gian làm việc khai báo **đúng một đồng tiền cơ sở** (Phụ lục B, `CFG-DEAL-08`). Mọi báo cáo tổng hợp nhiều cơ hội — dự báo doanh thu, hiệu suất người phụ trách, tổng giá trị đầu cột Kanban — **bắt buộc quỹ đổi toàn bộ giá trị về đồng tiền cơ sở trước khi cộng dồn**. Tuyệt đối không cộng trực tiếp các giá trị khác loại tiền tệ.
 
@@ -293,6 +298,8 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 | Mã AC | Bối cảnh | Hành động | Kết quả mong đợi |
 | --- | --- | --- | --- |
 | `AC-02.1.1` | Tạo cơ hội | Chọn tiền tệ USD, nhập giá trị | Lưu thành công với tiền tệ USD |
+| `AC-02.1.2` | Tạo cơ hội, chọn tiền tệ Dinar Kuwait (KWD) | Nhập giá trị 1.250 KWD (ba chữ số thập phân) | Lưu đúng 1.250 KWD, không bị cắt còn 1.25 |
+| `AC-02.1.3` | Tạo cơ hội, chọn tiền tệ Đồng Việt Nam (VND) | Nhập giá trị 15.000.000 | Lưu đúng số nguyên, không hiển thị phần thập phân |
 | `AC-02.2.1` | Đồng tiền cơ sở là VND. Có hai cơ hội: một 1.000 USD, một 10 triệu VND | Mở báo cáo dự báo doanh thu tổng hợp | Tổng hiển thị bằng VND, đã quy đổi cơ hội USD theo tỷ giá; không có số tổng nào cộng thẳng 1.000 với 10.000.000 |
 | `AC-02.2.2` | Cùng bối cảnh AC-02.2.1 | Mở Bảng Kanban, xem tổng giá trị đầu cột chứa cả hai cơ hội | Tổng đầu cột cũng đã quy đổi về VND |
 | `AC-02.3.1` | Một cơ hội 1.000 USD được đóng thắng khi tỷ giá là 25.000 VND/USD | Sau đó tỷ giá đổi thành 26.000, mở lại báo cáo doanh số của kỳ đã đóng | Giá trị quy đổi của cơ hội đó vẫn là 25 triệu VND, không bị tính lại theo tỷ giá mới |
@@ -648,7 +655,9 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 **Quy tắc nghiệp vụ:**
 
-- **`BR-15.1` (Mặc định khi tạo mới):** Việc hệ thống có **tự động đặt** lịch chăm sóc cho một cơ hội mới khi người dùng bỏ trống hay không là tham số cấu hình theo Không gian làm việc (Phụ lục B, `CFG-DEAL-07`), **mặc định tắt**. Khi được bật, khoảng thời gian từ lúc tạo tới lịch chăm sóc đầu tiên là một tham số riêng, mặc định **24 giờ** (Phụ lục B, `CFG-DEAL-03`).
+- **`BR-15.1` (Mặc định khi tạo mới, dời khỏi ngày nghỉ):** Việc hệ thống có **tự động đặt** lịch chăm sóc cho một cơ hội mới khi người dùng bỏ trống hay không là tham số cấu hình theo Không gian làm việc (Phụ lục B, `CFG-DEAL-07`), **mặc định tắt**. Khi được bật, khoảng thời gian từ lúc tạo tới lịch chăm sóc đầu tiên là một tham số riêng, mặc định **24 giờ** (Phụ lục B, `CFG-DEAL-03`). Nếu thời điểm tính được rơi vào ngày không phải ngày làm việc theo Lịch làm việc của Không gian làm việc (`BR-31.7b` của [`contacts-srs.md`](./contacts-srs.md)), hệ thống **dời lịch sang giờ bắt đầu của ngày làm việc kế tiếp**.
+
+  **Lý do nghiệp vụ:** Một lịch tự đặt rơi đúng vào cuối tuần hoặc ngày lễ sẽ nhắc nhân viên liên hệ khách hàng đúng lúc cả hai bên đều không làm việc — vô nghĩa với mục đích chăm sóc và làm giảm độ tin cậy của lời nhắc tự động, đúng rủi ro mà lý do nghiệp vụ dưới đây đã cảnh báo cho trường hợp bật tham số này tràn lan.
 
   **Lý do nghiệp vụ:** Tự đặt lịch cho mọi cơ hội khiến mỗi cơ hội mới đều sinh ra một lần nhắc và một Công việc thật (`BR-16.2`) sau đúng một ngày. Với đội nhập hàng chục cơ hội mỗi tuần — trong đó nhiều cơ hội là khách hàng dài hạn chưa cần chăm sóc ngay — danh sách việc cần làm nhanh chóng đầy những lời nhắc vô nghĩa. Hệ quả là nhân viên học được rằng nhắc việc từ hệ thống là nhiễu và bỏ qua luôn cả những lời nhắc thật — đúng thất bại mà toàn bộ Nhóm E sinh ra để ngăn chặn. Doanh nghiệp nào có quỳ đạo chăm sóc dày đặc và muốn ép nhịp thì bật tham số này lên.
 
@@ -662,7 +671,10 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 | --- | --- | --- | --- |
 | `AC-15.1.1` | `CFG-DEAL-07` ở mặc định (tắt). Tạo cơ hội mới, không tự đặt lịch chăm sóc | Lưu | Cơ hội không có lịch chăm sóc nào; không phát sinh nhắc việc hay Công việc tự động nào sau đó |
 | `AC-15.1.2` | Quản lý bật `CFG-DEAL-07`, `CFG-DEAL-03` để mặc định 24 giờ. Tạo cơ hội mới, không tự đặt lịch | Lưu | Hệ thống tự gán lịch chăm sóc sau 24 giờ kể từ thời điểm tạo |
+| `AC-15.1.6` | `CFG-DEAL-07` bật, mặc định 24 giờ. Lịch làm việc là Chủ Nhật–Thứ Năm. Cơ hội được tạo chiều Thứ Năm, mốc 24 giờ rơi vào Thứ Sáu (ngày nghỉ) | Lưu | Lịch chăm sóc được dời sang giờ bắt đầu ngày làm việc kế tiếp (Chủ Nhật), không đặt vào Thứ Sáu |
 | `AC-15.1.3` | `CFG-DEAL-07` đang bật | Người dùng tự chọn lịch chăm sóc là 3 ngày sau | Lưu đúng lựa chọn của người dùng, không bị ghi đè bởi mặc định 24 giờ |
+| `AC-15.1.4` | Nhân viên đang xem hệ thống theo múi giờ cá nhân UTC+3 (Riyadh), Không gian làm việc cấu hình múi giờ UTC+7 | Đặt lịch chăm sóc "9 giờ sáng mai" theo đồng hồ hiển thị của mình | Lịch được ghi nhận đúng 9 giờ sáng theo giờ Riyadh (UTC+3) của nhân viên đó — không bị diễn giải theo múi giờ UTC+7 của Không gian làm việc |
+| `AC-15.1.5` | Tiếp nối AC-15.1.4 | Đến đúng 9 giờ sáng giờ Riyadh, tiến trình quét chạy | Nhân viên nhận nhắc việc đúng thời điểm đã hẹn theo giờ địa phương của mình, không lệch giờ |
 | `AC-15.2.1` | Lịch chăm sóc đã đến hạn, Công việc nhắc đã được tạo nhưng chưa xử lý | Người phụ trách dời lịch chăm sóc sang 3 ngày sau | Công việc nhắc cũ được cập nhật sang hạn mới (hoặc hủy và tạo lại), không còn Công việc nào nhắc theo hạn cũ đã dời |
 
 ---
@@ -679,7 +691,9 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 - **`BR-16.3` (Chống nhắc trùng):** Mỗi lịch chăm sóc chỉ được nhắc đúng một lần, kể cả khi có nhiều lượt quét chạy đồng thời.
 
-- **`BR-16.4` (Leo thang thay vì im lặng khi quá hạn lâu):** Một lịch chăm sóc quá hạn càng lâu mà chưa được xử lý thì càng phải được làm nổi bật, không phải càng bị làm ngơ. Khi một lịch chăm sóc vượt quá một ngưỡng quá hạn đáng kể mà người phụ trách vẫn chưa xử lý, hệ thống phải **báo lên cấp quản lý trực tiếp** của người đó (người đứng trên trong cấu trúc đơn vị tổ chức — xem [`iam-tenant-authorization.md`](./iam-tenant-authorization.md)) thay vì ngừng nhắc.
+- **`BR-16.4` (Leo thang thay vì im lặng khi quá hạn lâu, tính theo ngày làm việc):** Một lịch chăm sóc quá hạn càng lâu mà chưa được xử lý thì càng phải được làm nổi bật, không phải càng bị làm ngơ. Khi một lịch chăm sóc vượt quá một ngưỡng quá hạn đáng kể mà người phụ trách vẫn chưa xử lý, hệ thống phải **báo lên cấp quản lý trực tiếp** của người đó (người đứng trên trong cấu trúc đơn vị tổ chức — xem [`iam-tenant-authorization.md`](./iam-tenant-authorization.md)) thay vì ngừng nhắc. Ngưỡng leo thang được tính theo **ngày làm việc**, dùng cùng Lịch làm việc của Không gian làm việc (`BR-31.7b` của [`contacts-srs.md`](./contacts-srs.md), `CFG-31-03` của tài liệu đó) — không tính theo ngày lịch thuần túy.
+
+  **Lý do nghiệp vụ:** Nếu tính theo ngày lịch, một kỳ nghỉ lễ kéo dài nhiều ngày (Tết, Eid) khiến ngưỡng leo thang bị vượt hàng loạt trong khi cả đội đang nghỉ theo đúng lịch làm việc đã khai báo — quản lý nhận tín hiệu sai "nhân viên đang bỏ rơi khách hàng" ngay sau mỗi kỳ nghỉ, làm mất tác dụng của chính cơ chế cảnh báo mà `BR-16.4` muốn xây dựng.
 
   **Lý do nghiệp vụ:** Mục tiêu số một của phân hệ này là chống thất lạc cơ hội (Mục 2.1, vấn đề 1). Một lịch hẹn quá hạn 10 ngày chưa xử lý không phải là việc "đã quá cũ để quan tâm" — đó chính xác là cơ hội đang bị bỏ rơi, tình huống rủi ro nhất mà quản lý cần biết nhất. Tự động im lặng đúng lúc rủi ro cao nhất khiến một nhân viên đi công tác hoặc nghỉ ốm một tuần quay lại là mất sạch dấu vết nhắc nhở. Ngưỡng leo thang là một lựa chọn vận hành khác nhau giữa các doanh nghiệp nên phải là tham số cấu hình theo Không gian làm việc (Phụ lục B, `CFG-DEAL-06`), không phải hằng số hệ thống.
 
@@ -700,6 +714,7 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 | `AC-16.3.1` | Hai lượt quét chạy gần như đồng thời cho cùng một lịch chăm sóc | Cả hai lượt quét xử lý | Chỉ có đúng một thông báo và một Công việc được tạo, không trùng lặp |
 | `AC-16.4.1` | Lịch chăm sóc đã quá hạn vượt ngưỡng leo thang, người phụ trách chưa xử lý | Tiến trình quét chạy | Quản lý trực tiếp của người phụ trách nhận được thông báo leo thang; cơ hội không biến mất khỏi danh sách cần theo dõi |
 | `AC-16.4.2` | Cùng bối cảnh AC-16.4.1 | Quản lý mở danh sách cơ hội của phòng ban | Cơ hội có lịch chăm sóc quá hạn vượt ngưỡng hiển thị dấu hiệu leo thang, lọc riêng được |
+| `AC-16.4.3` | Ngưỡng leo thang 7 ngày làm việc, Lịch làm việc có khai báo 9 ngày nghỉ Tết liên tục. Lịch chăm sóc quá hạn ngay trước kỳ nghỉ, chưa xử lý | Kỳ nghỉ Tết kết thúc, tiến trình quét chạy | Số ngày nghỉ Tết không được tính vào ngưỡng 7 ngày; cơ hội chưa leo thang chỉ vì đã quá hạn qua kỳ nghỉ |
 | `AC-16.5.1` | Cơ hội có lịch chăm sóc đang chờ, Công việc nhắc chưa xử lý | Cơ hội được đóng Thắng | Lịch chăm sóc và Công việc nhắc chưa xử lý bị hủy |
 | `AC-16.5.2` | Cơ hội có Công việc nhắc chưa xử lý | Cơ hội được bàn giao sang người phụ trách mới | Công việc nhắc chuyển sang người phụ trách mới, không bị hủy |
 | `AC-16.5.3` | Cơ hội đang ở trạng thái Chưa phân công, có lịch chăm sóc quá hạn vượt ngưỡng leo thang | Tiến trình quét chạy | Quản lý của đơn vị tổ chức đang giữ cơ hội nhận được thông báo leo thang |
@@ -713,7 +728,9 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 **Quy tắc nghiệp vụ:**
 
-- **`BR-17.1` (Ngưỡng nguội lạnh):** Một cơ hội đang mở không có tương tác nào vượt quá một ngưỡng số ngày thì được đánh dấu là nguội lạnh. Ngưỡng này là tham số cấu hình theo Không gian làm việc, đề xuất mặc định **14 ngày** (Phụ lục B, `CFG-DEAL-04`).
+- **`BR-17.1` (Ngưỡng nguội lạnh, tính theo ngày làm việc):** Một cơ hội đang mở không có tương tác nào vượt quá một ngưỡng số **ngày làm việc** thì được đánh dấu là nguội lạnh, dùng cùng Lịch làm việc của Không gian làm việc (`BR-31.7b` của [`contacts-srs.md`](./contacts-srs.md)). Ngưỡng này là tham số cấu hình theo Không gian làm việc, đề xuất mặc định **14 ngày làm việc** (Phụ lục B, `CFG-DEAL-04`).
+
+  **Lý do nghiệp vụ:** Tính theo ngày lịch khiến mọi cơ hội đồng loạt bị gắn cờ nguội lạnh ngay sau một kỳ nghỉ lễ dài, dù không nhân viên nào thực sự bỏ bê khách hàng — số lượng cảnh báo giả lớn sẽ khiến đội bán hàng học được thói quen phớt lờ toàn bộ cờ nguội lạnh, kể cả những cờ phản ánh đúng rủi ro thật.
 
 - **`BR-17.2` (Hành vi công nhận là "có tương tác"):** Các hành vi sau làm mới thời điểm tương tác gần nhất và gỡ cờ nguội lạnh nếu đang có: ghi nhận cuộc gọi/cuộc họp/email trên cơ hội, chuyển giai đoạn, nhận phản hồi mới từ khách hàng qua kênh liên lạc. **Việc chỉnh sửa các trường thông tin nội bộ (ví dụ đổi thẻ phân loại, sửa mô tả nội bộ) không được tính là tương tác** — quy tắc này khác với hành vi làm mới thời điểm tương tác gần nhất khi cập nhật cơ hội nói chung, vốn hiện coi mọi lần sửa là một tương tác.
 
@@ -726,6 +743,7 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 | Mã AC | Bối cảnh | Hành động | Kết quả mong đợi |
 | --- | --- | --- | --- |
 | `AC-17.1.1` | Cơ hội đang mở, không tương tác 16 ngày, ngưỡng cấu hình 14 ngày | Mở Kanban | Thẻ hiển thị cảnh báo nguội lạnh kèm "16 ngày không hoạt động" |
+| `AC-17.1.2` | Ngưỡng nguội lạnh 14 ngày làm việc; Lịch làm việc có khai báo kỳ nghỉ Eid al-Fitr 5 ngày liên tục trùng đúng giai đoạn không tương tác | Kỳ nghỉ kết thúc, tiến trình quét chạy | 5 ngày nghỉ Eid không tính vào 14 ngày ngưỡng; cơ hội chưa bị đánh dấu nguội lạnh chỉ vì trùng kỳ nghỉ |
 | `AC-17.2.1` | Cơ hội đang bị đánh dấu nguội lạnh | Ghi nhận một cuộc gọi mới trên cơ hội | Cờ nguội lạnh biến mất ngay lập tức |
 | `AC-17.2.2` | Cơ hội đang bị đánh dấu nguội lạnh | Quản trị viên chỉ sửa thẻ phân loại nội bộ, không liên hệ khách hàng | Cờ nguội lạnh **không** biến mất |
 
@@ -974,7 +992,9 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 **Quy tắc nghiệp vụ:**
 
-- **`BR-27.1` (Mục tiêu theo kỳ):** Quản lý Kinh doanh hoặc Giám đốc Kinh doanh đặt một mục tiêu doanh số cho một nhân viên hoặc phòng ban trong một kỳ (tháng/quý) xác định. Mỗi nhân viên/phòng ban chỉ có đúng một mục tiêu cho một kỳ — không cho đặt trùng.
+- **`BR-27.1` (Mục tiêu theo kỳ, năm tài chính theo tenant):** Quản lý Kinh doanh hoặc Giám đốc Kinh doanh đặt một mục tiêu doanh số cho một nhân viên hoặc phòng ban trong một kỳ (tháng/quý) xác định. Mỗi nhân viên/phòng ban chỉ có đúng một mục tiêu cho một kỳ — không cho đặt trùng. Ranh giới tháng/quý được tính theo **năm tài chính của Không gian làm việc**, là tham số cấu hình theo tenant (Phụ lục B, `CFG-DEAL-11`) — không mặc định là năm dương lịch. Mọi nơi khác trong tài liệu này dùng khái niệm "kỳ", "quý" hay "tháng" cho mục đích báo cáo tài chính (`BR-26.1`, `BR-21.2`) đều tính theo cùng năm tài chính này.
+
+  **Lý do nghiệp vụ:** Năm tài chính bắt đầu từ tháng 1 chỉ đúng với một phần doanh nghiệp. Nhiều tổ chức (theo ngành, theo quốc gia, theo tập đoàn mẹ) dùng năm tài chính bắt đầu từ tháng khác — nếu hệ thống mặc định cứng theo năm dương lịch, "Quý 1" của hệ thống có thể rơi vào giữa năm tài chính thật của tenant, làm hạn ngạch và báo cáo hoa hồng — dữ liệu quyết định lương thưởng — bị tính sai kỳ mà không ai nhận ra cho tới khi đối chiếu với sổ sách kế toán.
 
 - **`BR-27.2` (Căn cứ tính hoàn thành):** Tỷ lệ hoàn thành tính trên **giá trị các cơ hội đã đóng thắng có thời điểm thắng rơi trong kỳ**, quy đổi về đồng tiền cơ sở (`BR-02.2`) và phân bổ theo tỷ lệ chia doanh số (`FEAT-24`). Cơ hội đang mở không tính vào số đã đạt.
 
@@ -999,6 +1019,8 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 | `AC-27.1.1` | Quản lý đặt mục tiêu quý cho nhân viên A là 500 triệu | Nhân viên A đóng thắng các cơ hội tổng 300 triệu trong quý | Báo cáo hiển thị tỷ lệ hoàn thành 60% |
 | `AC-27.1.2` | Nhân viên A đã có mục tiêu cho quý này | Quản lý cố gắng đặt thêm một mục tiêu khác cho cùng nhân viên A, cùng quý | Từ chối, báo đã có mục tiêu cho kỳ này |
 | `AC-27.1.3` | Nhân viên A có mục tiêu quý nhưng không đóng thắng cơ hội nào trong quý | Xem báo cáo hạn ngạch | Hiển thị tỷ lệ hoàn thành 0%, không lỗi hiển thị |
+| `AC-27.1.4` | Không gian làm việc cấu hình `CFG-DEAL-11` = tháng 7 (năm tài chính tháng 7–tháng 6). Cơ hội đóng thắng vào ngày dương lịch 15/8 | Xem báo cáo hạn ngạch quý | Doanh số được tính vào Quý 1 của năm tài chính (tháng 7–9), không phải Quý 3 theo năm dương lịch |
+| `AC-27.1.5` | Không gian làm việc đã có mục tiêu hạn ngạch cho một kỳ | Chủ sở hữu cố gắng đổi `CFG-DEAL-11` | Từ chối, báo tháng bắt đầu năm tài chính không đổi được khi đã có dữ liệu hạn ngạch hoặc cơ hội đã đóng |
 | `AC-27.2.1` | Nhân viên A đóng thắng một cơ hội 1 tỷ nhưng chỉ được chia 60% doanh số | Xem báo cáo hạn ngạch của A | Ghi nhận 600 triệu cho A, không phải 1 tỷ |
 | `AC-27.2.2` | Nhân viên A có một cơ hội 500 triệu đang mở, chưa đóng | Xem báo cáo hạn ngạch | 500 triệu này không tính vào số đã đạt |
 | `AC-27.3.1` | Mục tiêu quý 1 tỷ, đã đạt 400 triệu, còn 900 triệu cơ hội đang mở dự kiến đóng trong quý | Xem báo cáo hạn ngạch | Hiển thị độ phủ phễu 1,5 lần so với 600 triệu còn thiếu |
@@ -1043,6 +1065,10 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 - **`BR-29.2` (Kiểm tra khi nhập):** Từ chối ánh xạ dữ liệu vào các trường được bảo vệ; phát hiện trùng lặp theo tên cơ hội; chặn nhập dữ liệu đè lên cơ hội đã ở giai đoạn đóng.
 
+- **`BR-29.6` (Khai báo định dạng số và ngày tháng khi nhập):** Trước khi xử lý một tệp nhập, người thực hiện khai báo (hoặc hệ thống tự phát hiện và yêu cầu xác nhận) ký hiệu phân cách phần thập phân, ký hiệu phân cách hàng nghìn, và định dạng thứ tự ngày–tháng–năm dùng trong tệp đó. Màn hình xem trước bắt buộc hiển thị giá trị và ngày tháng **sau khi đã diễn giải** theo khai báo đó, để người thực hiện xác nhận đúng trước khi ghi vào hệ thống.
+
+  **Lý do nghiệp vụ:** Cùng một chuỗi "1.000" có thể là một nghìn hoặc một phẩy không tùy quy ước vùng miền của tệp nguồn; cùng một chuỗi ngày "03/04/2026" có thể là 3 tháng 4 hoặc 4 tháng 3. Một tệp nhập hàng loạt sai quy ước sẽ đưa giá trị sai lệch hàng nghìn lần thẳng vào dự báo doanh thu mà không có cảnh báo nào, vì mỗi dòng riêng lẻ vẫn là một số hợp lệ.
+
 - **`BR-29.3` (Đường dẫn tải xuất có thời hạn):** Tệp xuất được cấp một đường dẫn tải về có thời hạn hiệu lực, sau đó tự động hết hạn.
 
 - **`BR-29.4` (Quyền nhập/xuất tách biệt):** Thực hiện nhập hoặc xuất dữ liệu hàng loạt là một quyền hạn **riêng biệt**, không tự động đi kèm quyền xem hoặc sửa cơ hội thông thường.
@@ -1062,6 +1088,8 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 | --- | --- | --- | --- |
 | `AC-29.1.1` | Tệp nhập 60MB | Tải lên | Từ chối ngay, báo vượt giới hạn dung lượng |
 | `AC-29.2.1` | Tệp nhập có dòng ánh xạ vào cơ hội đã đóng thắng | Chạy nhập | Dòng đó bị từ chối, báo cáo lỗi chi tiết ghi rõ lý do |
+| `AC-29.6.1` | Tệp nhập có cột giá trị dùng dấu chấm làm phân cách hàng nghìn (định dạng Việt Nam: "1.000.000") | Khai báo định dạng phù hợp, xem màn hình xem trước | Màn hình xem trước hiển thị đúng 1.000.000 (một triệu), không hiểu nhầm thành 1,0 |
+| `AC-29.6.2` | Tệp nhập có cột ngày "03/04/2026" | Khai báo định dạng ngày/tháng/năm, xem màn hình xem trước | Màn hình xem trước hiển thị đúng ngày 3 tháng 4 năm 2026 |
 | `AC-29.3.1` | Xuất dữ liệu xong, nhận đường dẫn tải về | Truy cập đường dẫn sau khi hết hạn | Từ chối truy cập |
 | `AC-29.4.1` | Người dùng có quyền xem cơ hội trong phạm vi phòng ban nhưng không có quyền xuất dữ liệu | Cố gắng xuất danh sách cơ hội | Từ chối; chức năng xuất không khả dụng trên giao diện |
 | `AC-29.5.1` | Nhân viên A yêu cầu xuất, nhận đường dẫn còn hiệu lực | Một người khác (không phải A) có được đường dẫn và cố gắng tải | Từ chối, yêu cầu đăng nhập đúng người đã yêu cầu |
@@ -1508,11 +1536,14 @@ Mục này chỉ chứa các nhu cầu **chưa quyết định được điều 
 | `CFG-DEAL-08` | `BR-02.2` | Đồng tiền cơ sở dùng để hợp nhất mọi báo cáo tổng hợp | Theo quốc gia đăng ký của doanh nghiệp | Một mã tiền tệ chuẩn quốc tế | Chủ sở hữu Không gian làm việc | **Cố định sau khi có dữ liệu** — xem ghi chú |
 | `CFG-DEAL-09` | `BR-02.4` | Nguồn cập nhật tỷ giá quy đổi giữa các loại tiền tệ | Tự nhập thủ công | Tự nhập thủ công / Đồng bộ tự động từ nguồn tham chiếu bên ngoài | Quản trị viên Không gian làm việc | **Tự do** |
 | `CFG-DEAL-10` | `BR-35.5` | Thời hạn hiệu lực quyền Người theo dõi sau khi cơ hội đóng | 90 ngày | 0–365 ngày (0 nghĩa là hết hiệu lực ngay khi đóng) | Quản trị viên Không gian làm việc | **Tự do** |
+| `CFG-DEAL-11` | `BR-27.1` | Tháng bắt đầu năm tài chính | Tháng 1 | Tháng 1 đến tháng 12 | Chủ sở hữu Không gian làm việc | **Cố định sau khi có dữ liệu** — xem ghi chú |
 
 *Ghi chú về thẩm quyền:* Thẩm quyền đổi tham số là **một trục quyền riêng**, không suy ra được từ ma trận phân quyền trên dữ liệu nghiệp vụ tại Mục 5. Các tham số điều chỉnh **nhịp độ vận hành bán hàng** (`CFG-DEAL-03`, `04`, `06`, `07`) thuộc thẩm quyền Quản lý Kinh doanh vì đây là lựa chọn điều hành đội thường nhật. Các tham số **ràng buộc toàn vẹn dữ liệu hoặc quy trình** (`CFG-DEAL-02`, `05`, `09`) thuộc Quản trị viên. Hai tham số chạm tới dữ liệu tài chính và khả năng mất dữ liệu (`CFG-DEAL-01`, `08`) thuộc Chủ sở hữu.
 
 *Ghi chú về `CFG-DEAL-01`:* sàn 30 ngày là thời gian tối thiểu để một doanh nghiệp phát hiện và khôi phục việc xóa nhầm. Cho phép hạ thấp hơn sẽ biến thùng rác thành một cơ chế hình thức không cứu được dữ liệu thật.
 
 *Ghi chú về `CFG-DEAL-08`:* đồng tiền cơ sở **không được đổi** một khi Không gian làm việc đã có cơ hội đã đóng, vì mọi giá trị lịch sử đã được chốt quy đổi theo đồng tiền đó (`BR-02.3`); đổi đồng tiền cơ sở sẽ khiến toàn bộ báo cáo doanh số lịch sử mất ý nghĩa. Việc đổi chỉ khả thi khi không gian làm việc chưa phát sinh cơ hội đã đóng nào.
+
+*Ghi chú về `CFG-DEAL-11`:* tháng bắt đầu năm tài chính **không được đổi** một khi Không gian làm việc đã có mục tiêu hạn ngạch (`BR-27.1`) hoặc cơ hội đã đóng, cùng lý lẽ với `CFG-DEAL-08` — đổi giữa chừng sẽ làm ranh giới kỳ của mọi hạn ngạch và báo cáo lịch sử dịch chuyển, không còn khớp với dữ liệu đã công bố.
 
 *Ghi chú về hằng số vận hành:* Chu kỳ quét lịch chăm sóc (`BR-16.1`, 5 phút), giới hạn dung lượng nhập (`BR-29.1`, 50MB), giới hạn số bản ghi thao tác hàng loạt và thời hạn hiệu lực đường dẫn tải xuất (`BR-29.3`) là **hằng số vận hành cấp hệ thống**, áp dụng thống nhất cho mọi Không gian làm việc — không đưa vào bảng tham số theo tenant vì đây là giới hạn kỹ thuật bảo vệ hạ tầng dùng chung, không phải một lựa chọn nghiệp vụ khác nhau giữa các doanh nghiệp.
