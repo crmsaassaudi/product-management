@@ -1065,11 +1065,15 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 - **`BR-29.2` (Kiểm tra khi nhập):** Từ chối ánh xạ dữ liệu vào các trường được bảo vệ; phát hiện trùng lặp theo tên cơ hội; chặn nhập dữ liệu đè lên cơ hội đã ở giai đoạn đóng.
 
+- **`BR-29.3` (Đường dẫn tải xuất có thời hạn):** Tệp xuất được cấp một đường dẫn tải về có thời hạn hiệu lực, sau đó tự động hết hạn.
+
 - **`BR-29.6` (Khai báo định dạng số và ngày tháng khi nhập):** Trước khi xử lý một tệp nhập, người thực hiện khai báo (hoặc hệ thống tự phát hiện và yêu cầu xác nhận) ký hiệu phân cách phần thập phân, ký hiệu phân cách hàng nghìn, và định dạng thứ tự ngày–tháng–năm dùng trong tệp đó. Màn hình xem trước bắt buộc hiển thị giá trị và ngày tháng **sau khi đã diễn giải** theo khai báo đó, để người thực hiện xác nhận đúng trước khi ghi vào hệ thống.
 
   **Lý do nghiệp vụ:** Cùng một chuỗi "1.000" có thể là một nghìn hoặc một phẩy không tùy quy ước vùng miền của tệp nguồn; cùng một chuỗi ngày "03/04/2026" có thể là 3 tháng 4 hoặc 4 tháng 3. Một tệp nhập hàng loạt sai quy ước sẽ đưa giá trị sai lệch hàng nghìn lần thẳng vào dự báo doanh thu mà không có cảnh báo nào, vì mỗi dòng riêng lẻ vẫn là một số hợp lệ.
 
-- **`BR-29.3` (Đường dẫn tải xuất có thời hạn):** Tệp xuất được cấp một đường dẫn tải về có thời hạn hiệu lực, sau đó tự động hết hạn.
+- **`BR-29.7` (Vòng đời tác vụ nhập/xuất và xử lý theo từng dòng):** Một tác vụ nhập hoặc xuất luôn ở đúng một trong các trạng thái quan sát được: **Đang chờ xử lý** → **Đang xử lý** → một trong ba trạng thái kết thúc: **Hoàn tất** (mọi dòng hợp lệ), **Hoàn tất kèm lỗi** (có ít nhất một dòng bị từ chối, các dòng hợp lệ khác vẫn được xử lý), hoặc **Thất bại** (lỗi hệ thống khiến toàn bộ tác vụ không xử lý được, ví dụ tệp hỏng không đọc được). Người thực hiện nhận thông báo khi tác vụ chuyển sang bất kỳ trạng thái kết thúc nào. Với nhập dữ liệu: **xử lý theo từng dòng độc lập** — một dòng bị từ chối (theo `BR-29.2`, gồm cả trùng lặp theo tên cơ hội) không làm hủy các dòng hợp lệ khác trong cùng tệp; báo cáo lỗi liệt kê chính xác dòng nào bị từ chối và lý do.
+
+  **Lý do nghiệp vụ:** Không có trạng thái kết thúc rõ ràng, người dùng lẫn hệ thống giám sát không phân biệt được một tác vụ đang xử lý chậm với một tác vụ đã treo vĩnh viễn. Xử lý theo từng dòng thay vì hủy nguyên lô khi gặp lỗi tránh việc một dòng dữ liệu sai trong tệp 10.000 dòng làm mất công nhập lại toàn bộ 9.999 dòng đúng.
 
 - **`BR-29.4` (Quyền nhập/xuất tách biệt):** Thực hiện nhập hoặc xuất dữ liệu hàng loạt là một quyền hạn **riêng biệt**, không tự động đi kèm quyền xem hoặc sửa cơ hội thông thường.
 
@@ -1090,6 +1094,9 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 | `AC-29.2.1` | Tệp nhập có dòng ánh xạ vào cơ hội đã đóng thắng | Chạy nhập | Dòng đó bị từ chối, báo cáo lỗi chi tiết ghi rõ lý do |
 | `AC-29.6.1` | Tệp nhập có cột giá trị dùng dấu chấm làm phân cách hàng nghìn (định dạng Việt Nam: "1.000.000") | Khai báo định dạng phù hợp, xem màn hình xem trước | Màn hình xem trước hiển thị đúng 1.000.000 (một triệu), không hiểu nhầm thành 1,0 |
 | `AC-29.6.2` | Tệp nhập có cột ngày "03/04/2026" | Khai báo định dạng ngày/tháng/năm, xem màn hình xem trước | Màn hình xem trước hiển thị đúng ngày 3 tháng 4 năm 2026 |
+| `AC-29.7.1` | Tệp nhập 100 dòng, trong đó 3 dòng trùng tên cơ hội với bản ghi đã có | Chạy nhập | Tác vụ kết thúc ở trạng thái Hoàn tất kèm lỗi; 97 dòng hợp lệ được tạo thành cơ hội; báo cáo lỗi liệt kê đúng 3 dòng bị từ chối kèm lý do trùng lặp |
+| `AC-29.7.2` | Tệp nhập bị hỏng định dạng, không đọc được | Chạy nhập | Tác vụ kết thúc ở trạng thái Thất bại; không cơ hội nào được tạo; người thực hiện nhận thông báo |
+| `AC-29.7.3` | Tệp xuất đang được xử lý | Người thực hiện mở lại màn hình theo dõi tác vụ | Thấy trạng thái hiện tại của tác vụ (Đang chờ xử lý hoặc Đang xử lý), không phải một màn hình trống không rõ tiến độ |
 | `AC-29.3.1` | Xuất dữ liệu xong, nhận đường dẫn tải về | Truy cập đường dẫn sau khi hết hạn | Từ chối truy cập |
 | `AC-29.4.1` | Người dùng có quyền xem cơ hội trong phạm vi phòng ban nhưng không có quyền xuất dữ liệu | Cố gắng xuất danh sách cơ hội | Từ chối; chức năng xuất không khả dụng trên giao diện |
 | `AC-29.5.1` | Nhân viên A yêu cầu xuất, nhận đường dẫn còn hiệu lực | Một người khác (không phải A) có được đường dẫn và cố gắng tải | Từ chối, yêu cầu đăng nhập đúng người đã yêu cầu |
@@ -1152,7 +1159,9 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 **Quy tắc nghiệp vụ:**
 
-- **`BR-32.1` (Chặn ghi trong lúc đóng băng):** Khi một Không gian làm việc đang trong trạng thái đóng băng di chuyển dữ liệu, mọi yêu cầu sửa đổi cơ hội của người dùng bị từ chối với thông báo rõ ràng là hệ thống đang bảo trì dữ liệu, không phải lỗi.
+- **`BR-32.1` (Chặn ghi trong lúc đóng băng, gồm cả tiến trình nền):** Khi một Không gian làm việc đang trong trạng thái đóng băng di chuyển dữ liệu, mọi yêu cầu sửa đổi cơ hội của người dùng bị từ chối với thông báo rõ ràng là hệ thống đang bảo trì dữ liệu, không phải lỗi. Việc chặn ghi áp dụng **cho cả các tiến trình nền tự động** của phân hệ này (quét lịch chăm sóc `FEAT-16`, quét nguội lạnh `FEAT-17`, bàn giao tự động khi rời tổ chức `BR-37.3`, cập nhật trạng thái Người theo dõi `BR-35.5`) — các tiến trình này tạm dừng ghi trong suốt thời gian đóng băng và chỉ tiếp tục bình thường sau khi đóng băng được gỡ, không dồn lại xử lý bù ngay khi vừa gỡ.
+
+  **Lý do nghiệp vụ:** Nếu chỉ chặn thao tác của người dùng mà để tiến trình nền tiếp tục ghi, dữ liệu vẫn có thể bị thay đổi song song với chính tiến trình di chuyển dữ liệu đang chạy — đúng loại xung đột ghi mà việc đóng băng được tạo ra để ngăn chặn.
 
   **Lý do nghiệp vụ:** Nếu người dùng vẫn sửa được dữ liệu trong lúc một tiến trình nền đang di chuyển hàng loạt bản ghi, thay đổi của người dùng có thể bị tiến trình nền ghi đè mất mà không có cảnh báo — một dạng mất dữ liệu âm thầm nguy hiểm hơn nhiều so với việc từ chối tạm thời và rõ ràng.
 
@@ -1366,6 +1375,12 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
   **Lý do nghiệp vụ:** Đây là những con số và những quyền quyết định trực tiếp hoa hồng, hạn ngạch, báo cáo tài chính đã công bố và ai đã xem/kiểm soát được dữ liệu nào. Không ghi vết đầy đủ nghĩa là không thể trả lời câu hỏi kiểm toán cơ bản nhất — "ai đã đổi con số này", "ai đã có quyền xem dữ liệu nào, trong bao lâu", "hành động này là ai chủ động hay là hệ quả của một hành động khác" — biến toàn bộ hệ thống thành thứ không thể tin cậy khi có tranh chấp hoặc điều tra bảo mật.
 
+### 4.4 Khả năng Kiểm thử
+
+- **NFR-09 (Đồng hồ nghiệp vụ điều khiển được ở môi trường không phải sản xuất):** Trên môi trường không phải sản xuất, hệ thống cung cấp một cơ chế **dịch chuyển đồng hồ nghiệp vụ** áp dụng nhất quán cho mọi quy tắc phụ thuộc thời gian trong tài liệu này — thời hạn thùng rác (`BR-04.2`), ngưỡng nguội lạnh và leo thang (`BR-17.1`, `BR-16.4`), thời hạn Hoàn tác Chuyển đổi, hiệu lực quyền Người theo dõi sau khi đóng (`BR-35.5`), ranh giới kỳ báo cáo và hạn ngạch (`BR-27.1`). Dịch chuyển đồng hồ làm mọi tiến trình quét và mọi phép tính "đã bao lâu" phản ứng như thể thời gian thật đã trôi qua đúng khoảng đó. Cơ chế này **bị cấm tuyệt đối trên môi trường sản xuất**.
+
+  **Lý do nghiệp vụ:** Nhiều quy tắc trong tài liệu này chỉ quan sát được kết quả sau hàng chục ngày thời gian thật (thùng rác 30 ngày, hiệu lực Người theo dõi 90 ngày). Không có cách nào khác để kiểm chứng các quy tắc đó một cách xác định và lặp lại được trong một bộ kiểm thử tự động — chờ bằng thời gian thực khiến việc kiểm thử không khả thi, còn không kiểm thử được thì không có cách nào xác nhận các quy tắc phụ thuộc thời gian hoạt động đúng trước khi phát hành.
+
 ---
 
 ## 5. Ma trận quyền truy cập tính năng
@@ -1417,12 +1432,19 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 ## 6. Kịch bản chấp nhận tổng hợp (UAT)
 
+**Quy ước chung cho toàn bộ mục này:**
+
+- Mỗi kịch bản **chạy độc lập** trên một Không gian làm việc mới tạo riêng, trừ khi kịch bản nêu rõ đang tiếp nối một kịch bản khác. Tên cơ hội, tên Doanh nghiệp và tên người dùng trong các bước là minh họa — mỗi lần chạy dùng giá trị duy nhất để không đụng các quy tắc chống trùng lặp (`BR-01.4`, `BR-01.8`).
+- Không gian làm việc mới có phễu mặc định gồm các giai đoạn theo đúng thứ tự: Tiếp cận → Trình bày giải pháp → Đàm phán → Thắng/Thua, không bật khóa nhảy cóc (`CFG-DEAL-02` mặc định tắt), không có rào cản giai đoạn nào ngoài những điều kiện được nêu tường minh trong từng kịch bản, và chưa có danh mục Lý do Thất bại nào được cấu hình (`FEAT-20`) trừ khi kịch bản nói khác.
+- Các tham số mang mức độ tự do "**Cố định sau khi có dữ liệu**" (`CFG-DEAL-08`, `CFG-DEAL-11`) hoặc chạm cấu trúc không đảo ngược được (đóng phễu theo `BR-07.4`, xóa giai đoạn) **chỉ được kiểm thử trên một Không gian làm việc dành riêng cho đúng kịch bản đó**, không dùng chung với kịch bản khác.
+- Mọi quy tắc phụ thuộc khoảng thời gian dài (thùng rác, nguội lạnh, hiệu lực Người theo dõi, ranh giới kỳ báo cáo) dùng cơ chế dịch chuyển đồng hồ nghiệp vụ tại `NFR-09`, không chờ bằng thời gian thực.
+
 ### Kịch bản 1: Tạo Cơ hội, Kéo thả Kanban tới Đóng Thắng
 
-1. Nhân viên kinh doanh tạo cơ hội "Hợp đồng Bản quyền CRM", gắn Doanh nghiệp "Công ty Đại Phát", đặt ngày dự kiến đóng.
+1. Nhân viên kinh doanh tạo cơ hội, gắn Doanh nghiệp mới tạo, nhập giá trị lớn hơn 0 bằng đồng tiền cơ sở, gắn một Khách hàng cá nhân làm liên hệ chính (`BR-01.3`, `BR-18.1`), đặt ngày dự kiến đóng, khởi tạo ở giai đoạn Tiếp cận.
 2. Kéo thả cơ hội qua các giai đoạn: Tiếp cận → Trình bày giải pháp → Đàm phán, mỗi lần chuyển đều đủ điều kiện rào cản giai đoạn.
 3. Đóng thắng cơ hội ở giai đoạn cuối.
-4. **Kỳ vọng:** Cơ hội chuyển sang trạng thái Thắng, ghi nhận thời điểm thắng, lịch sử giai đoạn đầy đủ 3 lần chuyển.
+4. **Kỳ vọng:** Cơ hội chuyển sang trạng thái Thắng, ghi nhận thời điểm thắng, lịch sử giai đoạn đầy đủ **4 lần chuyển** (3 lần kéo thả ở bước 2, cộng 1 lần chuyển sang giai đoạn Thắng ở bước 3), ảnh chụp kết quả (`BR-27.5`) được chốt.
 
 ---
 
@@ -1444,6 +1466,8 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 ---
 
 ### Kịch bản 4: Đóng Phễu, Di chuyển Cơ hội theo Ma trận Ánh xạ
+
+**Dữ liệu nền:** Không gian làm việc riêng có thêm một phễu thứ hai (Phễu B) ngoài phễu mặc định. Phễu A trong kịch bản này **không phải** phễu mặc định (`BR-05.1`), để tránh vướng ràng buộc luôn phải còn một phễu mặc định.
 
 1. Quản trị viên đóng Phễu A, còn 10 cơ hội đang mở.
 2. Thiết lập ma trận ánh xạ từng giai đoạn của Phễu A sang giai đoạn tương ứng của Phễu B.
@@ -1469,17 +1493,27 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 ### Kịch bản 7: Chuyển đổi Khách hàng Tiềm năng, Chống Tạo Cơ hội Trùng
 
-1. Doanh nghiệp X đã có một cơ hội đang mở trên Phễu A.
+**Nhánh (a) — gộp mặc định:**
+
+1. Doanh nghiệp X (mới tạo riêng cho kịch bản này) có một cơ hội đang mở trên Phễu A, trong phạm vi dữ liệu của nhân viên thực hiện chuyển đổi ở bước 2.
 2. Nhân viên chuyển đổi một khách hàng tiềm năng mới thuộc Doanh nghiệp X, chọn Phễu A.
-3. **Kỳ vọng:** Hệ thống gợi ý cơ hội có sẵn, mặc định gắn khách hàng tiềm năng vào cơ hội đó thay vì tạo mới; nhân viên vẫn có lựa chọn tạo riêng nếu chủ động xác nhận.
+3. **Kỳ vọng:** Hệ thống gợi ý cơ hội có sẵn, mặc định gắn khách hàng tiềm năng vào cơ hội đó thay vì tạo mới. Sau bước này, Doanh nghiệp X có đúng một cơ hội đang mở trên Phễu A.
+
+**Nhánh (b) — chủ động tạo riêng, chạy trên dữ liệu nền riêng biệt với nhánh (a):**
+
+1. Doanh nghiệp Y (mới tạo riêng cho nhánh này) có một cơ hội đang mở trên Phễu A.
+2. Nhân viên chuyển đổi một khách hàng tiềm năng mới thuộc Doanh nghiệp Y, chọn Phễu A, và khi được gợi ý cơ hội có sẵn thì chủ động xác nhận vẫn muốn tạo cơ hội riêng.
+3. **Kỳ vọng:** Hệ thống tạo một cơ hội mới độc lập; quyết định này được ghi nhận (`BR-33.2`). Sau bước này, Doanh nghiệp Y có hai cơ hội đang mở trên Phễu A.
 
 ---
 
 ### Kịch bản 8: Đóng băng Ghi dữ liệu trong lúc Di chuyển Dữ liệu nền
 
-1. Đội vận hành nền tảng khởi động một tiến trình di chuyển dữ liệu quy mô lớn cho một Không gian làm việc.
-2. Trong lúc tiến trình đang chạy, một nhân viên cố gắng sửa một cơ hội.
-3. **Kỳ vọng:** Yêu cầu sửa bị từ chối với thông báo rõ ràng hệ thống đang bảo trì dữ liệu, không phải lỗi từ phía người dùng.
+**Ghi chú:** "Đội vận hành nền tảng" không phải một vai trò nghiệp vụ của Không gian làm việc (không thuộc 6 vai trò tại Mục 2.2) — đây là bên vận hành hạ tầng SaaS ở cấp toàn hệ thống, tương tác qua kênh vận hành nội bộ nằm ngoài phạm vi đặc tả nghiệp vụ của tài liệu này. Trạng thái đóng băng, một khi được bật, là một thuộc tính của Không gian làm việc mà `FEAT-32` chỉ đặc tả hệ quả (chặn ghi) — không đặc tả cơ chế bật/tắt.
+
+1. Đội vận hành nền tảng khởi động một tiến trình di chuyển dữ liệu quy mô lớn cho một Không gian làm việc, đặt Không gian làm việc đó vào trạng thái đóng băng ghi dữ liệu.
+2. Trong lúc tiến trình đang chạy, một nhân viên (bất kỳ vai trò nào, kể cả Chủ sở hữu) cố gắng sửa một cơ hội bằng thao tác qua giao diện người dùng.
+3. **Kỳ vọng:** Yêu cầu sửa bị từ chối với thông báo rõ ràng hệ thống đang bảo trì dữ liệu, không phải lỗi từ phía người dùng. Trong cùng khoảng thời gian đóng băng, các tiến trình nền của chính phân hệ này (quét lịch chăm sóc `FEAT-16`, quét nguội lạnh `FEAT-17`, bàn giao tự động khi rời tổ chức `BR-37.3`) tạm dừng ghi, không tạo ra thay đổi song song với tiến trình di chuyển dữ liệu đang chạy — chỉ tiếp tục ghi bình thường sau khi đóng băng được gỡ.
 
 ---
 
