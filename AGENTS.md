@@ -49,3 +49,12 @@ Hai điều hay sai nhất, đã tái diễn qua nhiều phiên bản:
 2. **Coi code là chuẩn và sửa SRS cho khớp code.** Ngược lại mới đúng: **SRS là chuẩn, code sai thì sửa code**. Không đưa bảng đối chiếu sai lệch mã nguồn (tên tệp, số dòng) vào SRS — đó là việc của backlog/issue tracker.
 
 Ngoài ra, trước khi chốt một SRS phải chủ động rà 7 lớp mâu thuẫn nghiệp vụ nội tại liệt kê trong `srs/README.md` (quy tắc cấm vs tính năng cho phép, vòng luẩn quẩn, khái niệm gộp chung, danh mục thiếu ràng buộc toàn vẹn, cơ chế tự động thiếu chiều ngược, ca biên thời gian, múi giờ). Nhãn trạng thái tính năng phải kiểm chứng với code thật, **không tin nhãn của phiên bản trước** — kể cả khi tài liệu tự ghi "đã qua N vòng review, không còn lỗi".
+
+### SRS Là Đặc Tả Mục Tiêu Tuyệt Đối (To-Be) — Không Được Suy Luận Từ Hiện Trạng Code
+
+Đây là nguyên tắc tách biệt với mục 2 ở trên, dễ nhầm nên phải nêu riêng: mục 2 nói về việc **không hạ chuẩn khi phát hiện code sai lệch**; nguyên tắc này nói về việc **không được dùng code làm căn cứ để suy luận, giới hạn hay định hình nội dung nghiệp vụ của SRS ngay từ đầu**, kể cả khi không phát hiện sai lệch nào.
+
+- Khi viết mới hoặc review một SRS, xuất phát điểm và căn cứ duy nhất là **nhu cầu nghiệp vụ mong muốn** (nói chuyện với người yêu cầu, đối chiếu SRS khác, suy luận từ mô hình nghiệp vụ) — **không phải** đọc code hiện có rồi suy ngược ra "chắc nghiệp vụ muốn vậy" hoặc thu hẹp phạm vi đặc tả cho vừa với những gì code đã làm được.
+- **Cấm tuyệt đối** trong thân SRS: nhãn trạng thái triển khai kiểu `[Đã triển khai]`/`[Yêu cầu mới]`/`[Chưa có trong hệ thống]`, câu văn dạng "hiện tại hệ thống chưa/đã...", bảng đối chiếu mã nguồn, hoặc bất kỳ hình thức neo nội dung nghiệp vụ vào giới hạn kỹ thuật hiện tại. SRS mô tả **một trạng thái đích duy nhất**, không mô tả lộ trình hay khoảng cách với hiện trạng.
+- Đối chiếu code (nếu cần) chỉ phục vụ **kiểm chứng nhãn** đã dùng đúng thuật ngữ nghiệp vụ đang tồn tại (ví dụ: tên trạng thái, tên vai trò) để tránh bịa ra khái niệm không khớp hệ thống — không phải để quyết định phạm vi hay mức độ chặt của một quy tắc nghiệp vụ. Nếu code hiện tại làm được ít hơn những gì SRS yêu cầu, đó là việc phải lập issue triển khai/sửa code, **không phải lý do để viết lại SRS cho khớp**.
+- Áp dụng cho mọi vòng review: người review SRS không được hạ mức nghiêm trọng của một phát hiện, hoặc gợi ý nới lỏng một quy tắc, chỉ vì "code hiện tại chưa làm được đến thế".

@@ -478,7 +478,7 @@ Bốn nguyên tắc:
 
 **Quy tắc nghiệp vụ:**
 - `BR-12.1 (Chính sách chuyển đổi giai đoạn)`: Tuân thủ quy tắc chuyển đổi có kiểm soát; khi chuyển giai đoạn, hệ thống ghi nhận thời điểm chuyển và người thực hiện.
-- `BR-12.2 (Tự động nâng cấp)`: Khi một liên hệ được tạo mới một Deal, hệ thống tự động nâng cấp giai đoạn lên tối thiểu là `Opportunity`. Khi Deal chuyển sang `Closed Won`, hệ thống tự động nâng cấp lên `Customer`.
+- `BR-12.2 (Tự động nâng cấp)`: Khi một liên hệ được tạo mới một Deal, hệ thống tự động nâng cấp giai đoạn lên tối thiểu là `Opportunity`. Khi Deal chuyển sang `Closed Won`, hệ thống tự động nâng cấp lên `Customer`. Sự kiện tạo Deal và đóng thắng do phân hệ Cơ hội bán hàng phát ra — xem [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) (`FEAT-18`/`BR-18.4`).
 - `BR-12.3 (Quy tắc Đa Cơ hội & Xử lý khi Deal Thất bại) [Yêu cầu mới]`:
   - Khách hàng đã đạt giai đoạn `Customer` (do có ít nhất 1 Deal `Closed Won`) sẽ **không bị hạ hạng** khi có các Deal Upsell/Cross-sell tiếp theo bị `Closed Lost`.
   - Đối với Contact chưa từng là `Customer`: khi tất cả Deal đều `Closed Lost`, hệ thống **không tự động hạ cấp** mà chuyển sang giai đoạn `Nurturing` và yêu cầu Sales nhập "Lý do không chuyển đổi" để Marketing có kịch bản tái tiếp cận phù hợp.
