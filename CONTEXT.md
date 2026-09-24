@@ -249,14 +249,14 @@ Giao diện dạng bảng thẻ kéo thả phân chia theo các cột giai đo�
 Khoảng thời gian một cơ hội đã nằm yên tại một giai đoạn cụ thể trước khi chuyển sang giai đoạn khác, dùng để phát hiện điểm nghẽn quy trình và tính toán vận tốc bán hàng.
 
 **Cơ hội Nguội Lạnh (Stale Deal)**:
-Cơ hội bán hàng không có bất kỳ tương tác nào vượt quá ngưỡng thời gian quy định, cần được hệ thống tự động đánh dấu cảnh báo để người phụ trách kịp thời xử lý. **Trạng thái triển khai:** chưa có trong hệ thống — xem `FEAT-17` tại [`deals-pipeline-srs.md`](./srs/deals-pipeline-srs.md); hiện chỉ có sẵn trường "thời điểm tương tác gần nhất" làm nền tảng để xây tính năng này.
-_Avoid_: Mô tả tính năng này như đã vận hành — SRS v5.1 từng gắn nhãn "Đã triển khai" sai; đối chiếu mã nguồn 2026-09-23 xác nhận chưa tồn tại.
+Cơ hội bán hàng đang mở không có bất kỳ tương tác nào vượt quá ngưỡng thời gian quy định, được hệ thống tự động đánh dấu cảnh báo để người phụ trách kịp thời xử lý. Ngưỡng là tham số cấu hình theo Không gian làm việc. Xem `FEAT-17` tại [`deals-pipeline-srs.md`](./srs/deals-pipeline-srs.md).
+_Avoid_: Tính mọi thao tác sửa bản ghi là "có tương tác" — chỉnh sửa trường nội bộ của quản trị viên không phải là chăm sóc khách hàng, và nếu tính vào thì cơ chế cảnh báo mất hoàn toàn ý nghĩa.
 
 **Lịch Chăm sóc Tiếp theo (Follow-up Reminder)**:
 Thời điểm cam kết tương tác tiếp theo với khách hàng do người phụ trách thiết lập; hệ thống chủ động quét và nhắc khi đến hạn, đồng thời tạo một Công việc mới giao cho người phụ trách (không chỉ là một thông báo thoáng qua).
 
 **Lý do Thất bại (Loss Reason)**:
-Nội dung giải thích bắt buộc phải khai báo khi chuyển cơ hội sang Đóng Thất bại. **Trạng thái triển khai:** hiện là văn bản tự do; danh mục lý do chuẩn hóa để chọn (kèm khái niệm "đối thủ cạnh tranh") là nhu cầu nghiệp vụ mới, chưa triển khai — xem `FEAT-20`.
+Nội dung bắt buộc phải khai báo khi chuyển cơ hội sang Đóng Thất bại, chọn từ một **danh mục chuẩn hóa do từng Không gian làm việc tự định nghĩa** (`FEAT-20`), có thể kèm ghi chú giải thích bổ sung. Một lý do đang được dùng trên bản ghi lịch sử chỉ được vô hiệu hóa, không xóa cứng.
 
 **Doanh thu Dự báo có Trọng số (Weighted Pipeline Forecast)**:
 Doanh thu kỳ vọng của một giai đoạn hoặc toàn phễu, bằng tổng của (giá trị từng cơ hội đang mở nhân với xác suất thắng của giai đoạn đang chứa nó). Báo cáo hiện **không quy đổi tiền tệ** khi một không gian làm việc có cơ hội thuộc nhiều loại tiền tệ khác nhau — chỉ cảnh báo trộn lẫn, không tự động chuẩn hóa về một đồng tiền cơ sở (xem `BR-02.2`).
@@ -287,7 +287,15 @@ Cơ chế tự động phát hiện khi một doanh nghiệp đã có cơ hội 
 Nghiệp vụ mở lại một cơ hội đã đóng để sửa kết quả Thắng/Thua, tách biệt hoàn toàn khỏi quyền sửa hoặc chuyển giai đoạn cơ hội thông thường — đòi hỏi một quyền hạn riêng, để kết quả doanh số đã chốt không bị đảo ngược tùy tiện.
 
 **Nhu cầu nghiệp vụ chưa triển khai (ghi nhận nhưng chưa đủ chín muồi để đặc tả):** Bảng giá & Chi tiết Dòng sản phẩm (CPQ), Quy trình Phê duyệt Chiết khấu, Trạng thái Tạm ngưng Cơ hội (On Hold), Phân chia Doanh số Đồng phụ trách, Nhóm Dự báo theo mức độ tin cậy (Forecast Categories), Hạn ngạch Doanh số (Sales Quota). Xem Mục 7 của [`deals-pipeline-srs.md`](./srs/deals-pipeline-srs.md) cho lý do hoãn từng nhu cầu.
-_Avoid_: "Deal Collaborator"/"Người cộng tác Cơ hội" như một vai trò ABAC có thật trong hệ thống — SRS v5.1 mô tả khái niệm này nhưng đối chiếu mã nguồn 2026-09-23 không tìm thấy vai trò này tồn tại; nếu cần, đây thuộc nhu cầu mới chưa thiết kế, không phải hành vi hiện tại.
+_Avoid_: Gọi đây là một "vai trò" — Người theo dõi là quyền cấp trên **từng bản ghi cụ thể**, cộng thêm vào phạm vi dữ liệu của người đó, không phải một vai trò hệ thống và không thay thế phạm vi dữ liệu.
+
+**Người Theo dõi Cơ hội (Deal Watcher)**:
+Nhân sự từ phòng ban khác (tư vấn giải pháp, kỹ thuật, pháp chế, tài chính) được thêm vào **một cơ hội cụ thể** để theo dõi và phối hợp. Họ xem hồ sơ, thêm ghi chú và nhận thông báo về đúng cơ hội đó, kể cả khi nó nằm ngoài phạm vi dữ liệu thông thường của họ — nhưng không chuyển giai đoạn, không sửa giá trị, không đóng và không xóa. Việc có xem được số liệu tài chính hay không vẫn theo quyền xem đầy đủ riêng. Xem `FEAT-35` tại [`deals-pipeline-srs.md`](./srs/deals-pipeline-srs.md).
+_Avoid_: Nhầm với Phân chia Doanh số (`FEAT-24`) — đó là bài toán chia hoa hồng giữa những người có công, khác hẳn với việc cho ai đó quyền xem.
+
+**Tái mở Cơ hội đã Thua (Deal Re-open)**:
+Khi một khách hàng từng thua quay lại có nhu cầu, nghiệp vụ đúng là **tạo một cơ hội mới có liên kết** tới cơ hội thua cũ, giữ nguyên kết quả và lý do thất bại của cơ hội cũ. Xem `FEAT-38`.
+_Avoid_: Dùng đường Tái phân loại Cơ hội Đã đóng (`FEAT-21`) cho tình huống này — tái phân loại là để **sửa một kết quả ghi nhận sai**, và dùng nhầm sẽ xóa mất kết quả thua khỏi lịch sử, làm hỏng tỷ lệ thắng lẫn dữ liệu phân tích nguyên nhân thất bại.
 
 ## Quản lý Vé Hỗ trợ & Dịch vụ Khách hàng (Tickets & Customer Service)
 

@@ -664,6 +664,10 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 - **`BR-18.3` (Kết quả sau khi đóng thắng):** Ghi nhận thời điểm thắng và chuyển cơ hội sang giai đoạn Thắng đã cấu hình của phễu. Giai đoạn Thắng luôn mang xác suất **100%** (`BR-06.2b`) — một hợp đồng đã chốt không còn là một khả năng để ước lượng, nên đây là hằng số nghiệp vụ, không phải một lựa chọn cấu hình.
 
+- **`BR-18.4` (Nâng Giai đoạn Vòng đời của khách hàng):** Khi một cơ hội được đóng thắng, Khách hàng và Doanh nghiệp liên quan được **tự động nâng Giai đoạn Vòng đời lên mức Khách hàng đã mua**. Tương tự, khi một cơ hội mới được tạo cho một khách hàng, giai đoạn vòng đời của họ được nâng lên tối thiểu mức Có cơ hội bán hàng.
+
+  **Lý do nghiệp vụ:** Giai đoạn vòng đời phải phản ánh đúng thực tế thương mại đã xảy ra giữa hai bên. Một khách hàng vừa ký hợp đồng mà hồ sơ vẫn đứng ở mức tiềm năng sẽ bị các chiến dịch tiếp thị đối xử như người chưa mua, và làm sai lệch mọi báo cáo phân tích theo giai đoạn vòng đời. Quy tắc chi tiết về ma trận chuyển giai đoạn thuộc [`contacts-srs.md`](./contacts-srs.md); phân hệ này chịu trách nhiệm **phát ra sự kiện đóng thắng** để việc nâng cấp xảy ra.
+
   **Lý do nghiệp vụ:** Nếu cho phép giai đoạn Thắng mang xác suất khác 100%, cơ hội đã thắng sẽ tiếp tục được nhân trọng số trong dự báo doanh thu (`BR-25.1`) — tức doanh thu đã chốt bị tính thiếu một cách có hệ thống. Điều này cũng tạo ra cách xử lý bất đối xứng vô lý với nhánh thua, vốn bị loại hẳn khỏi dự báo (`BR-19.2`).
 
 **Tiêu chí Chấp nhận:**
@@ -674,6 +678,8 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 | `AC-18.2.1` | Cơ hội "Chưa phân công", tham số `CFG-DEAL-05` đang bật (mặc định) | Cố gắng đóng thắng | Từ chối, yêu cầu gán người phụ trách trước |
 | `AC-18.2.2` | Quản trị viên tắt `CFG-DEAL-05` | Đóng thắng cơ hội "Chưa phân công" | Cho phép |
 | `AC-18.3.1` | Cơ hội đủ điều kiện, giai đoạn Thắng có xác suất cấu hình 100% | Đóng thắng | Ghi nhận thời điểm thắng, chuyển giai đoạn Thắng |
+| `AC-18.4.1` | Khách hàng X đang ở giai đoạn vòng đời mức tiềm năng, có một cơ hội đang mở | Đóng thắng cơ hội đó | Giai đoạn vòng đời của X tự động lên mức Khách hàng đã mua |
+| `AC-18.4.2` | Khách hàng Y đang ở giai đoạn vòng đời mức tiềm năng, chưa có cơ hội nào | Tạo một cơ hội mới cho Y | Giai đoạn vòng đời của Y tự động lên tối thiểu mức Có cơ hội bán hàng |
 
 ---
 
@@ -954,15 +960,21 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 **Quy tắc nghiệp vụ:**
 
-- **`BR-31.1` (Điều kiện cảnh báo):** Nếu cơ hội có ít nhất một Vé hỗ trợ đang mở ở mức độ ưu tiên cao nhất, thẻ cơ hội trên Kanban hiển thị dấu hiệu cảnh báo trực quan.
+- **`BR-31.1` (Hiển thị cảnh báo trên thẻ cơ hội):** Thẻ cơ hội trên Bảng Kanban hiển thị dấu hiệu cảnh báo khi khách hàng của cơ hội đó có vé hỗ trợ đang mở thỏa điều kiện rủi ro do doanh nghiệp cấu hình. Cảnh báo tự biến mất khi không còn vé nào thỏa điều kiện.
+
+  Điều kiện phát cảnh báo, các tham số cấu hình đi kèm và cách xem nhanh danh sách vé gây ra cảnh báo được đặc tả tại [`tickets-srs.md`](./tickets-srs.md) (FEAT-30) — phân hệ Vé hỗ trợ sở hữu quy tắc này. Phân hệ Cơ hội bán hàng chịu trách nhiệm **hiển thị cảnh báo trên thẻ Kanban** và bảo đảm việc hiển thị tuân thủ phạm vi dữ liệu của người xem.
+
+- **`BR-31.2` (Không tiết lộ dữ liệu ngoài quyền):** Người xem chỉ thấy chi tiết các vé nằm trong phạm vi quyền của mình. Nếu cơ hội có vé gây rủi ro nhưng người xem không có quyền xem vé đó, cảnh báo vẫn hiển thị nhưng không kèm thông tin chi tiết về vé.
+
+  **Lý do nghiệp vụ:** Bản thân việc "khách hàng này đang có sự cố" là thông tin nhân viên kinh doanh cần biết để không đàm phán sai thời điểm, nhưng nội dung khiếu nại có thể chứa dữ liệu nhạy cảm mà họ không có quyền đọc. Ẩn cảnh báo hoàn toàn sẽ khiến người bán bước vào cuộc đàm phán mà không biết rủi ro.
 
 **Tiêu chí Chấp nhận:**
 
 | Mã AC | Bối cảnh | Hành động | Kết quả mong đợi |
 | --- | --- | --- | --- |
-| `AC-31.1.1` | Cơ hội có 1 Vé hỗ trợ đang mở ở mức ưu tiên cao nhất | Mở Kanban | Thẻ cơ hội hiển thị dấu hiệu cảnh báo |
-| `AC-31.1.2` | Tiếp nối AC-31.1.1 | Vé hỗ trợ được đóng | Dấu hiệu cảnh báo biến mất khỏi thẻ |
-
+| `AC-31.1.1` | Cơ hội có khách hàng đang có vé hỗ trợ đang mở thỏa điều kiện rủi ro đã cấu hình | Mở Bảng Kanban | Thẻ cơ hội hiển thị dấu hiệu cảnh báo |
+| `AC-31.1.2` | Tiếp nối AC-31.1.1 | Vé hỗ trợ được giải quyết xong | Dấu hiệu cảnh báo tự biến mất khỏi thẻ, không cần thao tác thủ công |
+| `AC-31.2.1` | Cơ hội có vé gây cảnh báo, nhưng người xem không có quyền xem vé đó | Mở Bảng Kanban và bấm vào dấu hiệu cảnh báo | Vẫn thấy cảnh báo; không hiển thị chi tiết nội dung vé |
 
 ---
 

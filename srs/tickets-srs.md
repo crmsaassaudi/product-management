@@ -1013,7 +1013,9 @@ Hai mốc này chạy song song từ cùng thời điểm, không nối tiếp n
 **Quy tắc nghiệp vụ:**
 - `BR-30.1 (Điều kiện bắn cảnh báo)`: Doanh nghiệp cấu hình điều kiện hiển thị cảnh báo — tối thiểu theo mức ưu tiên của vé đang mở và theo việc vé có đang vi phạm cam kết hay không.
 - `BR-30.2 (Tự động tắt khi hết điều kiện)`: Cảnh báo tự động biến mất khi không còn vé nào thỏa điều kiện, không cần thao tác thủ công.
-- `BR-30.3 (Xem nhanh bối cảnh)`: Nhân viên kinh doanh xem được danh sách vé gây ra cảnh báo (mã số, mức ưu tiên, tình trạng) trong phạm vi quyền của mình, để biết mức độ nghiêm trọng trước khi liên hệ khách hàng.
+- `BR-30.3 (Xem nhanh bối cảnh)`: Nhân viên kinh doanh xem được danh sách vé gây ra cảnh báo (mã số, mức ưu tiên, tình trạng) trong phạm vi quyền của mình, để biết mức độ nghiêm trọng trước khi liên hệ khách hàng. Nếu người xem không có quyền xem vé gây cảnh báo, **cảnh báo vẫn hiển thị nhưng không kèm chi tiết vé** — bản thân việc khách hàng đang có sự cố là thông tin người bán cần biết, còn nội dung khiếu nại thì không.
+
+**Ranh giới với phân hệ Cơ hội bán hàng:** Phân hệ Vé hỗ trợ sở hữu **điều kiện phát cảnh báo** và các tham số cấu hình đi kèm. Việc **hiển thị cảnh báo trên thẻ Kanban** thuộc [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) (FEAT-31).
 
 
 **Trạng thái triển khai:** Đã triển khai đầy đủ theo GitHub Issue #225 (`crmsaassaudi/product-management#225`).

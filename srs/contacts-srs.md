@@ -194,7 +194,7 @@ Khách hàng để lại thông tin qua Website Form, Livechat, Quảng cáo, S�
 Hệ thống chấm điểm tiềm năng theo hồ sơ và hành vi (FEAT-15) → Khi vượt ngưỡng điểm quy định, bản ghi tự động thăng hạng `Lead → MQL` (BR-15.5) → Đội kinh doanh phải phản hồi trong thời hạn cam kết, nếu quá hạn hệ thống thu hồi và chia lại (BR-31.7) → Sales thẩm định trực tiếp và chuyển `MQL → SQL`; nếu chưa sẵn sàng mua thì chuyển `Nurturing` kèm lý do; nếu không phù hợp thì `Disqualified` kèm lý do (BR-12.4) → Khách không tương tác lâu bị suy giảm điểm để phản ánh độ nguội (FEAT-16).
 
 **Giai đoạn 3 — Chuyển đổi (Conversion):**
-Sales kích hoạt Chuyển đổi 1-Click (FEAT-14): nâng cấp Liên hệ, liên kết hoặc tạo mới Doanh nghiệp, tạo Cơ hội bán hàng trong một giao dịch nguyên tử → Giai đoạn tự động lên `Opportunity` (BR-12.2) → Nếu chuyển đổi sai, Quản lý được hoàn tác trong 24 giờ (BR-14.2).
+Sales kích hoạt Chuyển đổi 1-Click (FEAT-14): nâng cấp Liên hệ, liên kết hoặc tạo mới Doanh nghiệp, tạo Cơ hội bán hàng mới **hoặc gắn vào Cơ hội đang mở sẵn có của cùng Doanh nghiệp trên cùng Phễu** (BR-14.3) — tất cả trong một giao dịch nguyên tử → Giai đoạn tự động lên `Opportunity` (BR-12.2) → Nếu chuyển đổi sai, Quản lý được hoàn tác trong 24 giờ (BR-14.2).
 
 **Giai đoạn 4 — Phục vụ & Mở rộng (Serve & Expand):**
 Nhiều bộ phận cùng phục vụ một khách hàng qua Đội ngũ phụ trách (FEAT-35) → Mọi tương tác hợp nhất về Dòng thời gian 360 độ (FEAT-27), trong đó ghi chú và bản ghi hoạt động là nguồn dữ liệu chính (FEAT-36) → Tư vấn viên tra cứu ngữ cảnh 1 chạm khi tiếp nhận hội thoại, truy cập được nhờ quyền đọc tự động khi vé/hội thoại đang mở (FEAT-28, BR-35.4) → Khi cơ hội thắng, giai đoạn tự lên `Customer`; người phụ trách trở thành Quản lý Khách hàng Hiện hữu → Quan hệ đa công ty và mạng lưới quan hệ cá nhân được khai thác cho bán hàng mở rộng (FEAT-10, 11) → Cấu trúc tập đoàn mẹ-con phục vụ bán hàng theo tập đoàn (FEAT-07).
@@ -534,13 +534,21 @@ Bốn nguyên tắc:
 2. Hộp thoại chuyển đổi hiển thị với 3 tùy chọn liên kết:
    - **Liên hệ (Contact):** Nâng cấp bản ghi hiện tại thành Contact chính thức. Giai đoạn đích: `SQL` nếu không tạo Cơ hội bán hàng kèm theo; `Opportunity` nếu có tạo Cơ hội. Cả hai bước chuyển đều hợp lệ kể cả khi Contact đang ở `Subscriber`/`Lead`/`MQL`: nhánh `→ Opportunity` theo **BR-12.9** (bước chuyển tự sinh từ sự kiện Cơ hội bán hàng); nhánh `→ SQL` theo **BR-15.6** và đã được liệt kê tường minh trong ma trận FEAT-12 ở cả ba dòng đó.
    - **Doanh nghiệp (Account):** Chọn liên kết với một Doanh nghiệp đã có sẵn hoặc tự động tạo mới Doanh nghiệp từ tên công ty của Lead.
-   - **Cơ hội Bán hàng (Deal):** Tùy chọn tạo ngay một Cơ hội bán hàng mới (nhập Tên Deal, Giá trị dự kiến, Phễu bán hàng và Giai đoạn khởi đầu).
+   - **Cơ hội Bán hàng (Deal):** Tùy chọn tạo ngay một Cơ hội bán hàng (nhập Tên Deal, Giá trị dự kiến, Phễu bán hàng và Giai đoạn khởi đầu). **Nếu Doanh nghiệp được liên kết đã có sẵn một Cơ hội đang mở trên cùng Phễu**, hệ thống hiển thị Cơ hội đó và mặc định gắn Liên hệ vào Cơ hội sẵn có thay vì tạo mới — xem `BR-14.3`.
 3. Người dùng bấm "Xác nhận chuyển đổi".
-4. **Hệ thống thực thi giao dịch nguyên tử (Atomic Transaction):** Cập nhật Contact, tạo/liên kết Account, tạo Deal, gán quyền sở hữu đồng nhất và chuyển hướng người dùng đến Cơ hội bán hàng vừa tạo.
+4. **Hệ thống thực thi giao dịch nguyên tử (Atomic Transaction):** Cập nhật Contact, tạo/liên kết Account, tạo Cơ hội mới **hoặc** gắn Liên hệ vào Cơ hội đang mở sẵn có (`BR-14.3`), gán quyền sở hữu đồng nhất và chuyển hướng người dùng đến Cơ hội bán hàng tương ứng.
 
 **Quy tắc nghiệp vụ:**
 - `BR-14.1 (Rollback toàn phần khi lỗi)`: Nếu bất kỳ bước nào trong giao dịch nguyên tử thất bại, toàn bộ giao dịch bị hủy (rollback). Không tạo Contact/Account/Deal ở trạng thái dang dở.
 - `BR-14.2 (Hoàn tác Chuyển đổi — Undo Conversion) [Yêu cầu mới]`: Trong vòng **24 giờ** (tham số cấu hình theo tenant, Phụ lục B `CFG-14-01`) sau khi chuyển đổi thành công, Quản lý Kinh doanh trở lên được phép thực hiện **Hoàn tác Chuyển đổi (Undo Lead Conversion)** với điều kiện Cơ hội bán hàng vừa tạo chưa có bất kỳ hoạt động thực tế nào (chưa có ghi chú, chưa chuyển giai đoạn bán hàng, chưa đính kèm tài liệu). Khi hoàn tác: (a) Cơ hội vừa tạo bị xóa mềm; (b) Doanh nghiệp vừa tạo bị xóa mềm nếu chưa có Contact nào khác liên kết; (c) Contact trở về **đúng giai đoạn trước khi chuyển đổi** (thông thường là `Lead`) — bước chuyển này là **ngoại lệ được ma trận cho phép** theo BR-12.9 và **không** yêu cầu lý do hạ hạng theo BR-12.7, nhưng bắt buộc nhập **lý do hoàn tác**; (d) Điểm tiềm năng và nguồn gốc UTM được giữ nguyên; (e) Hệ thống ghi nhật ký kiểm toán đầy đủ theo NFR-07.
+- `BR-14.3 (Chống tạo trùng Cơ hội khi chuyển đổi) [Yêu cầu mới]`: Trước khi tạo Cơ hội bán hàng mới, hệ thống bắt buộc kiểm tra Doanh nghiệp được liên kết đã có **Cơ hội nào đang mở trên cùng Phễu đích** hay chưa.
+  - **Nếu có:** mặc định gắn Liên hệ vừa chuyển đổi vào Cơ hội đang mở đó, không tạo Cơ hội mới. Người thực hiện được thông báo rõ đang gắn vào Cơ hội nào.
+  - **Nếu người dùng vẫn muốn tạo riêng:** cho phép chủ động chọn tạo Cơ hội mới, và **quyết định này được ghi nhận lại** trong nhật ký kiểm toán để phục vụ rà soát chất lượng dữ liệu.
+  - Phạm vi kiểm tra là **theo từng Phễu**, không phải toàn bộ Doanh nghiệp — một Doanh nghiệp hoàn toàn có thể có song song một Cơ hội bán mới và một Cơ hội gia hạn ở hai Phễu khác nhau.
+
+  **Lý do nghiệp vụ:** Không có quy tắc này, mỗi lần một nhân sự khác của cùng Doanh nghiệp được chuyển đổi sẽ sinh thêm một Cơ hội trùng lặp trên cùng một thương vụ. Hệ quả trực tiếp là **dự báo doanh thu bị thổi phồng nhiều lần** so với giá trị thật, và hai nhân viên có thể cùng đàm phán một hợp đồng mà không biết nhau — cùng loại rủi ro mà `BR-31.6` đã chặn ở khâu phân bổ Lead. Quy tắc tương ứng phía Cơ hội bán hàng tại [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) (FEAT-33).
+
+- `BR-14.4 (Giai đoạn vòng đời khi gắn vào Cơ hội sẵn có) [Yêu cầu mới]`: Khi Liên hệ được gắn vào một Cơ hội đang mở thay vì tạo Cơ hội mới, giai đoạn vòng đời của Liên hệ vẫn được nâng lên `Opportunity` theo `BR-12.2` — vì thực tế thương mại (người này đang tham gia một thương vụ) là như nhau ở cả hai nhánh.
 
 ---
 
@@ -1220,6 +1228,10 @@ Người kiểm thử ghi rõ trong biên bản đã dùng cách nào và giá t
 4. **Kỳ vọng:** Hệ thống thực thi giao dịch nguyên tử: Nâng cấp Contact từ `Lead` lên giai đoạn `Opportunity` (bước nhảy bậc này hợp lệ theo BR-12.9 vì đã có Cơ hội bán hàng mở), tạo Doanh nghiệp "Công ty CP Thực phẩm Vina", tạo Cơ hội trị giá 500 triệu và chuyển hướng nhân viên vào màn hình Cơ hội vừa tạo. Lịch sử giai đoạn ghi nhận bước chuyển với sự kiện nguồn là "Chuyển đổi Tiềm năng".
 5. **Kịch bản phụ (tạo Cơ hội trực tiếp không qua Chuyển đổi):** Nhân viên mở một Contact đang ở giai đoạn `MQL` và tạo Cơ hội bán hàng trực tiếp từ hồ sơ 360.
 6. **Kỳ vọng:** Hệ thống **không** chặn với lỗi "Bước chuyển giai đoạn không hợp lệ"; Contact tự động lên `Opportunity` theo BR-12.2 và BR-12.9.
+7. **Kịch bản phụ (Doanh nghiệp đã có Cơ hội đang mở — BR-14.3):** Một tuần sau, nhân viên khác chuyển đổi Lead "Nguyễn Văn Bình" cũng thuộc "Công ty CP Thực phẩm Vina", chọn cùng Phễu bán hàng với Cơ hội đã tạo ở bước 2.
+8. **Kỳ vọng:** Hộp thoại chuyển đổi hiển thị Cơ hội "Hợp đồng Cung ứng Nông sản Q3" đang mở và **mặc định gắn Liên hệ Bình vào Cơ hội đó**, không tạo Cơ hội thứ hai. Dự báo doanh thu vẫn chỉ ghi nhận 500 triệu, không thành 1 tỷ. Giai đoạn vòng đời của Bình vẫn lên `Opportunity` theo BR-14.4.
+9. **Kịch bản phụ (chủ động tạo riêng):** Nhân viên xác nhận vẫn muốn tạo Cơ hội riêng cho Bình vì đây là một dòng sản phẩm khác.
+10. **Kỳ vọng:** Hệ thống cho phép tạo Cơ hội thứ hai, và **ghi nhận quyết định này vào nhật ký kiểm toán** kèm người thực hiện.
 
 ---
 
