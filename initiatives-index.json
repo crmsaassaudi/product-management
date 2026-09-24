@@ -1,6 +1,20 @@
 {
   "initiatives": [
     {
+      "id": "feat-259",
+      "title": "Contacts: Rà soát và đồng bộ contacts-srs.md theo deals-pipeline-srs.md",
+      "primary_repo": "product-management",
+      "affected_repos": [
+        "product-management",
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "in-progress",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/259"
+      ]
+    },
+    {
       "id": "feat-245",
       "title": "Tasks: FEAT-06 Danh sách Công việc Lọc Nâng cao",
       "primary_repo": "crm-api",
