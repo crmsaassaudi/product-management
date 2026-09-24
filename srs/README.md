@@ -20,10 +20,10 @@ Khác với [`specs/`](../specs/README.md) (spec/PRD nháp *trước khi* code, 
   6. Kịch bản chấp nhận tổng hợp
   7. Giới hạn hiện tại & vấn đề tồn đọng
 - **Đánh số `FEAT-xx` liên tục xuyên suốt cả tài liệu** (không reset theo từng nhóm/chương, không dùng ký hiệu riêng kiểu `A1`/`BR-CHN-01`). Nếu tài liệu có nhiều nhóm chức năng, dùng tiêu đề nhóm (`## A. TÊN NHÓM`) để phân đoạn, nhưng mã `FEAT-xx` vẫn tăng dần đều qua các nhóm. Quy tắc nghiệp vụ trong một FEAT đánh số `BR-xx.n` theo đúng số FEAT chứa nó (vd. `BR-05.1`, `BR-05.2`).
-- **Nhãn trạng thái ngay sau tiêu đề mỗi FEAT**, chỉ 2 giá trị: `` `[Đã triển khai]` `` hoặc `` `[Yêu cầu mới]` `` — không dùng emoji hay câu dẫn giải xen giữa tiêu đề và nội dung. Nếu chỉ một BR cụ thể trong một FEAT `[Đã triển khai]` là quyết định mới, gắn nhãn `` `[Yêu cầu mới]` `` riêng ngay sau mã BR đó; các BR không có nhãn kế thừa trạng thái của FEAT chứa nó.
+- **Không dùng nhãn trạng thái triển khai ở bất kỳ đâu trong thân tài liệu.** SRS đặc tả một **trạng thái nghiệp vụ mục tiêu (To-Be) duy nhất** — điều doanh nghiệp cần đúng, không phải điều hệ thống hiện đang làm. Cấm tuyệt đối các nhãn kiểu `` `[Đã triển khai]` ``/`` `[Yêu cầu mới]` ``/`` `[Chưa có trong hệ thống]` ``, và cấm mọi câu văn hàm ý tiến độ triển khai ("hiện tại hệ thống chưa/đã...", "ở phạm vi hiện tại...", "khi FEAT-x được triển khai..."). Mọi quy tắc trong Mục 3 đều là yêu cầu bắt buộc như nhau, bất kể phần triển khai hiện tại đã đáp ứng hay chưa — nơi nào mã nguồn làm khác tài liệu thì mã nguồn phải sửa theo tài liệu (xem mục "SRS là chuẩn, code phải tuân theo" bên dưới). Nhu cầu nghiệp vụ **thật nhưng chưa đủ chín muồi để chốt phương án** (chưa quyết định được hướng nào đúng, không phải chưa kịp code) được gom riêng tại Mục 7 — đó là khác biệt duy nhất có ý nghĩa trong tài liệu: *đã chốt được điều đúng là gì* hay *chưa chốt được*.
 - **Không kể chuyện quá trình** (phiên rà soát, ai grilling ai, diff giữa các phiên bản tài liệu, việc AI tự tạo issue…) trong thân tài liệu — những thông tin đó thuộc lịch sử Git/issue tracker, không phải nội dung SRS. Header + đoạn "Ghi chú về nguồn gốc tài liệu" ở đầu file là nơi DUY NHẤT được phép nêu ngắn gọn nguồn gốc/quy ước nhãn.
 - **Link GitHub issue/ADR luôn đặt ở cuối mục**, dưới một dòng `**Tham chiếu:**` riêng — không chèn link hay số issue giữa câu mô tả nghiệp vụ. Không tạo phụ lục roadmap riêng liệt kê lại các issue theo độ ưu tiên (đó là việc của issue tracker, không phải SRS) — mỗi FEAT/BR tự mang tham chiếu của nó.
-- **Chỉ một mục tổng hợp duy nhất cho các vấn đề chưa quyết định**, ở cuối tài liệu (Mục 7) — không lặp lại một khối "Vấn đề tồn đọng" sau mỗi nhóm chức năng. Mục 7 chỉ chứa các điểm **thực sự chưa có quyết định**; các điểm đã chốt phương án nhưng chưa code thuộc về nhãn `[Yêu cầu mới]` ở Mục 3, không lặp lại ở đây.
+- **Chỉ một mục tổng hợp duy nhất cho các vấn đề chưa quyết định**, ở cuối tài liệu (Mục 7) — không lặp lại một khối "Vấn đề tồn đọng" sau mỗi nhóm chức năng. Mục 7 chỉ chứa các điểm **thực sự chưa có quyết định nghiệp vụ**; các điểm đã chốt phương án (bất kể đã code hay chưa) được đặc tả đầy đủ ngay tại FEAT/BR tương ứng ở Mục 3, không lặp lại ở đây.
 - SRS **nên** neo vào một **commit cụ thể** của (các) repo triển khai (ghi ở đầu file) khi người viết có quyền truy cập repo đó để lấy hash thật — SRS mô tả trạng thái tại thời điểm đó, không tự động đúng mãi mãi. Không bịa hash khi không xác minh được; ghi rõ "chưa xác định" thay vì bỏ trống âm thầm. Khi code đổi đáng kể, cập nhật SRS (và neo lại commit mới nếu có) trong cùng PR hoặc issue theo dõi riêng, đừng để SRS trôi khỏi code.
 - Nếu module đã có audit report riêng (ví dụ `docs/audit/OBJECT_MANAGER_AUDIT.md` ở `crm-api`), SRS **không lặp lại** danh sách defect - chỉ dẫn chiếu và tóm tắt phần còn ảnh hưởng đến hành vi hiện tại ở mục "Giới hạn đã biết".
 - SRS viết theo văn phong Business Analyst: theo tính năng/use case, quy tắc nghiệp vụ bằng ngôn ngữ nghiệp vụ. Vẫn cần đọc code/khảo sát hệ thống thật trước khi viết (để mô tả đúng hành vi), nhưng phần đó không xuất hiện trong thân tài liệu. **Ranh giới cụ thể của "ngôn ngữ nghiệp vụ" và cách tự kiểm tra: xem mục [Ngôn ngữ nghiệp vụ](#ngôn-ngữ-nghiệp-vụ-ranh-giới-bắt-buộc) bên dưới — đây là lỗi tái diễn nhiều lần, không phải khuyến nghị văn phong.**
@@ -59,7 +59,7 @@ Một `BR-xx.n` chỉ mô tả *hệ thống làm gì* là chưa đủ. Với m�
 
 ### Mỗi FEAT phải có bảng Tiêu chí Chấp nhận (AC)
 
-Mỗi FEAT `[Đã triển khai]` hoặc thuộc phạm vi phát hành phải có bảng AC với đúng ba cột: **Bối cảnh — Hành động — Kết quả mong đợi**. Mã AC đánh theo BR mà nó kiểm chứng (`AC-05.3.1` kiểm chứng `BR-05.3`).
+Mỗi FEAT thuộc phạm vi đặc tả (mọi FEAT trong Mục 3, trừ các nhu cầu chưa chốt phương án gom ở Mục 7) phải có bảng AC với đúng ba cột: **Bối cảnh — Hành động — Kết quả mong đợi**. Mã AC đánh theo BR mà nó kiểm chứng (`AC-05.3.1` kiểm chứng `BR-05.3`).
 
 Yêu cầu về nội dung AC:
 - Mô tả **điều người dùng quan sát được**, không mô tả trạng thái nội bộ của hệ thống.
@@ -112,7 +112,7 @@ Hệ quả bắt buộc:
 | File | Phân hệ / Module | Trạng thái | Ngày cập nhật |
 | --- | --- | --- | --- |
 | [`onboarding-srs.md`](./onboarding-srs.md) | Tiếp nhận & Khởi tạo Không gian làm việc (Onboarding & Provisioning) | Version 2.0 (Target Standard) | 2026-08-28 |
-| [`contacts-srs.md`](./contacts-srs.md) | Quản lý Khách hàng & Danh bạ Doanh nghiệp (Contacts & Accounts) | Version 2.2 (Standardized Business SRS) | 2026-08-29 |
+| [`contacts-srs.md`](./contacts-srs.md) | Quản lý Khách hàng & Danh bạ Doanh nghiệp (Contacts & Accounts) | Version 7.0 (Chuẩn hóa Nghiệp vụ Thuần túy) | 2026-09-24 |
 | [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) | Quản lý Cơ hội & Phễu Bán hàng (Deals & Pipelines) | Version 6.0 (Chuẩn hóa Nghiệp vụ Thuần túy) | 2026-09-23 |
 | [`tickets-srs.md`](./tickets-srs.md) | Quản lý Vé Hỗ trợ & Dịch vụ Khách hàng (Tickets & Customer Service) | Version 2.2 (Standardized Business SRS) | 2026-08-29 |
 | [`tasks-srs.md`](./tasks-srs.md) | Quản lý Công việc, Lịch trình & Ghi nhận Tương tác (Tasks, Calendar & Activity Logging) | Version 6.0 (Chuẩn hóa Nghiệp vụ Thuần túy) | 2026-09-17 |
