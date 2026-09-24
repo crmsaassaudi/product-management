@@ -294,7 +294,9 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
   **Lý do nghiệp vụ:** Cùng một số điện thoại viết theo nhiều cách ("0908 123 456", "+84908123456") sẽ không khớp nhau khi kiểm tra trùng lặp theo Tiêu chí chắc chắn (`BR-17.1`), làm `KPI-01` không đạt được.
 
-- **`BR-01.3` (Người phụ trách & đơn vị tổ chức khi tạo mới):** Khi tạo mới, người tạo tự động được gán làm Người phụ trách, và Đơn vị tổ chức của bản ghi được gán theo Đơn vị tổ chức của người tạo, trừ khi người có quyền chỉ định khác.
+- **`BR-01.3` (Người phụ trách & đơn vị tổ chức):** Khi tạo mới, người tạo tự động được gán làm Người phụ trách. Đơn vị tổ chức của bản ghi luôn theo **Đơn vị tổ chức của Người phụ trách hiện tại** — tại thời điểm tạo mới là đơn vị của người tạo, trừ khi người có quyền chỉ định người phụ trách khác ngay từ đầu; khi Người phụ trách đổi qua bàn giao (`FEAT-34`), Đơn vị tổ chức chuyển theo ngay lập tức. Nhất quán với quy tắc tương ứng của Cơ hội bán hàng tại [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) (Nguyên tắc 4 và `BR-01.2` của tài liệu đó).
+
+  **Lý do nghiệp vụ:** Nếu Đơn vị tổ chức giữ nguyên theo người tạo ban đầu sau khi bàn giao, Quản lý của người nhận sẽ không thấy khách hàng đó trong phạm vi "Đơn vị của mình" dù cấp dưới của họ đang là người thực sự xử lý — đúng lỗ hổng mà Nguyên tắc 4 của `deals-pipeline-srs.md` đã chỉ ra cho Cơ hội bán hàng, và không có lý do nghiệp vụ nào để khách hàng bị xử lý khác đi.
 
 - **`BR-01.4` (Phạm vi dữ liệu):** Người dùng chỉ xem và sửa được khách hàng thuộc phạm vi dữ liệu được gán, theo bốn mức từ hẹp tới rộng: **Chỉ của mình** / **Của mình + cấp dưới và đơn vị của mình** / **Cả nhánh đơn vị** / **Toàn Không gian làm việc**. Định nghĩa từng mức và cách phân giải khi một người giữ nhiều vai trò thuộc [`iam-tenant-authorization.md`](./iam-tenant-authorization.md). Khi người dùng mở một bản ghi ngoài phạm vi, hệ thống xử lý theo `BR-17.3`.
 
@@ -539,7 +541,11 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 - **`BR-06.1` (Thông tin doanh nghiệp):** Gồm Tên công ty (bắt buộc), Tên thương mại/viết tắt, Mã số thuế hoặc mã định danh doanh nghiệp, Ngành nghề kinh doanh, Quy mô nhân sự, Doanh thu hằng năm, Website, Địa chỉ trụ sở, Số điện thoại tổng đài.
 
-- **`BR-06.2` (Căn cứ nhận diện trùng):** Mã số thuế hoặc tên miền website là căn cứ để hệ thống tự động kiểm tra trùng lặp doanh nghiệp khi tạo mới và khi nhập khẩu; khi phát hiện trùng, hệ thống cảnh báo kèm doanh nghiệp đã có.
+- **`BR-06.2` (Căn cứ nhận diện trùng, hai mức độ tin cậy):** Áp dụng cùng mô hình hai mức độ tin cậy với `BR-17.1`:
+  - **Tiêu chí chắc chắn:** trùng khớp chính xác **mã số thuế**. Một mã số thuế chỉ thuộc đúng một pháp nhân theo quy định pháp luật, nên trùng theo tiêu chí này **chặn tạo doanh nghiệp mới**, theo đúng chính sách xử lý tại `BR-17.2` (tenant đổi được sang "Chỉ cảnh báo" qua `CFG-17-01`).
+  - **Tiêu chí tham khảo:** trùng khớp **tên miền website**. Tên miền thường dùng chung hợp lệ giữa công ty mẹ và các công ty con (`FEAT-07`), nên trùng theo tiêu chí này **chỉ cảnh báo mềm**, không bao giờ chặn tạo mới và không bao giờ dùng làm căn cứ gộp tự động — cùng nguyên tắc với Tiêu chí tham khảo của khách hàng cá nhân.
+
+  **Lý do nghiệp vụ:** Coi tên miền là căn cứ chắc chắn sẽ chặn đúng nghiệp vụ hợp lệ mà `FEAT-07` cần: tạo một công ty con dùng chung tên miền với công ty mẹ. Mã số thuế không có rủi ro đó vì mỗi pháp nhân có đúng một mã, kể cả trong cùng một tập đoàn.
 
   **Lý do nghiệp vụ:** Tên công ty không phải căn cứ tin cậy ("Cty CP ABC" và "ABC Corp" là một), trong khi mã số thuế là định danh pháp lý duy nhất của pháp nhân.
 
@@ -788,6 +794,14 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
   **Lý do nghiệp vụ:** Hạ một khách đã trả tiền về tiền bán hàng chỉ vì một đơn bán thêm thất bại sẽ đẩy họ vào chiến dịch săn khách mới và làm sai báo cáo doanh thu. Với khách chưa mua, thất bại của cơ hội không có nghĩa là khách hết tiềm năng — họ cần được nuôi dưỡng, không bị loại.
 
+- **`BR-12.3b` (Cơ hội mở duy nhất biến mất mà không qua đóng Thua):** Định nghĩa giai đoạn Opportunity là "đang có ít nhất một Cơ hội mở gắn với khách hàng chưa từng là Customer". Khi Cơ hội mở duy nhất đó không còn gắn với khách hàng **mà không qua đóng Thua** — bị xóa mềm, được chuyển sang gắn với khách hàng khác, hoặc khách hàng bị gỡ khỏi Cơ hội — và khách hàng không còn Cơ hội mở nào khác, hệ thống áp **đúng cách xử lý của `BR-12.3`** cho khách chưa từng là Customer: tự động chuyển sang Nurturing, bắt buộc chọn Lý do không chuyển đổi từ A.2.
+
+  **Lý do nghiệp vụ:** Hệ quả quan sát được giống hệt trường hợp toàn bộ Cơ hội Thua — khách không còn Cơ hội mở nào — nên phải nhận cùng một xử lý; nếu không, khách đứng mãi ở Opportunity dù không có Cơ hội nào đang vận động, làm sai báo cáo phễu và khiến khách này không bao giờ vào lại vòng nuôi dưỡng của Marketing.
+
+- **`BR-12.3c` (Tái phân loại Cơ hội Thắng duy nhất thành Thua):** Khi [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) (`FEAT-21` của tài liệu đó) tái phân loại một Cơ hội đã Thắng thành Thua, và đó là Cơ hội Thắng **duy nhất** đã đưa khách hàng lên Customer, hệ thống **không tự động hạ giai đoạn** — khách hàng **giữ nguyên Customer** theo nguyên tắc 4, vì tái phân loại là sửa một sai sót ghi nhận quá khứ, không phải một sự kiện thương mại mới, và việc tự động hạ giai đoạn có thể diễn ra giữa lúc hợp đồng, hóa đơn hay nghĩa vụ pháp lý khác đã phát sinh thật ngoài hệ thống dựa trên trạng thái Customer đó. Hệ thống **bắt buộc cảnh báo** Quản lý Kinh doanh trở lên rà soát thủ công, cùng cơ chế cảnh báo đã dùng khi mở lại một bản ghi Disqualified (`BR-12.4`); Quản lý là người duy nhất quyết định có hạ giai đoạn theo `BR-12.7` (kèm lý do) hay giữ nguyên.
+
+  **Lý do nghiệp vụ:** Nguyên tắc 1 (giai đoạn phản ánh thực tế) chi phối các sự kiện thương mại mới phát sinh, không chi phối việc sửa lại một sự kiện quá khứ đã ghi sai — áp dụng nguyên tắc 1 một cách máy móc vào tình huống này sẽ tự động hạ một khách hàng đang được nguyên tắc 4 bảo vệ tuyệt đối, chỉ vì một thao tác sửa dữ liệu ở một phân hệ khác, mà không ai trong tổ chức chủ động quyết định điều đó.
+
 - **`BR-12.4` (Chuyển Disqualified):** Chỉ Quản lý Kinh doanh trở lên mới được chuyển khách hàng ở giai đoạn tiền bán hàng sang Disqualified, bắt buộc chọn lý do loại từ A.1. Mở lại một bản ghi Disqualified về Lead hoặc Nurturing cũng chỉ Quản lý Kinh doanh trở lên thực hiện, bắt buộc chọn lý do từ A.17.
 
   **Lý do nghiệp vụ:** Loại khách là quyết định rút một bản ghi khỏi mọi chiến dịch và mọi phân bổ; nếu nhân viên tự loại được, khách khó chăm sóc sẽ bị loại để làm đẹp chỉ số cá nhân.
@@ -842,6 +856,12 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | `AC-12.3.1` | Khách hàng ở Customer, có thêm một Cơ hội bán thêm | Cơ hội bán thêm bị đóng Thua | Giai đoạn vẫn là Customer |
 | `AC-12.3.2` | Khách hàng ở Opportunity, chưa từng là Customer, có 2 Cơ hội đang mở | Cả hai Cơ hội bị đóng Thua | Giai đoạn chuyển sang Nurturing; nhân viên được yêu cầu chọn Lý do không chuyển đổi từ A.2 trước khi lưu |
 | `AC-12.3.3` | Khách hàng ở Opportunity có 2 Cơ hội đang mở | Một Cơ hội bị đóng Thua, Cơ hội còn lại vẫn mở | Giai đoạn vẫn là Opportunity |
+| `AC-12.3b.1` | Khách hàng chưa từng là Customer, ở Opportunity nhờ đúng 1 Cơ hội đang mở | Cơ hội đó bị xóa mềm | Giai đoạn chuyển sang Nurturing; yêu cầu chọn Lý do không chuyển đổi từ A.2 |
+| `AC-12.3b.2` | Khách hàng chưa từng là Customer, ở Opportunity nhờ đúng 1 Cơ hội đang mở | Cơ hội đó được sửa để gắn sang một khách hàng khác | Khách hàng ban đầu chuyển sang Nurturing kèm lý do; khách hàng mới được gắn Cơ hội không tự động lên Opportunity qua quy tắc này (áp dụng `BR-12.2` như một Cơ hội thông thường) |
+| `AC-12.3b.3` | Khách hàng ở Customer (đã có Cơ hội Thắng trước đó), đồng thời có 1 Cơ hội bán thêm đang mở | Cơ hội bán thêm đó bị xóa mềm | Giai đoạn vẫn là Customer — `BR-12.3b` chỉ áp dụng cho khách chưa từng là Customer |
+| `AC-12.3c.1` | Khách hàng ở Customer nhờ đúng 1 Cơ hội Thắng, không có Cơ hội Thắng nào khác | Cơ hội đó được tái phân loại thành Thua (`FEAT-21` của [`deals-pipeline-srs.md`](./deals-pipeline-srs.md)) | Giai đoạn vẫn là Customer, không tự động hạ; Quản lý Kinh doanh trở lên nhận cảnh báo rà soát |
+| `AC-12.3c.2` | Tiếp nối AC-12.3c.1 | Quản lý Kinh doanh rà soát, xác nhận khách chưa từng thực sự mua, chủ động hạ giai đoạn theo `BR-12.7` | Giai đoạn hạ xuống theo lựa chọn của Quản lý, kèm lý do bắt buộc |
+| `AC-12.3c.3` | Khách hàng ở Customer nhờ 2 Cơ hội Thắng | Một trong hai Cơ hội Thắng bị tái phân loại thành Thua | Giai đoạn vẫn là Customer, không cảnh báo theo `BR-12.3c` — khách vẫn còn ít nhất một Cơ hội Thắng khác xác nhận thực tế đã mua |
 | `AC-12.4.1` | Nhân viên Kinh doanh xem hồ sơ khách ở Lead | Tìm hành động chuyển Disqualified | Không có hành động này (chỉ có "Lead rác" theo `BR-12.4b`) |
 | `AC-12.4.2` | Quản lý Kinh doanh chuyển khách ở MQL sang Disqualified | Bỏ trống lý do, lưu | Từ chối; danh sách lý do chỉ gồm các giá trị A.1 |
 | `AC-12.4.3` | Khách ở Disqualified, có bằng chứng mới | Quản lý Kinh doanh mở lại về Lead | Bắt buộc chọn lý do từ A.17; lịch sử ghi nhận lý do mở lại |
@@ -940,6 +960,12 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 - **`BR-14.4` (Giai đoạn khi gắn vào Cơ hội sẵn có):** Khi Liên hệ được gắn vào một Cơ hội đang mở thay vì tạo Cơ hội mới, giai đoạn của Liên hệ vẫn được nâng lên Opportunity theo `BR-12.2`, vì thực tế thương mại (người này đang tham gia một thương vụ) là như nhau ở cả hai nhánh.
 
+- **`BR-14.5` (Hoàn tác Chuyển đổi ở nhánh gắn vào Cơ hội sẵn có):** `BR-14.2` áp dụng nguyên vẹn cho các bước (c), (d), (e); các bước (a) và (b) **không áp dụng** ở nhánh này, vì Cơ hội và Doanh nghiệp liên quan đã tồn tại từ trước lần chuyển đổi này và có thể đang phục vụ một thương vụ khác — hoàn tác không bao giờ được xóa chúng. Thay vào đó:
+  - **(a')** Hệ thống chỉ **gỡ liên kết** giữa Liên hệ và Cơ hội sẵn có, với điều kiện tương đương: Liên hệ đó **chưa có hoạt động thực tế nào của riêng mình** trên Cơ hội (chưa được gắn Vai trò liên hệ khác với lúc gắn tự động, chưa có ghi chú hay hoạt động nhắc tới Liên hệ này gắn với Cơ hội đó);
+  - **(b')** Cơ hội sẵn có và Doanh nghiệp liên quan **giữ nguyên**, không bị xóa mềm, không bị ảnh hưởng.
+
+  **Lý do nghiệp vụ:** Cơ hội sẵn có ở nhánh `BR-14.3` không phải sản phẩm của lần chuyển đổi đang được hoàn tác — nó có thể đang được đàm phán bởi một nhân viên khác từ trước. Áp nguyên bước (a)/(b) của `BR-14.2` vào nhánh này sẽ xóa mất một thương vụ có thật không liên quan gì tới sai sót đang được sửa.
+
 **Tiêu chí Chấp nhận:**
 
 | Mã AC | Bối cảnh | Hành động | Kết quả mong đợi |
@@ -956,6 +982,8 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | `AC-14.3.2` | Tiếp nối AC-14.3.1 | Nhân viên chọn vẫn tạo Cơ hội riêng | Cơ hội thứ hai được tạo; nhật ký ghi quyết định kèm người thực hiện |
 | `AC-14.3.3` | Doanh nghiệp Vina có Cơ hội đang mở trên Phễu A | Chuyển đổi một Lead của Vina, chọn Phễu B | Cơ hội mới được tạo trên Phễu B, không có gợi ý gắn vào Cơ hội ở Phễu A |
 | `AC-14.4.1` | Tiếp nối AC-14.3.1 | Xem giai đoạn của Bình | Bình ở Opportunity |
+| `AC-14.5.1` | Tiếp nối AC-14.3.1: Bình đã được gắn tự động vào Cơ hội "Cung ứng Q3", chưa có hoạt động riêng nào gắn với Bình trên Cơ hội đó | Quản lý Kinh doanh hoàn tác trong thời hạn cho phép, chọn lý do từ A.15 | Liên kết giữa Bình và Cơ hội "Cung ứng Q3" bị gỡ; Bình về đúng giai đoạn trước khi chuyển đổi; Cơ hội "Cung ứng Q3" và Doanh nghiệp Vina giữ nguyên, không bị xóa mềm |
+| `AC-14.5.2` | Tiếp nối AC-14.5.1 nhưng nhân viên đã gắn thêm Vai trò liên hệ riêng cho Bình trên Cơ hội "Cung ứng Q3" | Quản lý bấm hoàn tác | Từ chối: "Không thể hoàn tác: đã phát sinh hoạt động của Liên hệ này trên Cơ hội" |
 
 ---
 
@@ -1277,7 +1305,7 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | Nguồn gốc và tham số chiến dịch | Giữ của Bản ghi Chính; của bản ghi phụ được lưu vào sổ cái gộp | `BR-19.5` |
 | Điểm tiềm năng | Lấy giá trị cao hơn, không cộng dồn | `BR-19.10` |
 | Thẻ phân loại | Hợp nhất toàn bộ | `BR-19.10` |
-| Vai trò liên hệ trên Cơ hội | Vai trò có thứ bậc ưu tiên cao nhất | `BR-19.4` |
+| Vai trò liên hệ trên Cơ hội | Vai trò đứng trước theo thứ tự tenant đã sắp xếp cho danh mục | `BR-19.4` |
 
   Người thực hiện **vẫn chỉ định lại được** Doanh nghiệp chính (`BR-19.7`) và Người phụ trách (`BR-19.9`) tại bước Xem trước — hai trường này không bị khóa.
 
@@ -1309,7 +1337,9 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 - **`BR-19.3` (Ghi sổ cái gộp):** Mỗi lần gộp tạo một mục trong Sổ cái Hoàn tác Gộp, ghi: Bản ghi Chính, bản ghi phụ, **ảnh chụp dữ liệu gốc** của bản ghi phụ tại thời điểm gộp, người thực hiện và thời điểm.
 
-- **`BR-19.4` (Xung đột vai trò liên hệ trên cùng Cơ hội):** Khi hai bản ghi cùng tham gia một Cơ hội với vai trò khác nhau, hệ thống giữ vai trò có thứ bậc ưu tiên cao nhất theo danh mục A.4: Người ra quyết định > Người ủng hộ nội bộ > Người thẩm định kỹ thuật > Người ảnh hưởng > Người thực hiện mua hàng.
+- **`BR-19.4` (Xung đột vai trò liên hệ trên cùng Cơ hội):** Danh mục Vai trò Liên hệ trên Cơ hội (Phụ lục A.4) **do từng Không gian làm việc tự định nghĩa** — không phải danh sách cố định của hệ thống — và dùng chung giữa hồ sơ khách hàng và Cơ hội bán hàng, theo đúng quy định tại [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) (`BR-22.1` của tài liệu đó); tài liệu này không định nghĩa lại danh mục, chỉ đặc tả cách xử lý khi gộp. Khi hai bản ghi cùng tham gia một Cơ hội với vai trò khác nhau, hệ thống giữ vai trò đứng **trước** trong thứ tự mà Quản trị viên đã sắp xếp cho danh mục đó (thứ tự này là một thuộc tính của chính danh mục, không phải một danh sách ưu tiên riêng do phân hệ này định nghĩa).
+
+  **Lý do nghiệp vụ:** Nếu danh mục do tenant tự định nghĩa nhưng thứ tự ưu tiên khi gộp lại cố định trong mã nguồn, một tenant thêm vai trò mới (ví dụ "Người gác cổng ngân sách") sẽ không có vị trí nào trong thứ tự đó — hệ thống buộc phải đoán hoặc bỏ qua vai trò mới thêm. Gắn thứ tự vào chính danh mục (do tenant sắp xếp khi tạo/sửa) giữ được cả hai mục tiêu: tenant tự do định nghĩa vai trò, và gộp bản ghi luôn có kết quả xác định.
 
 - **`BR-19.5` (Bảo toàn nguồn gốc khi gộp):** Nguồn gốc và tham số chiến dịch (`BR-32.1`, `BR-32.2`) của Bản ghi Chính luôn được giữ, **không bị thay thế** bởi dữ liệu của bản ghi phụ. Nguồn gốc của bản ghi phụ được lưu đầy đủ trong ảnh chụp tại sổ cái gộp (`BR-19.3`) để đối chiếu báo cáo phân bổ doanh thu đa nguồn, dù không hiển thị trên hồ sơ Bản ghi Chính.
 
@@ -1892,7 +1922,7 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Quy tắc nghiệp vụ:**
 
-- **`BR-34.1` (Chuyển giao đơn lẻ):** Trên hồ sơ khách hàng hoặc doanh nghiệp, người có quyền đổi được Người phụ trách. Hệ thống ghi vào lịch sử bản ghi và thông báo cho cả người giao và người nhận.
+- **`BR-34.1` (Chuyển giao đơn lẻ):** Trên hồ sơ khách hàng hoặc doanh nghiệp, người có quyền đổi được Người phụ trách. Hệ thống ghi vào lịch sử bản ghi và thông báo cho cả người giao và người nhận. Đơn vị tổ chức của bản ghi chuyển theo Người phụ trách mới ngay lập tức, theo `BR-01.3`.
 
 - **`BR-34.1b` (Bàn giao ngang giữa đồng nghiệp):** **Người phụ trách hiện tại** tự khởi tạo được "Đề nghị chuyển giao" cho một đồng nghiệp **trong cùng nhóm/đơn vị tổ chức**, không cần Quản lý thực hiện thay. Chuyển giao có hiệu lực khi **người nhận chấp nhận**; hệ thống thông báo cho Quản lý Kinh doanh, và Quản lý được **thu hồi trong 3 ngày làm việc** nếu không đồng ý. Chuyển giao ra ngoài nhóm/đơn vị vẫn phải do Quản lý trở lên thực hiện.
 
@@ -1926,6 +1956,7 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | Mã AC | Bối cảnh | Hành động | Kết quả mong đợi |
 | --- | --- | --- | --- |
 | `AC-34.1.1` | Quản lý Kinh doanh mở hồ sơ khách do A phụ trách | Đổi Người phụ trách sang B | B là Người phụ trách; A và B đều nhận thông báo; lịch sử bản ghi ghi nhận |
+| `AC-34.1.2` | Khách hàng do A (thuộc Phòng Kinh doanh 1) phụ trách; Trưởng Phòng Kinh doanh 2 chưa thấy khách này trong "Đơn vị của mình" | Đổi Người phụ trách sang B thuộc Phòng Kinh doanh 2 | Khách hàng chuyển sang thuộc Phòng Kinh doanh 2 ngay lập tức; Trưởng Phòng Kinh doanh 2 thấy khách hàng này trong danh sách đơn vị mình |
 | `AC-34.1b.1` | A và C cùng nhóm | A gửi Đề nghị chuyển giao một khách cho C | Khách vẫn do A phụ trách cho tới khi C chấp nhận; sau khi C chấp nhận, C là Người phụ trách; Quản lý nhận thông báo |
 | `AC-34.1b.2` | Tiếp nối AC-34.1b.1, sau 2 ngày làm việc | Quản lý thu hồi chuyển giao | Khách trở lại do A phụ trách |
 | `AC-34.1b.3` | Tiếp nối AC-34.1b.1, đã qua 3 ngày làm việc | Quản lý tìm hành động thu hồi | Không còn khả dụng |
@@ -2604,29 +2635,17 @@ Mục này chỉ chứa các điểm **chưa quyết định được điều g�
 
 **7.5 Nơi lưu và chuyển dữ liệu xuyên biên giới.** `NFR-12`, `NFR-13` mở phạm vi vận hành đa vùng (gồm tiếng Ả Rập, hàm ý thị trường Trung Đông) nhưng chưa có quy định về nơi lưu dữ liệu khách hàng và điều kiện chuyển dữ liệu ra ngoài lãnh thổ. Hướng có thể: Pháp chế xác định yêu cầu theo từng thị trường mục tiêu, hoặc nội dung này được giao cho một tài liệu khác và dẫn chiếu tại đây. Cần quyết định: Pháp chế cùng Trưởng nhóm Kỹ thuật.
 
-**7.6 Danh mục vai trò liên hệ trên Cơ hội: cố định hay do tenant định nghĩa.** Tài liệu này dùng danh mục cố định năm giá trị (A.4) và một thứ tự ưu tiên cố định khi gộp (`BR-19.4`), trong khi [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) (`BR-22.1` của tài liệu đó) và [`CONTEXT.md`](../CONTEXT.md) quy định danh mục **do từng không gian làm việc tự định nghĩa** và dùng chung với hồ sơ khách hàng. Hai tài liệu đang nói khác nhau về cùng một danh mục. Nếu danh mục do tenant định nghĩa, `BR-19.4` cần một cách xác định thứ tự ưu tiên khi gộp (ví dụ tenant sắp thứ tự trong danh mục, hoặc bắt buộc người gộp chọn khi xung đột). Cần quyết định: Product Owner của hai phân hệ.
+**7.6 Ràng buộc toàn vẹn tối thiểu của ma trận chuyển đổi cấu hình được.** `CFG-12-01` cho tenant bật/tắt từng bước chuyển, với ba sàn hiện có (không hạ Customer/Evangelist, không nới quyền loại khách, không nới quyền loại vì gian lận) và nguyên tắc 1 luôn thắng. Chưa quy định tenant có được tắt các bước chuyển tự động khác — thăng MQL theo ngưỡng điểm (`BR-15.5`), sang Nurturing khi mọi Cơ hội Thua (`BR-12.3`) — hay tắt mọi lối ra khỏi Nurturing/Disqualified hay không. Nếu được, một cấu hình có thể khiến hồ sơ mắc kẹt vĩnh viễn ở một giai đoạn. Cần quyết định: Product Owner.
 
-**7.7 Chính sách xử lý trùng lặp doanh nghiệp.** `BR-06.2` dùng mã số thuế **hoặc** tên miền website làm căn cứ nhận diện trùng, nhưng chưa quy định căn cứ nào là "chắc chắn" (được chặn tạo mới như `BR-17.2`) và căn cứ nào chỉ để cảnh báo. Tên miền website thường dùng chung giữa công ty mẹ và các công ty con, nên nếu coi là căn cứ chắc chắn thì sẽ chặn chính việc tạo công ty con cần cho `FEAT-07`. Hướng có thể: mã số thuế là căn cứ chắc chắn, tên miền chỉ cảnh báo. Cần quyết định: Product Owner cùng Quản trị Chất lượng Dữ liệu.
+**7.7 Hoàn tác gộp và trạng thái đồng thuận.** `BR-20.2` khôi phục bản ghi phụ theo ảnh chụp tại thời điểm gộp. Nếu bản ghi phụ khi đó Đồng ý nhận tin, khôi phục nguyên ảnh chụp sẽ **nâng** đồng thuận mà không có hành vi mới của chủ thể — trái `BR-30.10`. Ngoài ra chưa quy định một lượt Từ chối nhận tin mà khách thực hiện **sau** khi gộp (ghi trên Bản ghi Chính) được áp cho bản ghi nào khi hoàn tác. Hướng có thể: khi hoàn tác, đồng thuận của cả hai bản ghi lấy trạng thái nghiêm ngặt nhất giữa ảnh chụp và hiện trạng. Cần quyết định: Người phụ trách Bảo vệ Dữ liệu cùng Product Owner.
 
-**7.8 Đơn vị tổ chức của khách hàng khi đổi Người phụ trách.** `BR-01.3` gán Đơn vị tổ chức theo **người tạo**, trong khi [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) (Nguyên tắc 4 và `BR-01.2` của tài liệu đó) quy định Đơn vị tổ chức của Cơ hội **đi theo Người phụ trách hiện tại**. Tài liệu này chưa quy định khi chuyển giao (`FEAT-34`) thì Đơn vị tổ chức của khách hàng có đổi theo người nhận hay không; nếu không đổi, Quản lý của người nhận không thấy khách hàng trong "Đơn vị của mình". Cần quyết định: Product Owner cùng chủ tài liệu [`iam-tenant-authorization.md`](./iam-tenant-authorization.md).
+**7.8 Đồng thuận khi biện pháp phòng ngừa hết hạn.** `BR-33.7` (a) quy định hết 30 ngày thì biện pháp phòng ngừa tự động được dỡ. Biện pháp gồm hai phần: Hạn chế xử lý và chuyển các kênh sang Từ chối nhận tin. Chưa rõ khi dỡ, các kênh có trở lại trạng thái Đồng ý trước đó hay không; nếu có, đó là một lượt nâng đồng thuận không có hành vi của chủ thể (trái `BR-30.10`); nếu không, một yêu cầu mạo danh vẫn rút vĩnh viễn khách khỏi thư tiếp thị — đúng rủi ro mà ràng buộc (a) muốn tránh. Cần quyết định: Người phụ trách Bảo vệ Dữ liệu cùng Pháp chế.
 
-**7.9 Giai đoạn Opportunity khi Cơ hội mở duy nhất biến mất mà không đóng Thua.** `BR-12.3` chỉ quy định trường hợp **toàn bộ Cơ hội Thua**. Chưa có quy tắc cho các trường hợp Cơ hội mở duy nhất không còn gắn với khách mà không qua đóng Thua: Cơ hội bị xóa mềm, được chuyển sang khách hàng khác, khách bị gỡ khỏi Cơ hội. Khi đó khách đứng ở Opportunity trong khi định nghĩa giai đoạn là "đang có ít nhất một Cơ hội mở". Hướng có thể: xử lý như `BR-12.3` (sang Nurturing kèm lý do), hoặc đưa vào danh sách rà soát cho Quản lý. Cần quyết định: Product Owner cùng Quản lý Kinh doanh.
+**7.9 Suy giảm điểm khi khách im lặng kéo dài sau mốc thứ hai.** `BR-16.1`, `BR-16.2` quy định hai mốc (14 ngày và 30 ngày), mỗi mốc áp một lần trong một khoảng không tương tác liên tục. Chưa quy định khi khách tiếp tục im lặng sau mốc 30 ngày (ví dụ 90, 180 ngày) thì Điểm Tương tác tiếp tục giảm hay giữ nguyên. Nếu giữ nguyên, một khách im lặng một năm vẫn giữ khoảng 2/3 Điểm Tương tác cũ. Cần quyết định: Quản lý Marketing.
 
-**7.10 Hoàn tác Chuyển đổi ở nhánh gắn vào Cơ hội sẵn có.** `BR-14.2` chỉ đặc tả nhánh tạo Cơ hội mới (xóa mềm Cơ hội vừa tạo, điều kiện "Cơ hội chưa có hoạt động"). Khi chuyển đổi đã gắn Liên hệ vào một Cơ hội đang mở sẵn có (`BR-14.3`), Cơ hội đó thuộc một thương vụ có trước và không được xóa, nên chưa rõ hoàn tác sẽ làm gì với liên kết giữa Liên hệ và Cơ hội, và điều kiện "chưa có hoạt động" áp lên cái gì. Liên quan tới `7.9` và tới nhu cầu tách lại cơ hội sau khi gộp tự động tại Mục 7 của [`deals-pipeline-srs.md`](./deals-pipeline-srs.md). Cần quyết định: Product Owner của hai phân hệ.
+**7.10 Xuất dữ liệu phục vụ chiến dịch ngoài hệ thống của Marketing.** Mục 2.2 nêu Marketing xuất danh sách khách hàng phục vụ chiến dịch, trong khi `NFR-06` và `BR-25.1` bắt buộc tệp xuất tuân theo mức che của người xuất — với Marketing là cột (B), tức kênh liên lạc che một phần. Tệp xuất vì vậy dùng được cho phân tích nhưng không dùng được để gửi chiến dịch ngoài hệ thống. Chưa chốt: đây là hệ quả có chủ đích (mọi lượt gửi phải qua hệ thống để chịu `BR-30.5`), hay cần một đường xuất có kiểm soát riêng. Cần quyết định: Quản lý Marketing cùng Người phụ trách Bảo vệ Dữ liệu.
 
-**7.11 Tái phân loại Cơ hội Thắng thành Thua và giai đoạn Customer.** [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) (`FEAT-21` của tài liệu đó) cho phép tái phân loại một Cơ hội đã Thắng thành Thua. Nếu đó là Cơ hội Thắng duy nhất đã đưa khách lên Customer, nguyên tắc 1 (giai đoạn phản ánh thực tế — khách chưa từng mua) và nguyên tắc 4 (Customer được bảo vệ tuyệt đối) cho hai kết luận ngược nhau. Cần quyết định: Product Owner cùng Quản lý Kinh doanh.
-
-**7.12 Ràng buộc toàn vẹn tối thiểu của ma trận chuyển đổi cấu hình được.** `CFG-12-01` cho tenant bật/tắt từng bước chuyển, với ba sàn hiện có (không hạ Customer/Evangelist, không nới quyền loại khách, không nới quyền loại vì gian lận) và nguyên tắc 1 luôn thắng. Chưa quy định tenant có được tắt các bước chuyển tự động khác — thăng MQL theo ngưỡng điểm (`BR-15.5`), sang Nurturing khi mọi Cơ hội Thua (`BR-12.3`) — hay tắt mọi lối ra khỏi Nurturing/Disqualified hay không. Nếu được, một cấu hình có thể khiến hồ sơ mắc kẹt vĩnh viễn ở một giai đoạn. Cần quyết định: Product Owner.
-
-**7.13 Hoàn tác gộp và trạng thái đồng thuận.** `BR-20.2` khôi phục bản ghi phụ theo ảnh chụp tại thời điểm gộp. Nếu bản ghi phụ khi đó Đồng ý nhận tin, khôi phục nguyên ảnh chụp sẽ **nâng** đồng thuận mà không có hành vi mới của chủ thể — trái `BR-30.10`. Ngoài ra chưa quy định một lượt Từ chối nhận tin mà khách thực hiện **sau** khi gộp (ghi trên Bản ghi Chính) được áp cho bản ghi nào khi hoàn tác. Hướng có thể: khi hoàn tác, đồng thuận của cả hai bản ghi lấy trạng thái nghiêm ngặt nhất giữa ảnh chụp và hiện trạng. Cần quyết định: Người phụ trách Bảo vệ Dữ liệu cùng Product Owner.
-
-**7.14 Đồng thuận khi biện pháp phòng ngừa hết hạn.** `BR-33.7` (a) quy định hết 30 ngày thì biện pháp phòng ngừa tự động được dỡ. Biện pháp gồm hai phần: Hạn chế xử lý và chuyển các kênh sang Từ chối nhận tin. Chưa rõ khi dỡ, các kênh có trở lại trạng thái Đồng ý trước đó hay không; nếu có, đó là một lượt nâng đồng thuận không có hành vi của chủ thể (trái `BR-30.10`); nếu không, một yêu cầu mạo danh vẫn rút vĩnh viễn khách khỏi thư tiếp thị — đúng rủi ro mà ràng buộc (a) muốn tránh. Cần quyết định: Người phụ trách Bảo vệ Dữ liệu cùng Pháp chế.
-
-**7.15 Suy giảm điểm khi khách im lặng kéo dài sau mốc thứ hai.** `BR-16.1`, `BR-16.2` quy định hai mốc (14 ngày và 30 ngày), mỗi mốc áp một lần trong một khoảng không tương tác liên tục. Chưa quy định khi khách tiếp tục im lặng sau mốc 30 ngày (ví dụ 90, 180 ngày) thì Điểm Tương tác tiếp tục giảm hay giữ nguyên. Nếu giữ nguyên, một khách im lặng một năm vẫn giữ khoảng 2/3 Điểm Tương tác cũ. Cần quyết định: Quản lý Marketing.
-
-**7.16 Xuất dữ liệu phục vụ chiến dịch ngoài hệ thống của Marketing.** Mục 2.2 nêu Marketing xuất danh sách khách hàng phục vụ chiến dịch, trong khi `NFR-06` và `BR-25.1` bắt buộc tệp xuất tuân theo mức che của người xuất — với Marketing là cột (B), tức kênh liên lạc che một phần. Tệp xuất vì vậy dùng được cho phân tích nhưng không dùng được để gửi chiến dịch ngoài hệ thống. Chưa chốt: đây là hệ quả có chủ đích (mọi lượt gửi phải qua hệ thống để chịu `BR-30.5`), hay cần một đường xuất có kiểm soát riêng. Cần quyết định: Quản lý Marketing cùng Người phụ trách Bảo vệ Dữ liệu.
-
-**7.17 Cấu trúc cây doanh nghiệp khi Doanh nghiệp mẹ bị xóa.** `FEAT-07` và `FEAT-09` chưa quy định khi một doanh nghiệp ở giữa cây (có mẹ và có con) bị xóa mềm hoặc xóa vĩnh viễn thì các công ty con được nối lên cấp trên, tạm tách khỏi cây, hay chặn xóa cho tới khi xử lý cấu trúc; và báo cáo hợp nhất tập đoàn tính thế nào trong thời gian đó. Cần quyết định: Product Owner.
+**7.11 Cấu trúc cây doanh nghiệp khi Doanh nghiệp mẹ bị xóa.** `FEAT-07` và `FEAT-09` chưa quy định khi một doanh nghiệp ở giữa cây (có mẹ và có con) bị xóa mềm hoặc xóa vĩnh viễn thì các công ty con được nối lên cấp trên, tạm tách khỏi cây, hay chặn xóa cho tới khi xử lý cấu trúc; và báo cáo hợp nhất tập đoàn tính thế nào trong thời gian đó. Cần quyết định: Product Owner.
 
 ---
 
@@ -2645,7 +2664,7 @@ Mục này chỉ chứa các điểm **chưa quyết định được điều g�
 
 **A.3 Lý do Hạ hạng Giai đoạn** — `BR-12.7`: Thẩm định lại không đủ điều kiện · Thông tin ban đầu không chính xác · Khách hàng thay đổi nhu cầu · Điểm tiềm năng không phản ánh thực tế · Sai sót nhập liệu.
 
-**A.4 Vai trò Liên hệ trên Cơ hội** — `BR-19.4`: Người ra quyết định · Người ủng hộ nội bộ · Người thẩm định kỹ thuật · Người ảnh hưởng · Người thực hiện mua hàng. *Thứ tự ưu tiên khi gộp theo đúng trình tự liệt kê. Xem Mục 7.6.*
+**A.4 Vai trò Liên hệ trên Cơ hội** — `BR-19.4`: Danh mục **do từng Không gian làm việc tự định nghĩa**, dùng chung với [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) (`BR-22.1` của tài liệu đó); giá trị mặc định chuẩn hệ thống khi khởi tạo Không gian làm việc mới: Người ra quyết định · Người ủng hộ nội bộ · Người thẩm định kỹ thuật · Người ảnh hưởng · Người thực hiện mua hàng. *Thứ tự ưu tiên khi gộp (`BR-19.4`) là thứ tự Quản trị viên sắp xếp cho danh mục này, không phải một danh sách cố định riêng.*
 
 **A.5 Vai trò Liên kết Doanh nghiệp** — `BR-10.1`: Chính · Phụ · Cố vấn · Cổ đông · Đại diện pháp luật. *"Đã nghỉ việc" không phải vai trò mà là một Trạng thái liên kết (A.5b).*
 
@@ -2758,3 +2777,9 @@ Phụ lục này ghi các mâu thuẫn nội tại đã được giải quyết 
 | C.11 | Tên gọi "hết ngày", "mỗi tháng" và quy đổi tháng sang ngày chưa được chốt ở một chỗ | Hạn mức theo ngày/tháng dương lịch, thời hạn tính bằng tháng quy đổi 1 tháng = 30 ngày, theo múi giờ không gian làm việc | Mục 2.3 |
 | C.12 | Lịch làm việc cấu hình tự do có thể không có ngày làm việc nào, làm mọi thời hạn tính bằng giờ làm việc không bao giờ đến hạn | Lịch hợp lệ phải có ít nhất một ngày làm việc và giờ kết thúc sau giờ bắt đầu | `BR-31.7b`, `CFG-31-03` |
 | C.13 | Quyết định "vẫn tạo Cơ hội riêng" tại `BR-14.3` phải ghi nhật ký nhưng không có trong danh mục sự kiện kiểm toán | Bổ sung vào danh mục | `NFR-07` mục 9 |
+| C.14 | Danh mục Vai trò Liên hệ trên Cơ hội (A.4): cố định ở đây hay do tenant định nghĩa như [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) quy định | Do tenant tự định nghĩa, dùng chung với `deals-pipeline-srs.md` (`BR-22.1` của tài liệu đó); thứ tự ưu tiên khi gộp là thứ tự tenant tự sắp cho danh mục, không phải danh sách cố định riêng | `BR-19.4`, A.4 |
+| C.15 | Căn cứ nào ("chắc chắn" hay "tham khảo") cho trùng lặp doanh nghiệp giữa mã số thuế và tên miền website | Mã số thuế là Tiêu chí chắc chắn (chặn tạo mới); tên miền là Tiêu chí tham khảo (chỉ cảnh báo) — tên miền dùng chung hợp lệ giữa công ty mẹ và công ty con | `BR-06.2` |
+| C.16 | Đơn vị tổ chức của khách hàng gán theo người tạo hay theo Người phụ trách hiện tại, nhất quán với [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) | Theo Người phụ trách hiện tại, chuyển theo ngay khi bàn giao — cùng Nguyên tắc 4 của `deals-pipeline-srs.md` | `BR-01.3`, `BR-34.1` |
+| C.17 | Giai đoạn Opportunity khi Cơ hội mở duy nhất biến mất mà không qua đóng Thua (xóa mềm, chuyển sang khách khác, gỡ liên kết) | Áp đúng cách xử lý của `BR-12.3` cho khách chưa từng là Customer: tự động chuyển Nurturing kèm Lý do không chuyển đổi | `BR-12.3b` |
+| C.18 | Hoàn tác Chuyển đổi khi đã gắn Liên hệ vào một Cơ hội đang mở sẵn có, thay vì tạo Cơ hội mới | Không xóa Cơ hội/Doanh nghiệp sẵn có (đã tồn tại từ trước, có thể phục vụ thương vụ khác); chỉ gỡ liên kết Liên hệ khỏi Cơ hội đó, với điều kiện Liên hệ chưa có hoạt động riêng trên Cơ hội | `BR-14.5` |
+| C.19 | Giai đoạn Customer khi Cơ hội Thắng duy nhất từng đưa khách lên Customer bị tái phân loại thành Thua ([`deals-pipeline-srs.md`](./deals-pipeline-srs.md) `FEAT-21`) | Không tự động hạ giai đoạn (nguyên tắc 4 thắng, vì đây là sửa sai sót ghi nhận quá khứ chứ không phải sự kiện thương mại mới); bắt buộc cảnh báo Quản lý Kinh doanh rà soát thủ công, chỉ Quản lý mới quyết định hạ giai đoạn | `BR-12.3c` |
