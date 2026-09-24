@@ -235,6 +235,10 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 - **`BR-01.6` (Hai nhánh đóng loại trừ lẫn nhau):** Xem Nguyên tắc 1 (Mục 2.4). Chi tiết luồng đóng cơ hội tại `FEAT-18`/`FEAT-19`; tái phân loại cơ hội đã đóng tại `FEAT-21`.
 
+- **`BR-01.7` (Phát hiện xung đột khi hai người cùng sửa một cơ hội):** Mọi thao tác ghi trên một cơ hội — sửa giá trị, tiền tệ, ngày dự kiến đóng, tỷ lệ chia doanh số (`FEAT-24`), hoặc đóng Thắng/Thua — mang theo phiên bản dữ liệu đã đọc trước đó, cùng cơ chế với `BR-34.1` áp dụng cho cấu hình phễu. Nếu phiên bản đó không còn khớp với phiên bản mới nhất tại thời điểm ghi (đã có người khác sửa cơ hội này trong lúc chờ), hệ thống từ chối lưu và báo rõ ai đã sửa gần nhất, yêu cầu tải lại trước khi thử lại. Riêng thao tác đóng cơ hội: nếu cơ hội đã ở trạng thái Thắng hoặc Thua tại thời điểm ghi (do một yêu cầu đóng khác đã xử lý trước), yêu cầu đóng thứ hai bị từ chối với lý do "Cơ hội đã được đóng".
+
+  **Lý do nghiệp vụ:** Không có phát hiện xung đột, hai người cùng sửa tỷ lệ chia doanh số đồng thời có thể ra tổng khác 100% mà không ai biết (vi phạm `BR-24.1`), và hai yêu cầu đóng cơ hội gần như đồng thời (một Thắng, một Thua) có thể tạo ra kết quả không xác định tùy thứ tự xử lý ngẫu nhiên của hệ thống — một sai sót không thể chấp nhận được với dữ liệu quyết định hoa hồng.
+
 **Tiêu chí Chấp nhận:**
 
 | Mã AC | Bối cảnh | Hành động | Kết quả mong đợi |
@@ -251,6 +255,8 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 | `AC-01.5.2` | Tiếp nối AC-01.5.1 | A mở trực tiếp đường dẫn tới một cơ hội của đồng nghiệp cùng phòng | Từ chối truy cập, không tiết lộ sự tồn tại của cơ hội đó |
 | `AC-01.5.3` | Trưởng phòng B có phạm vi dữ liệu Phòng ban | Mở danh sách cơ hội | Thấy toàn bộ cơ hội của mọi nhân viên trong phòng B, không thấy cơ hội phòng khác |
 | `AC-01.5.4` | Nhân viên A phạm vi Cá nhân | A cố gắng sửa một cơ hội ngoài phạm vi qua thao tác hàng loạt (`FEAT-28`) | Cơ hội đó vào danh sách bị bỏ qua, không bị sửa |
+| `AC-01.7.1` | Hai người cùng mở một cơ hội để sửa tỷ lệ chia doanh số. Người A lưu trước | Người B cố gắng lưu thay đổi của mình dựa trên phiên bản cũ | Từ chối, báo A đã sửa gần nhất, yêu cầu B tải lại trước khi sửa tiếp |
+| `AC-01.7.2` | Cơ hội đang mở, hai người cùng bấm đóng gần như đồng thời — một chọn Thắng, một chọn Thua | Cả hai yêu cầu đóng được gửi lên hệ thống | Đúng một yêu cầu được xử lý thành công; yêu cầu còn lại bị từ chối với lý do "Cơ hội đã được đóng" |
 
 ---
 
@@ -270,7 +276,9 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
   **Lý do nghiệp vụ:** Nếu không chốt tỷ giá, doanh số đã chốt của một quý đã khóa sổ sẽ tự thay đổi mỗi lần tỷ giá biến động — báo cáo tài chính lịch sử mất tính ổn định và không đối chiếu được với sổ sách kế toán.
 
-- **`BR-02.4` (Nguồn và tần suất cập nhật tỷ giá):** Nguồn tỷ giá quy đổi — do Quản trị viên tự nhập thủ công theo từng cặp tiền tệ, hay đồng bộ tự động từ một nguồn tỷ giá tham chiếu bên ngoài — là tham số cấu hình theo Không gian làm việc (Phụ lục B, `CFG-DEAL-09`), mặc định là **tự nhập thủ công**. Nếu một cơ hội đang mở dùng một loại tiền tệ mà tỷ giá quy đổi sang đồng tiền cơ sở **chưa được khai báo**, hệ thống **không chặn** việc tạo hay cập nhật cơ hội đó, nhưng loại giá trị của cơ hội đó khỏi mọi báo cáo tổng hợp tại `BR-02.2` cho tới khi tỷ giá được bổ sung, và gắn cờ "Thiếu tỷ giá quy đổi" trên cơ hội.
+- **`BR-02.4` (Nguồn và tần suất cập nhật tỷ giá):** Nguồn tỷ giá quy đổi — do Quản trị viên tự nhập thủ công theo từng cặp tiền tệ, hay đồng bộ tự động từ một nguồn tỷ giá tham chiếu bên ngoài — là tham số cấu hình theo Không gian làm việc (Phụ lục B, `CFG-DEAL-09`), mặc định là **tự nhập thủ công**. Mỗi lần khai báo hoặc cập nhật tỷ giá của một cặp tiền tệ được lưu thành một **bản ghi lịch sử có ngày hiệu lực**, không ghi đè lên giá trị trước đó — cơ hội đang mở luôn dùng tỷ giá có ngày hiệu lực mới nhất tính tới thời điểm xem báo cáo; cơ hội đã đóng dùng đúng tỷ giá đã chốt vào ảnh chụp (`BR-27.5`) tại thời điểm đóng, không đọc lại lịch sử tỷ giá.
+
+  Nếu một cơ hội đang mở dùng một loại tiền tệ mà tỷ giá quy đổi sang đồng tiền cơ sở **chưa được khai báo**, hệ thống **không chặn** việc tạo hay cập nhật cơ hội đó, nhưng loại giá trị của cơ hội đó khỏi mọi báo cáo tổng hợp tại `BR-02.2` cho tới khi tỷ giá được bổ sung, và gắn cờ "Thiếu tỷ giá quy đổi" trên cơ hội. **Cờ này là điều kiện chặn đóng Thắng** — xem `BR-18.1`.
 
   **Lý do nghiệp vụ:** Doanh nghiệp nhỏ giao dịch vài loại tiền tệ cố định thường không cần và không muốn trả phí một nguồn tỷ giá tự động; doanh nghiệp giao dịch đa quốc gia cần cập nhật tự động để tránh sai lệch do quên cập nhật thủ công — đây là khẩu vị vận hành khác nhau giữa các tenant, không phải nghĩa vụ pháp lý. Chặn hẳn việc tạo cơ hội khi thiếu tỷ giá sẽ cản trở nhân viên ghi nhận một cơ hội có thật chỉ vì Quản trị viên chưa kịp cấu hình; loại khỏi báo cáo tổng hợp thay vì hiển thị sai số là cách an toàn hơn chặn hẳn thao tác.
 
@@ -331,7 +339,9 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 **Quy tắc nghiệp vụ:**
 
-- **`BR-04.1` (Xóa mềm):** Cơ hội bị xóa được ẩn khỏi Kanban, báo cáo và tìm kiếm nhưng vẫn được lưu trữ trong một thời hạn nhất định.
+- **`BR-04.1` (Xóa mềm):** Cơ hội bị xóa được ẩn khỏi Kanban, báo cáo và tìm kiếm nhưng vẫn được lưu trữ trong một thời hạn nhất định. **Cơ hội đã đóng Thắng không xóa được** (dù đơn lẻ hay hàng loạt), kể cả bởi Quản trị viên hay Chủ sở hữu, trừ khi trước đó đã được tái phân loại về trạng thái đang mở hoặc Thua theo `FEAT-21`.
+
+  **Lý do nghiệp vụ:** Xóa là một đường vòng quanh quyền tái phân loại riêng biệt tại `BR-21.1` — nếu cho xóa tự do, doanh số của một cơ hội đã thắng có thể biến mất khỏi báo cáo của kỳ đã khóa mà không cần thẩm quyền tái phân loại, sau đó phục hồi lại (`BR-04.4`) để đưa trở lại, và cuối cùng mất hẳn ảnh chụp kết quả (`BR-27.5`) khi hết hạn lưu trữ và bị xóa vĩnh viễn — vô hiệu hóa hoàn toàn mục đích tách quyền của `BR-21.1`.
 
 - **`BR-04.2` (Thời hạn lưu trữ):** Thời hạn lưu trong thùng rác trước khi xóa vĩnh viễn là **30 ngày**, áp dụng thống nhất trên toàn hệ thống ở phiên bản hiện tại — chưa cấu hình được riêng theo từng Không gian làm việc (xem Phụ lục B, `CFG-DEAL-01`).
 
@@ -346,6 +356,8 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 | Mã AC | Bối cảnh | Hành động | Kết quả mong đợi |
 | --- | --- | --- | --- |
 | `AC-04.1.1` | Cơ hội đang mở, có gắn 1 Vé hỗ trợ | Xóa cơ hội | Cơ hội biến mất khỏi Kanban/báo cáo; Vé hỗ trợ vẫn tồn tại độc lập, không còn liên kết |
+| `AC-04.1.2` | Cơ hội đã đóng Thắng | Chủ sở hữu Không gian làm việc cố gắng xóa | Từ chối, báo phải tái phân loại trước |
+| `AC-04.1.3` | Chọn 5 cơ hội để xóa hàng loạt, trong đó có 1 cơ hội đã đóng Thắng | Thực hiện xóa hàng loạt | 4 cơ hội bị xóa; cơ hội đã Thắng vào danh sách bị bỏ qua kèm lý do |
 | `AC-04.2.1` | Cơ hội đã ở thùng rác đúng 30 ngày | Tiến trình dọn dẹp chạy | Cơ hội bị xóa vĩnh viễn; nhật ký kiểm toán về việc xóa vẫn tra cứu được |
 | `AC-04.3.1` | Cơ hội đã ở thùng rác đủ thời hạn, có gắn 1 Công việc đang mở | Tiến trình dọn dẹp chạy | Công việc vẫn tồn tại trong danh sách việc cần làm, không còn liên kết tới cơ hội đã xóa |
 | `AC-04.3.2` | Cơ hội đã ở thùng rác đủ thời hạn, có dòng thời gian với nhiều ghi chú/hoạt động | Tiến trình dọn dẹp chạy | Toàn bộ bản ghi dòng thời gian của cơ hội đó bị xóa theo, không còn tra cứu được |
@@ -707,7 +719,9 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 **Quy tắc nghiệp vụ:**
 
-- **`BR-18.1` (Điều kiện đóng thắng):** Bắt buộc giá trị cơ hội lớn hơn 0, có ngày dự kiến đóng, và có đúng một liên hệ chính được xác định rõ (một Khách hàng cá nhân liên kết trực tiếp, hoặc một Vai trò liên hệ được đánh dấu là liên hệ chính — xem `FEAT-22`).
+- **`BR-18.1` (Điều kiện đóng thắng):** Bắt buộc giá trị cơ hội lớn hơn 0, có ngày dự kiến đóng, có đúng một liên hệ chính được xác định rõ (một Khách hàng cá nhân liên kết trực tiếp, hoặc một Vai trò liên hệ được đánh dấu là liên hệ chính — xem `FEAT-22`), và **không đang mang cờ "Thiếu tỷ giá quy đổi"** (`BR-02.4`).
+
+  **Lý do nghiệp vụ của điều kiện tỷ giá:** Chốt ảnh chụp kết quả (`BR-27.5`) đòi hỏi một tỷ giá xác định để quy đổi về đồng tiền cơ sở. Cho phép đóng thắng khi thiếu tỷ giá sẽ buộc phải chọn giữa hai hướng đều sai: loại vĩnh viễn một thương vụ đã thắng thật khỏi mọi báo cáo hạn ngạch, hoặc chốt bằng một tỷ giá khai báo sau — cả hai đều làm sai số liệu tài chính đã ghi nhận.
 
 - **`BR-18.2` (Bắt buộc có người phụ trách khi đóng thắng) [tham số cấu hình theo Không gian làm việc]:** Mặc định, hệ thống yêu cầu cơ hội phải có người phụ trách trước khi được phép đóng thắng. Đây là tham số cấu hình theo Không gian làm việc (Phụ lục B, `CFG-DEAL-05`), mặc định **bật**.
 
@@ -726,6 +740,8 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 | Mã AC | Bối cảnh | Hành động | Kết quả mong đợi |
 | --- | --- | --- | --- |
 | `AC-18.1.1` | Cơ hội chưa có ngày dự kiến đóng | Cố gắng đóng thắng | Từ chối, báo thiếu ngày dự kiến đóng |
+| `AC-18.1.2` | Cơ hội bằng EUR đang mang cờ "Thiếu tỷ giá quy đổi" (chưa có tỷ giá EUR/VND) | Cố gắng đóng thắng | Từ chối, báo thiếu tỷ giá quy đổi, yêu cầu Quản trị viên bổ sung trước |
+| `AC-18.1.3` | Tiếp nối AC-18.1.2, Quản trị viên vừa khai báo tỷ giá EUR/VND | Cố gắng đóng thắng lại | Cho phép; ảnh chụp kết quả chốt đúng tỷ giá vừa khai báo |
 | `AC-18.2.1` | Cơ hội "Chưa phân công", tham số `CFG-DEAL-05` đang bật (mặc định) | Cố gắng đóng thắng | Từ chối, yêu cầu gán người phụ trách trước |
 | `AC-18.2.2` | Quản trị viên tắt `CFG-DEAL-05` | Đóng thắng cơ hội "Chưa phân công" | Cho phép |
 | `AC-18.3.1` | Cơ hội đủ điều kiện, giai đoạn Thắng có xác suất cấu hình 100% | Đóng thắng | Ghi nhận thời điểm thắng, chuyển giai đoạn Thắng |
@@ -784,19 +800,19 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
   **Lý do nghiệp vụ:** Xem Nguyên tắc 1 (Mục 2.4). Kết quả Thắng/Thua của một cơ hội đã đóng là căn cứ báo cáo doanh số đã chốt — cho phép mọi người có quyền sửa cơ hội thông thường tự ý đảo ngược kết quả sẽ làm dữ liệu báo cáo lịch sử không còn đáng tin.
 
 - **`BR-21.2` (Quy trình hai bước: mở lại rồi đóng lại):** Tái phân loại luôn thực hiện qua đúng hai bước tách biệt, không có thao tác "đổi thẳng Thắng thành Thua" trong một lần:
-  1. **Mở lại:** người có quyền chọn một giai đoạn **đang mở** làm đích (không nhất thiết là giai đoạn tại thời điểm đóng trước đây), bắt buộc nhập lý do mở lại. Việc mở lại **hủy ảnh chụp kết quả đã chốt** (`BR-27.5`) và tỷ giá đã chốt (`BR-02.3`) của lần đóng trước — cơ hội trở về trạng thái đang mở hoàn toàn, không giữ lại dấu vết đã từng đóng ngoài lịch sử chuyển giai đoạn.
-  2. **Đóng lại:** cơ hội đang mở này sau đó đóng Thắng hoặc Thua theo đúng luồng thông thường của `FEAT-18`/`FEAT-19`, chịu đầy đủ điều kiện đóng thắng (`BR-18.1`) hoặc lý do thất bại bắt buộc (`BR-19.1`), và chốt một ảnh chụp kết quả mới.
+  1. **Mở lại:** người có quyền chọn một giai đoạn **đang mở** làm đích (không nhất thiết là giai đoạn tại thời điểm đóng trước đây), bắt buộc nhập lý do mở lại. Ảnh chụp kết quả (`BR-27.5`) của lần đóng trước được đánh dấu **Hết hiệu lực** (kèm người mở, thời điểm mở và lý do) — không xóa: vẫn tra cứu được vĩnh viễn phục vụ đối chiếu và kiểm toán, nhưng **không còn tham gia** bất kỳ báo cáo tổng hợp nào (`FEAT-25`, `FEAT-26`, `FEAT-27`) kể từ thời điểm mở lại. Cơ hội trở về trạng thái đang mở.
+  2. **Đóng lại:** cơ hội đang mở này sau đó đóng Thắng hoặc Thua theo đúng luồng thông thường của `FEAT-18`/`FEAT-19`, chịu đầy đủ điều kiện đóng thắng (`BR-18.1`) hoặc lý do thất bại bắt buộc (`BR-19.1`), và chốt một **ảnh chụp kết quả mới** mang thời điểm thắng/thua mới — kết quả mới thuộc về kỳ báo cáo của thời điểm đóng lại này, không hồi tố về kỳ của lần đóng trước.
   - **Chiều ngược của việc nâng Giai đoạn Vòng đời khách hàng (`BR-18.4`):** Nếu cơ hội vừa mở lại là Cơ hội Thắng **duy nhất** từng đưa khách hàng lên mức Khách hàng đã mua, hệ thống **không tự động hạ** Giai đoạn Vòng đời của khách hàng đó — việc mở lại là sửa một sai sót ghi nhận, không phải một sự kiện thương mại mới, và có thể đang diễn ra sau khi hợp đồng/hóa đơn thật đã phát sinh dựa trên trạng thái đó. Hệ thống cảnh báo người phụ trách Khách hàng rà soát thủ công; quyết định hạ giai đoạn (nếu có) thuộc thẩm quyền của phân hệ Khách hàng, xem [`contacts-srs.md`](./contacts-srs.md) (`BR-12.3c` của tài liệu đó).
 
-  **Lý do nghiệp vụ:** Không tách hai bước sẽ phải trả lời đồng thời "giai đoạn nào" và "lý do thắng/thua nào" trong một thao tác duy nhất, dẫn tới hai đường xử lý riêng cho cùng một FEAT tùy hướng đổi — cùng loại lỗi mà `BR-13.4`/`BR-19.1` đã ngăn cho luồng đóng thông thường. Không hủy ảnh chụp cũ sẽ để lại hai bộ kết quả (ảnh chụp cũ và ảnh chụp mới) cùng tồn tại cho một cơ hội, làm báo cáo hạn ngạch (`FEAT-27`) đếm trùng.
+  **Lý do nghiệp vụ:** Không tách hai bước sẽ phải trả lời đồng thời "giai đoạn nào" và "lý do thắng/thua nào" trong một thao tác duy nhất, dẫn tới hai đường xử lý riêng cho cùng một FEAT tùy hướng đổi — cùng loại lỗi mà `BR-13.4`/`BR-19.1` đã ngăn cho luồng đóng thông thường. Xóa hẳn ảnh chụp cũ thay vì đánh dấu hết hiệu lực sẽ xóa mất bằng chứng kiểm toán cho khoản hoa hồng đã chi dựa trên kết quả cũ — nếu sau này có tranh chấp hoa hồng, không còn cách nào chứng minh con số đã dùng để tính lương thưởng trong quá khứ là gì. Đưa kết quả mới vào kỳ hiện tại (không hồi tố) tránh việc một lần tái phân loại làm thay đổi số liệu của một báo cáo tài chính đã công bố và có thể đã dùng để chốt lương thưởng của kỳ trước.
 
 **Tiêu chí Chấp nhận:**
 
 | Mã AC | Bối cảnh | Hành động | Kết quả mong đợi |
 | --- | --- | --- | --- |
 | `AC-21.1.1` | Nhân viên kinh doanh có quyền sửa cơ hội nhưng không có quyền tái phân loại | Cố gắng mở lại cơ hội đã đóng | Từ chối |
-| `AC-21.1.2` | Quản lý Kinh doanh có quyền tái phân loại | Mở lại cơ hội đã đóng thua, chọn giai đoạn "Đàm phán" làm đích, nhập lý do | Cho phép; cơ hội ở giai đoạn "Đàm phán", đang mở; ảnh chụp kết quả và tỷ giá đã chốt trước đó bị hủy |
-| `AC-21.2.1` | Cơ hội đã đóng Thắng duy nhất từng đưa khách hàng X lên Khách hàng đã mua, chia 70%/30% cho A và B | Mở lại cơ hội, sau đó đóng Thua với lý do bắt buộc | Ảnh chụp kết quả cũ (70%/30% cho A/B) không còn hiệu lực; ảnh chụp mới ghi nhận kết quả Thua; Giai đoạn Vòng đời của khách hàng X không tự động hạ, có cảnh báo rà soát |
+| `AC-21.1.2` | Quản lý Kinh doanh có quyền tái phân loại | Mở lại cơ hội đã đóng thua, chọn giai đoạn "Đàm phán" làm đích, nhập lý do | Cho phép; cơ hội ở giai đoạn "Đàm phán", đang mở; ảnh chụp kết quả cũ chuyển trạng thái Hết hiệu lực, vẫn tra cứu được nhưng không còn trong báo cáo |
+| `AC-21.2.1` | Cơ hội đóng Thắng ở Quý 1, duy nhất từng đưa khách hàng X lên Khách hàng đã mua, chia 70%/30% cho A và B | Sang Quý 2, mở lại cơ hội, sau đó đóng Thua với lý do bắt buộc | Báo cáo hạn ngạch Quý 1 đã công bố giữ nguyên không đổi (ảnh chụp cũ vẫn tra cứu được ở trạng thái Hết hiệu lực, không bị xóa); kết quả Thua mới tính vào Quý 2; Giai đoạn Vòng đời của khách hàng X không tự động hạ, có cảnh báo rà soát |
 | `AC-21.2.2` | Tiếp nối AC-21.1.2 | Đóng lại cơ hội thành Thắng, không đủ điều kiện `BR-18.1` (chưa có ngày dự kiến đóng) | Từ chối đóng, yêu cầu bổ sung đúng như một cơ hội đang mở bình thường |
 
 ---
@@ -904,9 +920,15 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 **Quy tắc nghiệp vụ:**
 
-- **`BR-26.1` (Báo cáo theo người phụ trách):** Tổng hợp số cơ hội, tổng giá trị và tỷ lệ thắng theo từng người phụ trách trong một khoảng thời gian.
+- **`BR-26.1` (Báo cáo theo người phụ trách, hai chỉ số giá trị tách biệt):** Tổng hợp theo từng người phụ trách trong một kỳ — cơ hội đang mở xét theo ngày dự kiến đóng rơi trong kỳ, cơ hội đã đóng xét theo thời điểm thắng/thua trong ảnh chụp (`BR-27.5`) rơi trong kỳ, nhất quán với cách xác định kỳ tại `BR-27.2`. Báo cáo hiển thị **hai chỉ số giá trị riêng biệt**, không gộp làm một:
+  - **Giá trị phụ trách:** 100% giá trị của mọi cơ hội mà người đó là người phụ trách, không chia theo tỷ lệ — phản ánh khối lượng công việc đang xử lý.
+  - **Doanh số ghi nhận:** giá trị đã phân bổ theo tỷ lệ chia doanh số (`FEAT-24`), chỉ tính cơ hội đã đóng Thắng — cùng cách tính và cùng con số với `BR-27.2` (hạn ngạch), để hai báo cáo luôn khớp nhau trên cùng một người trong cùng một kỳ.
 
-- **`BR-26.2` (Báo cáo theo nguồn gốc):** Tổng hợp số cơ hội và tổng giá trị theo nguồn gốc tiếp thị (`FEAT-23`).
+  Tỷ lệ thắng tính trên số cơ hội đã đóng (Thắng chia cho tổng Thắng và Thua); cơ hội đang mở không tính vào mẫu số.
+
+  **Lý do nghiệp vụ:** "Tổng giá trị" nếu chỉ nêu một con số duy nhất sẽ mơ hồ giữa hai câu hỏi khác nhau — "người này đang xử lý bao nhiêu tiền" và "người này được ghi công bao nhiêu tiền" — khiến báo cáo hiệu suất và báo cáo hạn ngạch cho hai số khác nhau trên cùng một người mà không ai giải thích được vì sao.
+
+- **`BR-26.2` (Báo cáo theo nguồn gốc):** Tổng hợp số cơ hội và tổng giá trị theo Nguồn gốc chính (`BR-23.1`) của mỗi cơ hội, dùng 100% giá trị cơ hội (không chia theo tỷ lệ chia doanh số) — báo cáo này đo hiệu quả kênh tiếp thị, không đo hoa hồng cá nhân.
 
 - **`BR-26.3` (Báo cáo tuổi cơ hội):** Phân nhóm cơ hội đang mở theo khoảng số ngày đã tồn tại thành bốn nhóm liền kề không chồng lấn (ví dụ nhóm "mới", "trong tháng", "trong quý", "tồn đọng lâu"), giúp nhận diện cơ hội tồn đọng lâu. Ranh giới cụ thể giữa các nhóm là chi tiết triển khai, không phải quy tắc nghiệp vụ ràng buộc — điều quan trọng về nghiệp vụ là có đúng bốn nhóm liền kề và nhóm cuối cùng luôn là "trên 90 ngày" để đánh dấu rủi ro tồn đọng.
 
@@ -916,7 +938,8 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 | --- | --- | --- | --- |
 | `AC-26.1.1` | Trong kỳ báo cáo, nhân viên A có 5 cơ hội đã đóng: 3 Thắng, 2 Thua (không còn cơ hội đang mở nào) | Mở báo cáo hiệu suất người phụ trách | Tỷ lệ thắng của A là 60% (3 chia 5 cơ hội đã đóng) |
 | `AC-26.1.2` | Nhân viên A có 3 cơ hội Thắng, 2 Thua và 4 cơ hội **đang mở** trong kỳ | Mở báo cáo hiệu suất | Tỷ lệ thắng vẫn là 60% — cơ hội đang mở không tính vào mẫu số |
-| `AC-26.2.1` | Có cơ hội đến từ hai nguồn tiếp thị khác nhau | Mở báo cáo theo nguồn gốc | Mỗi nguồn hiển thị đúng số lượng và tổng giá trị cơ hội thuộc nguồn đó |
+| `AC-26.1.3` | Nhân viên A đóng thắng một cơ hội 1 tỷ nhưng chỉ được chia 60% doanh số (`FEAT-24`) | Mở báo cáo hiệu suất người phụ trách và báo cáo hạn ngạch (`FEAT-27`) trong cùng kỳ | Giá trị phụ trách hiển thị 1 tỷ; Doanh số ghi nhận hiển thị 600 triệu — khớp đúng con số Hạn ngạch đã ghi nhận cho A trong báo cáo `FEAT-27` |
+| `AC-26.2.1` | Có cơ hội đến từ hai Nguồn gốc chính khác nhau | Mở báo cáo theo nguồn gốc | Mỗi nguồn hiển thị đúng số lượng và 100% tổng giá trị cơ hội thuộc nguồn đó, không chia theo tỷ lệ |
 | `AC-26.3.1` | Có cơ hội đang mở ở các mốc tuổi khác nhau, trong đó có cơ hội tồn đọng hơn 90 ngày | Mở báo cáo tuổi cơ hội | Hiển thị đúng bốn nhóm liền kề không chồng lấn; mỗi cơ hội đếm đúng một lần; nhóm cuối gồm các cơ hội trên 90 ngày |
 
 ---
@@ -939,9 +962,11 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
   **Lý do nghiệp vụ:** Nếu toàn bộ doanh số chuyển theo người, báo cáo đã công bố của phòng cũ tự thay đổi hồi tố — trưởng phòng cũ mất thành tích đã đạt, trưởng phòng mới được cộng thành tích không phải của mình.
 
-- **`BR-27.5` (Ảnh chụp kết quả khi đóng cơ hội):** Khi một cơ hội đóng Thắng, hệ thống chốt cứng một **ảnh chụp kết quả** gồm: người phụ trách, đơn vị tổ chức của từng người tham gia chia doanh số (`FEAT-24`), tỷ lệ chia của từng người, và tỷ giá quy đổi (`BR-02.3`). Mọi báo cáo đọc kết quả của cơ hội đã đóng — hiệu suất người phụ trách (`FEAT-26`), hạn ngạch doanh số (`FEAT-27`) — đọc từ ảnh chụp này, không đọc lại giá trị hiện tại của người phụ trách hay đơn vị tổ chức. Thay đổi người phụ trách sau khi đóng (`BR-28.2`) chỉ đổi ai đang chăm sóc quan hệ khách hàng về sau, không đổi ảnh chụp kết quả đã chốt.
+- **`BR-27.5` (Ảnh chụp kết quả khi đóng cơ hội):** Khi một cơ hội đóng Thắng, hệ thống chốt cứng một **ảnh chụp kết quả**, tại đúng cùng một thời điểm ghi nhận là **thời điểm thắng** (`BR-18.3`): giá trị cơ hội, mã tiền tệ, giá trị đã quy đổi về đồng tiền cơ sở, tỷ giá quy đổi đã dùng (`BR-02.3`), người phụ trách, đơn vị tổ chức của từng người tham gia chia doanh số (`FEAT-24`), và tỷ lệ chia của từng người. Mọi báo cáo đọc kết quả của cơ hội đã đóng — hiệu suất người phụ trách (`FEAT-26`), hạn ngạch doanh số (`FEAT-27`) — đọc từ ảnh chụp này, không đọc lại giá trị hiện tại của cơ hội, người phụ trách hay đơn vị tổ chức.
 
-  **Lý do nghiệp vụ:** Không có ảnh chụp, một lượt bàn giao hay tái cơ cấu phòng ban diễn ra sau khi cơ hội đã đóng sẽ viết lại hồi tố các báo cáo hoa hồng và hạn ngạch đã công bố cho cả kỳ trước — đúng loại rủi ro mà `BR-27.4` và `BR-37.2` đã ngăn cho từng trường hợp riêng lẻ; đây là nguyên tắc chung đứng sau cả hai.
+  **Sau khi chốt, toàn bộ nội dung ảnh chụp chỉ đọc:** giá trị, mã tiền tệ, tỷ lệ chia và thời điểm thắng của một cơ hội đã đóng Thắng **không sửa được** bằng thao tác sửa thông thường (đơn lẻ hay hàng loạt) hay bằng nhập dữ liệu. Đường duy nhất thay đổi các trường này là tái phân loại (`FEAT-21`) — mở lại rồi đóng lại theo `BR-21.2`, tạo một ảnh chụp mới. Thay đổi người phụ trách sau khi đóng (`BR-28.2`) chỉ đổi ai đang chăm sóc quan hệ khách hàng về sau, không đổi ảnh chụp kết quả đã chốt.
+
+  **Lý do nghiệp vụ:** Ảnh chụp chỉ chốt người phụ trách và tỷ lệ mà bỏ ngỏ giá trị, tiền tệ và thời điểm thắng thì không bảo vệ được điều quan trọng nhất — con số doanh thu thật. Sửa giá trị hay tiền tệ của một cơ hội đã thắng sẽ viết lại hồi tố hạn ngạch và hoa hồng đã công bố mà không qua bất kỳ kiểm soát nào, đúng rủi ro mà `BR-02.3` đã nêu cho riêng tỷ giá — nguyên tắc phải áp dụng cho toàn bộ ảnh chụp, không chỉ tỷ giá.
 
 **Tiêu chí Chấp nhận:**
 
@@ -1250,6 +1275,17 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 - **NFR-06 (Phân quyền dữ liệu & che số liệu tài chính):** Áp dụng nghiêm ngặt phạm vi dữ liệu (`BR-01.5`) và che số liệu tài chính (`FEAT-03`). Người dùng không có quyền không thể xem hoặc kéo thả cơ hội ngoài phạm vi.
 - **NFR-07 (Bảo mật đường dẫn xuất dữ liệu):** Đường dẫn tải tệp xuất được bảo vệ và tự động hết hiệu lực sau thời hạn quy định (`BR-29.3`).
+- **NFR-08 (Nhật ký kiểm toán bắt buộc cho mọi thay đổi ảnh hưởng số liệu tài chính):** Mọi thay đổi trên các trường và tham số sau được ghi vào nhật ký kiểm toán bất biến (không sửa, không xóa được), gồm tối thiểu: người thực hiện, thời điểm, giá trị cũ, giá trị mới:
+  - Giá trị cơ hội, mã tiền tệ và ngày dự kiến đóng của một cơ hội.
+  - Tỷ lệ chia doanh số giữa những người tham gia (`FEAT-24`).
+  - Xác suất thắng gán cho một giai đoạn (`BR-06.1`) — vì thay đổi này tác động hồi tố tới dự báo doanh thu của mọi cơ hội đang mở tại giai đoạn đó.
+  - Tỷ giá quy đổi (`BR-02.4`) và đồng tiền cơ sở (`CFG-DEAL-08`).
+  - Mục tiêu hạn ngạch doanh số (`BR-27.1`).
+  - Mọi thao tác của `FEAT-21` (tái phân loại).
+
+  Nhật ký này giữ vĩnh viễn, không bị dọn dẹp theo thời hạn lưu trữ của bất kỳ bản ghi nghiệp vụ nào mà nó ghi nhận, kể cả khi cơ hội liên quan đã bị xóa vĩnh viễn — nhất quán với `BR-04.3`.
+
+  **Lý do nghiệp vụ:** Đây là những con số quyết định trực tiếp hoa hồng, hạn ngạch và báo cáo tài chính đã công bố. Không ghi vết đầy đủ nghĩa là không thể trả lời câu hỏi kiểm toán cơ bản nhất — "ai đã đổi con số này, từ bao nhiêu thành bao nhiêu, và khi nào" — biến toàn bộ hệ thống báo cáo doanh số thành thứ không thể tin cậy khi có tranh chấp.
 
 ---
 
