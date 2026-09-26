@@ -1148,17 +1148,19 @@ Một cơ hội phải hiện diện trong phạm vi quản lý của người t
 
 - **`BR-30.1` (Nguồn hợp nhất):** Dòng thời gian gộp hoạt động ghi nhận thủ công, ghi chú, vé hỗ trợ liên quan, công việc liên quan, cuộc gọi, cuộc họp, email và lịch sử chuyển giai đoạn — theo đúng thứ tự thời gian xảy ra.
 
-- **`BR-30.2` (Nội dung từ phân hệ khác chịu đúng quyền của phân hệ sở hữu):** Với mỗi mục trên dòng thời gian có nguồn từ một phân hệ khác (vé hỗ trợ, công việc, email), nội dung chi tiết chỉ hiển thị khi người xem **có quyền trên chính bản ghi gốc đó** theo quy tắc phân quyền của phân hệ sở hữu nó — quyền xem được cơ hội không tự động cấp quyền xem nội dung của mọi bản ghi liên kết. Nếu người xem không có quyền trên bản ghi gốc, dòng thời gian chỉ hiển thị loại sự kiện và thời điểm xảy ra, không hiển thị nội dung chi tiết, cùng cách xử lý với cảnh báo vé hỗ trợ tại `BR-31.2`. Áp dụng cho mọi người xem, kể cả Người theo dõi (`FEAT-35`).
+- **`BR-30.2` (Nội dung từ phân hệ khác chịu đúng quyền của phân hệ sở hữu):** Với mỗi mục trên dòng thời gian có nguồn từ một phân hệ khác (vé hỗ trợ, công việc), nội dung chi tiết chỉ hiển thị khi người xem **có quyền trên chính bản ghi gốc đó** theo quy tắc phân quyền của phân hệ sở hữu nó — quyền xem được cơ hội không tự động cấp quyền xem nội dung của mọi bản ghi liên kết. Nếu người xem không có quyền trên bản ghi gốc, mục đó **bị ẩn hoàn toàn khỏi dòng thời gian**, không hiển thị dạng rút gọn (chỉ loại sự kiện/thời điểm) hay dạng bị che — cùng quy tắc `BR-31.4` (`tasks-srs.md`), phân hệ sở hữu cơ chế dòng thời gian hợp nhất dùng chung này. Áp dụng cho mọi người xem, kể cả Người theo dõi (`FEAT-35`).
 
-  **Lý do nghiệp vụ:** Một vé hỗ trợ hay một email có thể chứa dữ liệu nhạy cảm (khiếu nại, thông tin hợp đồng khác) mà người xem cơ hội không có quyền đọc ở chính phân hệ sở hữu nó; gộp nguyên nội dung vào dòng thời gian là một đường vòng để đọc dữ liệu đó mà không qua bất kỳ kiểm soát phân quyền nào của phân hệ gốc.
+  Ghi chú phạm vi: cuộc gọi, cuộc họp, email và ghi chú nội bộ ghi nhận trực tiếp trên cơ hội (`FEAT-15`..`FEAT-18`, `tasks-srs.md`) không phải là "nội dung từ phân hệ khác" theo nghĩa của quy tắc này — các bản ghi đó không có chủ sở hữu quyền riêng, mà chịu đúng quyền xem cơ hội của người xem hiện tại, giống ghi chú và lịch sử chuyển giai đoạn.
+
+  **Lý do nghiệp vụ:** Một vé hỗ trợ hay một công việc liên kết có thể chứa dữ liệu nhạy cảm (khiếu nại, thông tin nội bộ khác) mà người xem cơ hội không có quyền đọc ở chính phân hệ sở hữu nó; gộp nguyên nội dung vào dòng thời gian là một đường vòng để đọc dữ liệu đó mà không qua bất kỳ kiểm soát phân quyền nào của phân hệ gốc.
 
 **Tiêu chí Chấp nhận:**
 
 | Mã AC | Bối cảnh | Hành động | Kết quả mong đợi |
 | --- | --- | --- | --- |
 | `AC-30.1.1` | Cơ hội có cả ghi chú, 1 lần chuyển giai đoạn và 1 vé hỗ trợ liên kết | Mở dòng thời gian | Cả ba loại sự kiện hiển thị đúng thứ tự thời gian xảy ra |
-| `AC-30.2.1` | Người xem có quyền xem cơ hội nhưng không có quyền xem vé hỗ trợ liên kết (theo phân quyền của `tickets-srs.md`) | Mở dòng thời gian | Mục vé hỗ trợ chỉ hiển thị loại sự kiện và thời điểm, không hiển thị nội dung vé |
-| `AC-30.2.2` | Người theo dõi (`FEAT-35`) không có quyền xem một Công việc liên kết với cơ hội | Mở dòng thời gian | Nội dung Công việc đó bị ẩn tương tự AC-30.2.1 |
+| `AC-30.2.1` | Người xem có quyền xem cơ hội nhưng không có quyền xem vé hỗ trợ liên kết (theo phân quyền của `tickets-srs.md`) | Mở dòng thời gian | Mục vé hỗ trợ đó bị ẩn hoàn toàn khỏi dòng thời gian, không hiển thị dạng rút gọn hay dạng bị che |
+| `AC-30.2.2` | Người theo dõi (`FEAT-35`) không có quyền xem một Công việc liên kết với cơ hội | Mở dòng thời gian | Mục Công việc đó bị ẩn hoàn toàn tương tự AC-30.2.1 |
 
 ---
 
