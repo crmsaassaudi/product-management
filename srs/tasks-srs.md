@@ -1121,7 +1121,7 @@ Xem Mục 2.3.
 
 **Quy tắc nghiệp vụ:**
 
-- **`BR-31.1` (Nội dung dòng thời gian):** Dòng thời gian của Khách hàng, Doanh nghiệp và Cơ hội bán hàng hiển thị theo thứ tự thời gian giảm dần: các bản ghi tương tác (FEAT-15..19), công việc được tạo, công việc hoàn thành, và các sự kiện vòng đời của chính thực thể đó.
+- **`BR-31.1` (Nội dung dòng thời gian):** Dòng thời gian của Khách hàng, Doanh nghiệp và Cơ hội bán hàng hiển thị theo thứ tự thời gian giảm dần: các bản ghi tương tác (FEAT-15..19), công việc được tạo, công việc hoàn thành, các sự kiện vòng đời của chính thực thể đó, và — với Khách hàng — các mục nhận tin chiến dịch (`campaigns-srs.md`, `BR-23.6`).
 
 - **`BR-31.2` (Công việc hiện trên dòng thời gian của ngữ cảnh):** Công việc có gắn ngữ cảnh khách hàng phải hiện trên dòng thời gian của thực thể đó, kèm trạng thái hiện tại, người phụ trách và hạn chót.
 

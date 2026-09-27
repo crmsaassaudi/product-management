@@ -98,7 +98,7 @@ Tài liệu bao gồm 11 nhóm chức năng:
 | **Doanh nghiệp chính** | Doanh nghiệp duy nhất được dùng để hiển thị mặc định cho một cá nhân trên danh sách và báo cáo. |
 | **Dòng thời gian 360 độ** | Luồng hiển thị hợp nhất mọi tương tác, ghi chú, vé, cơ hội và công việc của một khách hàng theo thứ tự thời gian mới nhất trước. |
 | **Điểm Tiềm năng** | Điểm 0–100 đánh giá độ nóng của khách hàng, gồm **Điểm Hồ sơ** (mức phù hợp theo thuộc tính) và **Điểm Tương tác** (hành vi thực tế). |
-| **Đồng thuận Nhận tin** | Trạng thái **Đồng ý nhận tin** hoặc **Từ chối nhận tin** của khách hàng đối với thư tiếp thị, ghi nhận độc lập cho từng kênh. |
+| **Đồng thuận Nhận tin** | Trạng thái **Đồng ý nhận tin**, **Từ chối nhận tin** hoặc **Chưa có đồng thuận** của khách hàng đối với thư tiếp thị, ghi nhận độc lập cho từng kênh (`BR-30.1`). |
 | **Bằng chứng Đồng thuận** | Bộ dữ liệu chứng minh một lần thay đổi đồng thuận: thời điểm, nguồn thu thập, nội dung điều khoản đã đồng ý và người ghi nhận. |
 | **Định danh dùng chung** | Nhãn đặt lên một email hoặc số điện thoại mà nhiều người khác nhau hợp lệ cùng dùng (tổng đài, lễ tân, vợ chồng), để hệ thống không coi các bản ghi đó là trùng. |
 | **Trạng thái Hạn chế xử lý** | Trạng thái đặt lên hồ sơ khi chủ thể dữ liệu yêu cầu hạn chế xử lý: dữ liệu được giữ nhưng dừng mọi hoạt động tiếp thị và tự động hóa (`BR-30.6`). |
@@ -175,7 +175,7 @@ Một số quyền được trao theo **quan hệ với một bản ghi cụ th�
 Mọi thao tác chỉ thu hẹp phạm vi xử lý dữ liệu cá nhân (từ chối nhận tin, hạn chế xử lý) được phép thực hiện ngay bởi người đang tiếp nhận yêu cầu của khách. Mọi thao tác nới rộng phạm vi (đồng ý nhận tin trở lại, dỡ hạn chế xử lý) bắt buộc có bằng chứng từ chính chủ thể dữ liệu hoặc thẩm quyền được quy định (`BR-30.6`, `BR-30.10`).
 
 **Nguyên tắc 4 — Quyết định xóa dữ liệu khách hàng luôn thuộc về con người.**
-Không tiến trình tự động nào được xóa hồ sơ khách hàng đã định danh, ngoài đúng năm ngoại lệ có chủ đích liệt kê tại `BR-33.5` — mỗi ngoại lệ hoặc chỉ khử phần định danh mà giữ giá trị kinh doanh, hoặc chỉ thực thi một quyết định xóa mà con người đã đưa ra trước đó.
+Không tiến trình tự động nào được xóa hồ sơ khách hàng đã định danh, ngoài đúng sáu ngoại lệ có chủ đích liệt kê tại `BR-33.5` — mỗi ngoại lệ hoặc chỉ khử phần định danh mà giữ giá trị kinh doanh, hoặc chỉ thực thi một quyết định xóa mà con người đã đưa ra trước đó.
 
 **Nguyên tắc 5 — Không một bản ghi nào được trở thành vô chủ.**
 Mọi thay đổi nhân sự (nghỉ việc, chuyển bộ phận, nghỉ phép, vắng mặt dài) đều phải có điểm đến cho các khách hàng người đó đang phụ trách và cho các yêu cầu của khách đang chờ xử lý (`FEAT-34`).
@@ -1404,7 +1404,7 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 - **`BR-20.1` (Điểm thao tác):** Người có quyền mở **Lịch sử gộp** trên hồ sơ Bản ghi Chính và bấm **"Hoàn tác gộp"** trên mục sổ cái tương ứng.
 
-- **`BR-20.2` (Nội dung khôi phục):** Hệ thống khôi phục bản ghi phụ đã bị xóa mềm, trả lại các trường dữ liệu theo ảnh chụp trong sổ cái và trả các bản ghi con về đúng bản ghi sở hữu ban đầu.
+- **`BR-20.2` (Nội dung khôi phục):** Hệ thống khôi phục bản ghi phụ đã bị xóa mềm, trả lại các trường dữ liệu theo ảnh chụp trong sổ cái và trả các bản ghi con về đúng bản ghi sở hữu ban đầu. **Ngoại lệ bắt buộc cho đồng thuận và hạn chế xử lý:** với mỗi kênh, cả bản ghi được khôi phục lẫn Bản ghi Chính nhận **mức chặt nhất** giữa trạng thái trong ảnh chụp và mọi lời Từ chối nhận tin, Hạn chế xử lý đã ghi trên Bản ghi Chính trong thời gian gộp — hoàn tác gộp không bao giờ khôi phục một Đồng ý mà khách đã rút trong thời gian hai bản ghi là một (`BR-30.10`).
 
 - **`BR-20.3` (Thời hạn hoàn tác & bảo vệ khỏi dọn dẹp):** Hoàn tác gộp có hiệu lực trong **90 ngày** kể từ thời điểm gộp (Phụ lục B, `CFG-20-01`). Trong thời hạn này, bản ghi phụ **được loại khỏi dọn dẹp vĩnh viễn** của `BR-05.4` (xem `BR-05.6` (b)). Quá thời hạn, hành động "Hoàn tác gộp" không còn hiển thị và bản ghi phụ mới vào diện dọn dẹp; sổ cái gộp vẫn được lưu vĩnh viễn (`NFR-05`).
 
@@ -1677,7 +1677,7 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 - **`BR-29.1` (Một kênh chính mỗi loại):** Mỗi loại kênh có tối đa **một** kênh chính. Đặt một kênh khác làm chính thì kênh cũ tự động mất trạng thái chính.
 
-- **`BR-29.2` (Bốn trạng thái tiếp cận):** Theo danh mục A.10: ba trạng thái kỹ thuật — **Đã xác thực** (đã gửi nhận thành công), **Không tiếp cận được** (email hỏng hoặc số không tồn tại), **Chưa kiểm tra** — và một trạng thái nghiệp vụ **Không còn hiệu lực** do `BR-10.4` sinh ra khi khách rời doanh nghiệp sở hữu địa chỉ. Thứ tự thắng khi gộp quy định tại `BR-18.2`.
+- **`BR-29.2` (Bốn trạng thái tiếp cận):** Theo danh mục A.10: ba trạng thái kỹ thuật — **Đã xác thực** (đã gửi nhận thành công), **Không tiếp cận được** (email hỏng hoặc số không tồn tại), **Chưa kiểm tra** — và một trạng thái nghiệp vụ **Không còn hiệu lực** — địa chỉ không còn thuộc về khách hàng: do `BR-10.4` sinh ra khi khách rời doanh nghiệp sở hữu địa chỉ, hoặc khi nhà mạng/nền tảng báo số điện thoại đã đổi chủ (`campaigns-srs.md`, `BR-28.4`); trong trường hợp đổi chủ, mọi Đồng ý nhận tin trên các kênh dùng số đó chuyển về Chưa có đồng thuận. Thứ tự thắng khi gộp quy định tại `BR-18.2`.
 
 - **`BR-29.3` (Loại trừ khỏi gửi tự động):** Kênh ở trạng thái Không tiếp cận được bị tự động loại khỏi mọi chiến dịch gửi email/tin nhắn tự động.
 
@@ -1701,15 +1701,17 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Quy tắc nghiệp vụ:**
 
-- **`BR-30.1` (Đồng thuận theo từng kênh):** Trạng thái **Đồng ý nhận tin** / **Từ chối nhận tin** được lưu **độc lập cho từng kênh** (email, tin nhắn SMS, WhatsApp, Zalo và các kênh tích hợp khác). Khách từ chối trên một kênh chỉ tác động lên kênh đó, trừ khi khách chọn **"Hủy nhận tin trên toàn bộ mọi kênh"**. Phạm vi tác động của Từ chối nhận tin quy định tại `BR-30.5` — chặn nhóm thư Tiếp thị, không chặn mọi loại thư.
+- **`BR-30.1` (Đồng thuận theo từng kênh):** Trạng thái đồng thuận được lưu **độc lập cho từng kênh** (email, tin nhắn SMS, WhatsApp, Zalo ZNS — theo số điện thoại, Zalo OA — theo người quan tâm Tài khoản Chính thức, và các kênh tích hợp khác), nhận một trong ba giá trị: **Đồng ý nhận tin** (có bằng chứng theo `BR-30.3`), **Từ chối nhận tin**, **Chưa có đồng thuận**. **Chưa có đồng thuận** là giá trị mặc định của mọi kênh trên mọi đường tạo hồ sơ hoặc thêm kênh liên lạc (tạo tay, tạo từ hội thoại, từ biểu mẫu, từ tích hợp, nhập khẩu) khi không kèm bằng chứng Đồng ý; nó chặn nhóm Tiếp thị giống Từ chối nhận tin, và được nâng lên Đồng ý nhận tin theo đúng quy tắc nâng mức của `BR-30.10`. Khách từ chối trên một kênh chỉ tác động lên kênh đó, trừ khi khách chọn **"Hủy nhận tin trên toàn bộ mọi kênh"**. Phạm vi tác động của Từ chối nhận tin quy định tại `BR-30.5` — chặn nhóm thư Tiếp thị, không chặn mọi loại thư.
+
+  **Lý do nghiệp vụ:** Pháp luật chống tin rác yêu cầu có sự đồng ý **trước**; nếu chỉ có hai giá trị, mọi hồ sơ chưa ai hỏi ý kiến đều phải mang một trong hai nhãn sai — hoặc Đồng ý không có căn cứ, hoặc Từ chối trong khi khách chưa từng từ chối. Zalo ZNS và Zalo OA tách riêng vì người nhận có thể đồng ý nhận tin qua Tài khoản Chính thức mình đang quan tâm mà không đồng ý nhận tin theo số điện thoại, và ngược lại.
 
 - **`BR-30.2` (Định danh dùng chung):** Một số điện thoại hoặc email được đánh dấu **Định danh dùng chung** (ví dụ số tổng đài, số lễ tân, email gia đình) để hệ thống không coi các khách hàng khác nhau dùng chung định danh đó là trùng lặp và không gợi ý gộp họ.
 
-- **`BR-30.3` (Bằng chứng đồng thuận):** Mỗi lần trạng thái đồng thuận thay đổi, hệ thống bắt buộc lưu bộ bằng chứng **không sửa được** gồm: **(a)** thời điểm ghi nhận; **(b)** nguồn thu thập — **bắt buộc chọn từ A.8**, không nhập tự do; **(c)** nội dung điều khoản khách đã đồng ý (phiên bản văn bản đồng thuận tại thời điểm đó); **(d)** người hoặc tiến trình ghi nhận. Bằng chứng được lưu **vĩnh viễn** kể cả khi khách đổi trạng thái nhiều lần, chỉ chịu ngoại lệ khử định danh tại `BR-33.8`.
+- **`BR-30.3` (Bằng chứng đồng thuận):** Mỗi lần trạng thái đồng thuận thay đổi, hệ thống bắt buộc lưu bộ bằng chứng **không sửa được** gồm: **(a)** thời điểm ghi nhận; **(b)** nguồn thu thập — **bắt buộc chọn từ A.8**, không nhập tự do; **(c)** nội dung điều khoản khách đã đồng ý (phiên bản văn bản đồng thuận tại thời điểm đó); **(d)** người hoặc tiến trình ghi nhận; **(e)** đồng ý đã được **xác nhận qua chính điểm đến** hay chưa (mã hoặc liên kết gửi tới đúng email/số điện thoại đó — `campaigns-srs.md`, `BR-09.3`). Bằng chứng được lưu **vĩnh viễn** kể cả khi khách đổi trạng thái nhiều lần, chỉ chịu ngoại lệ khử định danh tại `BR-33.8`.
 
   **Lý do nghiệp vụ:** Khi bị khiếu nại, doanh nghiệp phải chứng minh được cơ sở xử lý dữ liệu tại đúng thời điểm gửi tin; bằng chứng sửa được hoặc chỉ lưu trạng thái cuối cùng thì không chứng minh được gì.
 
-- **`BR-30.4` (Đồng thuận qua nhập khẩu hàng loạt):** Dữ liệu nhập khẩu **không được** mặc định nhận trạng thái Đồng ý nhận tin. Người nhập khẩu **bắt buộc chọn** Cơ sở đồng thuận cho lô từ A.11 — giao diện không cho bỏ trống. Danh mục có sẵn giá trị **"Không có cơ sở đồng thuận"** để khai báo trung thực; khi chọn giá trị này (hoặc cơ sở khai báo không đủ chứng minh đồng thuận tiếp thị), toàn bộ lô nhận Từ chối nhận tin cho nhóm Tiếp thị và chỉ được liên hệ theo nhóm Giao dịch & Dịch vụ (`BR-30.5`).
+- **`BR-30.4` (Đồng thuận qua nhập khẩu hàng loạt):** Dữ liệu nhập khẩu **không được** mặc định nhận trạng thái Đồng ý nhận tin. Lô chọn một cơ sở tạo Đồng ý nhận tin ("Khách hàng đã đăng ký trực tiếp", "Dữ liệu từ sự kiện có phiếu đồng ý") bắt buộc đính kèm tài liệu chứng minh nguồn gốc lô; lô vượt `CFG-30-03` bản ghi cần Người phụ trách Bảo vệ Dữ liệu chấp thuận trước khi Đồng ý có hiệu lực. Người nhập khẩu **bắt buộc chọn** Cơ sở đồng thuận cho lô từ A.11 — giao diện không cho bỏ trống. Danh mục có sẵn giá trị **"Không có cơ sở đồng thuận"** để khai báo trung thực; khi chọn giá trị này (hoặc cơ sở khai báo không đủ chứng minh đồng thuận tiếp thị), toàn bộ lô nhận Từ chối nhận tin cho nhóm Tiếp thị và chỉ được liên hệ theo nhóm Giao dịch & Dịch vụ (`BR-30.5`).
 
   **Lý do nghiệp vụ:** Danh bạ mua về hoặc thu thập không rõ nguồn là nguồn vi phạm đồng thuận phổ biến nhất; mặc định Đồng ý sẽ biến mỗi lần nhập khẩu thành một lần vi phạm hàng loạt.
 
@@ -1718,16 +1720,18 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | Nhóm mục đích | Nội dung thuộc nhóm | Chịu chi phối của Từ chối nhận tin? |
 | --- | --- | :---: |
 | **Tiếp thị & Quảng bá** | Bản tin định kỳ, chiến dịch khuyến mãi, thư nuôi dưỡng tự động, mời sự kiện thương mại, thư tái tiếp cận | **Có — chặn tuyệt đối** |
-| **Giao dịch & Dịch vụ** | Phản hồi vé hỗ trợ, xác nhận đơn hàng, hóa đơn/nhắc thanh toán, thông báo bảo trì, cảnh báo bảo mật, thông báo pháp lý bắt buộc, **thư báo giá, thư hợp đồng, thư xác nhận cuộc hẹn, thư trả lời một yêu cầu do chính khách hàng đưa ra** | Không |
+| **Giao dịch & Dịch vụ** | Phản hồi vé hỗ trợ, xác nhận đơn hàng, hóa đơn/nhắc thanh toán, thông báo bảo trì, cảnh báo bảo mật, thông báo pháp lý bắt buộc, Thông báo dịch vụ hàng loạt theo (`campaigns-srs.md`, `FEAT-45`), **thư báo giá, thư hợp đồng, thư xác nhận cuộc hẹn, thư trả lời một yêu cầu do chính khách hàng đưa ra** | Không |
 | **Liên lạc 1-1 do nhân viên chủ động** | Email/tin nhắn nhân viên gửi trực tiếp trong quá trình phục vụ khách, thỏa **đồng thời cả bốn tiêu chí** tại `BR-30.7` | Không (mặc định), nhưng **bắt buộc ghi nhật ký** |
+
+  **Cổng kiểm soát gửi Tiếp thị dùng chung (sàn bắt buộc):** mọi lượt gửi thuộc nhóm Tiếp thị & Quảng bá — dù phát ra từ phân hệ Chiến dịch, từ thao tác gửi thư cho danh sách hay lịch gửi tự động của phân hệ này, hay từ bất kỳ phân hệ nào khác — đều phải đi qua cùng một bộ kiểm tra tại thời điểm gửi đặc tả tại (`campaigns-srs.md`, `FEAT-44`): đồng thuận và bằng chứng, hạn chế xử lý, trạng thái tiếp cận, dấu vết chặn gửi, tạm chặn chờ xác nhận lời từ chối, Danh sách không quảng cáo, nhãn quảng cáo, khung giờ cấm, giới hạn 24 giờ và giới hạn tần suất, dừng khẩn cấp, căn cứ theo dõi hành vi, cấm trường nhạy cảm trong cá nhân hóa, loại tên thương hiệu SMS và loại mẫu tin, thông tin nhận diện người gửi và liên kết hủy nhận tin, ghi ngược hủy nhận tin, khiếu nại, điểm đến hỏng và chặn doanh nghiệp; và được đếm chung vào các giới hạn đó. Mọi kết quả được ghi vào sổ cái của cổng kèm tham chiếu bằng chứng Đồng ý (hàng 13 của `BR-33.8`).
 
   Tenant **không được** cấu hình để nhóm Tiếp thị thoát khỏi chi phối của Từ chối nhận tin (sàn pháp lý); tenant **được** cấu hình nhóm Liên lạc 1-1 có chịu chi phối hay không (Phụ lục B, `CFG-30-01`).
 
   **Lý do nghiệp vụ:** Nếu Từ chối nhận tin chặn tất cả, khách bấm "hủy nhận bản tin" hôm nay rồi mai gửi vé hỗ trợ sẽ không được trả lời — sự cố phục vụ khách xảy ra ngay tuần đầu; khách đang thương lượng hợp đồng không nhận được báo giá, và nhân viên sẽ gửi từ hộp thư cá nhân, đưa nội dung thương lượng ra khỏi hệ thống. Ngược lại, nếu không phân loại rõ, hệ thống sẽ gửi thư tiếp thị cho người đã từ chối.
 
 - **`BR-30.6` (Trạng thái Hạn chế xử lý):** Khi khách yêu cầu hạn chế xử lý (`FEAT-33`), hồ sơ mang trạng thái **Hạn chế xử lý**:
-  - **Dừng:** toàn bộ nhóm thư Tiếp thị; chấm điểm và suy giảm điểm (`FEAT-15`, `FEAT-16`); thăng hạng vòng đời **do ngưỡng điểm** (`BR-15.5`); thu hồi và phân bổ lại tự động (`BR-31.7`); **đồng hồ cam kết phản hồi lần đầu** (`BR-31.7`) — bản ghi vì vậy bị loại khỏi mẫu đo `KPI-03`; đưa vào danh sách phân khúc chiến dịch.
-  - **Vẫn chạy:** nhóm thư Giao dịch & Dịch vụ, để doanh nghiệp thực hiện nghĩa vụ hợp đồng; và **các bước chuyển giai đoạn theo nguyên tắc 1** (`BR-12.2`, `BR-12.9`).
+  - **Dừng:** toàn bộ nhóm thư Tiếp thị; chấm điểm và suy giảm điểm (`FEAT-15`, `FEAT-16`); thăng hạng vòng đời **do ngưỡng điểm** (`BR-15.5`); thu hồi và phân bổ lại tự động (`BR-31.7`); **đồng hồ cam kết phản hồi lần đầu** (`BR-31.7`) — bản ghi vì vậy bị loại khỏi mẫu đo `KPI-03`; đưa vào danh sách phân khúc chiến dịch — trừ Thông báo dịch vụ mục đích thu hồi sản phẩm, cảnh báo an toàn và thông báo luật định theo (`campaigns-srs.md`, `FEAT-45`, `BR-45.4`).
+  - **Vẫn chạy:** nhóm thư Giao dịch & Dịch vụ, để doanh nghiệp thực hiện nghĩa vụ hợp đồng — riêng Thông báo dịch vụ gửi hàng loạt, chỉ các mục đích thu hồi sản phẩm, cảnh báo an toàn và thông báo luật định (`campaigns-srs.md`, `BR-45.4`); và **các bước chuyển giai đoạn theo nguyên tắc 1** (`BR-12.2`, `BR-12.9`).
   - **Dỡ trạng thái:** khi **chính chủ thể dữ liệu rút lại yêu cầu qua kênh đã xác minh** theo `BR-33.7` — do **Quản trị viên** thực hiện một mình; hoặc theo nhánh dỡ sớm biện pháp phòng ngừa tại `BR-33.7` (b) — cần **Quản trị viên cùng Người phụ trách Bảo vệ Dữ liệu**. Cả hai nhánh ghi nhật ký (`NFR-07`) và làm đồng hồ cam kết chạy lại từ thời điểm dỡ.
 
   **Lý do nghiệp vụ:** Hệ thống không được thúc nhân viên liên hệ một người vừa yêu cầu hạn chế xử lý. Nguyên tắc 1 chỉ ghi nhận một thực tế thương mại đã xảy ra, không phải hoạt động xử lý dữ liệu cho mục đích tiếp thị — nếu dừng cả nhóm này, hồ sơ của một khách đang ký hợp đồng sẽ đứng sai giai đoạn. Thẩm quyền dỡ khác nhau theo nhánh vì nhánh thứ nhất làm đúng ý nguyện vừa được xác minh của chủ thể, còn nhánh thứ hai dỡ một biện pháp bảo vệ mà chủ thể chưa xác minh được danh tính. Không có đường dỡ thì một khách đổi ý bị đóng băng vĩnh viễn.
@@ -1738,7 +1742,7 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
   - **(c)** **không** dùng **mẫu chiến dịch** do Marketing tạo trong công cụ chiến dịch — mẫu thư nghiệp vụ cá nhân do nhân viên hoặc đội kinh doanh soạn (thư theo dõi sau cuộc gọi, thư giới thiệu, thư hỏi lịch gặp) **vẫn được phép**;
   - **(d)** **không gửi theo lô cho toàn bộ một danh sách** — việc mở một danh sách hiển thị rồi chọn thủ công vài khách hàng cụ thể **vẫn thỏa** tiêu chí này.
 
-  Lượt gửi không thỏa đủ bốn tiêu chí **bắt buộc thuộc nhóm Tiếp thị**. Thư báo giá, thư hợp đồng, thư xác nhận cuộc hẹn và thư trả lời yêu cầu của khách thuộc nhóm Giao dịch & Dịch vụ (`BR-30.5`), không xét theo bốn tiêu chí này và không chịu trần số người nhận.
+  Lượt gửi không thỏa đủ bốn tiêu chí **bắt buộc thuộc nhóm Tiếp thị**, trừ nội dung Giao dịch & Dịch vụ nêu tại `BR-30.5`; trong đó, gửi **hàng loạt** một nội dung Giao dịch & Dịch vụ chỉ được qua Thông báo dịch vụ theo (`campaigns-srs.md`, `FEAT-45`) — danh mục mục đích đóng, cấm nội dung quảng bá, có phê duyệt của Người phụ trách Bảo vệ Dữ liệu. Thư báo giá, thư hợp đồng, thư xác nhận cuộc hẹn và thư trả lời yêu cầu của khách thuộc nhóm Giao dịch & Dịch vụ (`BR-30.5`), không xét theo bốn tiêu chí này và không chịu trần số người nhận.
 
   **Lý do nghiệp vụ:** Không có bộ tiêu chí quan sát được, một chiến dịch tiếp thị chỉ cần gửi từ tài khoản nhân viên là ra khỏi tầm chi phối của Từ chối nhận tin, biến cam kết "không thể ghi đè" tại `BR-19.6` thành hình thức.
 
@@ -1749,9 +1753,11 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
   **Lý do nghiệp vụ:** Đây là mặc định an toàn nhất về pháp lý, để cam kết tại `BR-19.6` có cơ chế cưỡng chế thật mà không phụ thuộc việc mọi kênh gửi tin đã khai báo nhóm đầy đủ hay chưa.
 
 - **`BR-30.10` (Cưỡng chế đồng thuận trên mọi nguồn tác động) — sàn bắt buộc:** Bảng trường bị cưỡng chế tại `BR-18.2` chỉ điều chỉnh thao tác gộp; quy tắc này mở rộng cơ chế cưỡng chế ra mọi nguồn tác động còn lại:
-  - **Nguyên tắc bất biến:** chỉ **hành vi của chính chủ thể dữ liệu** (tự đăng ký, tự bấm liên kết xác nhận, tự trả lời trên kênh của mình) hoặc **bằng chứng đồng thuận mới hợp lệ theo `BR-30.3`** mới **nâng** được từ Từ chối nhận tin lên Đồng ý nhận tin.
+  - **Nguyên tắc bất biến:** chỉ **hành vi của chính chủ thể dữ liệu** (tự đăng ký, tự bấm liên kết xác nhận, tự trả lời trên kênh của mình) hoặc **bằng chứng đồng thuận mới hợp lệ theo `BR-30.3`** mới **nâng** được từ Từ chối nhận tin hoặc Chưa có đồng thuận lên Đồng ý nhận tin.
+  - **Nâng từ Từ chối nhận tin** — bất kể nguồn của lời từ chối: chỉ được nâng lên Đồng ý khi **chính chủ** xác nhận qua liên kết hoặc mã gửi tới chính điểm đến đó; ghi nhận thủ công của nhân viên và nhập khẩu không nâng được (`campaigns-srs.md`, `BR-26.5`).
   - **Nhập khẩu theo chiến lược cập nhật (`BR-23.3`):** **không bao giờ** hạ mức nghiêm ngặt của bản ghi hiện hữu. Bản ghi đang Từ chối mà dòng nhập vào là Đồng ý thì giữ Từ chối, và dòng đó được ghi vào báo cáo kết quả với ghi chú "Không nâng được mức đồng thuận — thiếu bằng chứng của chủ thể".
-  - **Chỉnh sửa thủ công bởi bất kỳ vai trò nào có quyền ghi trên bản ghi** — Nhân viên và Quản lý Kinh doanh, Nhân viên và Quản lý Marketing, Nhân viên Hỗ trợ khi tiếp nhận yêu cầu của khách: được **hạ** xuống Từ chối nhận tin tự do; **nâng** lên Đồng ý nhận tin bắt buộc kèm bằng chứng theo `BR-30.3` với nguồn thu thập từ A.8 — không có bằng chứng thì giao diện không cho lưu.
+  - **Chỉnh sửa thủ công bởi bất kỳ vai trò nào có quyền ghi trên bản ghi** — Nhân viên và Quản lý Kinh doanh, Nhân viên và Quản lý Marketing, Nhân viên Hỗ trợ khi tiếp nhận yêu cầu của khách: được **hạ** xuống Từ chối nhận tin tự do; **nâng** từ **Chưa có đồng thuận** lên Đồng ý nhận tin bắt buộc kèm bằng chứng theo `BR-30.3` có **tài liệu chứng minh đính kèm** (phiếu đồng ý, bản ghi cuộc gọi, ảnh chụp biểu mẫu) với nguồn thu thập từ A.8 — không có bằng chứng thì giao diện không cho lưu.
+  - **Hạ về Chưa có đồng thuận:** hệ thống hạ một kênh từ Đồng ý về Chưa có đồng thuận khi nhà mạng hoặc nền tảng báo số điện thoại đổi chủ (`campaigns-srs.md`, `BR-28.4`), với bằng chứng nguồn tương ứng trong A.8. Đồng ý được tự khôi phục khi dỡ biện pháp phòng ngừa (`BR-33.7`) được đánh dấu "tự khôi phục" để các phân hệ gửi tin nhận biết (`campaigns-srs.md`, `BR-32.1`).
   - Mọi lượt nâng mức đồng thuận, từ bất kỳ nguồn nào, đều được ghi nhật ký (`NFR-07`).
 
   **Lý do nghiệp vụ:** Không có quy tắc này, cam kết "Từ chối nhận tin không thể bị ghi đè" chỉ đúng với thao tác gộp, trong khi hai đường vào phổ biến hơn — nhập khẩu và sửa tay — vẫn hở.
@@ -1762,6 +1768,8 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | --- | --- | --- | --- |
 | `AC-30.1.1` | Chị Mai Đồng ý nhận tin qua email, SMS và Zalo | Chị bấm liên kết "Hủy nhận tin" trong một email chiến dịch | Chỉ kênh email chuyển sang Từ chối nhận tin; SMS và Zalo vẫn Đồng ý |
 | `AC-30.1.2` | Cùng bối cảnh | Chị chọn "Hủy nhận tin trên toàn bộ mọi kênh" | Cả ba kênh chuyển sang Từ chối nhận tin |
+| `AC-30.1.3` | Nhân viên tạo tay hồ sơ từ danh thiếp, nhập email và số điện thoại, không kèm bằng chứng đồng ý | Mở phần đồng thuận của hồ sơ | Mọi kênh ở trạng thái Chưa có đồng thuận; hồ sơ không nhận thư nhóm Tiếp thị |
+| `AC-30.1.4` | Khách quan tâm Tài khoản Chính thức Zalo và Đồng ý nhận tin qua Zalo OA | Khách từ chối nhận tin trên Zalo OA | Chỉ kênh Zalo OA chuyển Từ chối nhận tin; kênh Zalo ZNS giữ nguyên trạng thái |
 | `AC-30.2.1` | Hai khách hàng dùng chung số tổng đài đã được đánh dấu Định danh dùng chung | Quản trị viên chạy công cụ quét trùng lặp | Hai khách không bị xếp vào cụm trùng |
 | `AC-30.3.1` | Tiếp nối AC-30.1.1 | Mở lịch sử đồng thuận của chị Mai | Có bằng chứng gồm thời điểm, nguồn "Liên kết Hủy nhận tin trong email", phiên bản điều khoản và tiến trình ghi nhận; không có thao tác sửa bằng chứng |
 | `AC-30.3.2` | Chị Mai đổi trạng thái email ba lần trong năm | Mở lịch sử đồng thuận | Thấy đủ ba bộ bằng chứng |
@@ -1786,7 +1794,8 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | `AC-30.9.1` | Một lượt gửi không khai báo nhóm mục đích, danh sách có khách đang Từ chối nhận tin | Gửi | Lượt gửi được xếp vào nhóm Tiếp thị; khách đang Từ chối không nhận được |
 | `AC-30.10.1` | Khách đang Từ chối nhận tin qua email | Nhập khẩu theo chiến lược cập nhật với cột đồng thuận "Đồng ý" | Khách vẫn Từ chối; báo cáo kết quả có ghi chú "Không nâng được mức đồng thuận — thiếu bằng chứng của chủ thể" |
 | `AC-30.10.2` | Cùng bối cảnh | Nhân viên Kinh doanh sửa tay lên Đồng ý nhận tin, không kèm bằng chứng | Không lưu được |
-| `AC-30.10.3` | Cùng bối cảnh | Nhân viên sửa lên Đồng ý nhận tin kèm bằng chứng, nguồn "Ghi nhận thủ công bởi nhân viên", phiên bản điều khoản | Lưu được; nhật ký ghi lượt nâng mức |
+| `AC-30.10.3` | Cùng bối cảnh (khách đang Từ chối) | Nhân viên sửa lên Đồng ý nhận tin kèm bằng chứng, nguồn "Ghi nhận thủ công bởi nhân viên" | Không lưu được; giao diện đề nghị gửi yêu cầu xác nhận tới chính điểm đến của khách |
+| `AC-30.10.5` | Kênh email của khách ở Chưa có đồng thuận | Nhân viên sửa lên Đồng ý kèm bằng chứng, nguồn "Ghi nhận thủ công bởi nhân viên", phiên bản điều khoản và ảnh chụp phiếu đồng ý đính kèm | Lưu được; nhật ký ghi lượt nâng mức |
 | `AC-30.10.4` | Cùng bối cảnh | Khách tự bấm liên kết xác nhận đăng ký nhận tin | Kênh email chuyển sang Đồng ý nhận tin; bằng chứng được lưu |
 
 ---
@@ -1819,14 +1828,16 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 - **`BR-33.5` (Chính sách lưu trữ dữ liệu không hoạt động):** Khách hàng không phát sinh tương tác nào trong **36 tháng** liên tục và không ở Customer/Evangelist được đưa vào danh sách đề xuất rà soát lưu trữ (Phụ lục B, `CFG-33-02`). Quản trị viên quyết định lưu trữ dài hạn hoặc xóa. Hệ thống **không tự động xóa** hồ sơ khách hàng đã định danh còn nằm ngoài Thùng rác — hành vi này **cố định**.
 
-  **Năm ngoại lệ có chủ đích**, mỗi ngoại lệ chỉ xóa hoặc khử phần định danh chứ không xóa giá trị kinh doanh, hoặc chỉ thực thi một quyết định xóa mà con người đã đưa ra:
+  **Sáu ngoại lệ có chủ đích**, mỗi ngoại lệ chỉ xóa hoặc khử phần định danh chứ không xóa giá trị kinh doanh, hoặc chỉ thực thi một quyết định xóa mà con người đã đưa ra:
   - **(a)** tự động khử định danh nhóm Định danh KYC khi hết thời hạn lưu (`BR-01.5b`);
   - **(b)** tự động xóa Hồ sơ Khách hàng Tạm chưa từng có nhân viên phản hồi (`BR-33.6`, nhánh thứ nhất);
   - **(c)** tự động khử định danh Hồ sơ Khách hàng Tạm khi chạm trần lưu tuyệt đối (`BR-33.6`);
   - **(d)** dọn dẹp Thùng rác quá thời hạn (`BR-05.4`) — dữ liệu mà con người đã quyết định xóa, chịu toàn bộ chốt an toàn tại `BR-05.6`;
   - **(e)** tự động xóa **tệp nhập khẩu gốc** khi hết thời hạn lưu (`BR-33.8`, `CFG-22-01`) và **tài liệu xác minh danh tính** thu theo `BR-33.7` sau 30 ngày kể từ khi yêu cầu hoàn tất (`BR-01.5b`) — tệp phục vụ một tiến trình đã kết thúc, không phải hồ sơ khách hàng.
 
-  Ngoài năm ngoại lệ này, không tiến trình nào được tự động xóa dữ liệu khách hàng.
+  - **(f)** tự động khử định danh sổ cái người nhận chiến dịch, sự kiện tương tác gắn danh tính và thẻ gắn tự động từ tương tác khi hết thời hạn lưu của phân hệ Chiến dịch (`campaigns-srs.md`, `BR-32.3`) — dữ liệu hành vi phục vụ một đợt gửi đã kết thúc, không phải hồ sơ khách hàng.
+
+  Ngoài sáu ngoại lệ này, không tiến trình nào được tự động xóa dữ liệu khách hàng.
 
   **Lý do nghiệp vụ:** Tự động xóa khách hàng "không hoạt động" theo một con số thời gian dễ xóa mất khách lớn có chu kỳ mua dài; quyết định xóa giá trị kinh doanh phải thuộc về con người (Mục 2.4, Nguyên tắc 4).
 
@@ -1870,6 +1881,8 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | 10 | Nhật ký xuất dữ liệu (`BR-25.3`) | Giữ ở dạng đã khử định danh; là căn cứ liệt kê tập trường và tập bản ghi của khách từng được xuất ra ngoài |
 | 11 | Nội dung hội thoại đa kênh — thuộc [`omnichat-srs.md`](./omnichat-srs.md) | **Khử định danh hoặc xóa** toàn bộ nội dung hội thoại gắn với khách, gồm tệp đính kèm. **Sàn tối thiểu đặt cho tài liệu đó:** Hộp thư Đa kênh thực thi được quyền xóa theo khách hàng trên mọi kênh trong một lần thao tác, hoàn tất trong cùng thời hạn của yêu cầu và trả về xác nhận để đưa vào Biên bản Hoàn tất Xử lý — sàn này được thỏa bởi `BR-23.3` và `BR-23.1` của `omnichat-srs.md`. Phần dữ liệu đang bị **Tạm dừng xóa theo yêu cầu pháp lý** (`BR-23.7` của `omnichat-srs.md`) mang trạng thái **Đang tạm dừng theo yêu cầu pháp lý** trong Biên bản, và yêu cầu xóa **giữ ở trạng thái chưa hoàn tất** cho tới khi tạm dừng được gỡ |
 | 12 | Nội dung Vé hỗ trợ và tệp đính kèm — thuộc [`tickets-srs.md`](./tickets-srs.md) | **Khử định danh** nội dung vé (giữ dữ liệu thống kê vận hành như thời gian xử lý, phân loại) và **xóa tệp đính kèm** do khách gửi. **Sàn tối thiểu đặt cho tài liệu đó:** như hàng 11. Khi phân hệ Vé hỗ trợ chưa đặc tả quy tắc thực thi quyền xóa theo khách hàng thỏa sàn này, **Biên bản Hoàn tất Xử lý bắt buộc nêu rõ nội dung Vé hỗ trợ nằm ngoài phạm vi được bảo đảm** |
+| 13 | Sổ cái người nhận chiến dịch, sổ cái của cổng kiểm soát gửi tiếp thị dùng chung, vị trí trong chuỗi nuôi dưỡng, bản ghi tạm chặn chờ xác nhận lời từ chối, bản ghi tạm ngừng do lỗi hộp thư lặp lại, tệp xuất sổ cái còn hiệu lực, nhật ký kiểm toán của phân hệ Chiến dịch, ánh xạ liên kết hủy nhận tin, bản ghi Từ chối Thông báo dịch vụ không thiết yếu — thuộc [`campaigns-srs.md`](./campaigns-srs.md) | **Khử định danh** dòng sổ cái (xóa điểm đến, liên kết tới hồ sơ, thông điệp lỗi gốc; giữ trạng thái và số liệu tổng hợp), đưa khách ra khỏi mọi chuỗi nuôi dưỡng, ngắt ánh xạ của liên kết theo dõi; xóa bản ghi Từ chối Thông báo dịch vụ không thiết yếu cùng hồ sơ — khách đã xóa không còn là người nhận được (`campaigns-srs.md`, `BR-32.2`, `BR-45.8`) |
+| 14 | Dấu vết chặn gửi của mọi điểm đến của khách (yêu cầu xóa được coi là rút đồng thuận tiếp thị) — thuộc [`campaigns-srs.md`](./campaigns-srs.md) | **Giữ ở dạng không đọc ngược được** theo nghĩa vụ tôn trọng lời từ chối (`campaigns-srs.md`, `BR-32.4`); không gắn thông tin nào khác về khách |
 
   **Biên bản Hoàn tất Xử lý:** thay cho mọi tuyên bố "đã xóa xong", hệ thống phát hành một biên bản liệt kê **từng hàng** của bảng trên kèm trạng thái — **Đã xóa / Đã khử định danh / Đã thu hồi / Được giữ theo nghĩa vụ pháp lý / Đang tạm dừng theo yêu cầu pháp lý** — và số lượng đối tượng đã xử lý ở mỗi hàng. Trạng thái "Đang tạm dừng theo yêu cầu pháp lý" khác "Được giữ theo nghĩa vụ pháp lý" ở chỗ đây là **hoãn có điều kiện**: yêu cầu sẽ được thi hành lại khi tạm dừng được gỡ.
 
@@ -1898,7 +1911,7 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | `AC-33.7.3` | Khách ở Customer đã được xác minh qua email đã xác thực của hồ sơ | Cùng một Quản trị viên vừa xác minh vừa phê duyệt xóa | Không thực hiện được; cần một người thứ hai phê duyệt xóa |
 | `AC-33.7.4` | Tiếp nối AC-33.7.2, khách không bổ sung xác minh | Qua 30 ngày | Biện pháp phòng ngừa tự động được dỡ; yêu cầu đóng với lý do "Không xác minh được danh tính" |
 | `AC-33.7.5` | Tiếp nối AC-33.7.2, xác định người gửi không phải chủ thể | Quản trị viên và Người phụ trách Bảo vệ Dữ liệu cùng dỡ sớm | Biện pháp được dỡ; nhật ký ghi hai người thực hiện |
-| `AC-33.8.1` | Hoàn tất xóa theo quyền chủ thể cho một khách có dữ liệu ở đủ 12 nơi lưu | Mở Biên bản Hoàn tất Xử lý | Biên bản có đủ 12 hàng, mỗi hàng có trạng thái và số lượng đối tượng đã xử lý; không có câu "đã xóa xong" |
+| `AC-33.8.1` | Hoàn tất xóa theo quyền chủ thể cho một khách có dữ liệu ở đủ 14 nơi lưu | Mở Biên bản Hoàn tất Xử lý | Biên bản có đủ 14 hàng, mỗi hàng có trạng thái và số lượng đối tượng đã xử lý; không có câu "đã xóa xong" |
 | `AC-33.8.2` | Tiếp nối AC-33.8.1 | Dùng lại đường tải một tệp xuất và một tệp báo cáo lỗi nhập khẩu còn hạn của khách | Cả hai bị từ chối |
 | `AC-33.8.3` | Tiếp nối AC-33.8.1 | Mở ảnh chụp trong sổ cái gộp liên quan tới khách | Còn cấu trúc và mã bản ghi, không còn dữ liệu cá nhân |
 | `AC-33.8.4` | Một phần hội thoại của khách đang bị Tạm dừng xóa theo yêu cầu pháp lý | Hoàn tất các phần còn lại | Hàng hội thoại trong biên bản mang trạng thái "Đang tạm dừng theo yêu cầu pháp lý" kèm căn cứ; yêu cầu xóa vẫn ở trạng thái chưa hoàn tất |
@@ -2499,7 +2512,7 @@ Người kiểm thử ghi rõ trong biên bản đã dùng cách nào và giá t
 5. **Kỳ vọng:** Bị **chặn** cho tới khi ghi nhận phương thức xác minh danh tính (`BR-33.7`); vì chị Hồng là Customer, còn cần **hai người khác nhau** (người xác minh và người phê duyệt).
 6. Sau khi xác minh qua email đã xác thực của chính hồ sơ, Quản trị viên tiếp tục xử lý.
 7. **Kỳ vọng (từ chối một phần):** Vì còn hợp đồng hiệu lực, hệ thống **từ chối một phần** theo `BR-33.3`: xóa dữ liệu tiếp thị và kênh liên lạc không cần thiết, giữ dữ liệu tối thiểu phục vụ hợp đồng, bắt buộc ghi lý do từ chối một phần.
-8. **Kỳ vọng về phạm vi xóa — kiểm chứng theo đúng 12 hàng của bảng `BR-33.8`:** hệ thống phát hành **Biên bản Hoàn tất Xử lý** liệt kê từng hàng kèm trạng thái và số lượng đối tượng đã xử lý. Người kiểm thử đối chiếu từng hàng:
+8. **Kỳ vọng về phạm vi xóa — kiểm chứng theo đúng 14 hàng của bảng `BR-33.8`:** hệ thống phát hành **Biên bản Hoàn tất Xử lý** liệt kê từng hàng kèm trạng thái và số lượng đối tượng đã xử lý. Người kiểm thử đối chiếu từng hàng:
    - Hàng 1: mở lại hồ sơ → phần dữ liệu không thuộc nghĩa vụ hợp đồng không còn.
    - Hàng 2: tra dòng thời gian và ghi chú → không còn nội dung chứa dữ liệu cá nhân ngoài phần được giữ.
    - Hàng 3: mở ảnh chụp trong sổ cái gộp → còn cấu trúc, không còn dữ liệu cá nhân.
@@ -2512,6 +2525,8 @@ Người kiểm thử ghi rõ trong biên bản đã dùng cách nào và giá t
    - Hàng 10: tra nhật ký xuất → có tập trường và tập bản ghi từng được xuất.
    - Hàng 11: nội dung hội thoại đa kênh → đã xóa hoặc khử định danh, biên bản nêu số hội thoại đã xử lý; phần đang bị Tạm dừng xóa theo yêu cầu pháp lý mang trạng thái **Đang tạm dừng theo yêu cầu pháp lý** kèm căn cứ, không ghi là đã xóa.
    - Hàng 12: nội dung vé hỗ trợ → biên bản thể hiện đúng quy tắc tại hàng 12 của `BR-33.8`; khi phân hệ Vé hỗ trợ chưa có quy tắc thực thi quyền xóa theo khách hàng, biên bản **nêu rõ phần này nằm ngoài phạm vi được bảo đảm** — một biên bản im lặng về hàng này là **không đạt**.
+   - Hàng 13: tra sổ cái của các chiến dịch khách từng nhận → không còn tìm được khách; số liệu tổng hợp của chiến dịch không đổi; khách không còn trong chuỗi nuôi dưỡng nào.
+   - Hàng 14: với mọi điểm đến của khách → biên bản ghi "Được giữ theo nghĩa vụ pháp lý" cho dấu vết chặn gửi, không chứa điểm đến ở dạng đọc được.
 9. **Kỳ vọng về văn bản tự do:** với ghi chú và dòng thời gian, hệ thống liệt kê **danh sách hữu hạn** các mục gắn với khách và yêu cầu người xử lý chọn cho từng mục: **ẩn toàn bộ mục** hoặc **thay bằng ghi chú vô danh**; hệ thống **không** tự nhận diện phần nào là dữ liệu cá nhân.
 
 ---
@@ -2571,7 +2586,7 @@ Người kiểm thử ghi rõ trong biên bản đã dùng cách nào và giá t
 10. **Kỳ vọng (`BR-01.5b` — sàn bắt buộc):** Các trường KYC **bị khử vĩnh viễn**, hồ sơ và dữ liệu kinh doanh **giữ nguyên**. Thử đặt `CFG-01-03` = **60 tháng** hoặc "vô hạn" — **bị từ chối cả hai**, miền chỉ nhận 6–24 tháng.
 11. **Nhánh D — dữ liệu không hoạt động.** Một hồ sơ đã định danh không có tương tác trong **37 tháng** (`CFG-33-02` = 36 tháng).
 12. **Kỳ vọng (`BR-33.5` — hành vi cố định):** Hồ sơ **không** bị tự xóa, chỉ vào **danh sách rà soát**. Không tồn tại lựa chọn "tự động xóa khi hết thời hạn rà soát" ở bất kỳ mức phân quyền nào, kể cả Chủ sở hữu.
-13. **Kỳ vọng đối chiếu năm ngoại lệ (`BR-33.5`):** đúng **năm** ngoại lệ — (a) khử KYC ở bước 10; (b) xóa Hồ sơ Tạm chưa có nhân viên phản hồi ở bước 4; (c) khử định danh Hồ sơ Tạm chạm trần ở bước 8; (d) dọn Thùng rác quá hạn (kiểm tại Kịch bản 20, gồm các chốt an toàn `BR-05.6`); (e) tự xóa tệp nhập khẩu gốc hết thời hạn và tài liệu xác minh danh tính sau 30 ngày — tải một tệp nhập khẩu, dịch tới ngày thứ 31 và xác nhận không còn tải về được. **Không** có tiến trình tự động xóa nào khác.
+13. **Kỳ vọng đối chiếu sáu ngoại lệ (`BR-33.5`):** đúng **sáu** ngoại lệ — (f) khử định danh sổ cái chiến dịch hết hạn lưu, kiểm tại `campaigns-srs.md` `AC-32.3.1`; (a) khử KYC ở bước 10; (b) xóa Hồ sơ Tạm chưa có nhân viên phản hồi ở bước 4; (c) khử định danh Hồ sơ Tạm chạm trần ở bước 8; (d) dọn Thùng rác quá hạn (kiểm tại Kịch bản 20, gồm các chốt an toàn `BR-05.6`); (e) tự xóa tệp nhập khẩu gốc hết thời hạn và tài liệu xác minh danh tính sau 30 ngày — tải một tệp nhập khẩu, dịch tới ngày thứ 31 và xác nhận không còn tải về được. **Không** có tiến trình tự động xóa nào khác.
 
 ---
 
@@ -2674,13 +2689,13 @@ Mục này chỉ chứa các điểm **chưa quyết định được điều g�
 
 **A.7 Kênh Nguồn gốc Khách hàng** — `BR-32.1`: Website · Quảng cáo Facebook · Quảng cáo Google · Zalo · Giới thiệu · Sự kiện/Hội thảo · Tiếp cận chủ động · Nhập khẩu từ tệp · Đối tác · Không xác định.
 
-**A.8 Nguồn thu thập Đồng thuận** — `BR-30.3`: Biểu mẫu đăng ký trên website · Hộp thoại đồng ý trên trò chuyện trực tuyến · Phiếu đồng ý tại sự kiện · Nhập khẩu từ tệp có khai báo cơ sở · Ghi nhận thủ công bởi nhân viên · Liên kết Hủy nhận tin trong email · Yêu cầu trực tiếp của khách hàng · **Yêu cầu chưa xác minh được danh tính** (dùng cho lượt hạ mức đồng thuận do biện pháp phòng ngừa tại `BR-33.7` (d)).
+**A.8 Nguồn thu thập Đồng thuận** — `BR-30.3`: Biểu mẫu đăng ký trên website · Hộp thoại đồng ý trên trò chuyện trực tuyến · Phiếu đồng ý tại sự kiện · Nhập khẩu từ tệp có khai báo cơ sở · Ghi nhận thủ công bởi nhân viên · Liên kết Hủy nhận tin trong email · Liên kết hủy nhận tin trong chiến dịch (mọi kênh, `campaigns-srs.md` `BR-26.4`) · Hủy nhận bằng một thao tác từ giao diện hộp thư · Từ khóa từ chối trong tin trả lời · Tư vấn viên ghi nhận từ chối · Người nhận chặn doanh nghiệp trên nền tảng nhắn tin · Người nhận tắt tin tiếp thị trên nền tảng · Đồng ý trên Tài khoản Chính thức hoặc trong tin nhắn nền tảng (`campaigns-srs.md`, `BR-09.3`) · Nhà mạng hoặc nền tảng báo số điện thoại đổi chủ (`campaigns-srs.md`, `BR-28.4`) · Khiếu nại thư rác · Yêu cầu trực tiếp của khách hàng · **Yêu cầu chưa xác minh được danh tính** (dùng cho lượt hạ mức đồng thuận do biện pháp phòng ngừa tại `BR-33.7` (d)).
 
 **A.9 Giai đoạn Vòng đời** — `FEAT-12`: 10 giá trị và các bước chuyển hợp lệ tại Ma trận Chuyển đổi Giai đoạn, `FEAT-12`.
 
-**A.10 Trạng thái Tiếp cận** — `BR-29.2`, `BR-10.4`: Đã xác thực · Không tiếp cận được (trạng thái kỹ thuật: email hỏng, số không tồn tại) · Chưa kiểm tra · **Không còn hiệu lực** (lý do nghiệp vụ: khách đã rời doanh nghiệp sở hữu địa chỉ, theo `BR-10.4`; đảo lại được, khác "Không tiếp cận được").
+**A.10 Trạng thái Tiếp cận** — `BR-29.2`, `BR-10.4`: Đã xác thực · Không tiếp cận được (trạng thái kỹ thuật: email hỏng, số không tồn tại) · Chưa kiểm tra · **Không còn hiệu lực** (lý do nghiệp vụ: địa chỉ không còn thuộc về khách — khách đã rời doanh nghiệp sở hữu địa chỉ theo `BR-10.4`, hoặc số điện thoại đã đổi chủ theo `campaigns-srs.md` `BR-28.4`; đảo lại được, khác "Không tiếp cận được").
 
-**A.11 Cơ sở Đồng thuận cho lô Nhập khẩu** — `BR-30.4`: Khách hàng đã đăng ký trực tiếp · Dữ liệu từ sự kiện có phiếu đồng ý · Quan hệ hợp đồng hiện hữu · Không có cơ sở đồng thuận (**không phải giá trị mặc định** — người nhập bắt buộc tự chọn; khi chọn, toàn bộ lô Từ chối nhận tin cho nhóm Tiếp thị).
+**A.11 Cơ sở Đồng thuận cho lô Nhập khẩu** — `BR-30.4`: Khách hàng đã đăng ký trực tiếp · Dữ liệu từ sự kiện có phiếu đồng ý · Quan hệ hợp đồng hiện hữu (**không** tạo Đồng ý nhận tin nhóm Tiếp thị — các kênh của lô nhận Chưa có đồng thuận; chỉ là căn cứ cho nhóm Giao dịch & Dịch vụ) · Không có cơ sở đồng thuận (**không phải giá trị mặc định** — người nhập bắt buộc tự chọn; khi chọn, toàn bộ lô Từ chối nhận tin cho nhóm Tiếp thị).
 
 **A.12 Nhóm Mục đích Gửi tin** — `BR-30.5`: Tiếp thị & Quảng bá (chịu chi phối của Từ chối nhận tin) · Giao dịch & Dịch vụ · Liên lạc 1-1 do nhân viên chủ động.
 
@@ -2736,6 +2751,7 @@ Mục này chỉ chứa các điểm **chưa quyết định được điều g�
 | `CFG-25-02` | `BR-25.5`, `BR-25.4` | Hạn mức xuất dữ liệu của Nhân viên Kinh doanh mỗi người mỗi ngày | 2.000 bản ghi/ngày | 200 – 5.000 (không cao hơn giá trị nhỏ nhất của `CFG-25-01`, nên mọi tổ hợp đều hợp lệ) | Chủ sở hữu | **Có sàn bắt buộc** — vai trò này không bao giờ xuất được trường KYC; mọi lần xuất luôn ghi nhật ký (`BR-25.3`) |
 | `CFG-30-01` | `BR-30.5` | Nhóm Liên lạc 1-1 có chịu chi phối của Từ chối nhận tin hay không | Không chịu, nhưng bắt buộc ghi nhật ký | Có / Không | Chủ sở hữu + BVDL | **Có sàn bắt buộc** — nhóm Tiếp thị luôn chịu chi phối, không cấu hình được |
 | `CFG-30-02` | `BR-30.7` | Số người nhận tối đa của một lượt gửi nhóm Liên lạc 1-1 | 5 | 1 – 10 | Chủ sở hữu + BVDL | **Có sàn bắt buộc** — trần tuyệt đối 10; trên mức đó là gửi hàng loạt và buộc thuộc nhóm Tiếp thị |
+| `CFG-30-03` | `BR-30.4` | Số bản ghi tối đa của một lô nhập khẩu tạo Đồng ý nhận tin mà không cần Người phụ trách Bảo vệ Dữ liệu chấp thuận | 1.000 | 0 – 10.000 (0 nghĩa là mọi lô đều cần chấp thuận) | Chủ sở hữu + BVDL | **Có sàn bắt buộc** — trần 10.000 |
 | `CFG-31-01` | `BR-31.7`, `BR-31.8`, `BR-17.2c`, `BR-35.3b` | Các mốc thời hạn phản hồi theo mức ưu tiên; số lần thu hồi tự động tối đa | 1 / 4 / 24 giờ làm việc; tối đa 2 lần | 0,5 – 72 giờ; 0 – 5 lần | Quản lý Kinh doanh | **Có sàn bắt buộc** — ghi chú tay đơn thuần không bao giờ được tính là bằng chứng liên hệ (`BR-31.8`) |
 | `CFG-31-02` | `BR-31.3b` | Thứ tự ưu tiên giữa các quy tắc phân bổ | Người phụ trách hiện hữu → Vùng địa lý → Ngành nghề → Chia vòng lần lượt → Chưa phân công | Sắp xếp lại các vị trí (2) đến (4) | Quản lý Kinh doanh + Quản trị viên | **Có sàn bắt buộc** — Người phụ trách hiện hữu luôn ở vị trí số 1 (`BR-31.6`) |
 | `CFG-31-03` | `BR-31.7b` | Lịch làm việc: múi giờ, ngày làm việc, giờ bắt đầu/kết thúc, ngày lễ | Thứ Hai – Thứ Sáu 08:00 – 17:30, không ngày lễ | Tự khai báo; tối thiểu một ngày làm việc trong tuần, giờ kết thúc sau giờ bắt đầu | Chủ sở hữu | Tự do |

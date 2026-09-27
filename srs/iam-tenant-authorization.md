@@ -708,7 +708,7 @@ Một khách hàng đăng ký sử dụng dịch vụ, workspace của họ đư
 | Nhân viên Hỗ trợ | Đơn vị của mình | Xử lý ticket, trả lời hội thoại đa kênh |
 | Chỉ xem (Read Only) | Đơn vị của mình | Xem hầu hết mọi thứ, không sửa/xoá — là vai trò mặc định khi mời thành viên không chọn vai trò nào |
 | Kiểm toán (Auditor) | Toàn workspace | Chỉ xem, không có quyền ghi nào — cần bật tính năng mở rộng tương ứng |
-| Marketing | Đơn vị của mình | Quản lý chiến dịch, thư viện nội dung — cần bật tính năng mở rộng tương ứng |
+| Marketing | Đơn vị của mình (riêng loại dữ liệu Khách hàng: Toàn workspace ở chế độ xem, theo `contacts-srs.md` `CFG-05-02`) | Quản lý chiến dịch, thư viện nội dung; quyền **Phát sóng chiến dịch** cấp riêng (`campaigns-srs.md`, `BR-17.1`) — cần bật tính năng mở rộng tương ứng |
 
 **Quy tắc nghiệp vụ:**
 
@@ -806,7 +806,7 @@ Một khách hàng đăng ký sử dụng dịch vụ, workspace của họ đư
 
 ### FEAT-34 — Cấu hình phạm vi hiển thị dữ liệu `[Đã triển khai]`
 
-**Mô tả nghiệp vụ:** Owner/Admin cấu hình, cho toàn workspace hoặc riêng theo từng loại dữ liệu (Khách hàng, Công ty, Cơ hội, Ticket, Công việc, Hội thoại), mức độ dữ liệu mặc định mỗi vai trò được thấy.
+**Mô tả nghiệp vụ:** Owner/Admin cấu hình, cho toàn workspace hoặc riêng theo từng loại dữ liệu (Khách hàng, Công ty, Cơ hội, Ticket, Công việc, Hội thoại, Chiến dịch), mức độ dữ liệu mặc định mỗi vai trò được thấy.
 
 **Actor:** Owner/Admin.
 

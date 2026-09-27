@@ -44,7 +44,7 @@ Tài liệu bao trùm toàn bộ hành trình một hội thoại và toàn bộ
 **Ngoài phạm vi:**
 
 - Thủ tục đăng ký, xác minh và phê duyệt tài khoản doanh nghiệp với từng nhà cung cấp kênh (Facebook, WhatsApp...) — đây là việc doanh nghiệp làm trực tiếp với nhà cung cấp trước khi kết nối vào hệ thống; tài liệu này chỉ mô tả những gì quản trị viên/Agent nhìn thấy và thao tác được bên trong Omnichat.
-- Chiến dịch gửi tin nhắn hàng loạt (Campaign/Broadcast) — chưa tồn tại trong hệ thống, xem Mục 7.
+- Chiến dịch gửi tin nhắn hàng loạt (Campaign/Broadcast) — thuộc [`campaigns-srs.md`](./campaigns-srs.md). Phân hệ này cung cấp tài khoản kênh WhatsApp và Zalo OA dùng chung cho chiến dịch (`campaigns-srs.md`, `BR-10.1`), tiếp nhận tin khách trả lời chiến dịch (`campaigns-srs.md`, `BR-35.1`) và ưu tiên tin trả lời của Agent trước tin chiến dịch (`BR-12.6`).
 - Các đối tượng nghiệp vụ khác của CRM (Liên hệ, Tài khoản, Cơ hội, Ticket, Công việc) — bao gồm cả quy tắc phân công lẫn chỉ số hiệu suất của chúng. Tài liệu này chỉ đặc tả hội thoại; khi Báo cáo hiệu suất Agent cần hiển thị cạnh nhau năng suất hội thoại và năng suất các đối tượng khác, phần đóng góp số liệu của các đối tượng đó do SRS tương ứng đặc tả (xem Mục 7).
 - Trung tâm cuộc gọi thoại (Voice/Call Center) — hiện chưa là một kênh của Omnichat.
 
@@ -513,12 +513,13 @@ Sau khi hết cửa sổ, một số kênh cho phép chủ động liên hệ l�
 
 - BR-10.1: Quản trị viên PHẢI cấu hình được Chính sách tự động đóng theo điều kiện áp dụng (ví dụ theo kênh, theo tag), khoảng thời gian không hoạt động, và trạng thái đích.
 - BR-10.2: Doanh nghiệp CÓ THỂ chọn "không bao giờ tự động đóng" cho một số nhóm hội thoại cụ thể (ví dụ hội thoại đang chờ xử lý nội bộ đặc biệt).
-- BR-10.3: Nếu chính sách bật cảnh báo trước, hệ thống PHẢI gửi tin nhắn hỏi khách hàng trước khi đóng, và CÓ THỂ lặp lại cảnh báo một số lần theo cấu hình nếu khách hàng vẫn im lặng.
+- BR-10.3: Nếu chính sách bật cảnh báo trước, hệ thống PHẢI gửi tin nhắn hỏi khách hàng trước khi đóng, và CÓ THỂ lặp lại cảnh báo một số lần theo cấu hình nếu khách hàng vẫn im lặng. Ngoại lệ: không gửi tin hỏi trước khi đóng tới khách có tin gắn nhãn "Có thể là lời từ chối nhận tin" chưa xử lý (BR-10.9).
 - BR-10.4: Bất kỳ hoạt động thực sự nào từ khách hàng hoặc Agent trong lúc đang chờ đóng PHẢI hủy việc đóng ngay lập tức, đưa hội thoại quay lại trạng thái xử lý bình thường — tin nhắn cảnh báo tự động của chính hệ thống không được tính là một "hoạt động" làm hủy việc đóng.
 - BR-10.5: Agent PHẢI có thể tự đặt riêng cho một hội thoại cụ thể: miễn trừ tự động đóng, tạm hoãn việc đóng thêm một khoảng thời gian, hoặc ép đóng ngay vào một thời điểm chỉ định.
 - BR-10.6: Khi hội thoại được đóng tự động dưới trạng thái Đã giải quyết, doanh nghiệp PHẢI cấu hình được cách xử lý nếu khách hàng nhắn lại sau đó: luôn mở lại hội thoại cũ, luôn tạo hội thoại mới, hoặc mở lại nếu trong một khoảng thời gian nhất định (nếu quá thời gian đó thì tạo mới).
-- BR-10.7 `[Yêu cầu mới]`: Khi việc đóng tự động của một hội thoại bị hoãn lại vì chạm Ngưỡng an toàn đóng hàng loạt, hệ thống PHẢI tự đóng lại hội thoại đó ngay khi tình trạng bất thường kết thúc, và trong mọi trường hợp không để hội thoại chờ quá thời hạn doanh nghiệp cấu hình (mặc định 10 phút) — không được để hội thoại treo cho tới khi có hoạt động mới hoặc tới khi quản trị viên can thiệp thủ công.
+- BR-10.7 `[Yêu cầu mới]`: Khi việc đóng tự động của một hội thoại bị hoãn lại vì chạm Ngưỡng an toàn đóng hàng loạt, hệ thống PHẢI tự đóng lại hội thoại đó ngay khi tình trạng bất thường kết thúc, và trong mọi trường hợp — trừ hội thoại còn tin gắn nhãn chưa xử lý theo BR-10.9 — không để hội thoại chờ quá thời hạn doanh nghiệp cấu hình (mặc định 10 phút) — không được để hội thoại treo cho tới khi có hoạt động mới hoặc tới khi quản trị viên can thiệp thủ công.
 - BR-10.8 `[Yêu cầu mới]`: Khi một hội thoại đã đủ điều kiện đóng nhưng chưa được đóng, Giám sát viên PHẢI biết được **lý do ngay trên chính hội thoại đó**, phân biệt tối thiểu hai trường hợp: đang hoãn vì Ngưỡng an toàn đóng hàng loạt (doanh nghiệp đang ở tình trạng bất thường, cần xem xét), hay chưa đóng được vì một nguyên nhân khác (cần đội vận hành xử lý). Ngoài ra, mỗi lần Ngưỡng an toàn đóng hàng loạt kích hoạt PHẢI sinh một cảnh báo tới Giám sát viên, kèm số lượng hội thoại bị ảnh hưởng và kênh liên quan.
+- BR-10.9 `[Yêu cầu mới]`: Khi hội thoại còn tin mang nhãn "Có thể là lời từ chối nhận tin" chưa được xử lý (`campaigns-srs.md`, `BR-26.3`), hội thoại PHẢI KHÔNG chuyển được sang Đã giải quyết hay Đã đóng bằng bất kỳ đường nào (Agent đánh dấu, đóng hàng loạt, ép đóng theo BR-10.5, tự động đóng); việc tự động đóng được hoãn và lý do "còn tin gắn nhãn chưa xử lý" hiển thị theo BR-10.8.
 
 **Tiêu chí chấp nhận:**
 
@@ -1348,7 +1349,7 @@ Mục này nêu hai loại nội dung: **ranh giới hiện tại của sản ph
 
 ### 7.1 Ranh giới hiện tại của sản phẩm
 
-1. **Chưa có tính năng gửi tin nhắn hàng loạt/chiến dịch (Campaign, Broadcast)** — Omnichat hiện chỉ phục vụ hội thoại hai chiều do khách hàng chủ động bắt đầu, do Agent/Bot trả lời, hoặc do doanh nghiệp chủ động liên hệ lại theo FEAT-32.
+1. **Gửi tin nhắn hàng loạt/chiến dịch (Campaign, Broadcast)** — đặc tả tại `campaigns-srs.md`; Omnichat chỉ phục vụ hội thoại hai chiều do khách hàng chủ động bắt đầu, do Agent/Bot trả lời, hoặc do doanh nghiệp chủ động liên hệ lại theo FEAT-32. Còn mở: bổ sung hai kênh tiếp nhận tin trả lời qua Zalo ZNS và qua đầu số SMS hai chiều (`campaigns-srs.md` Mục 1.6, giả định 2).
 2. **Chưa phân tích được cảm xúc và ý định của khách hàng từ nội dung trao đổi** — hệ thống chỉ ghi nhận biểu tượng phản hồi nhanh do người thả (FEAT-15), không tự đánh giá khách đang hài lòng hay bức xúc. Hệ quả: không tự phát hiện được hội thoại đang xấu đi để can thiệp sớm, và việc lấy mẫu chấm chất lượng (BR-27.2) phải dựa vào các dấu hiệu gián tiếp.
 3. **Chưa gợi ý được nội dung trả lời cho Agent** — mẫu tin nhắn nhanh (FEAT-18) là công cụ tra cứu thủ công; hệ thống không đề xuất câu trả lời phù hợp theo ngữ cảnh, không tự tóm tắt hội thoại khi bàn giao hoặc khi đóng, và không tự dịch giữa ngôn ngữ khách hàng và ngôn ngữ Agent.
 4. **Một số hình thức tương tác đặc thù theo kênh chưa được xử lý như một hội thoại đầy đủ** — ví dụ trả lời story trên Instagram, bình luận hoặc tin nhắn phát sinh từ quảng cáo trên TikTok.

@@ -116,7 +116,7 @@ Hệ quả bắt buộc:
 | [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) | Quản lý Cơ hội & Phễu Bán hàng (Deals & Pipelines) | Version 6.0 (Chuẩn hóa Nghiệp vụ Thuần túy) | 2026-09-23 |
 | [`tickets-srs.md`](./tickets-srs.md) | Quản lý Vé Hỗ trợ & Dịch vụ Khách hàng (Tickets & Customer Service) | Version 2.2 (Standardized Business SRS) | 2026-08-29 |
 | [`tasks-srs.md`](./tasks-srs.md) | Quản lý Công việc, Lịch trình & Ghi nhận Tương tác (Tasks, Calendar & Activity Logging) | Version 6.0 (Chuẩn hóa Nghiệp vụ Thuần túy) | 2026-09-17 |
-| [`campaigns-srs.md`](./campaigns-srs.md) | Quản lý Chiến dịch Tiếp thị & Truyền thông Đa kênh (Marketing Campaigns) | Version 2.2 (Standardized Business SRS) | 2026-08-29 |
+| [`campaigns-srs.md`](./campaigns-srs.md) | Quản lý Chiến dịch Tiếp thị & Truyền thông Đa kênh (Marketing Campaigns) | Version 6.1 (Chuẩn hóa Nghiệp vụ Thuần túy, bổ sung Thông báo dịch vụ) | 2026-09-27 |
 | [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) | Phân quyền & Quản trị Không gian làm việc (IAM & ABAC) | Baseline | 2026-08-25 |
 | [`object-manager-srs.md`](./object-manager-srs.md) | Quản trị Đối tượng & Bố cục Trường dữ liệu (Object Manager & FLS) | Baseline | 2026-08-24 |
 | [`omnichat-srs.md`](./omnichat-srs.md) | Hội thoại Đa kênh & Hộp thư Tiếp nhận (Omnichannel Inbox) | Baseline | 2026-08-24 |

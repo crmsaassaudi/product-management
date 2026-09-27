@@ -369,42 +369,73 @@ Tập hợp các đầu mục việc con cần hoàn thành bên trong một nhi
 
 ## Quản lý Chiến dịch Tiếp thị & Truyền thông Đa kênh (Marketing Campaigns)
 
-**Chiến dịch Tiếp thị Đa kênh (Marketing Campaign)**:
-Thực thể đại diện cho một đợt phát sóng thông điệp hàng loạt (quảng bá sản phẩm, bản tin ưu đãi, thông báo bảo trì, chúc mừng sinh nhật) tới một tập đối tượng khách hàng mục tiêu thông qua các kênh Email, WhatsApp, Zalo hoặc SMS.
+**Chiến dịch Tiếp thị (Marketing Campaign)**:
+Một đợt gửi thông điệp tiếp thị tới một tập người nhận chọn theo tiêu chí, qua một kênh chính (Email, WhatsApp, Zalo ZNS, Zalo OA, SMS), với một phiên bản nội dung đã được phê duyệt. Mọi lượt gửi của chiến dịch thuộc nhóm mục đích **Tiếp thị & Quảng bá** theo `contacts-srs.md` `BR-30.5`.
+_Avoid_: Dùng chiến dịch tiếp thị thường để gửi thông báo bảo trì hay thông báo dịch vụ hàng loạt — đó là loại **Thông báo dịch vụ** riêng (`campaigns-srs.md` `FEAT-45`).
 
-**Kênh Phát sóng Tiếp thị (Campaign Broadcast Channels)**:
-Các phương thức truyền thông được hỗ trợ trong chiến dịch: **Email Marketing**, **WhatsApp Broadcast**, **Zalo ZNS / Zalo OA**, **SMS Brandname**.
+**Thông báo dịch vụ (Service Notice)**:
+Một loại chiến dịch thuộc nhóm Giao dịch & Dịch vụ, chỉ dùng cho danh mục mục đích đóng (gián đoạn dịch vụ, thu hồi sản phẩm hoặc cảnh báo an toàn, thay đổi điều khoản hoặc giá, thông báo pháp luật bắt buộc, thay đổi lịch phục vụ). Gửi được tới cả khách đã Từ chối nhận tin tiếp thị, nhưng cấm nội dung quảng bá, bắt buộc có phê duyệt của Người phụ trách Bảo vệ Dữ liệu và chịu trần tần suất riêng (`campaigns-srs.md` `FEAT-45`).
+_Avoid_: Gọi tin tri ân, tin chúc mừng hay bản tin sản phẩm là thông báo dịch vụ — chúng là tiếp thị.
 
-**Phân khúc Khách hàng Mục tiêu (Audience Segmentation)**:
-Bộ lọc động kết hợp nhiều tiêu chí linh hoạt (Thẻ phân loại, Giai đoạn vòng đời, Điểm tiềm năng, Trường tùy biến, Khu vực địa lý) để xác định danh sách khách hàng nhận tin.
+**Danh sách người nhận chốt**:
+Danh sách người nhận cụ thể được xác định tại thời điểm chiến dịch bắt đầu gửi (không phải lúc phê duyệt); khách hàng khớp tiêu chí sau thời điểm đó không được thêm vào.
 
-**Số lượng Tiếp cận Khả dụng (Estimated Reachable Audience)**:
-Chỉ số tính toán số lượng khách hàng thực tế có thể nhận tin nhắn sau khi đã tự động loại trừ các địa chỉ bị hỏng (`BOUNCED`), khách hàng đã từ chối nhận tin (`OPT_OUT`) hoặc thiếu định danh hợp lệ của kênh tương ứng.
+**Số người nhận khả dụng (Reachable Audience)**:
+Số người khớp tiêu chí còn lại sau khi áp các lý do loại trừ (hạn chế xử lý, giai đoạn vòng đời, không có điểm đến, điểm đến Không tiếp cận được, Từ chối nhận tin, tập loại trừ, trùng điểm đến, thiếu dữ liệu cá nhân hóa, giới hạn tần suất, giới hạn pháp lý). Chỉ là ước tính: quyết định gửi cuối cùng được kiểm tra lại ngay trước từng tin.
+_Avoid_: Coi con số xem trước là cam kết — người hủy nhận tin sau khi xem trước vẫn phải được tôn trọng.
 
-**Gửi Thử nghiệm (Test Send)**:
-Tính năng cho phép người tạo chiến dịch gửi trước 1 tin nhắn thử nghiệm tới địa chỉ cá nhân của mình để kiểm tra hiển thị nội dung, hình ảnh và nút liên kết thực tế trước khi bấm phát sóng chính thức.
+**Điểm đến (Destination)**:
+Địa chỉ cụ thể nhận tin trên một kênh: một email, một số điện thoại, một tài khoản Zalo hoặc WhatsApp. Mỗi điểm đến nhận tối đa một tin cho một lượt gửi, kể cả khi nhiều hồ sơ dùng chung.
 
-**Sổ cái Người nhận Tin (Campaign Send Ledger)**:
-Bảng lưu trữ chi tiết nhật ký trạng thái gửi tới từng khách hàng riêng lẻ (`PENDING`, `SENT`, `DELIVERED`, `OPENED`, `CLICKED`, `FAILED`, `BOUNCED`, `REFUSED`) kèm lý do lỗi chi tiết nếu gửi không thành công.
+**Sổ cái Người nhận (Send Ledger)**:
+Bản ghi không sửa được theo từng người trong danh sách chốt: điểm đến, kênh thực tế, phiên bản nội dung đã nhận, trạng thái phân phát (Chờ gửi, Đã chuyển nhà cung cấp, Đã phân phát, Thất bại tạm thời, Thất bại vĩnh viễn, Chưa xác định, Bị loại trừ tại thời điểm gửi, Đã hủy trước khi gửi) và các sự kiện tương tác ghi thêm (mở, nhấp, trả lời, hủy nhận tin, khiếu nại).
+_Avoid_: Để "Đã mở"/"Đã nhấp" thay thế "Đã phân phát" — sự kiện tương tác ghi thêm, không đổi trạng thái phân phát.
 
-**Chỉ số Đo lường Hiệu quả Tiếp thị (Campaign Performance Metrics)**:
-Tập hợp các chỉ số theo dõi thời gian thực: Tỷ lệ gửi thành công (Delivery Rate), Tỷ lệ mở xem (Open Rate), Tỷ lệ nhấp liên kết (Click-Through Rate - CTR), Tỷ lệ hỏng (Bounce Rate) và Tỷ lệ hủy nhận tin (Unsubscribe Rate).
+**Chưa xác định (Unknown Delivery)**:
+Tin đã chuyển nhà cung cấp nhưng quá thời gian chờ không nhận được xác nhận phân phát hay thất bại. Không tự động gửi lại, không kích hoạt dự phòng — thà bỏ sót một tin còn hơn gửi trùng.
 
-**Cơ chế Chống Thư rác & Hủy Đăng ký (Anti-Spam & Unsubscribe Compliance)**:
-Quy chuẩn bắt buộc tự động chèn liên kết hủy đăng ký (Unsubscribe Link) vào chân trang email và cơ chế tự động chặn gửi tới những khách hàng đã hủy nhận tin theo chuẩn GDPR/CAN-SPAM.
+**Phê duyệt kép (Four-Eyes Principle)**:
+Người phê duyệt phát sóng phải khác người gửi phê duyệt và khác mọi người đã sửa phiên bản đang duyệt. Mọi thay đổi sau phê duyệt tạo phiên bản mới cần duyệt lại.
 
-**Hủy nhận tin theo từng Kênh riêng biệt (Channel-Specific Opt-out)**:
-Cơ chế cho phép khách hàng hủy nhận tin trên một kênh cụ thể (ví dụ: không nhận Email quảng cáo) nhưng vẫn duy trì đồng thuận nhận tin qua các kênh khác (Zalo, SMS, WhatsApp), tránh việc mất liên lạc hoàn toàn với khách hàng.
+**Quyền Phát sóng chiến dịch**:
+Quyền hạn tách biệt khỏi quyền tạo/sửa chiến dịch, cần cho phê duyệt, phát sóng, hẹn giờ, tạm dừng, tiếp tục, hủy và gửi lại.
 
-**Giới hạn Tần suất Tiếp cận (Frequency Capping / Anti-Fatigue)**:
-Quy tắc giới hạn số lượng thông điệp tiếp thị tối đa mà một khách hàng có thể nhận trong một khoảng thời gian (ví dụ: tối đa 2 tin/tuần/kênh), tự động loại trừ các khách hàng đã chạm ngưỡng khỏi tệp phát sóng để bảo vệ trải nghiệm khách hàng.
+**Gửi thử (Test Send)**:
+Gửi bản thật của nội dung tới tối đa vài địa chỉ **nội bộ đã đăng ký** để kiểm tra hiển thị. Không vào sổ cái, không tính vào số liệu, vẫn tính chi phí.
+_Avoid_: Cho gửi thử tới địa chỉ bất kỳ — đó là đường vòng vượt phê duyệt và đồng thuận.
 
-**Dự phòng Kênh Gửi Tin (Channel Fallback)**:
-Cơ chế tự động chuyển hướng gửi tin nhắn sang kênh thay thế dự phòng (ví dụ: Zalo gửi thất bại -> chuyển sang SMS -> chuyển sang Email) khi kênh phát sóng chính gặp lỗi kỹ thuật hoặc bị từ chối phát sóng.
+**Tự động tạm dừng bảo vệ (Protective Auto-Pause)**:
+Hệ thống tự tạm dừng chiến dịch khi có dấu hiệu gây hại (khiếu nại hoặc điểm đến hỏng vượt ngưỡng, mất tài khoản gửi, mẫu bị khóa, hết hạn mức, đình chỉ dịch vụ, chạm ngân sách). Hệ thống được tự tạm dừng nhưng không bao giờ tự tiếp tục.
 
-**Khử trùng lặp Danh sách Người nhận (Audience Deduplication)**:
-Cơ chế tự động loại trừ các bản ghi trùng lặp trong tệp phát sóng khi một khách hàng thuộc về nhiều phân khúc (segments) khác nhau trong cùng một chiến dịch, đảm bảo khách hàng chỉ nhận tối đa 1 tin nhắn duy nhất.
+**Giới hạn Tần suất (Frequency Capping)**:
+Số tin tiếp thị tối đa một người nhận trong một khoảng thời gian trượt tuyệt đối, tính trên toàn doanh nghiệp (mọi chiến dịch và chuỗi nuôi dưỡng, cả tin đang gửi dở), theo từng kênh hoặc gộp mọi kênh. Độc lập với giới hạn pháp lý số tin trong 24 giờ.
 
-**Phê duyệt Kép Chiến dịch (Dual Approval / Four-Eyes Principle)**:
-Chính sách an toàn truyền thông bắt buộc người duyệt phát sóng chiến dịch phải là một nhân sự quản lý độc lập khác với người biên soạn bản nháp, ngăn ngừa rủi ro phát sóng nhầm nội dung sai lệch ra diện rộng.
+**Khung Giờ Yên lặng (Quiet Hours)**:
+Khoảng giờ không gửi tin tiếp thị, tính theo **giờ địa phương của người nhận**; tin rơi vào khung giờ này được hoãn, không bị bỏ, và gửi lại theo nhịp khi hết giờ.
 
+**Dự phòng Kênh (Channel Fallback)**:
+Gửi qua kênh thay thế chỉ khi kênh trước đã **xác nhận thất bại vĩnh viễn** vì không tới được người nhận (ví dụ không có tài khoản Zalo). Không kích hoạt khi chưa chắc chắn, khi người nhận đã chặn doanh nghiệp, khi bị loại vì đồng thuận hay tần suất, hay khi người nhận chỉ chưa mở tin.
+
+**Chiến dịch Tái tiếp cận (Win-Back Campaign)**:
+Chiến dịch được phê duyệt riêng bởi Quản lý Marketing và Quản lý Kinh doanh phụ trách tập khách, kèm phạm vi tập khách và thời hạn hiệu lực, để gửi tới khách hàng ở giai đoạn Đã rời bỏ (`contacts-srs.md` `BR-12.5b`). Không ghi đè đồng thuận.
+
+**Cơ hội có nguồn gốc từ chiến dịch / Cơ hội chịu ảnh hưởng của chiến dịch**:
+Hai thước đo tách biệt. "Có nguồn gốc" dựa trên Nguồn gốc chính của cơ hội (điểm chạm đầu tiên, `deals-pipeline-srs.md` `BR-23.1`), cộng dồn được giữa các chiến dịch. "Chịu ảnh hưởng" là cơ hội được tạo trong cửa sổ ghi nhận sau khi một liên hệ tham gia đã nhấp hoặc trả lời chiến dịch; một cơ hội có thể chịu ảnh hưởng của nhiều chiến dịch nên không cộng dồn được.
+_Avoid_: Gọi chung là "doanh thu từ chiến dịch" — hai con số trả lời hai câu hỏi khác nhau và sẽ mâu thuẫn nếu trộn lẫn.
+
+**Zalo ZNS / Zalo OA**:
+Hai kênh chiến dịch riêng. Zalo ZNS gửi tin theo số điện thoại qua mẫu đã được Zalo duyệt; Zalo OA gửi tin truyền thông của Tài khoản Chính thức, chỉ tới người đang quan tâm tài khoản đó. Khác nhau về cách xác định người nhận, loại nội dung được phép, hạn mức và cách tính phí.
+_Avoid_: Gọi chung là "kênh Zalo" — quy tắc đúng cho kênh này thường sai cho kênh kia.
+
+**Đồng ý nhận tin có bằng chứng (điều kiện gửi tiếp thị)**:
+Chiến dịch chỉ gửi tới kênh mà khách hàng có Đồng ý nhận tin kèm bằng chứng theo `contacts-srs.md` `BR-30.3`. Kênh chưa từng có Đồng ý có bằng chứng (hồ sơ tạo tay, tạo từ hội thoại…) bị loại như kênh đã từ chối.
+_Avoid_: Coi "chưa từ chối" là "được phép gửi" — pháp luật chống tin rác yêu cầu đồng ý trước.
+
+**Giữ lại (chiến dịch)**:
+Trạng thái của chiến dịch đã duyệt, tới lúc gửi nhưng chưa gửi được vì một điều kiện vận hành (hạn mức, tài khoản gửi, ngày không gửi, dừng khẩn cấp…). Phê duyệt giữ nguyên trong thời gian ân hạn; người có quyền Phát sóng chiến dịch quyết định gửi, hệ thống không tự gửi.
+
+**Dấu vết chặn gửi (Suppression Trace)**:
+Dạng không đọc ngược được của một điểm đến đã từ chối nhận tin, được giữ sau khi dữ liệu của người đó bị xóa theo yêu cầu, chỉ để chặn gửi tiếp thị nếu điểm đến đó được nhập lại.
+
+**Dừng khẩn cấp (Emergency Stop)**:
+Một thao tác dừng ngay mọi hoạt động gửi tiếp thị của Không gian làm việc (chiến dịch, chuỗi nuôi dưỡng, gửi lại, chiến dịch hẹn giờ). Gỡ dừng khẩn cấp không tự tiếp tục bất kỳ chiến dịch nào.
