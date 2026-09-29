@@ -1,6 +1,21 @@
 {
   "initiatives": [
     {
+      "id": "feat-312",
+      "title": "IAM: vai trò Marketing, quyền Phát sóng chiến dịch và loại dữ liệu Chiến dịch trong phạm vi dữ liệu",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/312",
+        "https://github.com/crmsaassaudi/crm-api/pull/249",
+        "https://github.com/crmsaassaudi/crm-web/pull/156"
+      ]
+    },
+    {
       "id": "feat-259",
       "title": "Contacts: Rà soát và đồng bộ contacts-srs.md theo deals-pipeline-srs.md",
       "primary_repo": "product-management",
@@ -2071,4 +2086,3 @@
     }
   ]
 }
-
