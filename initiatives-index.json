@@ -1,6 +1,30 @@
 {
   "initiatives": [
     {
+      "id": "feat-359",
+      "title": "IAM: mức truy cập theo từng thao tác trên từng loại dữ liệu (ADR-0009)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "product-management",
+        "crm-api",
+        "crm-web"
+      ],
+      "status": "done",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/blob/main/docs/adr/0009-access-level-per-action-and-record-type.md",
+        "https://github.com/crmsaassaudi/product-management/issues/359",
+        "https://github.com/crmsaassaudi/crm-api/pull/250",
+        "https://github.com/crmsaassaudi/product-management/issues/360",
+        "https://github.com/crmsaassaudi/crm-api/pull/251",
+        "https://github.com/crmsaassaudi/product-management/issues/361",
+        "https://github.com/crmsaassaudi/crm-web/pull/157",
+        "https://github.com/crmsaassaudi/product-management/issues/362",
+        "https://github.com/crmsaassaudi/product-management/issues/363",
+        "https://github.com/crmsaassaudi/crm-api/pull/252",
+        "https://github.com/crmsaassaudi/crm-web/pull/158"
+      ]
+    },
+    {
       "id": "feat-312",
       "title": "IAM: vai trò Marketing, quyền Phát sóng chiến dịch và loại dữ liệu Chiến dịch trong phạm vi dữ liệu",
       "primary_repo": "crm-api",
