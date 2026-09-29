@@ -42,6 +42,10 @@ _Avoid_: "Quyền tạm thời"/"Role Assignment" (tên khác của một tính 
 Hai trục hoàn toàn độc lập trong một workspace — Cấp bậc thành viên (Owner/Admin/Member) quyết định có toàn quyền hay không; Vai trò là tập hợp quyền hạn chi tiết chỉ có ý nghĩa ở cấp Member. Một thay đổi tác động tới trục này không mặc nhiên tác động tới trục kia.
 _Avoid_: Dùng lẫn "vai trò" để chỉ cả hai trục trong văn bản nghiệp vụ (ví dụ khi liệt kê phạm vi một nhật ký/audit log) — luôn nêu rõ đang nói tới Cấp bậc thành viên hay Vai trò.
 
+**Mức truy cập (Access Level)**:
+Giá trị của một ô trong ma trận quyền của Vai trò; mỗi ô là một cặp (loại dữ liệu, thao tác), ví dụ (Khách hàng, Sửa). Nhận một trong các mức Không có / Chỉ của mình / Của mình + cấp dưới và đơn vị của mình / Cả nhánh đơn vị / Toàn workspace. Mỗi thao tác dùng mức của chính ô đó, nên một vai trò có thể "xem rộng, sửa hẹp". Mức Sửa không bao giờ rộng hơn mức Xem cùng loại dữ liệu. Xem `iam-tenant-authorization.md` FEAT-25, BR-35.7 và [ADR-0009](./docs/adr/0009-access-level-per-action-and-record-type.md).
+_Avoid_: Nói "phạm vi dữ liệu của vai trò" như một giá trị duy nhất cho mọi thao tác, và gắn cứng quyền đặc biệt cho một vai trò cụ thể (ví dụ "Marketing được xem toàn bộ") thay vì nêu giá trị của ô tương ứng.
+
 **Nguyên tắc đóng cho Nhật ký cấu hình quyền (Closure Rule)**:
 Nguyên tắc xác định phạm vi "Nhật ký thay đổi cấu hình quyền" (audit log Fail-closed, lưu 2 năm): bất kỳ thao tác nào làm thay đổi ai-được-làm-gì hoặc ai-thấy-gì trong workspace đều mặc định thuộc diện này, trừ thao tác xem trước/mô phỏng và thao tác chỉ đọc. Dùng nguyên tắc này thay vì liệt kê tĩnh để tránh bỏ sót tính năng phân quyền mới phát sinh sau này.
 _Avoid_: Coi danh sách ví dụ minh hoạ (Vai trò, Nhóm, Đơn vị tổ chức...) là danh sách đóng kín — đó chỉ là ví dụ, nguyên tắc mới là điều khoản ràng buộc thật. Xem [ADR-0003](./docs/adr/0003-permission-config-audit-log-fail-closed.md) cho quyết định Fail-closed đi kèm.

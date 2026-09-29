@@ -4,8 +4,8 @@
 | --- | --- |
 | **Loại tài liệu** | Software Requirements Specification — Đặc tả Yêu cầu Nghiệp vụ Chuẩn PM/BA (Version 7.1) |
 | **Module** | CRM — Phân hệ Quản lý Khách hàng & Danh bạ Doanh nghiệp (Contacts & Accounts Management) |
-| **Ngày cập nhật** | 2026-09-28 |
-| **Phiên bản** | v7.1 (Chuẩn hóa Nghiệp vụ Thuần túy — Thay thế v6.4; đồng thuận theo chính sách gửi tiếp thị của doanh nghiệp) |
+| **Ngày cập nhật** | 2026-09-29 |
+| **Phiên bản** | v7.2 (Chuẩn hóa Nghiệp vụ Thuần túy — Thay thế v6.4; đồng thuận theo chính sách gửi tiếp thị của doanh nghiệp; phạm vi theo từng thao tác của vai trò) |
 | **Neo mã nguồn** | Chưa xác định — tài liệu đặc tả trạng thái nghiệp vụ mục tiêu, không neo vào một phiên bản triển khai cụ thể |
 | **Tài liệu liên quan** | [`CONTEXT.md`](../CONTEXT.md) (glossary), [`iam-tenant-authorization.md`](./iam-tenant-authorization.md), [`object-manager-srs.md`](./object-manager-srs.md), [`omnichat-srs.md`](./omnichat-srs.md), [`onboarding-srs.md`](./onboarding-srs.md), [`deals-pipeline-srs.md`](./deals-pipeline-srs.md), [`tickets-srs.md`](./tickets-srs.md), [`tasks-srs.md`](./tasks-srs.md), [`campaigns-srs.md`](./campaigns-srs.md), [ADR-0007](../docs/adr/0007-record-sharing-and-permission-precedence-contract.md), [ADR-0008](../docs/adr/0008-data-subject-deletion-contract-omnichat-tickets.md) |
 
@@ -2195,7 +2195,7 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
   10. Thay đổi quy tắc chấm điểm (`BR-15.4`).
   11. Chuyển giao quyền phụ trách (`BR-34.7`).
   12. Chia sẻ bản ghi, thêm thành viên Đội ngũ phụ trách, và mọi lượt truy cập theo quyền đọc tạm — gồm quyền đọc tự động của tuyến Hỗ trợ và quyền tự cấp khi yêu cầu quá hạn (`BR-35.6`, `BR-17.2c`).
-  13. Đọc hồ sơ khách hàng nằm ngoài phạm vi dữ liệu được gán bởi vai trò có tầm nhìn toàn tổ chức — cụ thể là Nhân viên và Quản lý Marketing (`CFG-05-02`). Quản trị viên và Chủ sở hữu không thuộc sự kiện này vì mọi thao tác của họ đã được phủ bởi các sự kiện khác và bởi `NFR-14`. Khối lượng nhật ký sinh ra ở đây được chấp nhận có chủ đích: đó là cái giá của việc cấp tầm nhìn toàn tổ chức cho một vai trò không phụ trách bản ghi nào, và là căn cứ duy nhất trả lời được câu hỏi ai đã đọc hồ sơ của một khách hàng khi có khiếu nại.
+  13. Đọc hồ sơ khách hàng **ngoài phạm vi phụ trách** — lượt xem chỉ được phép nhờ mức Xem trên Khách hàng rộng hơn mức Sửa của chính người đó (`iam-tenant-authorization.md` BR-35.9). Áp như nhau cho mọi vai trò có cấu hình "xem rộng, sửa hẹp", dù là vai trò dựng sẵn Marketing (mặc định "Xem toàn bộ") hay vai trò doanh nghiệp tự tạo. Quản trị viên và Chủ sở hữu không thuộc sự kiện này vì mọi thao tác của họ đã được phủ bởi các sự kiện khác và bởi `NFR-14`. Khối lượng nhật ký sinh ra ở đây được chấp nhận có chủ đích: đó là cái giá của việc cấp tầm nhìn rộng cho một vai trò không phụ trách những bản ghi đó, và là căn cứ duy nhất trả lời được câu hỏi ai đã đọc hồ sơ của một khách hàng khi có khiếu nại.
   14. Ẩn ghi chú (`BR-36.3`).
   15. Nâng mức đồng thuận từ mọi nguồn tác động (`BR-30.10`).
   16. Sửa nguồn gốc theo lô (`BR-32.3b`).
@@ -2309,7 +2309,7 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | --- | --- | --- |
 | **Của mình** | Các bản ghi người dùng là Người phụ trách, cộng các bản ghi được chia sẻ tới họ | `BR-01.4`, `BR-35.2` |
 | **Đơn vị của mình** | Toàn bộ bản ghi thuộc Đơn vị tổ chức của người dùng và các đơn vị cấp dưới | `BR-01.4` |
-| **Xem toàn bộ** | Đọc toàn tổ chức, **không** kèm quyền sửa; mỗi lượt đọc ngoài phạm vi được gán ghi nhật ký (`NFR-07`, mục 13) | `BR-01.4`, `CFG-05-02` |
+| **Xem toàn bộ** | Mức Xem là Toàn workspace, mức Sửa và các thao tác khác trên Khách hàng là Không có (trừ khi ô ghi khác); mỗi lượt đọc ngoài phạm vi phụ trách ghi nhật ký (`NFR-07`, mục 13) | `BR-01.4`, `CFG-05-02`, `iam-tenant-authorization.md` BR-35.7 |
 | **Có quyền [tên quyền]** | Chỉ dùng được khi vai trò được cấp đúng quyền chuyên biệt đó (Mở khóa mặt nạ, Xóa, Nhập dữ liệu, Xuất dữ liệu); không mặc định theo vai trò | — |
 | **Cho phép** / **Toàn quyền** | Có quyền thực hiện; "Toàn quyền" gồm cả cấu hình và các ngoại lệ nêu trong ô | — |
 | **+ đọc tự động (`BR-35.4`)** | Ngoài phạm vi thông thường, còn có quyền đọc có ghi nhật ký đối với khách đang có vé/hội thoại mở mà mình đang xử lý | `BR-35.4` |
@@ -2327,7 +2327,7 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 6. **Quyền theo quan hệ với bản ghi** (Người phụ trách, thành viên Đội ngũ phụ trách, người đang xử lý vé/hội thoại, chính người dùng tự khai báo) là trục cộng thêm vào quyền theo vai trò, theo Nguyên tắc 2 tại Mục 2.4.
 
-7. **Mặc định và sàn:** toàn bộ các ô là giá trị mặc định chuẩn hệ thống; tenant cấu hình lại được qua `CFG-05-02`, trừ các ràng buộc mang nhãn "sàn bắt buộc" trong các quy tắc nghiệp vụ.
+7. **Mặc định và sàn:** toàn bộ các ô là giá trị mặc định chuẩn hệ thống, tức ma trận mặc định của các vai trò dựng sẵn (`iam-tenant-authorization.md` FEAT-29). Tenant điều chỉnh từng ô qua `CFG-05-02` (BR-29.4 của tài liệu đó), hoặc nhân bản vai trò rồi sửa; mọi vai trò tự tạo đặt được mức riêng cho từng thao tác (ví dụ Xem toàn bộ, Sửa chỉ của mình) theo cùng mô hình. Các ràng buộc mang nhãn "sàn bắt buộc" trong các quy tắc nghiệp vụ không điều chỉnh vượt được.
 
 ---
 
@@ -2660,7 +2660,7 @@ Người kiểm thử ghi rõ trong biên bản đã dùng cách nào và giá t
 | `CFG-04-03` | Cấu hình để hành động liên lạc **không ghi nhật ký** → không tồn tại lựa chọn đó (`NFR-07`) | Nội dung sàn là nghĩa vụ ghi nhật ký |
 | `CFG-04-04` | Cấu hình để lượt thêm thành viên Đội ngũ phụ trách **không ghi nhật ký** → không tồn tại (`BR-35.6`) | Phần hạn mức đã kiểm tại Kịch bản 19 bước 5 |
 | `CFG-05-01` | Đặt **90 ngày** trong khi `CFG-20-01` đang ở **90 ngày** → **chấp nhận** (điều kiện là "không cao hơn"). Kiểm chứng không tồn tại giá trị nào trong miền 30–90 vi phạm ràng buộc chéo | Ràng buộc chéo đã đóng bằng miền |
-| `CFG-05-02` | Cấp quyền xuất Định danh KYC cho Marketing (`BR-25.4`, neo vào sàn `BR-01.5b`) → **từ chối**; cấp quyền đọc nhật ký kiểm toán cho Quản lý Kinh doanh (`NFR-14`, cố định) → **từ chối**. Đối chứng: cấp quyền chuyển giai đoạn thủ công cho Marketing (`BR-02.2`, **không** phải sàn) → **chấp nhận** | Hai ô bị chặn và một ô đối chứng được phép |
+| `CFG-05-02` | Cấp quyền xuất Định danh KYC cho Marketing (`BR-25.4`, neo vào sàn `BR-01.5b`) → **từ chối**; cấp quyền đọc nhật ký kiểm toán cho Quản lý Kinh doanh (`NFR-14`, cố định) → **từ chối**. Đặt ô (Khách hàng, Sửa) của Marketing rộng hơn ô (Khách hàng, Xem) → **từ chối**, nêu rõ ô vi phạm (`iam-tenant-authorization.md` BR-25.1). Đối chứng: cấp quyền chuyển giai đoạn thủ công cho Marketing (`BR-02.2`, **không** phải sàn) → **chấp nhận**; thu hẹp ô (Khách hàng, Xem) của Marketing về Đơn vị của mình → **chấp nhận**, và giữ nguyên sau khi hệ thống cập nhật vai trò dựng sẵn | Ba ô bị chặn và hai ô đối chứng được phép |
 | `CFG-12-01` | Bật bước Customer → Lead → từ chối (`BR-12.3`). Hạ quyền loại khách xuống Nhân viên → từ chối (`BR-12.4`). Hạ quyền loại Customer/Evangelist/Churned xuống dưới Quản trị viên → từ chối (`BR-12.8`) | Ba sàn trong một tham số |
 | `CFG-12-02` | Đặt giai đoạn khởi tạo là Customer, Evangelist, Churned hoặc Disqualified → từ chối | — |
 | `CFG-15-01` | Đặt điều kiện Điểm Tương tác tối thiểu của MQL về **0** → từ chối (`BR-15.7`). Đặt ba ngưỡng không tăng dần → từ chối | — |
@@ -2783,7 +2783,7 @@ Mục này chỉ chứa các điểm **chưa quyết định được điều g�
 | `CFG-04-03` | `BR-04.6` | Hạn mức hành động liên lạc trong hệ thống mỗi người mỗi ngày | 200 lượt/ngày | 50 – 1.000 | Chủ sở hữu | **Có sàn bắt buộc** — mọi lượt liên lạc luôn ghi nhật ký (`NFR-07`) |
 | `CFG-04-04` | `BR-04.5b` | Số bản ghi tối đa một người được thêm vào Đội ngũ phụ trách ở mức Chỉnh sửa mỗi tháng | 100 bản ghi/tháng | 20 – 500 | Chủ sở hữu + BVDL | **Có sàn bắt buộc** — mọi lượt thêm thành viên luôn ghi nhật ký (`BR-35.6`) |
 | `CFG-05-01` | `BR-05.4` | Thời hạn lưu bản ghi trong Thùng rác trước khi xóa vĩnh viễn | 30 ngày | 30 – 90 ngày (giới hạn trên theo gói dịch vụ) | Chủ sở hữu | **Có sàn bắt buộc** — không được cao hơn `CFG-20-01` |
-| `CFG-05-02` | Mục 5 | Ma trận phân quyền theo vai trò, gồm phạm vi dữ liệu và quyền nhập/xuất của Marketing | Đúng ma trận Mục 5 | Từng ô điều chỉnh được | Chủ sở hữu + BVDL | **Có sàn bắt buộc** — không được nới lỏng các ràng buộc có "sàn bắt buộc" trong các quy tắc |
+| `CFG-05-02` | Mục 5 | Ma trận phân quyền của các vai trò dựng sẵn: mức truy cập của từng ô (loại dữ liệu × thao tác) và các quyền không gắn với bản ghi, gồm phạm vi xem và quyền nhập/xuất của Marketing | Đúng ma trận Mục 5 | Từng ô điều chỉnh được, theo mức truy cập của `iam-tenant-authorization.md` FEAT-25; ô đã điều chỉnh được giữ khi hệ thống cập nhật vai trò dựng sẵn | Chủ sở hữu + BVDL | **Có sàn bắt buộc** — không được nới lỏng các ràng buộc có "sàn bắt buộc" trong các quy tắc; mức Sửa không rộng hơn mức Xem |
 | `CFG-12-01` | `FEAT-12` | Ma trận Chuyển đổi Giai đoạn — các bước chuyển được phép | Đúng ma trận tại `FEAT-12` | Từng bước chuyển bật/tắt | Quản lý Kinh doanh | **Có sàn bắt buộc** — ba sàn: không cho hạ Customer/Evangelist về giai đoạn tiền bán hàng (`BR-12.3`, nguyên tắc 4); không nới quyền loại khách dưới Quản lý Kinh doanh (`BR-12.4`); không nới quyền loại Customer/Evangelist/Churned vì gian lận dưới Quản trị viên (`BR-12.8`) |
 | `CFG-12-02` | `BR-12.10` | Giai đoạn mặc định theo từng nguồn tạo | Thủ công/Biểu mẫu website/Hội thoại/Nhập khẩu → Lead; Đăng ký bản tin → Subscriber; Hồ sơ Tạm → chưa gán | "Chưa gán giai đoạn" (chỉ cho nguồn Hồ sơ Tạm), hoặc một trong sáu giai đoạn tiền bán hàng | Quản lý Kinh doanh + Quản lý Marketing | **Có sàn bắt buộc** — không được đặt Customer, Evangelist, Churned hay Disqualified: một bản ghi vừa tạo chưa thể đã trả tiền hay đã rời bỏ |
 | `CFG-14-01` | `BR-14.2` | Thời hạn được Hoàn tác Chuyển đổi | 24 giờ | 1 – 168 giờ | Quản lý Kinh doanh | Tự do |
@@ -2828,7 +2828,7 @@ Phụ lục này ghi các mâu thuẫn nội tại đã được giải quyết 
 
 | # | Mâu thuẫn / câu hỏi | Cách xử lý đã chốt | Nơi có hiệu lực |
 | --- | --- | --- | --- |
-| C.1 | Phạm vi dữ liệu của vai trò Marketing | Tham số `CFG-05-02`: mặc định Marketing xem toàn bộ ở dạng chỉ đọc, mỗi lượt đọc bản ghi ngoài phạm vi gán đều ghi nhật ký; tenant siết lại được | Mục 5, `NFR-07` mục 13 |
+| C.1 | Phạm vi dữ liệu của vai trò Marketing | Ô (Khách hàng, Xem) của vai trò dựng sẵn Marketing mặc định Toàn workspace, các thao tác khác trên Khách hàng Không có; tenant siết lại bằng cách điều chỉnh đúng ô đó qua `CFG-05-02`. Mọi vai trò tự tạo cũng đặt được "xem rộng, sửa hẹp"; mỗi lượt đọc ngoài phạm vi phụ trách đều ghi nhật ký | Mục 5, `NFR-07` mục 13, `iam-tenant-authorization.md` BR-35.7, BR-35.9 |
 | C.2 | Quyền nhập khẩu dữ liệu của Marketing | Tham số `CFG-05-02`: mặc định cho phép khi được cấp quyền Nhập dữ liệu, bắt buộc khai báo cơ sở đồng thuận | Mục 5, `BR-30.4` |
 | C.3 | Mức độ phụ thuộc vào tài liệu Phân quyền khi chia sẻ bản ghi | Chia sẻ nới rộng phạm vi dữ liệu, không cấp năng lực vai trò (quyền hiệu lực là phần giao); không nới mức che trường; không vượt lượt chặn tường minh | `BR-35.1`, `BR-35.5`; [ADR-0007](../docs/adr/0007-record-sharing-and-permission-precedence-contract.md) |
 | C.4 | Hai sàn liên tài liệu cho việc xóa theo quyền chủ thể (Hộp thư Đa kênh, Vé hỗ trợ) | Hộp thư Đa kênh đã có quy tắc thỏa sàn; Vé hỗ trợ khi chưa có quy tắc thỏa sàn thì Biên bản bắt buộc nêu rõ phần chưa được bảo đảm; bổ sung trạng thái "Đang tạm dừng theo yêu cầu pháp lý"; tham chiếu liên tài liệu luôn ghi đủ tên tệp | `BR-33.8`; [ADR-0008](../docs/adr/0008-data-subject-deletion-contract-omnichat-tickets.md) |
@@ -2860,3 +2860,4 @@ Phụ lục này ghi các mâu thuẫn nội tại đã được giải quyết 
 | C.30 | Tính lại Bản ghi Chính khi hoàn tác gộp làm mất xác nhận Đồng ý của chính chủ trong thời gian gộp; chưa rõ lượt cấp kênh áp cho điểm đến nào và điểm đến của bản ghi phụ đi đâu | `BR-20.2` nhận thêm lượt nới mức là hành vi của chính chủ trên đúng điểm đến; lượt cấp kênh áp cho kênh, lượt theo địa chỉ áp cho địa chỉ; điểm đến của bản ghi phụ trở về bản ghi phụ | `BR-20.2`, `BR-18.2` |
 | C.31 | Kịch bản 16 ghi nhầm bản ghi; "mọi lượt" đi theo điểm đến mâu thuẫn bộ lọc trạng thái; gộp xét đổi chủ số theo kênh; hoàn tác đặt lại Hạn chế xử lý đã được chính chủ rút | `BR-20.2`: lượt đi theo làm lịch sử, trạng thái theo bộ lọc; điểm đến mới ở lại Bản ghi Chính; dỡ Hạn chế hợp lệ được áp; `BR-19.6` nhánh 3 xét theo cùng địa chỉ | `BR-19.6`, `BR-20.2` |
 | C.32 | Bảng tóm tắt gộp thiếu điều kiện "cùng địa chỉ"; gộp có thể bị hiểu là tạo lượt đồng thuận mới; dỡ Hạn chế xử lý khi hoàn tác chưa giới hạn theo bản ghi | Bảng `BR-18.2` sửa; gộp không tạo lượt mới; dỡ Hạn chế chỉ áp cho bản ghi vốn giữ kênh đã xác minh | `BR-18.2`, `BR-19.6`, `BR-20.2` |
+| C.33 | Chỉ vai trò Marketing có được "xem toàn bộ, không sửa"; doanh nghiệp không cấu hình được cho vai trò tự tạo | Mức truy cập theo từng thao tác trên từng loại dữ liệu cho mọi vai trò (ADR-0009); "Xem toàn bộ" là giá trị ô; nhật ký đọc ngoài phạm vi áp theo cấu hình ô, không theo tên vai trò | Mục 5, `CFG-05-02`, `NFR-07` mục 13 |

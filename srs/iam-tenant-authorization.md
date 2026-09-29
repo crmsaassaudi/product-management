@@ -4,8 +4,8 @@
 | --- | --- |
 | **Loại tài liệu** | Software Requirements Specification — vừa mô tả hành vi hiện tại, vừa là chuẩn cho phát triển tiếp theo (xem "Ghi chú về nguồn gốc tài liệu") |
 | **Module** | CRM — phân hệ Quản trị Workspace (Identity & Access Management) |
-| **Ngày viết** | 2026-08-21 (cập nhật 2026-08-23) |
-| **Phiên bản** | v3 |
+| **Ngày viết** | 2026-08-21 (cập nhật 2026-09-29) |
+| **Phiên bản** | v4 — mức truy cập theo từng thao tác trên từng loại dữ liệu ([ADR-0009](../docs/adr/0009-access-level-per-action-and-record-type.md)) |
 | **Tài liệu liên quan** | [`CONTEXT.md`](../CONTEXT.md) (glossary) |
 
 ## Ghi chú về nguồn gốc tài liệu
@@ -50,11 +50,12 @@ Trong một FEAT đã `[Đã triển khai]`, nếu một quy tắc nghiệp vụ
 | Quản trị viên (Admin) | Cấp bậc thành viên cao nhất có thể trao/thu hồi được, cũng có toàn quyền như Owner. |
 | Thành viên (Member) | Người dùng thông thường, quyền hạn phụ thuộc vai trò/nhóm được gán. |
 | Vai trò nền tảng (Platform Role) | Trục **độc lập với workspace** — nhân sự vận hành nền tảng (Super Admin) hoặc người dùng thông thường (User). Không liên quan gì tới Cấp bậc thành viên hay Vai trò trong một workspace cụ thể. |
-| Vai trò (Role) | Một tập hợp quyền hạn có thể gán cho thành viên hoặc nhóm. Có vai trò "dựng sẵn" (hệ thống tạo mặc định) và vai trò "tự tạo" (tenant tự định nghĩa). |
+| Vai trò (Role) | Một tập hợp quyền hạn có thể gán cho thành viên hoặc nhóm, gồm **ma trận quyền trên dữ liệu** (xem Mức truy cập) và các **quyền không gắn với bản ghi** (dạng có/không, vd. Quản lý cấu hình hệ thống). Có vai trò "dựng sẵn" (hệ thống tạo mặc định) và vai trò "tự tạo" (tenant tự định nghĩa). |
+| Mức truy cập (Access Level) | Giá trị của một ô trong ma trận quyền của vai trò — ô là một cặp **(loại dữ liệu, thao tác)**, ví dụ (Khách hàng, Sửa). Một trong: **Không có** / **Chỉ của mình** / **Của mình + cấp dưới và đơn vị của mình** / **Cả nhánh đơn vị** / **Toàn workspace**. Cho phép một vai trò thấy rộng mà sửa hẹp, ví dụ xem toàn bộ khách hàng nhưng chỉ sửa khách hàng của mình. |
 | Quyền Ủy thác (Delegated Grant Authority) | Một quyền hệ thống riêng biệt, do Owner/Admin chủ động cấp, cho phép người giữ quyền này gán các Vai trò/Nhóm **đã tồn tại sẵn** trong workspace cho thành viên khác mà không bị giới hạn bởi năng lực quyền hạn của chính bản thân người gán (xem BR-09.5). Không áp dụng cho việc tạo Vai trò/Nhóm mới, không áp dụng cho Cấp quyền tạm thời, và không cho phép thay đổi Cấp bậc thành viên. Khác với "Quyền tạm thời (Role Assignment)" ở trên — đây là cấp **vĩnh viễn**, không có hạn, không cần phê duyệt. |
 | Nhóm (Group) | Tập hợp thành viên dùng để cấp quyền/điều phối công việc theo tập thể (không phải sơ đồ tổ chức). |
 | Đơn vị tổ chức (Org Unit) | Nút trong sơ đồ tổ chức (phòng/ban/nhóm...), dùng để xác định "ai thuộc bộ phận nào" và từ đó suy ra phạm vi dữ liệu được xem. |
-| Phạm vi hiển thị dữ liệu (Data Scope) | Mức độ rộng của dữ liệu một vai trò được thấy: Chỉ của mình → Của mình + cấp dưới/đơn vị → Của mình + cả nhánh đơn vị → Toàn workspace. |
+| Phạm vi hiển thị dữ liệu (Data Scope) | Mức độ rộng của tập bản ghi: Chỉ của mình → Của mình + cấp dưới/đơn vị → Của mình + cả nhánh đơn vị → Toàn workspace. Với vai trò, phạm vi được đặt riêng cho từng ô của ma trận quyền (xem Mức truy cập); với workspace, cấu hình theo loại dữ liệu ở FEAT-34 là **mức nền**. |
 | Quyền tạm thời (Role Assignment) | Việc cấp thêm quyền có thời hạn, cần người khác phê duyệt, tự động hết hạn — dùng cho các tình huống cần quyền cao hơn bình thường trong một khoảng thời gian ngắn. |
 | Chính sách truy cập (Access Policy / ABAC) | Luật bổ sung dựa trên điều kiện (vd. "chỉ được sửa khi đang ở trạng thái nháp") để thu hẹp hoặc mở thêm quyền đã có, áp dụng cho từng nghiệp vụ cụ thể. |
 | Quyền trên bản ghi (Object ACL) | Cấp/chặn quyền cho một bản ghi cụ thể (một khách hàng cụ thể, một hợp đồng cụ thể...), thay vì cả loại dữ liệu. |
@@ -613,7 +614,7 @@ Một khách hàng đăng ký sử dụng dịch vụ, workspace của họ đư
 
 ### FEAT-24 — Xem danh mục/ma trận quyền của workspace `[Đã triển khai]`
 
-**Mô tả nghiệp vụ:** Xem toàn bộ danh mục quyền có thể gán trong workspace (nhóm theo từng loại nghiệp vụ: Khách hàng, Cơ hội, Ticket, Tự động hoá...), cùng với "trần quyền" hiện tại của workspace (những quyền mà gói dịch vụ đang dùng cho phép sử dụng).
+**Mô tả nghiệp vụ:** Xem toàn bộ danh mục quyền có thể gán trong workspace, gồm hai phần: **ma trận loại dữ liệu × thao tác** (Khách hàng, Cơ hội, Ticket, Chiến dịch… × Xem, Tạo, Sửa, Xóa, Xuất, Nhập, Gán và các thao tác đặc thù của từng loại) và **các quyền không gắn với bản ghi** (cấu hình hệ thống, nhật ký…), cùng với "trần quyền" hiện tại của workspace (những quyền mà gói dịch vụ đang dùng cho phép sử dụng).
 
 **Actor:** Người có quyền "Quản lý cấu hình hệ thống" của workspace.
 
@@ -623,15 +624,21 @@ Một khách hàng đăng ký sử dụng dịch vụ, workspace của họ đư
 
 ### FEAT-25 — Tạo & sao chép vai trò `[Đã triển khai]`
 
-**Mô tả nghiệp vụ:** Tạo một vai trò tuỳ chỉnh mới (đặt tên, mô tả, chọn danh sách quyền, chọn phạm vi hiển thị dữ liệu mặc định đi kèm vai trò — xem nhóm G); hoặc sao chép nhanh một vai trò có sẵn (kể cả vai trò dựng sẵn của hệ thống) thành bản có thể tuỳ biến riêng.
+**Mô tả nghiệp vụ:** Tạo một vai trò tuỳ chỉnh mới: đặt tên, mô tả, đặt **mức truy cập cho từng ô** của ma trận loại dữ liệu × thao tác, và chọn các quyền không gắn với bản ghi. Hoặc sao chép nhanh một vai trò có sẵn (kể cả vai trò dựng sẵn của hệ thống) thành bản có thể tuỳ biến riêng; bản sao mang theo toàn bộ ma trận.
 
 **Actor:** Người có quyền "Quản lý cấu hình hệ thống".
 
 **Luồng ngoại lệ:**
 
 - Danh sách quyền chọn cho vai trò mới phải nằm trong quyền hiện có của chính người tạo — không thể tạo ra một vai trò mạnh hơn năng lực của người tạo nó. Quyền Ủy thác (BR-09.5) không tạo ngoại lệ ở đây — miễn trừ đó chỉ áp dụng khi gán một Vai trò *đã tồn tại sẵn*, không áp dụng cho việc tạo ra một Vai trò mới. `[Yêu cầu mới]`
-- Phạm vi hiển thị dữ liệu chọn cho vai trò cũng bị ràng buộc tương tự: chỉ được chọn phạm vi rộng bằng hoặc hẹp hơn phạm vi mà chính người tạo đang có.
+- Mức truy cập của **từng ô** cũng bị ràng buộc tương tự: chỉ được đặt mức rộng bằng hoặc hẹp hơn mức hiệu lực mà chính người tạo đang có **ở đúng ô đó**. `[Yêu cầu mới]`
 - Sao chép một vai trò có sẵn không bị ràng buộc bởi 2 quy tắc trên — vì bản sao chỉ lặp lại đúng những gì vai trò gốc (đã tồn tại hợp lệ trong workspace) đang có, không tạo ra năng lực mới.
+
+**Quy tắc nghiệp vụ:**
+
+- BR-25.1 `[Yêu cầu mới]` (Không sửa được thứ mình không thấy): trong cùng một loại dữ liệu, mức của mọi thao tác khác (Sửa, Xóa, Xuất, Gán, các thao tác đặc thù) **không được rộng hơn** mức Xem. Lưu vai trò vi phạm bị từ chối, nêu rõ ô vi phạm. Thao tác Tạo chỉ có hai giá trị (Có / Không có), vì bản ghi mới luôn thuộc về người tạo. Lý do: một mức Sửa rộng hơn mức Xem hoặc không có tác dụng, hoặc cho sửa mù những bản ghi người đó không được thấy — cả hai đều là cấu hình sai.
+- BR-25.2 `[Yêu cầu mới]` (Gán nhanh): màn hình cho phép đặt một mức cho cả dòng (mọi thao tác của một loại dữ liệu) và cho cả cột (một thao tác trên mọi loại dữ liệu), rồi chỉnh riêng từng ô. Ô bị trần quyền của gói dịch vụ (FEAT-24) chặn được hiển thị rõ là không khả dụng, không bị ẩn đi.
+- BR-25.3 `[Yêu cầu mới]` (Sàn bắt buộc): các ô mà SRS của phân hệ nghiệp vụ gắn nhãn sàn bắt buộc (ví dụ cấm vai trò Marketing đọc nhóm Định danh KYC tại `contacts-srs.md` BR-25.4, quyền đọc nhật ký kiểm toán tại `contacts-srs.md` NFR-14) không đặt vượt được, dù trên vai trò tự tạo hay qua điều chỉnh vai trò dựng sẵn (BR-29.4). Lý do: sàn là cam kết với khách hàng cuối của doanh nghiệp, không phụ thuộc cách doanh nghiệp đặt tên hay phối vai trò.
 
 **Kết quả đầu ra:** Vai trò mới sẵn sàng để gán cho thành viên/nhóm.
 
@@ -641,14 +648,14 @@ Một khách hàng đăng ký sử dụng dịch vụ, workspace của họ đư
 
 ### FEAT-26 — Cập nhật vai trò `[Đã triển khai]`
 
-**Mô tả nghiệp vụ:** Sửa tên/mô tả/danh sách quyền/phạm vi dữ liệu của một vai trò tự tạo.
+**Mô tả nghiệp vụ:** Sửa tên/mô tả, mức truy cập của từng ô trong ma trận và các quyền không gắn với bản ghi của một vai trò tự tạo. Các quy tắc BR-25.1 → BR-25.3 áp nguyên văn.
 
 **Actor:** Người có quyền "Quản lý cấu hình hệ thống".
 
 **Luồng ngoại lệ:**
 
 - Vai trò dựng sẵn của hệ thống không sửa được trực tiếp — muốn tuỳ biến phải sao chép ra bản riêng trước (xem FEAT-25).
-- Chỉ quyền/phạm vi mới thêm vào mới bị kiểm tra ràng buộc năng lực người sửa (giống FEAT-25); việc bớt đi quyền/thu hẹp phạm vi luôn được phép tự do, không kiểm tra gì (vì đây là hành vi giảm quyền, không phải leo thang).
+- Chỉ những ô được **nới rộng** mới bị kiểm tra ràng buộc năng lực người sửa, theo từng ô (giống FEAT-25); việc thu hẹp một ô luôn được phép tự do (vì đây là hành vi giảm quyền, không phải leo thang) — trừ khi thu hẹp mức Xem làm nó hẹp hơn mức của thao tác khác cùng dòng, khi đó áp BR-25.1.
 
 **Kết quả đầu ra:** Vai trò cập nhật; mọi thành viên/nhóm đang gán vai trò này được tính lại quyền ngay.
 
@@ -699,7 +706,7 @@ Một khách hàng đăng ký sử dụng dịch vụ, workspace của họ đư
 
 ### FEAT-29 — Vai trò dựng sẵn của hệ thống `[Đã triển khai]`
 
-**Mô tả nghiệp vụ:** Mỗi workspace mới đều tự động có sẵn một bộ vai trò mẫu phổ biến, không cần Owner tự cấu hình từ đầu:
+**Mô tả nghiệp vụ:** Mỗi workspace mới đều tự động có sẵn một bộ vai trò mẫu phổ biến, không cần Owner tự cấu hình từ đầu. Mỗi vai trò mẫu là một **ma trận mặc định**; cột "Phạm vi dữ liệu đi kèm" dưới đây là mức mặc định của các ô có quyền trong ma trận đó, kèm các ô khác mặc định được nêu rõ:
 
 | Vai trò | Phạm vi dữ liệu đi kèm | Mô tả ngắn |
 | --- | --- | --- |
@@ -708,13 +715,14 @@ Một khách hàng đăng ký sử dụng dịch vụ, workspace của họ đư
 | Nhân viên Hỗ trợ | Đơn vị của mình | Xử lý ticket, trả lời hội thoại đa kênh |
 | Chỉ xem (Read Only) | Đơn vị của mình | Xem hầu hết mọi thứ, không sửa/xoá — là vai trò mặc định khi mời thành viên không chọn vai trò nào |
 | Kiểm toán (Auditor) | Toàn workspace | Chỉ xem, không có quyền ghi nào — cần bật tính năng mở rộng tương ứng |
-| Marketing | Đơn vị của mình (riêng loại dữ liệu Khách hàng: Toàn workspace ở chế độ xem, theo `contacts-srs.md` `CFG-05-02`) | Quản lý chiến dịch, thư viện nội dung; quyền **Phát sóng chiến dịch** cấp riêng (`campaigns-srs.md`, `BR-17.1`) — cần bật tính năng mở rộng tương ứng |
+| Marketing | Đơn vị của mình; riêng ô (Khách hàng, Xem) là **Toàn workspace**, các thao tác còn lại trên Khách hàng là **Không có** (`contacts-srs.md` Mục 5, "Xem toàn bộ") | Quản lý chiến dịch, thư viện nội dung; ô (Chiến dịch, Phát sóng) mặc định **Không có** — doanh nghiệp cấp riêng (`campaigns-srs.md`, `BR-17.1`) — cần bật tính năng mở rộng tương ứng |
 
 **Quy tắc nghiệp vụ:**
 
 - BR-29.1: Các vai trò này được đồng bộ tự động theo thời gian — nếu sau này hệ thống bổ sung quyền mới phù hợp với một vai trò dựng sẵn, workspace sẽ tự nhận cập nhật đó mà không cần thao tác gì.
 - BR-29.2: Tên hiển thị của vai trò dựng sẵn không bao giờ bị hệ thống tự đổi lại, kể cả khi đồng bộ cập nhật quyền — vì quản trị viên có thể đã quen gọi theo tên đó trong nội bộ.
 - BR-29.3: "Quản trị viên" (Owner/Admin) không phải một vai trò trong danh sách này — đó là một cờ đặc biệt (toàn quyền tuyệt đối), luôn hiển thị cho người dùng biết nhưng không tồn tại như một bản ghi vai trò có thể sửa/xoá.
+- BR-29.4 `[Yêu cầu mới]` (Điều chỉnh ô của vai trò dựng sẵn): vai trò dựng sẵn không sửa trực tiếp được (FEAT-26), nhưng doanh nghiệp điều chỉnh được **từng ô** của ma trận mặc định qua tham số ma trận phân quyền (`contacts-srs.md` `CFG-05-02`), theo đúng mô hình ô và mức của FEAT-25 và chịu BR-25.1, BR-25.3. Khi hệ thống đồng bộ vai trò dựng sẵn theo BR-29.1, các ô doanh nghiệp đã điều chỉnh **được giữ nguyên**; chỉ các ô chưa điều chỉnh nhận giá trị mới. Lý do: doanh nghiệp cần thay đổi nhỏ (ví dụ thu hẹp ô Khách hàng × Xem của Marketing về Đơn vị của mình) mà không phải nhân bản vai trò và gán lại cho mọi người; và một bản phát hành không được lặng lẽ xoá quyết định doanh nghiệp đã đưa ra.
 
 ---
 
@@ -806,7 +814,7 @@ Một khách hàng đăng ký sử dụng dịch vụ, workspace của họ đư
 
 ### FEAT-34 — Cấu hình phạm vi hiển thị dữ liệu `[Đã triển khai]`
 
-**Mô tả nghiệp vụ:** Owner/Admin cấu hình, cho toàn workspace hoặc riêng theo từng loại dữ liệu (Khách hàng, Công ty, Cơ hội, Ticket, Công việc, Hội thoại, Chiến dịch), mức độ dữ liệu mặc định mỗi vai trò được thấy.
+**Mô tả nghiệp vụ:** Owner/Admin cấu hình, cho toàn workspace hoặc riêng theo từng loại dữ liệu (Khách hàng, Công ty, Cơ hội, Ticket, Công việc, Hội thoại, Chiến dịch), **mức nền** của workspace: mức dùng cho một ô của ma trận quyền khi vai trò không khai báo mức cho ô đó, và chế độ "công khai đọc" cho một loại dữ liệu.
 
 **Actor:** Owner/Admin.
 
@@ -819,7 +827,8 @@ Một khách hàng đăng ký sử dụng dịch vụ, workspace của họ đư
 
 **Quy tắc nghiệp vụ:**
 
-- BR-34.1: Cấu hình mặc định của workspace chỉ là "lưới an toàn dự phòng" — nếu vai trò của một người đã khai báo rõ phạm vi riêng, phạm vi đó luôn được ưu tiên áp dụng, cấu hình mặc định workspace không được phép thu hẹp lại phạm vi mà vai trò đã khai báo rõ ràng, mà cũng không âm thầm mở rộng thêm.
+- BR-34.1: Cấu hình mặc định của workspace chỉ là "lưới an toàn dự phòng" — nếu vai trò của một người đã khai báo rõ mức của một ô, mức đó luôn được ưu tiên áp dụng, cấu hình mặc định workspace không được phép thu hẹp lại mức mà vai trò đã khai báo rõ ràng, mà cũng không âm thầm mở rộng thêm.
+- BR-34.4 `[Yêu cầu mới]` (Công khai đọc chỉ mở thao tác Xem): chế độ "công khai đọc" của một loại dữ liệu nâng ô Xem của mọi vai trò có quyền Xem loại đó lên Toàn workspace, và **không** nâng bất kỳ thao tác nào khác. Lý do: "ai cũng xem được để hỗ trợ nhau" không có nghĩa là ai cũng sửa, xoá hay xuất được dữ liệu của người khác.
 - BR-34.2: Có thể cấu hình riêng theo từng bộ phận dữ liệu — ví dụ để Ticket là "toàn workspace" (ai cũng xem được để hỗ trợ nhau) trong khi Cơ hội kinh doanh vẫn giữ "chỉ của mình + cấp dưới" (bảo mật thông tin kinh doanh).
 - BR-34.3: Có thể bật thêm lựa chọn "người phụ trách một đơn vị tổ chức được xem toàn bộ dữ liệu thuộc đơn vị đó và mọi đơn vị con", độc lập với phạm vi theo vai trò — đây là quyền lợi đi kèm chức vụ, không phải quyền theo vai trò.
 
@@ -833,12 +842,15 @@ Một khách hàng đăng ký sử dụng dịch vụ, workspace của họ đư
 
 **Quy tắc nghiệp vụ (áp dụng tự động):**
 
-- BR-35.1: Giữ đồng thời nhiều vai trò/nhóm khác nhau không bao giờ làm thu hẹp phạm vi nhìn thấy so với chỉ giữ vai trò rộng nhất trong số đó — luôn lấy phạm vi rộng nhất. Muốn hạn chế thêm cho một trường hợp cụ thể phải dùng Chính sách truy cập nâng cao (nhóm H) để chặn riêng, không phải bằng cách phối hợp vai trò.
+- BR-35.1: Giữ đồng thời nhiều vai trò/nhóm khác nhau không bao giờ làm thu hẹp phạm vi so với chỉ giữ vai trò rộng nhất trong số đó — **ở từng ô**, luôn lấy mức rộng nhất trong các vai trò đang giữ. Việc hợp nhất làm theo từng ô: mức rộng của một ô không làm ô khác rộng theo, nên người giữ cả Marketing (Khách hàng × Xem: Toàn workspace; Khách hàng × Sửa: Không có) và Nhân viên Kinh doanh (Khách hàng × Xem và Sửa: Đơn vị của mình) xem được toàn workspace nhưng chỉ sửa trong đơn vị của mình. Muốn hạn chế thêm cho một trường hợp cụ thể phải dùng Chính sách truy cập nâng cao (nhóm H) để chặn riêng, không phải bằng cách phối hợp vai trò.
 - BR-35.2: Bất kỳ phạm vi nào rộng hơn "chỉ của mình" đều tự động bao gồm toàn bộ chuỗi cấp dưới trực tiếp và gián tiếp (không chỉ báo cáo trực tiếp) — vì một người quản lý bình thường cũng có cấp dưới trực tiếp, nếu bỏ sót sẽ khiến phạm vi "rộng hơn" lại vô lý hiển thị ít hơn phạm vi hẹp hơn.
 - BR-35.3: Phạm vi "cả nhánh đơn vị" chỉ bao gồm đơn vị của mình và các đơn vị con bên dưới — không bao gồm đơn vị anh em ngang hàng hay đơn vị cha phía trên.
 - BR-35.4: Một thành viên chưa được gán đơn vị tổ chức nào sẽ không được xem thêm bất kỳ dữ liệu nào theo trục đơn vị tổ chức, ở bất kỳ mức phạm vi nào — không "rơi xuống" chế độ thấy tất cả.
 - BR-35.5: Nếu một đơn vị tổ chức bị xoá ngay trong lúc đang tính toán phạm vi cho một người, hệ thống sẽ thu hẹp (bỏ đơn vị đó ra), không bao giờ mở rộng bất ngờ.
 - BR-35.6: Bất kỳ lỗi bất thường nào trong quá trình tính toán phạm vi đều khiến hệ thống từ chối hiển thị (đóng hết, an toàn trước) thay vì lỡ hiển thị nhầm dữ liệu không thuộc phạm vi.
+- BR-35.7 `[Yêu cầu mới]` (Mỗi thao tác dùng mức của chính nó): khi một người thực hiện một thao tác, tập bản ghi họ chạm tới được tính theo **mức của đúng ô (loại dữ liệu, thao tác đó)**: xem danh sách và chi tiết theo mức Xem; sửa theo mức Sửa — kể cả bước tìm bản ghi cần sửa; xuất theo mức Xuất. Bản ghi thuộc một loại dữ liệu khác hiển thị kèm trong thao tác (ví dụ khách hàng liên kết khi mở một cơ hội) theo mức Xem của loại dữ liệu kia. Một thao tác không xác định được thuộc ô nào được tính theo mức **hẹp nhất**, không bao giờ rộng nhất. Lý do: nếu mọi thao tác dùng chung một phạm vi, một vai trò "xem rộng, sửa hẹp" hoặc bị buộc thành "xem hẹp", hoặc vô tình thành "sửa rộng".
+- BR-35.8 `[Yêu cầu mới]` (Tiến trình chạy thay người dùng): một tiến trình tự động chạy thay cho người dùng (ví dụ gửi chiến dịch, quy tắc tự động hoá) ghi nhận **thao tác và mức** tại thời điểm được khởi chạy, và chỉ chạm tới bản ghi trong đúng mức đó cho tới khi kết thúc. Lý do: tiến trình không được là đường vòng để làm điều người khởi chạy không tự làm được.
+- BR-35.9 `[Yêu cầu mới]` (Đọc ngoài phạm vi phụ trách): một lượt xem một bản ghi được phép **chỉ nhờ** mức Xem rộng hơn mức Sửa của chính người đó trên loại dữ liệu ấy là "đọc ngoài phạm vi phụ trách". Các phân hệ nghiệp vụ ghi nhật ký sự kiện này theo quy tắc của mình (ví dụ `contacts-srs.md` NFR-07 mục 13), áp như nhau cho mọi vai trò có cấu hình "xem rộng, sửa hẹp", không gắn với tên vai trò. Owner/Admin nằm ngoài sự kiện này.
 
 ---
 
@@ -1039,12 +1051,13 @@ Phần lớn tính năng của module này được cấp qua **quyền cụ th�
 2. **Không thể tự leo thang quyền cho chính mình:** Một người có quyền "Sửa người dùng" thử tự sửa hồ sơ quyền hạn của chính mình → bị từ chối tuyệt đối; một người tạo vai trò/nhóm/chính sách với quyền vượt quá năng lực hiện có của bản thân → bị từ chối ở bước lưu (FEAT-11, FEAT-17, FEAT-25, FEAT-36).
 3. **Cấp quyền tạm thời luôn cần 2 người:** Một yêu cầu cấp quyền tạm thời chỉ có 1 lượt phê duyệt → quyền chưa có hiệu lực; người tạo yêu cầu không thể tự phê duyệt hoặc tự từ chối yêu cầu của chính mình (FEAT-30, FEAT-31).
 4. **Xoá cưỡng bức luôn bị chặn khi còn phụ thuộc:** Xoá một đơn vị tổ chức còn đơn vị con hoặc còn thành viên trực tiếp → bị từ chối; xoá một nhóm còn nhóm con → bị từ chối (nhưng còn thành viên trực tiếp thì vẫn xoá được) (FEAT-20, FEAT-23).
-5. **Nhiều vai trò/nhóm chồng lấn luôn chọn phương án an toàn nhất phù hợp với từng trục:** Ở trục phạm vi hiển thị dữ liệu, hệ thống luôn lấy phạm vi rộng nhất trong số vai trò/nhóm một người đang giữ (FEAT-35); ở trục chính sách truy cập nâng cao, luật "Từ chối" luôn thắng bất kể có bao nhiêu luật "Cho phép" khác (FEAT-36).
+5. **Nhiều vai trò/nhóm chồng lấn luôn chọn phương án an toàn nhất phù hợp với từng trục:** Ở trục mức truy cập, hệ thống lấy mức rộng nhất **ở từng ô** trong số vai trò/nhóm một người đang giữ, và một ô không làm ô khác rộng theo (FEAT-35/BR-35.1); ở trục chính sách truy cập nâng cao, luật "Từ chối" luôn thắng bất kể có bao nhiêu luật "Cho phép" khác (FEAT-36).
 6. **Che dữ liệu nhạy cảm không có ngoại lệ cho AI:** Một tác nhân AI truy vấn dữ liệu Khách hàng có trường System PII → luôn nhận giá trị đã che, không có quyền "xem đầy đủ" nào áp dụng được, bất kể tác nhân đó vận hành thay cho người dùng có quyền xem đầy đủ tới đâu (FEAT-40/BR-40.1).
 7. **Lỗi tính toán phạm vi luôn an toàn trước:** Nếu hệ thống gặp lỗi bất thường khi tính phạm vi dữ liệu một người được xem → hệ thống từ chối hiển thị hoàn toàn thay vì hiển thị nhầm dữ liệu ngoài phạm vi (FEAT-35/BR-35.6, NFR-1).
 8. **Quyền Ủy thác không vượt qua ranh giới Cấp bậc thành viên:** Một nhân sự IT/HR giữ Quyền Ủy thác gán Vai trò "Sales Manager" (vượt quá năng lực quyền hạn của chính họ) cho một nhân viên mới → thành công; nhưng nếu người đó thử nâng nhân viên lên Quản trị viên → bị từ chối, chỉ Owner/Admin mới làm được (FEAT-09/BR-09.5, BR-09.2, FEAT-12).
 9. **Object ACL đồng bộ ở mọi điểm hiển thị:** Một khách hàng bị chặn quyền xem với một nhân viên cụ thể → nhân viên đó không tìm thấy khách hàng này ở màn hình danh sách, kết quả xuất báo cáo, số liệu Dashboard; nếu khách hàng đó xuất hiện như một bản ghi liên quan trong hồ sơ khác, chỉ thấy placeholder "Bị hạn chế truy cập" (FEAT-39/BR-39.3, BR-39.4).
 10. **Audit log Fail-closed cho thay đổi cấu hình quyền:** Khi hạ tầng ghi log gặp sự cố ngay lúc một quản trị viên đang xoá một Vai trò hoặc chuyển nhượng quyền sở hữu Workspace → thao tác bị huỷ ngay, hệ thống báo lỗi, không có thay đổi quyền nào xảy ra mà thiếu vết kiểm toán tương ứng (FEAT-41/BR-41.5).
+11. **Thấy rộng, sửa hẹp:** Một vai trò tự tạo "Chăm sóc khách hàng" đặt Khách hàng × Xem = Toàn workspace, Khách hàng × Sửa = Chỉ của mình → người giữ vai trò này mở được hồ sơ của mọi khách hàng và sửa được khách hàng mình phụ trách; thử sửa hồ sơ của một khách hàng khác → bị từ chối như với bản ghi ngoài phạm vi. Thử lưu vai trò với Khách hàng × Sửa rộng hơn Khách hàng × Xem → bị từ chối, nêu rõ ô vi phạm (FEAT-25/BR-25.1, FEAT-35/BR-35.7).
 
 ---
 
