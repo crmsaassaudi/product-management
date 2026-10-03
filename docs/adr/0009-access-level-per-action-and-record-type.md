@@ -4,6 +4,8 @@ status: accepted
 
 # Mức truy cập theo từng thao tác trên từng loại dữ liệu
 
+> **Được sửa đổi bởi `iam-tenant-authorization.md` v5:** tên các mức là Không có / Chỉ của mình / Đơn vị của mình / Đơn vị và các đơn vị con / Toàn workspace (`FEAT-34`); công khai đọc là nguồn nới phạm vi chỉ cho thao tác Xem và không áp cho ô Xem = Không có (`BR-34.4`); tiến trình nền dùng phần giao của mức lúc khởi chạy và mức hiện tại (`BR-35.8`); vai trò dựng sẵn điều chỉnh được từng ô qua `CFG-29-02` (thay `CFG-05-02`, `BR-29.4`); mặc định của vai trò dựng sẵn theo `FEAT-29`.
+
 **Bối cảnh:** Khi xử lý #312, vai trò Marketing cần "xem toàn bộ khách hàng nhưng không sửa được ai" (`contacts-srs.md` Mục 5, CFG-05-02). Mô hình vai trò hiện tại không diễn đạt được điều này. Cách vá tạm thời là gắn cứng cho riêng vai trò mẫu Marketing, kèm một công tắc riêng trong CFG-05-02. Cách này vi phạm nguyên tắc: logic khác nhau theo doanh nghiệp phải là cấu hình, không được gắn cứng. Một doanh nghiệp tự tạo vai trò "Chăm sóc khách hàng" với cùng nhu cầu sẽ không có cách nào cấu hình.
 
 ## Vấn đề gốc

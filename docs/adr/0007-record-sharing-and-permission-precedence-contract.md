@@ -4,6 +4,8 @@ status: accepted
 
 # Hợp đồng nghiệp vụ giữa Contacts và IAM: cơ chế chia sẻ bản ghi và thứ tự ưu tiên quyền
 
+> **Được sửa đổi bởi [ADR-0009](./0009-access-level-per-action-and-record-type.md) và `iam-tenant-authorization.md` v5 `BR-39.6`:** trục năng lực và trục phạm vi gộp thành **mức theo ô**; thứ tự hợp nhất là bốn bước: mức theo ô → nguồn nới phạm vi (không mở ô Không có) → nguồn chặn → phân quyền trường và che. Lượt chặn trên bản ghi không áp lên Người có toàn quyền (`BR-39.1`). Quyền quản lý lượt cấp/chặn là "Quản lý quyền trên bản ghi"; lượt đặt tay có thể có thời hạn và chịu trần năng lực (`BR-39.7`).
+
 **Bối cảnh:** `contacts-srs.md` BR-35.5 giao cơ chế thực thi phạm vi dữ liệu và thứ tự ưu tiên giữa ba nguồn quyền cho `iam-tenant-authorization.md`, và tự giới hạn mình ở việc nêu nhu cầu nghiệp vụ. Vấn đề #8 mục 7 đặt thời hạn chốt **trước khi mở phạm vi phát triển Nhóm K** — tức chặn cả FEAT-34, FEAT-35 và FEAT-36, không riêng FEAT-35.
 
 Khảo sát tài liệu IAM cho một kết quả quan trọng hơn dự kiến: **cơ chế quyền trên một bản ghi cụ thể đã tồn tại và đã triển khai** — FEAT-39, với BR-39.1 → BR-39.4. Nên câu hỏi thật không phải "xây cơ chế gì", mà là **"FEAT-35 có phải là FEAT-39 hay không"**. Câu trả lời là không, và chỗ hai bên khác nhau chính là chỗ hai tài liệu đang bất đồng mà chưa ai phát hiện.
