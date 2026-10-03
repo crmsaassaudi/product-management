@@ -11,7 +11,7 @@ Khác với [`specs/`](../specs/README.md) (spec/PRD nháp *trước khi* code, 
 ## Quy ước
 
 - Tên file: `<module-slug>-srs.md`.
-- **Khung mục cố định, theo đúng thứ tự** (xem `iam-tenant-authorization.md` làm mẫu tham chiếu):
+- **Khung mục cố định, theo đúng thứ tự** (xem `contacts-srs.md` làm mẫu tham chiếu):
   1. Giới thiệu (Mục đích, Phạm vi, Đối tượng đọc, Thuật ngữ & viết tắt, Tài liệu tham khảo)
   2. Tổng quan nghiệp vụ (Vấn đề module giải quyết, Vai trò người dùng, Nhóm tính năng)
   3. Đặc tả yêu cầu chức năng (chia theo nhóm chức năng nếu cần, mỗi tính năng là một mục `FEAT-xx`)
@@ -111,12 +111,12 @@ Hệ quả bắt buộc:
 
 | File | Phân hệ / Module | Trạng thái | Ngày cập nhật |
 | --- | --- | --- | --- |
-| [`onboarding-srs.md`](./onboarding-srs.md) | Tiếp nhận & Khởi tạo Không gian làm việc (Onboarding & Provisioning) | Version 2.0 (Target Standard) | 2026-08-28 |
-| [`contacts-srs.md`](./contacts-srs.md) | Quản lý Khách hàng & Danh bạ Doanh nghiệp (Contacts & Accounts) | Version 7.2 (Chuẩn hóa Nghiệp vụ Thuần túy) | 2026-09-29 |
-| [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) | Quản lý Cơ hội & Phễu Bán hàng (Deals & Pipelines) | Version 6.0 (Chuẩn hóa Nghiệp vụ Thuần túy) | 2026-09-23 |
-| [`tickets-srs.md`](./tickets-srs.md) | Quản lý Vé Hỗ trợ & Dịch vụ Khách hàng (Tickets & Customer Service) | Version 2.2 (Standardized Business SRS) | 2026-08-29 |
-| [`tasks-srs.md`](./tasks-srs.md) | Quản lý Công việc, Lịch trình & Ghi nhận Tương tác (Tasks, Calendar & Activity Logging) | Version 6.0 (Chuẩn hóa Nghiệp vụ Thuần túy) | 2026-09-17 |
-| [`campaigns-srs.md`](./campaigns-srs.md) | Quản lý Chiến dịch Tiếp thị & Truyền thông Đa kênh (Marketing Campaigns) | Version 6.3 (Chuẩn hóa Nghiệp vụ Thuần túy; chính sách gửi tiếp thị theo cấu hình doanh nghiệp) | 2026-09-29 |
-| [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) | Phân quyền & Quản trị Không gian làm việc (IAM & ABAC) | v4 (mức truy cập theo từng thao tác) | 2026-09-29 |
-| [`object-manager-srs.md`](./object-manager-srs.md) | Quản trị Đối tượng & Bố cục Trường dữ liệu (Object Manager & FLS) | Baseline | 2026-08-24 |
-| [`omnichat-srs.md`](./omnichat-srs.md) | Hội thoại Đa kênh & Hộp thư Tiếp nhận (Omnichannel Inbox) | Baseline | 2026-08-24 |
+| [`onboarding-srs.md`](./onboarding-srs.md) | Tiếp nhận & Khởi tạo Không gian làm việc (Onboarding & Provisioning) | Version 3.0 (Chuẩn hóa Nghiệp vụ Thuần túy) | 2026-10-02 |
+| [`contacts-srs.md`](./contacts-srs.md) | Quản lý Khách hàng & Danh bạ Doanh nghiệp (Contacts & Accounts) | Version 7.3 (Chuẩn hóa Nghiệp vụ Thuần túy; đồng bộ IAM v5.0) | 2026-10-02 |
+| [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) | Quản lý Cơ hội & Phễu Bán hàng (Deals & Pipelines) | Version 6.1 (Chuẩn hóa Nghiệp vụ Thuần túy; đồng bộ IAM v5.0) | 2026-10-02 |
+| [`tickets-srs.md`](./tickets-srs.md) | Quản lý Vé Hỗ trợ & Dịch vụ Khách hàng (Tickets & Customer Service) | Version 8.4 (Chuẩn hóa Nghiệp vụ Thuần túy; đồng bộ IAM v5.0) | 2026-10-02 |
+| [`tasks-srs.md`](./tasks-srs.md) | Quản lý Công việc, Lịch trình & Ghi nhận Tương tác (Tasks, Calendar & Activity Logging) | Version 7.0 (Chuẩn hóa Nghiệp vụ Thuần túy; đồng bộ IAM v5.0) | 2026-10-02 |
+| [`campaigns-srs.md`](./campaigns-srs.md) | Quản lý Chiến dịch Tiếp thị & Truyền thông Đa kênh (Marketing Campaigns) | Version 6.6 (Chuẩn hóa Nghiệp vụ Thuần túy; đồng bộ IAM v5.0) | 2026-10-02 |
+| [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) | Phân quyền & Quản trị Không gian làm việc (IAM & ABAC) | Version 5.0 (Chuẩn hóa Nghiệp vụ Thuần túy) | 2026-10-02 |
+| [`object-manager-srs.md`](./object-manager-srs.md) | Quản trị Đối tượng & Bố cục Trường dữ liệu (Object Manager & FLS) | Version 5.0 (Chuẩn hóa Nghiệp vụ Thuần túy; đồng bộ IAM v5.0) | 2026-10-02 |
+| [`omnichat-srs.md`](./omnichat-srs.md) | Hội thoại Đa kênh & Hộp thư Tiếp nhận (Omnichannel Inbox) | Version 2.0 (Chuẩn hóa Nghiệp vụ Thuần túy; đồng bộ IAM v5.0) | 2026-10-02 |

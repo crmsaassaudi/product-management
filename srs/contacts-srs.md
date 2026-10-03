@@ -2,12 +2,12 @@
 
 | | |
 | --- | --- |
-| **Loại tài liệu** | Software Requirements Specification — Đặc tả Yêu cầu Nghiệp vụ Chuẩn PM/BA (Version 7.1) |
+| **Loại tài liệu** | Software Requirements Specification — Đặc tả Yêu cầu Nghiệp vụ Chuẩn PM/BA |
 | **Module** | CRM — Phân hệ Quản lý Khách hàng & Danh bạ Doanh nghiệp (Contacts & Accounts Management) |
-| **Ngày cập nhật** | 2026-09-29 |
-| **Phiên bản** | v7.2 (Chuẩn hóa Nghiệp vụ Thuần túy — Thay thế v6.4; đồng thuận theo chính sách gửi tiếp thị của doanh nghiệp; phạm vi theo từng thao tác của vai trò) |
+| **Ngày cập nhật** | 2026-10-02 |
+| **Phiên bản** | v7.3 (Chuẩn hóa Nghiệp vụ Thuần túy — Thay thế v6.4; đồng bộ mô hình quyền với Phân quyền Workspace v5.0: năm mức truy cập, vai trò dựng sẵn, quyền quản trị của phân hệ, hàng đợi và đơn vị tiếp nhận khách hàng tiềm năng, khung che dữ liệu nhạy cảm, tạm ngưng và rời workspace của nhân sự) |
 | **Neo mã nguồn** | Chưa xác định — tài liệu đặc tả trạng thái nghiệp vụ mục tiêu, không neo vào một phiên bản triển khai cụ thể |
-| **Tài liệu liên quan** | [`CONTEXT.md`](../CONTEXT.md) (glossary), [`iam-tenant-authorization.md`](./iam-tenant-authorization.md), [`object-manager-srs.md`](./object-manager-srs.md), [`omnichat-srs.md`](./omnichat-srs.md), [`onboarding-srs.md`](./onboarding-srs.md), [`deals-pipeline-srs.md`](./deals-pipeline-srs.md), [`tickets-srs.md`](./tickets-srs.md), [`tasks-srs.md`](./tasks-srs.md), [`campaigns-srs.md`](./campaigns-srs.md), [ADR-0007](../docs/adr/0007-record-sharing-and-permission-precedence-contract.md), [ADR-0008](../docs/adr/0008-data-subject-deletion-contract-omnichat-tickets.md) |
+| **Tài liệu liên quan** | [`CONTEXT.md`](../CONTEXT.md) (glossary), [`iam-tenant-authorization.md`](./iam-tenant-authorization.md), [`object-manager-srs.md`](./object-manager-srs.md), [`omnichat-srs.md`](./omnichat-srs.md), [`onboarding-srs.md`](./onboarding-srs.md), [`deals-pipeline-srs.md`](./deals-pipeline-srs.md), [`tickets-srs.md`](./tickets-srs.md), [`tasks-srs.md`](./tasks-srs.md), [`campaigns-srs.md`](./campaigns-srs.md), [ADR-0007](../docs/adr/0007-record-sharing-and-permission-precedence-contract.md), [ADR-0008](../docs/adr/0008-data-subject-deletion-contract-omnichat-tickets.md), [ADR-0009](../docs/adr/0009-access-level-per-action-and-record-type.md), [ADR-0010](../docs/adr/0010-revocation-not-blocked-by-audit-failure.md) |
 
 ## Ghi chú về phiên bản v7.0
 
@@ -70,7 +70,7 @@ Tài liệu bao gồm 11 nhóm chức năng:
 - Cấu hình phễu bán hàng, vòng đời Cơ hội bán hàng và bảng Kanban — thuộc [`deals-pipeline-srs.md`](./deals-pipeline-srs.md). Phân hệ này chỉ đặc tả **tác động của sự kiện Cơ hội bán hàng lên giai đoạn vòng đời khách hàng**.
 - Quản trị Vé hỗ trợ và cam kết chất lượng dịch vụ — thuộc [`tickets-srs.md`](./tickets-srs.md).
 - Phân quyền trường chi tiết và tùy biến bố cục — thuộc [`object-manager-srs.md`](./object-manager-srs.md).
-- Mô hình vai trò, phạm vi dữ liệu theo cây tổ chức và thứ tự hợp nhất quyền — thuộc [`iam-tenant-authorization.md`](./iam-tenant-authorization.md).
+- Mô hình vai trò, danh sách vai trò dựng sẵn, mức truy cập, phạm vi dữ liệu theo cây tổ chức, hàng đợi và đơn vị tiếp nhận, khung che dữ liệu, tạm ngưng và rời workspace của thành viên, thứ tự hợp nhất quyền — thuộc [`iam-tenant-authorization.md`](./iam-tenant-authorization.md). Tài liệu này chỉ khai báo phần mà tài liệu đó giao cho phân hệ: ma trận ô mặc định và quyền quản trị của phân hệ (Mục 5), hàng đợi khách hàng tiềm năng (`BR-31.9`), trường nhạy cảm của hệ thống (`BR-04.7`), Sàn bắt buộc của phân hệ và quy tắc bàn giao bản ghi khách hàng (`FEAT-34`).
 - Thiết kế và phát sóng chiến dịch tiếp thị — thuộc [`campaigns-srs.md`](./campaigns-srs.md). Phân hệ này chỉ đặc tả **điều kiện đồng thuận và mục đích gửi tin** mà mọi lượt gửi phải tuân theo.
 
 ### 1.3 Đối tượng đọc
@@ -107,7 +107,13 @@ Tài liệu bao gồm 11 nhóm chức năng:
 | **Mặt nạ dữ liệu** | Cơ chế che một phần hoặc toàn bộ giá trị trường nhạy cảm theo quan hệ của người xem với bản ghi (`FEAT-04`). **Mở khóa mặt nạ** là thao tác có kiểm soát để xem giá trị đầy đủ. |
 | **Đội ngũ phụ trách** | Nhóm người cùng phục vụ một khách hàng bên cạnh Người phụ trách, mỗi người có vai trò tham gia và mức quyền Chỉ đọc hoặc Chỉnh sửa (`FEAT-35`). |
 | **Người phụ trách** | Nhân viên chịu trách nhiệm chính đối với một khách hàng. Mỗi bản ghi có tối đa một Người phụ trách. |
-| **Vai trò chức năng** | Trách nhiệm nghiệp vụ được giao cho một người (Quản lý Khách hàng Hiện hữu, Quản trị Chất lượng Dữ liệu, Người phụ trách Bảo vệ Dữ liệu) nhưng không phải một vai trò phân quyền riêng; quyền hạn theo vai trò gốc được cấp. |
+| **Mức truy cập** | Giá trị của một ô (loại dữ liệu × thao tác) trong vai trò, từ hẹp đến rộng: **Không có** / **Chỉ của mình** / **Đơn vị của mình** / **Đơn vị và các đơn vị con** / **Toàn workspace**; thao tác Tạo chỉ có Có / Không có. Định nghĩa các mức, "Bản ghi của mình" và "Bản ghi thuộc một đơn vị" theo đúng [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) Mục 1.4 và `FEAT-34`; tài liệu này không định nghĩa lại. |
+| **Đơn vị tiếp nhận** | Đơn vị tổ chức được khai báo nhận khách hàng tiềm năng của một nguồn (biểu mẫu website, tích hợp, kênh hội thoại, lô nhập khẩu vào hàng đợi) — `BR-31.9`, theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-35.10`. |
+| **Bản ghi chờ phân công** | Khách hàng tiềm năng đi vào hàng đợi của đơn vị tiếp nhận: thuộc đơn vị tiếp nhận cho tới khi có Người phụ trách, sau đó theo Người phụ trách như mọi bản ghi (`BR-31.9`). |
+| **Bản ghi giữ chỗ** | Bản ghi nhập từ tệp được gán cho một người còn đang chờ chấp nhận lời mời vào workspace: chưa có Người phụ trách, mang nhãn "giữ chỗ cho" người đó, thuộc Đơn vị chính ghi trong lời mời (`BR-23.5`). |
+| **Sàn bắt buộc** | Ràng buộc không cấu hình vượt được qua bất kỳ vai trò, lượt cấp hay điều chỉnh nào, theo định nghĩa tại [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) Mục 1.4. Các quy tắc gắn nhãn "sàn bắt buộc" trong tài liệu này là sàn do phân hệ khai báo; sàn nào áp cả lên Người có toàn quyền thì quy tắc nêu rõ. |
+| **Người có toàn quyền** | Cách gọi chung cho Chủ sở hữu và Quản trị viên — hai cấp bậc thành viên, không phải vai trò (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) Mục 1.4). |
+| **Vai trò chức năng** | Trách nhiệm nghiệp vụ được giao cho một người (Quản lý Khách hàng Hiện hữu, Quản trị Chất lượng Dữ liệu) nhưng không phải một vai trò phân quyền riêng; quyền hạn theo vai trò gốc được cấp. Người phụ trách Bảo vệ Dữ liệu là **chức danh trách nhiệm** theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `FEAT-47`, cũng không tự cấp quyền. |
 | **Không gian làm việc** | Phạm vi dữ liệu của một doanh nghiệp khách hàng. Dữ liệu giữa các không gian làm việc tuyệt đối không nhìn thấy nhau. |
 
 ---
@@ -128,18 +134,31 @@ Phân hệ giải quyết các bài toán trên bằng một nền tảng quản
 
 ### 2.2 Vai trò người dùng
 
-| Vai trò | Quyền hạn và trách nhiệm nghiệp vụ |
-| --- | --- |
-| **Nhân viên Kinh doanh** | Tạo mới, chăm sóc khách hàng cá nhân và doanh nghiệp trong phạm vi của mình, cập nhật giai đoạn vòng đời theo chiều tiến lên, đánh dấu Lead rác, chuyển đổi tiềm năng, bàn giao ngang cho đồng nghiệp cùng nhóm, theo dõi dòng thời gian tương tác. |
-| **Nhân viên Hỗ trợ Khách hàng** | Tra cứu ngữ cảnh khách hàng khi tiếp nhận hội thoại hoặc vé hỗ trợ, ghi nhận ghi chú và hoạt động phục vụ khách. Bao gồm cả Tư vấn viên trò chuyện trực tuyến — cùng một vai trò, chỉ khác kênh phục vụ. Vì quyền phụ trách bản ghi thường thuộc đội kinh doanh (`BR-01.3`), vai trò này truy cập hồ sơ chủ yếu qua quyền đọc tự động khi có vé/hội thoại đang mở (`BR-35.4`); quyền đó là **chỉ đọc**, trừ hai thao tác thu hẹp phạm vi xử lý dữ liệu (gắn Hạn chế xử lý, hạ đồng thuận). |
-| **Quản lý Kinh doanh** | Phân công và chuyển giao khách hàng (`FEAT-34`), phê duyệt các bước lùi giai đoạn và loại khách (`BR-12.4`, `BR-12.7`), duyệt Lead rác, hoàn tác chuyển đổi (`BR-14.2`), xác nhận bằng chứng liên hệ ngoài hệ thống (`BR-31.8`), cấu hình quy tắc phân bổ, duyệt xuất dữ liệu vượt hạn mức của nhân viên, theo dõi báo cáo danh bạ trong phạm vi đơn vị. |
-| **Nhân viên Marketing** | Xuất danh sách khách hàng phục vụ chiến dịch, **xem** (không sửa) cấu hình chấm điểm, ghi nhận đồng thuận nhận tin theo kênh, gắn thẻ phân loại phục vụ phân khúc, xem báo cáo chuyển đổi và báo cáo nguồn gốc. **Không có quyền Xóa, Gộp hay Hoàn tác gộp bản ghi.** |
-| **Quản lý Marketing** | Toàn bộ chức năng Marketing, cộng: cấu hình chấm điểm tiềm năng, ngưỡng thăng hạng và suy giảm điểm; duyệt xuất dữ liệu lớn của Nhân viên Marketing; đồng phê duyệt Chiến dịch Tái tiếp cận khách đã rời bỏ; xem báo cáo nguồn gốc và phân bổ doanh thu theo kênh. |
-| **Quản trị viên Không gian làm việc** | Quản trị cấu hình trường dữ liệu, thực thi gộp và hoàn tác gộp, khôi phục giao dịch gộp bị gián đoạn, nhập/xuất dữ liệu hàng loạt, xử lý yêu cầu quyền chủ thể dữ liệu, loại khách đã trả tiền khi phát hiện gian lận. |
-| **Chủ sở hữu Không gian làm việc** | Toàn quyền quản trị danh bạ, xem toàn bộ dữ liệu tổ chức, cấu hình chính sách bảo mật dữ liệu nhạy cảm và khai báo lịch làm việc của không gian làm việc. |
-| **Tiến trình Hệ thống** | Tự động tính điểm tiềm năng và suy giảm điểm, sinh bước chuyển giai đoạn từ sự kiện Cơ hội bán hàng, phân bổ khách hàng tiềm năng, xử lý nhập/xuất theo hàng đợi, dọn dẹp Thùng rác quá hạn, khử định danh theo thời hạn lưu, cấp và thu hồi quyền đọc tự động. |
+Danh sách vai trò dưới đây dùng **đúng tên vai trò dựng sẵn** tại [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `FEAT-29` — nguồn duy nhất về danh sách vai trò dựng sẵn; tài liệu này chỉ khai báo ma trận chi tiết của chúng trên dữ liệu khách hàng và doanh nghiệp (Mục 5).
 
-> **Ghi chú:** Tám vai trò trên tạo thành các cột của Ma trận phân quyền tại Mục 5. Đây là **vai trò nghiệp vụ** dùng để diễn đạt yêu cầu; "Quản trị viên" và "Chủ sở hữu" là **cấp bậc thành viên** của không gian làm việc. Mô hình vai trò, cấp bậc thành viên và cách phân giải quyền thuộc [`iam-tenant-authorization.md`](./iam-tenant-authorization.md).
+| Vai trò | Tên gọi trong quy tắc và kịch bản | Quyền hạn và trách nhiệm nghiệp vụ |
+| --- | --- | --- |
+| **Nhân viên Kinh doanh** (vai trò dựng sẵn) | Nhân viên Kinh doanh, nhân viên | Tạo mới, chăm sóc khách hàng cá nhân và doanh nghiệp mình phụ trách, xem khách hàng của đơn vị mình, cập nhật giai đoạn vòng đời theo chiều tiến lên, đánh dấu Lead rác, chuyển đổi tiềm năng, nhận khách hàng tiềm năng từ hàng đợi của đơn vị, đề nghị chuyển khách mình phụ trách cho đồng nghiệp (`BR-34.1b`), theo dõi dòng thời gian tương tác. |
+| **Nhân viên Hỗ trợ** (vai trò dựng sẵn) | Nhân viên Hỗ trợ, Tư vấn viên, tuyến Hỗ trợ | Tra cứu ngữ cảnh khách hàng khi tiếp nhận hội thoại hoặc vé hỗ trợ, ghi nhận ghi chú và hoạt động phục vụ khách. Bao gồm cả Tư vấn viên trò chuyện trực tuyến — cùng một vai trò, chỉ khác kênh phục vụ. Vai trò này chỉ xem khách hàng của đơn vị mình; với khách của đơn vị khác, truy cập hồ sơ qua quyền đọc tự động khi có vé/hội thoại đang mở (`BR-35.4`) — quyền đó là **chỉ đọc**, trừ hai thao tác thu hẹp phạm vi xử lý dữ liệu (gắn Hạn chế xử lý, hạ đồng thuận). |
+| **Quản lý** (vai trò dựng sẵn) | Quản lý Kinh doanh, Quản lý — khi nói về người giữ vai trò Quản lý trong đơn vị kinh doanh | Phân công và chuyển giao khách hàng trong đơn vị và các đơn vị con (`FEAT-34`), duyệt các bước lùi giai đoạn và loại khách (`BR-12.4`, `BR-12.7`), duyệt Lead rác, hoàn tác chuyển đổi (`BR-14.2`), xác nhận bằng chứng liên hệ ngoài hệ thống (`BR-31.8`), cấu hình quy tắc phân bổ, theo dõi báo cáo danh bạ trong phạm vi đơn vị. Các năng lực này là quyền quản trị của phân hệ mặc định có ở vai trò Quản lý (Mục 5.2), không gắn với tên vai trò. |
+| **Marketing** (vai trò dựng sẵn) | Nhân viên Marketing, Marketing | Xem toàn bộ khách hàng phục vụ phân khúc, **xem** (không sửa) cấu hình chấm điểm, ghi nhận đồng thuận nhận tin theo kênh, gắn thẻ phân loại phục vụ phân khúc, xem báo cáo chuyển đổi và báo cáo nguồn gốc. Mặc định không sửa, xóa, gộp, nhập hay xuất bản ghi khách hàng. |
+| **Quản lý Marketing** (vai trò dựng sẵn) | Quản lý Marketing | Toàn bộ chức năng Marketing, cộng: tạo, nhập và sửa khách hàng trong đơn vị mình; cấu hình chấm điểm tiềm năng, ngưỡng thăng hạng và suy giảm điểm; đồng phê duyệt Chiến dịch Tái tiếp cận khách đã rời bỏ; xem báo cáo nguồn gốc và phân bổ doanh thu theo kênh. |
+| **Chỉ xem bản ghi được giao** (vai trò dựng sẵn) | — | Chỉ xem khách hàng và doanh nghiệp mình đang phụ trách; không có thao tác ghi nào. Là vai trò mặc định của người mới (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `FEAT-29`). |
+| **Kiểm toán** (vai trò dựng sẵn) | — | Xem toàn bộ khách hàng và doanh nghiệp, không có thao tác ghi, không mở khóa mặt nạ, không xuất; mỗi lượt xem là đọc ngoài phạm vi phụ trách (`NFR-07` mục 13). Không đọc được nhật ký kiểm toán của phân hệ (`NFR-14`). |
+| **Kiểm toán quyền** (vai trò dựng sẵn) | — | Không truy cập dữ liệu khách hàng và doanh nghiệp. |
+| **Quản trị viên** (cấp bậc thành viên) | Quản trị viên | Quản trị cấu hình trường dữ liệu, thực thi gộp và hoàn tác gộp, khôi phục giao dịch gộp bị gián đoạn, nhập/xuất dữ liệu hàng loạt, xử lý yêu cầu quyền chủ thể dữ liệu, loại khách đã trả tiền khi phát hiện gian lận. |
+| **Chủ sở hữu** (cấp bậc thành viên) | Chủ sở hữu | Toàn quyền quản trị danh bạ, xem toàn bộ dữ liệu tổ chức, cấu hình chính sách bảo mật dữ liệu nhạy cảm và khai báo lịch làm việc của không gian làm việc. |
+| **Tiến trình Hệ thống** | Hệ thống | Tự động tính điểm tiềm năng và suy giảm điểm, sinh bước chuyển giai đoạn từ sự kiện Cơ hội bán hàng, phân bổ khách hàng tiềm năng, xử lý nhập/xuất theo hàng đợi, dọn dẹp Thùng rác quá hạn, khử định danh theo thời hạn lưu, cấp và thu hồi quyền đọc tự động. |
+
+> **Ghi chú:** Năm vai trò dựng sẵn có thao tác trên dữ liệu khách hàng (Nhân viên Kinh doanh, Nhân viên Hỗ trợ, Quản lý, Marketing, Quản lý Marketing), hai cấp bậc Quản trị viên và Chủ sở hữu, cùng Tiến trình Hệ thống là các cột của Ma trận tính năng tại Mục 5.3; ba vai trò dựng sẵn còn lại được khai báo đủ ô tại Mục 5.1. Mô hình vai trò, cấp bậc thành viên và cách phân giải quyền thuộc [`iam-tenant-authorization.md`](./iam-tenant-authorization.md).
+
+**Quy ước đọc tên vai trò trong quy tắc nghiệp vụ.** Quyền không gắn cứng với tên vai trò: mọi năng lực trong tài liệu là **một ô** (loại dữ liệu × thao tác, kể cả thao tác đặc thù của phân hệ — Mục 5.1) hoặc **một quyền quản trị của phân hệ** (Mục 5.2), áp như nhau cho vai trò dựng sẵn và vai trò doanh nghiệp tự tạo. Khi một quy tắc hay kịch bản nêu tên vai trò, tên đó chỉ người giữ quyền tương ứng **theo mặc định**:
+
+- "Quản lý Kinh doanh" hay "Quản lý Kinh doanh trở lên" thực hiện một thao tác = người giữ quyền quản trị của phân hệ quy định cho thao tác đó tại Mục 5.2, trên bản ghi mà ô tương ứng của họ bao phủ.
+- "Quản lý Kinh doanh của Người phụ trách", "Quản lý của nhân viên" = **quản lý trực tiếp** của người đó theo chuỗi quản lý tại [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) Mục 1.4; nếu người đó không có quản lý trực tiếp thì là người phụ trách Đơn vị chính của họ.
+- "Quản trị viên và Chủ sở hữu" = **Người có toàn quyền**.
+
+Doanh nghiệp trao các năng lực này cho vai trò tự tạo, hoặc điều chỉnh từng ô của vai trò dựng sẵn qua [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `CFG-29-02`, trong giới hạn các Sàn bắt buộc của tài liệu này.
 
 **Vai trò chức năng (không có cột riêng trong Ma trận phân quyền):**
 
@@ -147,7 +166,7 @@ Phân hệ giải quyết các bài toán trên bằng một nền tảng quản
 | --- | --- | --- |
 | **Quản lý Khách hàng Hiện hữu** | Nhân viên hoặc Quản lý Kinh doanh được gán làm Người phụ trách của một khách hàng từ giai đoạn Customer trở lên. Chịu trách nhiệm duy trì, gia hạn và bán mở rộng; là người nhận thông báo khi khách chuyển sang Churned (`BR-12.5`). | Theo vai trò gốc (Nhân viên hoặc Quản lý Kinh doanh). |
 | **Quản trị Chất lượng Dữ liệu** | Người được Chủ sở hữu hoặc Quản trị viên chỉ định rà soát trùng lặp định kỳ, chuẩn hóa dữ liệu, xử lý hồ sơ tạm tồn dư, xử lý Đề nghị gộp và giám sát chỉ số chất lượng dữ liệu (Mục 2.6). Trong tổ chức nhỏ, do Quản trị viên kiêm nhiệm. | Theo vai trò gốc được cấp. |
-| **Người phụ trách Bảo vệ Dữ liệu** | **Bắt buộc chỉ định nếu tổ chức thuộc diện phải có theo pháp luật bảo vệ dữ liệu cá nhân.** Giám sát xử lý yêu cầu quyền chủ thể dữ liệu (`FEAT-33`), đồng phê duyệt các tham số có sàn pháp lý, nhận cảnh báo truy cập bất thường và báo cáo phơi bày dữ liệu. Nếu tổ chức không chỉ định, trách nhiệm thuộc Chủ sở hữu, và mọi nơi yêu cầu "hai người khác nhau" áp quy tắc thay thế tại `NFR-14`. | Theo vai trò gốc được cấp (thường là Quản trị viên). |
+| **Người phụ trách Bảo vệ Dữ liệu** | Chức danh trách nhiệm theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `FEAT-47`. **Doanh nghiệp tự xác định có phải chỉ định hay không theo quy định áp dụng cho mình và tự chịu trách nhiệm về quyết định đó.** Giám sát xử lý yêu cầu quyền chủ thể dữ liệu (`FEAT-33`), đồng phê duyệt các tham số mức "Có sàn bắt buộc" ghi "+ BVDL" tại Phụ lục B, nhận cảnh báo truy cập bất thường và báo cáo phơi bày dữ liệu. Nếu tổ chức không chỉ định, trách nhiệm thuộc Chủ sở hữu, và mọi nơi yêu cầu "hai người khác nhau" áp quy tắc thay thế tại `NFR-14`. | Theo vai trò gốc được cấp (thường là Quản trị viên). |
 
 ### 2.3 Quy ước thời gian nghiệp vụ
 
@@ -274,6 +293,15 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Nhân viên Kinh doanh, Quản lý Kinh doanh, Quản trị viên.
 
+**Điều kiện tiên quyết:** Người dùng có ô (Khách hàng, Tạo) = Có để tạo mới; các thao tác khác theo mức của đúng ô tương ứng (Mục 5.1).
+
+**Luồng chính:**
+
+1. Người dùng mở "Thêm khách hàng", nhập ít nhất một kênh liên lạc chính và các thông tin khác.
+2. Hệ thống kiểm tra định dạng (`BR-01.2`) và trùng lặp tức thì (`FEAT-17`) ngay khi rời từng ô.
+3. Người dùng lưu; hệ thống gán Người phụ trách và đơn vị của bản ghi (`BR-01.3`).
+4. Người dùng tra cứu, mở chi tiết, cập nhật hoặc xóa khách hàng trong phạm vi mức truy cập của mình (`BR-01.4`).
+
 **Quy tắc nghiệp vụ:**
 
 - **`BR-01.1` (Thông tin bắt buộc):** Mỗi khách hàng cá nhân bắt buộc có ít nhất một kênh liên lạc chính: **địa chỉ email** hoặc **số điện thoại**. Họ tên là trường **khuyến khích** nhưng không bắt buộc — khi không có họ tên, hệ thống hiển thị tên thay thế lấy từ phần trước ký tự "@" của email (ví dụ email "ceo@company.com" hiển thị là "ceo") hoặc từ số điện thoại.
@@ -294,19 +322,23 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
   **Lý do nghiệp vụ:** Cùng một số điện thoại viết theo nhiều cách ("0908 123 456", "+84908123456") sẽ không khớp nhau khi kiểm tra trùng lặp theo Tiêu chí chắc chắn (`BR-17.1`), làm `KPI-01` không đạt được.
 
-- **`BR-01.3` (Người phụ trách & đơn vị tổ chức):** Khi tạo mới, người tạo tự động được gán làm Người phụ trách. Đơn vị tổ chức của bản ghi luôn theo **Đơn vị tổ chức của Người phụ trách hiện tại** — tại thời điểm tạo mới là đơn vị của người tạo, trừ khi người có quyền chỉ định người phụ trách khác ngay từ đầu; khi Người phụ trách đổi qua bàn giao (`FEAT-34`), Đơn vị tổ chức chuyển theo ngay lập tức. Nhất quán với quy tắc tương ứng của Cơ hội bán hàng tại [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) (Nguyên tắc 4 và `BR-01.2` của tài liệu đó).
+- **`BR-01.3` (Người phụ trách & đơn vị của bản ghi):** Khi người dùng tạo mới, người tạo tự động được gán làm Người phụ trách, trừ khi người có ô (Khách hàng, Gán) bao phủ người được chọn chỉ định người phụ trách khác ngay từ đầu. Bản ghi thuộc đơn vị nào theo đúng định nghĩa "Bản ghi thuộc một đơn vị" tại [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) Mục 1.4: thuộc đồng thời Đơn vị chính và mọi Đơn vị kiêm nhiệm mức Đầy đủ của **Người phụ trách hiện tại**, và chuyển theo ngay lập tức khi Người phụ trách đổi qua bàn giao (`FEAT-34`). Các ngoại lệ của định nghĩa đó áp cho phân hệ này như sau: khách hàng tiềm năng vào hàng đợi là **bản ghi chờ phân công**, thuộc đơn vị tiếp nhận của nguồn cho tới khi có Người phụ trách (`BR-31.9`); **bản ghi giữ chỗ** thuộc Đơn vị chính ghi trong lời mời (`BR-23.5`); bản ghi chưa có Người phụ trách không qua hàng đợi thuộc Đơn vị chính của người tạo. Nhất quán với quy tắc tương ứng của Cơ hội bán hàng tại [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) (Nguyên tắc 4 và `BR-01.2` của tài liệu đó).
 
-  **Lý do nghiệp vụ:** Nếu Đơn vị tổ chức giữ nguyên theo người tạo ban đầu sau khi bàn giao, Quản lý của người nhận sẽ không thấy khách hàng đó trong phạm vi "Đơn vị của mình" dù cấp dưới của họ đang là người thực sự xử lý — đúng lỗ hổng mà Nguyên tắc 4 của `deals-pipeline-srs.md` đã chỉ ra cho Cơ hội bán hàng, và không có lý do nghiệp vụ nào để khách hàng bị xử lý khác đi.
+  **Lý do nghiệp vụ:** Nếu đơn vị của bản ghi giữ nguyên theo người tạo ban đầu sau khi bàn giao, quản lý của người nhận sẽ không thấy khách hàng đó dù cấp dưới của họ đang là người thực sự xử lý. Khách hàng tiềm năng từ biểu mẫu chưa có ai phụ trách thì phải thuộc đơn vị tiếp nhận để đội nhận việc thấy được nó; nếu không, nó không thuộc phạm vi của ai và bị bỏ quên.
 
-- **`BR-01.4` (Phạm vi dữ liệu):** Người dùng chỉ xem và sửa được khách hàng thuộc phạm vi dữ liệu được gán, theo bốn mức từ hẹp tới rộng: **Chỉ của mình** / **Của mình + cấp dưới và đơn vị của mình** / **Cả nhánh đơn vị** / **Toàn Không gian làm việc**. Định nghĩa từng mức và cách phân giải khi một người giữ nhiều vai trò thuộc [`iam-tenant-authorization.md`](./iam-tenant-authorization.md). Khi người dùng mở một bản ghi ngoài phạm vi, hệ thống xử lý theo `BR-17.3`.
+- **`BR-01.4` (Phạm vi dữ liệu theo từng thao tác):** Tập khách hàng một người chạm tới khi thực hiện một thao tác được tính theo mức của **đúng ô** (Khách hàng, thao tác đó) trong vai trò của họ: danh sách và hồ sơ theo mức Xem; sửa theo mức Sửa — kể cả bước tìm bản ghi cần sửa; xóa, xuất, nhập, gán và các thao tác đặc thù của phân hệ (Mục 5.1) theo mức của ô đó. Năm mức **Không có** / **Chỉ của mình** / **Đơn vị của mình** / **Đơn vị và các đơn vị con** / **Toàn workspace**, cách hợp nhất khi một người giữ nhiều vai trò, các nguồn nới phạm vi và nguồn chặn áp đúng [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) Mục 1.4, `FEAT-34`, `FEAT-35` và thứ tự hợp nhất `BR-39.6` của tài liệu đó; tài liệu này không định nghĩa lại mức nào. Ô của Doanh nghiệp áp theo cùng cách. Khi người dùng mở một bản ghi ngoài phạm vi, hệ thống xử lý theo `BR-17.3`.
+
+  **Lý do nghiệp vụ:** Một phạm vi chung cho mọi thao tác buộc doanh nghiệp chọn giữa "xem hẹp" làm Marketing không phân khúc được, hoặc "sửa rộng" làm một người sửa được khách của cả tổ chức. Định nghĩa mức phải là một nơi duy nhất cho mọi phân hệ, nếu không "Đơn vị của mình" ở danh bạ và ở cơ hội bán hàng sẽ ra hai tập bản ghi khác nhau cho cùng một người.
 
 - **`BR-01.5` (Nhóm trường Định danh KYC tùy chọn):** Ngoài các kênh liên lạc, hồ sơ khách hàng hỗ trợ lưu **tùy chọn** nhóm trường định danh nhạy cảm phục vụ xác thực hợp đồng: Số Căn cước công dân, Số Hộ chiếu, Ngày cấp, Nơi cấp. Nhóm trường này áp dụng che mặt nạ theo `FEAT-04` và không bắt buộc nhập khi tạo mới.
+
+  **Lý do nghiệp vụ:** Một số ngành phải xác thực danh tính khi ký hợp đồng; nếu hệ thống không có chỗ lưu có kiểm soát, nhân viên sẽ lưu số giấy tờ vào ghi chú tự do — nơi không che, không có thời hạn lưu và không có nhật ký.
 
 - **`BR-01.5b` (Mục đích, điều kiện bật và thời hạn lưu nhóm Định danh KYC) — sàn bắt buộc:**
   - **Mục đích duy nhất được phép:** xác thực danh tính phục vụ ký kết, thực hiện hợp đồng và nghĩa vụ định danh khách hàng theo quy định. **Không** được dùng cho tiếp thị, phân khúc, chấm điểm hay báo cáo.
   - **Điều kiện bật:** nhóm trường **mặc định tắt**. Chỉ Chủ sở hữu cùng Người phụ trách Bảo vệ Dữ liệu bật được, và phải khai báo mục đích sử dụng khi bật (Phụ lục B, `CFG-01-02`).
   - **Khi nhóm trường tắt:** các trường thuộc nhóm **không được lưu** và **không hiển thị với mọi vai trò** — mức "Ẩn trường" áp cho cả bốn cột của bảng `BR-04.3`, kể cả người có quyền chuyên biệt trên nhóm KYC.
-  - **Thời hạn lưu:** tối đa **24 tháng** kể từ khi hợp đồng gần nhất của khách hàng kết thúc (Phụ lục B, `CFG-01-03`). Hết thời hạn, hệ thống **tự động khử vĩnh viễn phần định danh** — giữ hồ sơ khách hàng, chỉ xóa các trường KYC. Đây là ngoại lệ có chủ đích (a) của nguyên tắc "hệ thống không tự động xóa" tại `BR-33.5`.
+  - **Thời hạn lưu:** mặc định **24 tháng** kể từ khi hợp đồng gần nhất của khách hàng kết thúc (Phụ lục B, `CFG-01-03`). Hết thời hạn, hệ thống **tự động khử vĩnh viễn phần định danh** — giữ hồ sơ khách hàng, chỉ xóa các trường KYC. Đây là ngoại lệ có chủ đích (a) của nguyên tắc "hệ thống không tự động xóa" tại `BR-33.5`.
   - **Tài liệu xác minh:** bản chụp giấy tờ định danh thu theo `BR-33.7` bị **xóa vĩnh viễn trong 30 ngày** sau khi yêu cầu tương ứng hoàn tất, không lưu vào hồ sơ khách hàng.
 
   **Lý do nghiệp vụ:** Đây là nhóm dữ liệu có mức thiệt hại cao nhất nếu rò rỉ và không còn giá trị kinh doanh sau khi hết nghĩa vụ hợp đồng. Giới hạn theo mục đích và theo thời gian là cách duy nhất thu hẹp rủi ro mà vẫn phục vụ được nhu cầu xác thực hợp đồng.
@@ -333,7 +365,12 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | `AC-01.2.1` | Không gian làm việc có quốc gia mặc định Việt Nam | Nhập số "0908123456", lưu | Số được lưu và hiển thị dạng +84908123456 |
 | `AC-01.2.2` | Màn hình tạo khách hàng | Nhập email "mai.tran@@vinafoods" | Ô email báo sai định dạng ngay khi rời ô, trước khi bấm lưu; không lưu được |
 | `AC-01.3.1` | Nhân viên A thuộc Phòng Kinh doanh 1 | Tạo khách hàng, không chỉ định người phụ trách | Người phụ trách là A; khách hàng thuộc Phòng Kinh doanh 1 |
-| `AC-01.4.1` | Nhân viên A có phạm vi "Chỉ của mình", phụ trách 3 khách hàng, được chia sẻ 1 khách hàng; phòng có 200 khách hàng | A mở danh sách khách hàng | Chỉ thấy đúng 4 khách hàng |
+| `AC-01.3.2` | A có Đơn vị chính "Kinh doanh 1", kiêm nhiệm "Dự án Xanh" mức Đầy đủ và "Hội chợ" mức Chỉ xem; A phụ trách khách K | Thành viên "Dự án Xanh" và thành viên "Hội chợ" (cùng có Xem = Đơn vị của mình) mở danh sách khách hàng | Thành viên "Dự án Xanh" thấy K; thành viên "Hội chợ" không thấy K |
+| `AC-01.3.3` | Biểu mẫu website có đơn vị tiếp nhận "Kinh doanh – Đà Nẵng"; khách mới gửi biểu mẫu, chưa được phân bổ | Thành viên "Kinh doanh – Đà Nẵng" mở hàng đợi khách hàng tiềm năng | Thấy khách mới, chưa có Người phụ trách; thành viên đơn vị khác không thấy |
+| `AC-01.3.4` | Khách K thuộc "Kinh doanh 1" do A phụ trách | Đổi Người phụ trách sang B thuộc "Kinh doanh 2" | K thuộc "Kinh doanh 2" ngay lập tức; quản lý "Kinh doanh 1" không còn thấy K qua mức Đơn vị của mình |
+| `AC-01.4.1` | Nhân viên A có (Khách hàng, Xem) = Chỉ của mình, phụ trách 3 khách hàng, được chia sẻ 1 khách hàng; phòng có 200 khách hàng | A mở danh sách khách hàng | Chỉ thấy đúng 4 khách hàng |
+| `AC-01.4.3` | Nhân viên Kinh doanh B theo mặc định: (Khách hàng, Xem) = Đơn vị của mình, (Khách hàng, Sửa) = Chỉ của mình | B mở hồ sơ một khách của đồng nghiệp cùng đơn vị | Xem được; các trường không sửa được kèm giải thích; lượt xem được ghi là đọc ngoài phạm vi phụ trách (`NFR-07` mục 13) |
+| `AC-01.4.4` | C có (Khách hàng, Xem) = Toàn workspace, (Khách hàng, Xuất) = Chỉ của mình | C xuất từ danh sách đang hiển thị khách của mọi đơn vị | Tệp xuất chỉ chứa khách C phụ trách |
 | `AC-01.4.2` | Tiếp nối AC-01.4.1 | A mở trực tiếp đường dẫn tới hồ sơ một khách hàng của đồng nghiệp | Không thấy hồ sơ đầy đủ; thấy thông tin tối thiểu để nhận diện và ba hành động theo `BR-17.3` |
 | `AC-01.5.1` | Nhóm Định danh KYC đã bật | Người phụ trách nhập Số Căn cước công dân cho khách, lưu | Lưu thành công; trường hiển thị ở mức che theo `BR-04.3` |
 | `AC-01.5b.1` | Nhóm Định danh KYC đang tắt | Bất kỳ vai trò nào, kể cả Chủ sở hữu, mở biểu mẫu tạo/sửa khách hàng | Không có trường nào thuộc nhóm KYC trên biểu mẫu |
@@ -352,13 +389,23 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Mọi người dùng có quyền xem khách hàng.
 
+**Điều kiện tiên quyết:** Người xem có ô (Khách hàng, Xem) bao phủ bản ghi, hoặc có quyền đọc tự động theo `BR-35.4`.
+
+**Luồng chính:**
+
+1. Người dùng mở hồ sơ khách hàng từ danh sách, kết quả tìm kiếm, hội thoại hoặc vé.
+2. Hệ thống hiển thị ba khu vực theo `BR-02.1`, áp mức che theo `FEAT-04`.
+3. Người dùng dùng các hành động nhanh mà mình có quyền (`BR-02.2`).
+
 **Quy tắc nghiệp vụ:**
 
 - **`BR-02.1` (Bố cục chuẩn):** Hồ sơ gồm ba khu vực: **khung tóm tắt** (thông tin chính, điểm tiềm năng, trạng thái liên lạc), **khu vực trung tâm** (Dòng thời gian 360 độ, các thẻ Ghi chú, Công việc, Vé hỗ trợ, Cơ hội) và **khung liên kết** (doanh nghiệp trực thuộc, mối quan hệ cá nhân). Mọi giá trị hiển thị trên hồ sơ tuân theo chính sách che mặt nạ tại `FEAT-04`.
 
+  **Lý do nghiệp vụ:** Người phục vụ khách cần thấy toàn cảnh trong một màn hình; nếu thông tin nằm rải ở nhiều màn hình, họ trả lời khách khi chưa biết khách vừa khiếu nại hay đang thương lượng một cơ hội lớn.
+
 - **`BR-02.2` (Hành động nhanh & phân quyền):** Hồ sơ cho phép thực hiện nhanh: gửi email, gọi điện, tạo ghi chú, tạo công việc, tạo vé hỗ trợ. Hai hành động bị kiểm soát theo quyền:
   - **(a) "Tạo cơ hội mới"** chỉ hiển thị khi người dùng có quyền tạo Cơ hội bán hàng (quyền này thuộc [`deals-pipeline-srs.md`](./deals-pipeline-srs.md)). Người không có quyền — tiêu biểu là Nhân viên Hỗ trợ — thấy hành động **"Gợi ý Cơ hội"** thay thế, để chuyển nhu cầu mua cho đội kinh doanh.
-  - **(b) "Chuyển giai đoạn vòng đời"** chỉ hiển thị cho các vai trò được ma trận Mục 5 (dòng `FEAT-12`) cấp quyền chuyển giai đoạn thủ công: Nhân viên Kinh doanh, Quản lý Kinh doanh, Quản trị viên và Chủ sở hữu. Theo **mặc định chuẩn hệ thống**, Nhân viên Hỗ trợ, Nhân viên Marketing và Quản lý Marketing **không** có quyền này. Đây là mặc định, **không phải sàn bắt buộc**: tenant nới được qua `CFG-05-02`.
+  - **(b) "Chuyển giai đoạn vòng đời"** chỉ hiển thị khi ô (Khách hàng, Chuyển giai đoạn vòng đời) — thao tác đặc thù của phân hệ, Mục 5.1 — của người dùng bao phủ bản ghi. Theo **ma trận mặc định của vai trò dựng sẵn**, Nhân viên Kinh doanh, Quản lý và Người có toàn quyền có ô này; Nhân viên Hỗ trợ, Marketing và Quản lý Marketing **không** có. Đây là mặc định, **không phải sàn bắt buộc**: doanh nghiệp nới được bằng cách điều chỉnh ô qua [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `CFG-29-02` hoặc đặt ô này trong vai trò tự tạo.
 
   **Lý do nghiệp vụ:** Tuyến Hỗ trợ tiếp xúc khách nhưng không thẩm định được mức độ sẵn sàng mua; Marketing có tầm nhìn toàn tổ chức ở dạng chỉ đọc, nên nếu được chuyển giai đoạn thủ công thì một người có thể đổi giai đoạn của mọi bản ghi trong tổ chức. Giai đoạn của các bản ghi do Marketing nuôi dưỡng vẫn tiến lên được **qua đường tự động** theo ngưỡng điểm (`BR-15.5`).
 
@@ -370,7 +417,8 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | `AC-02.2.1` | Nhân viên Hỗ trợ không có quyền tạo Cơ hội bán hàng | Mở hồ sơ khách hàng | Không có "Tạo cơ hội mới"; có "Gợi ý Cơ hội" |
 | `AC-02.2.2` | Nhân viên Marketing, cấu hình mặc định | Mở hồ sơ khách hàng | Không có hành động "Chuyển giai đoạn vòng đời" |
 | `AC-02.2.3` | Nhân viên Kinh doanh là Người phụ trách | Mở hồ sơ khách hàng | Có hành động "Chuyển giai đoạn vòng đời" |
-| `AC-02.2.4` | Tenant nới quyền chuyển giai đoạn thủ công cho Marketing qua `CFG-05-02` | Nhân viên Marketing mở hồ sơ | Có hành động "Chuyển giai đoạn vòng đời" |
+| `AC-02.2.4` | Doanh nghiệp điều chỉnh ô (Khách hàng, Chuyển giai đoạn vòng đời) của vai trò Marketing thành Toàn workspace qua [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `CFG-29-02` | Nhân viên Marketing mở hồ sơ | Có hành động "Chuyển giai đoạn vòng đời" |
+| `AC-02.2.5` | Vai trò tự tạo "Chăm sóc khách hàng" có ô (Khách hàng, Chuyển giai đoạn vòng đời) = Đơn vị của mình | Người giữ vai trò mở hồ sơ khách của đơn vị mình và của đơn vị khác | Có hành động trên hồ sơ của đơn vị mình; không có trên hồ sơ của đơn vị khác |
 
 ---
 
@@ -380,9 +428,19 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Nhân viên Kinh doanh, Nhân viên Marketing, Quản trị viên.
 
+**Điều kiện tiên quyết:** Người dùng có ô (Khách hàng, Gắn thẻ phân loại) — thao tác đặc thù, Mục 5.1 — khác Không có.
+
+**Luồng chính:**
+
+1. Người dùng chọn một hoặc nhiều khách hàng trên danh sách.
+2. Chọn "Gắn thẻ" hoặc "Gỡ thẻ", nhập hoặc chọn tên thẻ.
+3. Hệ thống áp thao tác trên các bản ghi mà ô Gắn thẻ của người dùng bao phủ và báo số bản ghi bị bỏ qua.
+
 **Quy tắc nghiệp vụ:**
 
-- **`BR-03.1` (Gắn/gỡ hàng loạt):** Người dùng chọn nhiều khách hàng trên danh sách và gắn hoặc gỡ thẻ cho toàn bộ lựa chọn trong một thao tác. Thao tác chỉ áp dụng trên các bản ghi thuộc phạm vi dữ liệu của người thực hiện.
+- **`BR-03.1` (Gắn/gỡ hàng loạt):** Người dùng chọn nhiều khách hàng trên danh sách và gắn hoặc gỡ thẻ cho toàn bộ lựa chọn trong một thao tác. Thao tác chỉ áp dụng trên các bản ghi mà ô (Khách hàng, Gắn thẻ phân loại) của người thực hiện bao phủ; bản ghi nằm ngoài được bỏ qua và nêu số lượng.
+
+  **Lý do nghiệp vụ:** Phân khúc chiến dịch cần gắn thẻ cho hàng trăm khách một lần; nhưng nếu thao tác hàng loạt bỏ qua phạm vi, chọn "tất cả" trên một danh sách lọc sẽ ghi lên cả những bản ghi người đó không được chạm tới.
 
 - **`BR-03.2` (Chuẩn hóa tên thẻ):** Tên thẻ không phân biệt chữ hoa/thường, tự động loại bỏ khoảng trắng thừa ở hai đầu, dài tối đa 50 ký tự. Số thẻ tối đa trên một bản ghi theo gói dịch vụ tại `NFR-11`.
 
@@ -397,6 +455,7 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | `AC-03.2.1` | Không gian làm việc đã có thẻ "VIP" | Gắn thẻ " vip " cho một khách hàng | Khách hàng được gắn đúng thẻ "VIP" đã có; không phát sinh thẻ mới |
 | `AC-03.2.2` | Ô nhập tên thẻ | Nhập tên dài 51 ký tự | Ô nhập báo vượt giới hạn 50 ký tự trước khi lưu; không tạo được thẻ |
 | `AC-03.2.3` | Gói tiêu chuẩn, khách hàng đã có 50 thẻ | Gắn thêm thẻ thứ 51 | Từ chối, nêu rõ giới hạn số thẻ của gói |
+| `AC-03.1.3` | Nhân viên A có ô Gắn thẻ = Chỉ của mình; danh sách được chọn có 20 khách, 5 khách do người khác phụ trách | Gắn thẻ "Hội thảo Q3" | 15 khách mang thẻ; màn hình báo 5 bản ghi bị bỏ qua vì ngoài phạm vi |
 
 ---
 
@@ -408,6 +467,14 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Mọi người dùng xem hồ sơ khách hàng (chịu chi phối của chính sách); riêng thao tác mở khóa yêu cầu **quyền Mở khóa mặt nạ** được cấp riêng.
 
+**Điều kiện tiên quyết:** Không có cho việc xem theo chính sách che; mở khóa cần ô (Khách hàng, Mở khóa mặt nạ) bao phủ bản ghi (`BR-04.4`).
+
+**Luồng chính:**
+
+1. Khi một giá trị nhạy cảm được hiển thị ở bất kỳ đâu, hệ thống xác định nhóm trường (`BR-04.1`) và quan hệ của người xem với bản ghi (`BR-04.3`), rồi áp mức hiển thị hạn chế nhất giữa các lớp che (`BR-04.7`).
+2. Người có quyền bấm biểu tượng mở khóa trên một trường; hệ thống kiểm tra hạn mức (`BR-04.5`), hiển thị giá trị đầy đủ và ghi nhật ký (`NFR-07`).
+3. Người dùng liên lạc với khách qua kênh trong hệ thống mà không cần mở khóa (`BR-04.6`).
+
 **Quy tắc nghiệp vụ:**
 
 - **`BR-04.1` (Ba nhóm trường nhạy cảm):** Dữ liệu nhạy cảm được phân đúng ba nhóm:
@@ -415,7 +482,11 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
   - **Nhóm 2 — Kênh liên lạc cá nhân:** email cá nhân (tên miền dịch vụ thư công cộng), số điện thoại được khách hàng khai báo là riêng tư.
   - **Nhóm 3 — Định danh KYC:** Số Căn cước công dân, Số Hộ chiếu, Ngày cấp, Nơi cấp (`BR-01.5`).
 
+  **Lý do nghiệp vụ:** Mỗi nhóm có mức thiệt hại khác nhau khi lộ và nhu cầu sử dụng khác nhau trong vận hành; gộp chung buộc chọn hoặc che quá chặt kênh liên lạc công việc mà nhân viên cần dùng hằng ngày, hoặc che quá lỏng giấy tờ định danh.
+
 - **`BR-04.2` (Bốn mức hiển thị):** **Đầy đủ** (thấy trọn giá trị) · **Che một phần** (ví dụ "090****567", "m***@vinafoods.vn" — đủ để nhận diện và đối chiếu với khách, không đủ để sao chép sử dụng) · **Che hoàn toàn** (chỉ hiện dấu hiệu có dữ liệu, không hiện ký tự nào) · **Ẩn trường** (không hiển thị trường trên giao diện).
+
+  **Lý do nghiệp vụ:** Phân biệt "đủ để nhận diện" với "đủ để sao chép" là điều cho phép nhân viên xác minh đúng khách mà không mang được danh bạ ra ngoài; chỉ có hai mức hiện/ẩn thì không có điểm cân bằng đó.
 
 - **`BR-04.3` (Chính sách hiển thị theo quan hệ với bản ghi):** Chính sách mặc định chuẩn hệ thống như bảng dưới; tenant cấu hình được trong giới hạn sàn (Phụ lục B, `CFG-04-01`).
 
@@ -425,11 +496,11 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | **2. Kênh liên lạc cá nhân** | Che một phần | Che một phần | Che một phần | Che hoàn toàn |
 | **3. Định danh KYC** | Che hoàn toàn | Che hoàn toàn | Che hoàn toàn | Ẩn trường |
 
-  **Lý do nghiệp vụ của từng cột:** (A) Nếu che cả kênh liên lạc công việc với chính người phụ trách, tổ chức buộc phải cấp quyền Mở khóa mặt nạ cho toàn bộ đội kinh doanh ngay tuần đầu — mặt nạ thành hình thức và `KPI-06` mất khả năng phát hiện bất thường. (B) Người trong phạm vi nhưng không trực tiếp phục vụ khách chỉ cần nhận diện, không cần sao chép. (C) Nhân viên Hỗ trợ đang xử lý vé/hội thoại cần đủ thông tin để **xác minh đúng người** và gọi lại khi chat bị ngắt; nếu che hoàn toàn thì họ phải hỏi lại khách số điện thoại mà hệ thống đã có và tổ chức lại phải cấp quyền mở khóa cho toàn tuyến Hỗ trợ. (D) Người không có quan hệ công việc nào với bản ghi không có nhu cầu nghiệp vụ để thấy dữ liệu liên lạc.
+  **Lý do nghiệp vụ:** Theo từng cột — (A) Nếu che cả kênh liên lạc công việc với chính người phụ trách, tổ chức buộc phải cấp quyền Mở khóa mặt nạ cho toàn bộ đội kinh doanh ngay tuần đầu — mặt nạ thành hình thức và `KPI-06` mất khả năng phát hiện bất thường. (B) Người trong phạm vi nhưng không trực tiếp phục vụ khách chỉ cần nhận diện, không cần sao chép. (C) Nhân viên Hỗ trợ đang xử lý vé/hội thoại cần đủ thông tin để **xác minh đúng người** và gọi lại khi chat bị ngắt; nếu che hoàn toàn thì họ phải hỏi lại khách số điện thoại mà hệ thống đã có và tổ chức lại phải cấp quyền mở khóa cho toàn tuyến Hỗ trợ. (D) Người không có quan hệ công việc nào với bản ghi không có nhu cầu nghiệp vụ để thấy dữ liệu liên lạc.
 
   Chính sách áp dụng đồng nhất ở **mọi nơi giá trị xuất hiện**: hồ sơ 360 độ, danh sách khách hàng, danh sách nhân sự trên hồ sơ doanh nghiệp (`BR-08.1`), khung Ngữ cảnh Khách hàng (`BR-28.1`), kết quả tìm kiếm và tệp dữ liệu xuất (`FEAT-25`, `NFR-06`).
 
-- **`BR-04.4` (Mở khóa có kiểm toán — lối mở duy nhất):** Người dùng có quyền Mở khóa mặt nạ được nâng mức hiển thị lên **Đầy đủ** cho các trường Nhóm 1 và Nhóm 2 **trong phạm vi dữ liệu của mình**, và cho Nhóm 3 nếu được cấp thêm quyền chuyên biệt trên nhóm Định danh KYC. Mỗi lượt mở khóa bắt buộc ghi nhật ký theo `NFR-07`. Quyền Mở khóa mặt nạ **không** mở được dữ liệu ở cột (D) — người ngoài phạm vi phải xin quyền truy cập theo `BR-17.3` trước.
+- **`BR-04.4` (Mở khóa có kiểm toán — lối mở duy nhất):** Người dùng có quyền Mở khóa mặt nạ được nâng mức hiển thị lên **Đầy đủ** cho các trường Nhóm 1 và Nhóm 2 **trong phạm vi dữ liệu của mình**, và cho Nhóm 3 nếu được cấp thêm quyền chuyên biệt trên nhóm Định danh KYC. Mỗi lượt mở khóa bắt buộc ghi nhật ký theo `NFR-07`. Quyền Mở khóa mặt nạ là thao tác đặc thù (Khách hàng, Mở khóa mặt nạ) mang mức truy cập như mọi ô (Mục 5.1), mặc định Không có ở mọi vai trò dựng sẵn và chỉ có khi được cấp; quyền mở khóa nhóm Định danh KYC là ô riêng (Khách hàng, Mở khóa Định danh KYC). Quyền Mở khóa mặt nạ **không** mở được dữ liệu ở cột (D) — người ngoài phạm vi phải xin quyền truy cập theo `BR-17.3` trước.
 
   **Lý do nghiệp vụ:** Mở khóa không được là con đường đi vòng qua phạm vi dữ liệu; nếu không, một quyền cấp để phục vụ khách của mình trở thành quyền đọc dữ liệu liên lạc của toàn tổ chức.
 
@@ -447,6 +518,16 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 - **`BR-04.6` (Liên lạc không cần mở khóa):** Các hành động liên lạc **bên trong hệ thống** (bấm gọi, gửi email, gửi tin nhắn qua kênh đã tích hợp) thực hiện được ở **mọi mức hiển thị từ Che một phần trở lên**, không yêu cầu mở khóa và không tính vào hạn mức tại `BR-04.5`. Các hành động này **bắt buộc ghi nhật ký** theo `NFR-07` và chịu hạn mức riêng: mặc định **200 lượt liên lạc/người/ngày** (Phụ lục B, `CFG-04-03`); vượt hạn mức thì hành động liên lạc bị chặn tới hết ngày.
 
   **Lý do nghiệp vụ:** Nhân viên phải liên lạc được với khách mà không cần nhìn thấy số thật; nhưng nếu chính chức năng liên lạc không có nhật ký và hạn mức, nó trở thành cách khai thác danh bạ không để lại dấu vết.
+
+- **`BR-04.7` (Khai báo trường nhạy cảm của hệ thống theo khung che dữ liệu dùng chung):** Phân hệ khai báo với khung che dữ liệu tại [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `FEAT-40`:
+  - **Trường nhạy cảm của hệ thống — Khách hàng:** ba nhóm tại `BR-04.1`. **Doanh nghiệp:** không có trường nhạy cảm của hệ thống — tên, mã số thuế, địa chỉ trụ sở, số tổng đài, doanh thu và quy mô nhân sự là thông tin pháp nhân và phân loại (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-40.4`); doanh nghiệp muốn che thì tự khai báo bằng phân quyền trường.
+  - **Mẫu che riêng của phân hệ** (thay cho mẫu che mặc định của khung): số điện thoại giữ 3 số đầu và 3 số cuối ("090****567"); email giữ ký tự đầu và tên miền ("m***@vinafoods.vn"); nhóm Định danh KYC chỉ có mức Che hoàn toàn hoặc Ẩn trường, không có mẫu che một phần.
+  - **Quyền xem đầy đủ:** cột (A) của `BR-04.3` cho Nhóm 1; ô (Khách hàng, Mở khóa mặt nạ) cho Nhóm 1 và Nhóm 2; ô (Khách hàng, Mở khóa Định danh KYC) cho Nhóm 3, chịu sàn tại `CFG-04-01`.
+  - **Sàn của ô (Khách hàng, Mở khóa Định danh KYC) — sàn bắt buộc:** mức cao nhất đặt được qua bất kỳ vai trò nào là **Chỉ của mình** — mọi mức từ Đơn vị của mình trở lên vượt sàn và bị từ chối, trên vai trò tự tạo lẫn khi điều chỉnh vai trò dựng sẵn qua [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `CFG-29-02`. Mỗi lượt đặt ô này khác Không có, ở bất kỳ vai trò nào, cần **thẩm quyền bổ sung**: Người phụ trách Bảo vệ Dữ liệu phê duyệt (hoặc người thứ hai theo `NFR-14`), ngoài trần năng lực của người điều chỉnh; thu hẹp ô về Không có không cần phê duyệt. **Sàn này áp cả lên Người có toàn quyền** (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-25.3`): họ không có mức Toàn workspace thường trực trên ô này và không xem được nhóm KYC ở mức Đầy đủ hàng loạt; họ chỉ mở khóa từng bản ghi theo `BR-04.4`, mỗi lượt có nhật ký và chịu hạn mức `CFG-04-02`.
+  - **Hạn chế thắng giữa các lớp:** một trường đồng thời chịu chính sách của tính năng này và phân quyền trường do doanh nghiệp đặt hiển thị theo lớp hạn chế hơn; tư cách thành viên Đội ngũ phụ trách, quyền đọc tự động hay bất kỳ lượt cấp nào không nới lỏng lớp che nào (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-40.3` và bước 4 của `BR-39.6`).
+  - **Tác nhân AI** luôn nhận giá trị đã che của mọi trường nhạy cảm, kể cả khi người dùng mà nó phục vụ đang ở cột (A) hoặc có quyền mở khóa (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-40.1`).
+
+  **Lý do nghiệp vụ:** Giấy tờ định danh chỉ cần cho người ký hợp đồng với chính khách mình phụ trách; mở cho cả đơn vị là phơi bày nhóm dữ liệu rủi ro nhất cho người không có nhu cầu. Khung che dữ liệu dùng chung chỉ thực thi được khi mỗi phân hệ khai báo rõ trường nào nhạy cảm, che theo mẫu nào và ai được xem đầy đủ; nếu không, mỗi màn hình tự diễn giải và cùng một số điện thoại hiện ba kiểu khác nhau. Mẫu che riêng giữ đủ đầu và cuối số để nhân viên đối chiếu khi khách đọc số qua điện thoại, điều mà mẫu chỉ giữ 4 số cuối không làm được.
 
 **Tiêu chí Chấp nhận:**
 
@@ -474,6 +555,15 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | `AC-04.6.1` | Cùng bối cảnh AC-04.3.2 | B bấm "Gọi" trên số điện thoại đang che một phần | Cuộc gọi thực hiện được, không yêu cầu mở khóa, không trừ hạn mức mở khóa; hành động liên lạc có trong nhật ký |
 | `AC-04.6.2` | Người dùng đã thực hiện 200 lượt liên lạc trong ngày, hạn mức 200 | Bấm gửi email lần thứ 201 | Bị chặn tới hết ngày, nêu rõ lý do hạn mức |
 | `AC-04.6.3` | Cùng bối cảnh AC-04.3.4 (cột D, che hoàn toàn) | Tìm nút "Gọi" | Không có hành động liên lạc |
+| `AC-04.7.1` | Nhân viên A là Người phụ trách, thấy số điện thoại công việc đầy đủ (cột A) | A hỏi trợ lý AI số điện thoại của khách | Trợ lý AI trả số đã che dạng "090****567" |
+| `AC-04.7.2` | Doanh nghiệp đặt phân quyền trường "Che hoàn toàn" cho email cá nhân với nhóm "Thực tập sinh" | Một thực tập sinh là thành viên Đội ngũ phụ trách mức Chỉnh sửa mở hồ sơ | Email cá nhân che hoàn toàn (lớp hạn chế hơn thắng) |
+| `AC-04.7.3` | Nhân viên Kinh doanh không có quyền mở khóa | Mở hồ sơ một doanh nghiệp | Thấy đầy đủ mã số thuế, số tổng đài, doanh thu và quy mô nhân sự |
+| `AC-04.7.4` | Người có ô Mở khóa mặt nạ nhưng không có ô Mở khóa Định danh KYC | Mở hồ sơ có Số Căn cước công dân | Trường KYC che hoàn toàn, không có biểu tượng mở khóa trên trường đó |
+| `AC-04.7.5` | Người có quyền Quản lý vai trò điều chỉnh vai trò Quản lý | Đặt (Khách hàng, Mở khóa Định danh KYC) = Đơn vị của mình | Lựa chọn bị vô hiệu kèm giải thích sàn: mức tối đa là Chỉ của mình |
+| `AC-04.7.6` | Như trên | Đặt ô đó = Chỉ của mình, chưa có phê duyệt | Lượt điều chỉnh ở trạng thái chờ Người phụ trách Bảo vệ Dữ liệu phê duyệt; ô chưa có hiệu lực |
+| `AC-04.7.7` | Tiếp nối AC-04.7.6 | Người phụ trách Bảo vệ Dữ liệu phê duyệt | Ô có hiệu lực; người giữ vai trò mở khóa được KYC của khách mình phụ trách, không mở được của khách đồng nghiệp |
+| `AC-04.7.9` | Quản trị viên mở danh sách khách hàng có nhóm KYC | Quan sát cột Số Căn cước công dân | Che hoàn toàn trên danh sách; Quản trị viên chỉ mở khóa được từng bản ghi, mỗi lượt có nhật ký và trừ hạn mức |
+| `AC-04.7.8` | Vai trò có ô Mở khóa Định danh KYC = Chỉ của mình | Thu hẹp về Không có | Lưu ngay, không cần phê duyệt |
 
 ---
 
@@ -483,15 +573,31 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Người có **quyền Xóa** trên khách hàng, Quản trị viên.
 
+**Điều kiện tiên quyết:** Người xóa hoặc khôi phục có ô (Khách hàng, Xoá) bao phủ bản ghi.
+
+**Luồng chính:**
+
+1. Người dùng xóa một khách hàng; hệ thống xóa mềm và đưa vào Thùng rác (`BR-05.1`).
+2. Người có quyền mở Thùng rác, xem danh sách và khôi phục khi cần (`BR-05.2`, `BR-05.3`).
+3. Tiến trình hệ thống dọn dẹp bản ghi quá thời hạn lưu, trừ bản ghi vướng chốt an toàn (`BR-05.4`, `BR-05.6`).
+
 **Quy tắc nghiệp vụ:**
 
 - **`BR-05.1` (Xóa mềm):** Bản ghi bị xóa được ẩn khỏi toàn bộ danh sách, tìm kiếm và báo cáo thông thường, ghi nhận thời điểm xóa và người xóa.
 
+  **Lý do nghiệp vụ:** Xóa nhầm là sai sót hằng ngày; xóa cứng ngay lập tức thì một cú bấm nhầm làm mất vĩnh viễn lịch sử khách hàng mà không ai phục hồi được.
+
 - **`BR-05.2` (Màn hình Thùng rác):** Màn hình Thùng rác liệt kê các bản ghi đã xóa kèm ngày xóa, người xóa và ngày dự kiến xóa vĩnh viễn.
 
-- **`BR-05.3` (Khôi phục):** Người có quyền Xóa khôi phục được bản ghi; bản ghi trở lại nguyên vẹn cùng toàn bộ liên kết dữ liệu cũ.
+  **Lý do nghiệp vụ:** Người khôi phục cần biết ai xóa, lúc nào và còn bao lâu trước khi mất hẳn để quyết định kịp thời; thiếu ngày dự kiến xóa vĩnh viễn, bản ghi biến mất trước khi có người nhận ra.
+
+- **`BR-05.3` (Khôi phục):** Người có ô (Khách hàng, Xoá) bao phủ bản ghi khôi phục được bản ghi; bản ghi trở lại nguyên vẹn cùng toàn bộ liên kết dữ liệu cũ.
+
+  **Lý do nghiệp vụ:** Khôi phục mà không kèm liên kết cũ (ghi chú, doanh nghiệp, cơ hội) trả về một hồ sơ rỗng, tức là vẫn mất dữ liệu. Quyền khôi phục đi cùng quyền xóa vì cả hai là quyết định về sự tồn tại của cùng một bản ghi.
 
 - **`BR-05.4` (Dọn dẹp vĩnh viễn):** Tiến trình hệ thống tự động xóa vĩnh viễn bản ghi nằm trong Thùng rác quá thời hạn lưu — mặc định **30 ngày** ở gói tiêu chuẩn, nâng được tối đa 90 ngày ở gói Enterprise (Phụ lục B, `CFG-05-01`). Việc dọn dẹp chịu các chốt an toàn tại `BR-05.6`. Nhật ký kiểm toán về việc xóa được giữ lại sau khi bản ghi bị xóa vĩnh viễn.
+
+  **Lý do nghiệp vụ:** Thùng rác không có thời hạn sẽ giữ vô thời hạn dữ liệu cá nhân mà doanh nghiệp đã quyết định không dùng nữa, trái nguyên tắc chỉ lưu dữ liệu khi còn mục đích; thời hạn quá ngắn thì không kịp phát hiện xóa nhầm.
 
 - **`BR-05.5` (Thực thể con khi xóa mềm):** Khi một khách hàng bị xóa mềm, các Vé hỗ trợ và Cơ hội bán hàng đang mở của khách **không bị xóa** mà được gắn nhãn cảnh báo **"Khách hàng trong thùng rác"**; tính năng gửi phản hồi công khai trên vé bị khóa.
 
@@ -537,17 +643,25 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Nhân viên Kinh doanh, Quản lý Kinh doanh, Quản trị viên.
 
+**Điều kiện tiên quyết:** Người dùng có ô (Doanh nghiệp, Tạo) = Có để tạo mới; sửa, xóa theo mức của ô tương ứng trên Doanh nghiệp.
+
+**Luồng chính:**
+
+1. Người dùng mở "Thêm doanh nghiệp", nhập thông tin theo `BR-06.1`.
+2. Hệ thống kiểm tra trùng theo mã số thuế và tên miền website (`BR-06.2`).
+3. Người dùng lưu; Người phụ trách và đơn vị của bản ghi xác định như với khách hàng cá nhân (`BR-01.3`).
+
 **Quy tắc nghiệp vụ:**
 
 - **`BR-06.1` (Thông tin doanh nghiệp):** Gồm Tên công ty (bắt buộc), Tên thương mại/viết tắt, Mã số thuế hoặc mã định danh doanh nghiệp, Ngành nghề kinh doanh, Quy mô nhân sự, Doanh thu hằng năm, Website, Địa chỉ trụ sở, Số điện thoại tổng đài.
+
+  **Lý do nghiệp vụ:** Báo cáo theo ngành, theo quy mô và việc xuất hợp đồng đúng pháp nhân đều cần cùng một bộ thông tin chuẩn; chỉ bắt buộc tên công ty để nhân viên tạo được doanh nghiệp ngay khi mới biết tên, bổ sung dần sau.
 
 - **`BR-06.2` (Căn cứ nhận diện trùng, hai mức độ tin cậy):** Áp dụng cùng mô hình hai mức độ tin cậy với `BR-17.1`:
   - **Tiêu chí chắc chắn:** trùng khớp chính xác **mã số thuế**. Một mã số thuế chỉ thuộc đúng một pháp nhân theo quy định pháp luật, nên trùng theo tiêu chí này **chặn tạo doanh nghiệp mới**, theo đúng chính sách xử lý tại `BR-17.2` (tenant đổi được sang "Chỉ cảnh báo" qua `CFG-17-01`).
   - **Tiêu chí tham khảo:** trùng khớp **tên miền website**. Tên miền thường dùng chung hợp lệ giữa công ty mẹ và các công ty con (`FEAT-07`), nên trùng theo tiêu chí này **chỉ cảnh báo mềm**, không bao giờ chặn tạo mới và không bao giờ dùng làm căn cứ gộp tự động — cùng nguyên tắc với Tiêu chí tham khảo của khách hàng cá nhân.
 
-  **Lý do nghiệp vụ:** Coi tên miền là căn cứ chắc chắn sẽ chặn đúng nghiệp vụ hợp lệ mà `FEAT-07` cần: tạo một công ty con dùng chung tên miền với công ty mẹ. Mã số thuế không có rủi ro đó vì mỗi pháp nhân có đúng một mã, kể cả trong cùng một tập đoàn.
-
-  **Lý do nghiệp vụ:** Tên công ty không phải căn cứ tin cậy ("Cty CP ABC" và "ABC Corp" là một), trong khi mã số thuế là định danh pháp lý duy nhất của pháp nhân.
+  **Lý do nghiệp vụ:** Tên công ty không phải căn cứ tin cậy ("Cty CP ABC" và "ABC Corp" là một), trong khi mã số thuế là định danh pháp lý duy nhất của pháp nhân, kể cả trong cùng một tập đoàn. Coi tên miền là căn cứ chắc chắn sẽ chặn đúng nghiệp vụ hợp lệ mà `FEAT-07` cần: tạo một công ty con dùng chung tên miền với công ty mẹ.
 
 **Tiêu chí Chấp nhận:**
 
@@ -566,9 +680,19 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Nhân viên Kinh doanh, Quản trị viên.
 
+**Điều kiện tiên quyết:** Người khai báo quan hệ mẹ – con có ô (Doanh nghiệp, Sửa) bao phủ doanh nghiệp được gắn làm con.
+
+**Luồng chính:**
+
+1. Trên hồ sơ doanh nghiệp, người dùng chọn Doanh nghiệp Mẹ.
+2. Hệ thống kiểm tra một mẹ duy nhất, chống vòng lặp và giới hạn số cấp (`BR-07.1`, `BR-07.2`, `BR-07.5`).
+3. Người dùng mở sơ đồ cây và báo cáo hợp nhất; số liệu hiển thị theo phạm vi của người xem (`BR-07.3`, `BR-07.4`).
+
 **Quy tắc nghiệp vụ:**
 
 - **`BR-07.1` (Một doanh nghiệp mẹ):** Mỗi doanh nghiệp khai báo được tối đa một Doanh nghiệp Mẹ.
+
+  **Lý do nghiệp vụ:** Một công ty có hai mẹ làm báo cáo hợp nhất cộng doanh số hai lần và không xác định được tập đoàn nào chịu trách nhiệm về hợp đồng.
 
 - **`BR-07.2` (Chống vòng lặp):** Hệ thống ngăn mọi quan hệ vòng tròn, trực tiếp hoặc gián tiếp: nếu A là mẹ của B thì B không thể là mẹ của A; nếu A là mẹ của B và B là mẹ của C thì C không thể là mẹ của A.
 
@@ -576,15 +700,19 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 - **`BR-07.3` (Báo cáo hợp nhất):** Người dùng xem được sơ đồ cây tổ chức và báo cáo tổng doanh số, số lượng cơ hội hợp nhất của toàn bộ tập đoàn.
 
-- **`BR-07.4` (Phạm vi dữ liệu trong báo cáo hợp nhất):** Báo cáo hợp nhất áp dụng **phạm vi dữ liệu của người xem** (`BR-01.4`) làm tiêu chí nền, với **đúng một ngoại lệ theo vai trò** tại (c):
-  - **(a)** Số liệu hợp nhất luôn tính trên đúng tập công ty nằm trong phạm vi dữ liệu của người xem, kèm ghi chú rõ khi tập đó nhỏ hơn toàn tập đoàn: "Số liệu hiển thị theo phạm vi dữ liệu của bạn — không phải toàn tập đoàn".
-  - **(b)** Người xem thấy số liệu hợp nhất **đầy đủ toàn tập đoàn** khi và chỉ khi phạm vi dữ liệu của họ bao trùm toàn bộ cây — theo ma trận Mục 5 là Quản trị viên, Chủ sở hữu, và Quản lý Kinh doanh khi cây nằm trọn trong phạm vi đơn vị của họ.
-  - **(c) Riêng vai trò Marketing:** dù có phạm vi đọc toàn tổ chức, Marketing **chỉ xem cấu trúc pháp nhân, không xem chỉ số tài chính hợp nhất**.
+  **Lý do nghiệp vụ:** Bán hàng theo tập đoàn cần nhìn tổng giá trị quan hệ với cả tập đoàn để định giá và ưu tiên; xem từng công ty riêng lẻ thì bỏ sót cơ hội bán chéo giữa các công ty thành viên.
+
+- **`BR-07.4` (Phạm vi dữ liệu trong báo cáo hợp nhất):** Báo cáo hợp nhất áp dụng **mức Xem của người xem** (`BR-01.4`) làm tiêu chí nền, theo đúng quy tắc của [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-35.7`: mỗi loại dữ liệu hiển thị kèm được tính theo mức Xem của chính loại đó:
+  - **(a)** Số liệu hợp nhất luôn tính trên đúng tập công ty nằm trong mức (Doanh nghiệp, Xem) của người xem, kèm ghi chú rõ khi tập đó nhỏ hơn toàn tập đoàn: "Số liệu hiển thị theo phạm vi dữ liệu của bạn — không phải toàn tập đoàn".
+  - **(b)** Chỉ số tài chính hợp nhất (doanh số, số lượng và giá trị cơ hội) là dữ liệu của Cơ hội bán hàng, nên chỉ cộng các cơ hội nằm trong mức (Cơ hội, Xem) của người xem. Người xem thấy số liệu **đầy đủ toàn tập đoàn** khi và chỉ khi mức Xem Doanh nghiệp và mức Xem Cơ hội của họ cùng bao trùm toàn bộ cây — ví dụ Người có toàn quyền, hoặc người giữ vai trò Quản lý khi cây nằm trọn trong đơn vị và các đơn vị con của họ.
+  - **(c)** Người có mức Xem Doanh nghiệp rộng nhưng ô (Cơ hội, Xem) = Không có — như vai trò dựng sẵn Marketing theo ma trận mặc định — **chỉ xem cấu trúc pháp nhân, không thấy chỉ số tài chính hợp nhất nào**. Quy tắc này áp theo ô, không theo tên vai trò: một vai trò tự tạo có cùng cấu hình ô nhận cùng kết quả.
   - **(d)** Sơ đồ cây hiển thị đầy đủ cấu trúc pháp nhân (tên công ty mẹ/con) vì đây là thông tin nhận diện, nhưng chỉ số tài chính của công ty ngoài phạm vi bị ẩn.
 
-  **Lý do nghiệp vụ:** Báo cáo hợp nhất không được trở thành đường đọc doanh số của các đơn vị mà người xem không có quyền. Marketing cần phân khúc theo tập đoàn, không cần phân tích doanh thu.
+  **Lý do nghiệp vụ:** Báo cáo hợp nhất không được trở thành đường đọc doanh số của các đơn vị mà người xem không có quyền, hay của cơ hội bán hàng mà người xem vốn không được xem. Người phân khúc theo tập đoàn cần cấu trúc pháp nhân, không cần phân tích doanh thu.
 
 - **`BR-07.5` (Giới hạn số cấp):** Cây tổ chức có tối đa **5 cấp** (Tập đoàn → Tổng công ty → Công ty thành viên → Chi nhánh → Đơn vị trực thuộc). Thiết lập vượt 5 cấp bị từ chối kèm đề nghị tổ chức lại cấu trúc.
+
+  **Lý do nghiệp vụ:** Cây sâu vô hạn làm báo cáo hợp nhất chậm và khó đọc, và trong thực tế hầu như luôn là dấu hiệu nhập sai quan hệ; năm cấp đủ phủ cấu trúc tập đoàn thông thường.
 
 **Tiêu chí Chấp nhận:**
 
@@ -596,7 +724,8 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | `AC-07.3.1` | Tập đoàn có 3 công ty con, mỗi công ty có cơ hội đã thắng | Chủ sở hữu mở báo cáo hợp nhất | Tổng doanh số bằng tổng của cả tập đoàn |
 | `AC-07.4.1` | Quản lý Kinh doanh chỉ có 2 trong 3 công ty con trong phạm vi | Mở báo cáo hợp nhất | Số liệu chỉ cộng 2 công ty; có ghi chú "Số liệu hiển thị theo phạm vi dữ liệu của bạn — không phải toàn tập đoàn" |
 | `AC-07.4.2` | Tiếp nối AC-07.4.1 | Mở sơ đồ cây | Thấy tên cả 3 công ty con; chỉ số tài chính của công ty ngoài phạm vi bị ẩn |
-| `AC-07.4.3` | Nhân viên Marketing | Mở sơ đồ cây và báo cáo hợp nhất của tập đoàn | Thấy cấu trúc pháp nhân; không thấy bất kỳ chỉ số tài chính hợp nhất nào |
+| `AC-07.4.3` | Nhân viên Marketing theo ma trận mặc định (ô Cơ hội, Xem = Không có) | Mở sơ đồ cây và báo cáo hợp nhất của tập đoàn | Thấy cấu trúc pháp nhân; không thấy bất kỳ chỉ số tài chính hợp nhất nào |
+| `AC-07.4.4` | Vai trò tự tạo "Phân tích thị trường" có (Doanh nghiệp, Xem) = Toàn workspace và (Cơ hội, Xem) = Đơn vị của mình | Mở báo cáo hợp nhất của một tập đoàn có cơ hội ở nhiều đơn vị | Thấy cấu trúc toàn cây; chỉ số tài chính chỉ cộng cơ hội của đơn vị mình, kèm ghi chú "không phải toàn tập đoàn" |
 | `AC-07.5.1` | Cây đã có đủ 5 cấp | Gắn một doanh nghiệp làm con của đơn vị ở cấp 5 | Từ chối, nêu giới hạn 5 cấp |
 
 ---
@@ -607,9 +736,18 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Mọi người dùng có quyền xem doanh nghiệp.
 
+**Điều kiện tiên quyết:** Người xem có ô (Doanh nghiệp, Xem) bao phủ doanh nghiệp.
+
+**Luồng chính:**
+
+1. Người dùng mở hồ sơ doanh nghiệp.
+2. Hệ thống hiển thị danh sách nhân sự liên hệ với mức che theo quan hệ của người xem với từng khách hàng (`BR-08.1`), cùng dòng thời gian tổng hợp đã lọc theo phạm vi đọc của từng mục (`BR-08.2`).
+
 **Quy tắc nghiệp vụ:**
 
 - **`BR-08.1` (Danh sách nhân sự):** Hiển thị nhân sự liên hệ kèm chức danh, số điện thoại, email và đánh dấu ai là **Người liên hệ chính** của doanh nghiệp. Kênh liên lạc trong danh sách tuân theo chính sách che mặt nạ tại `BR-04.3` theo quan hệ của người xem với từng khách hàng.
+
+  **Lý do nghiệp vụ:** Biết ai là người liên hệ chính giúp nhân viên gọi đúng người; nhưng nếu danh sách nhân sự không theo chính sách che của từng khách hàng, mở hồ sơ một doanh nghiệp lớn là cách đọc đầy đủ số điện thoại của hàng trăm người.
 
 - **`BR-08.2` (Dòng thời gian doanh nghiệp):** Dòng thời gian của doanh nghiệp tự động tổng hợp dòng thời gian của các nhân sự liên hệ có liên kết với doanh nghiệp đó. Mỗi mục trong dòng thời gian tổng hợp vẫn tuân theo phạm vi đọc của chính mục đó (ví dụ phạm vi đọc ghi chú tại `BR-36.1`).
 
@@ -631,6 +769,14 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 **Mô tả nghiệp vụ:** Xóa mềm và khôi phục doanh nghiệp. Doanh nghiệp bị xóa tuân theo cùng quy tắc xóa mềm, Thùng rác, thời hạn dọn dẹp và chốt an toàn trước khi dọn dẹp như khách hàng cá nhân (`BR-05.1` đến `BR-05.6`); tính năng này đặc tả thêm cách xử lý các nhân sự liên hệ trực thuộc.
 
 **Vai trò sử dụng chính:** Người có quyền Xóa trên doanh nghiệp, Quản trị viên.
+
+**Điều kiện tiên quyết:** Người xóa hoặc khôi phục có ô (Doanh nghiệp, Xoá) bao phủ doanh nghiệp.
+
+**Luồng chính:**
+
+1. Người dùng xóa doanh nghiệp; tại bước xác nhận, chọn giữ nguyên các liên kết ở trạng thái Tạm ngưng hoặc chuyển toàn bộ nhân sự liên hệ sang doanh nghiệp khác (`BR-09.1`).
+2. Hệ thống xác định lại Doanh nghiệp chính cho các khách hàng bị ảnh hưởng.
+3. Khi doanh nghiệp được khôi phục, các liên kết trở lại theo `BR-09.2`.
 
 **Quy tắc nghiệp vụ:**
 
@@ -670,13 +816,27 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Nhân viên Kinh doanh, Quản trị viên.
 
+**Điều kiện tiên quyết:** Người thêm, sửa, gỡ liên kết có ô (Khách hàng, Sửa) bao phủ khách hàng.
+
+**Luồng chính:**
+
+1. Trên hồ sơ khách hàng, người dùng thêm liên kết với một doanh nghiệp, nhập chức danh, vai trò liên kết, ngày bắt đầu (`BR-10.1`).
+2. Người dùng đặt một liên kết làm Doanh nghiệp chính (`BR-10.2`).
+3. Khi khách rời doanh nghiệp, người dùng chuyển liên kết sang "Đã nghỉ việc"; hệ thống xử lý kênh liên lạc và Doanh nghiệp chính theo `BR-10.4`.
+
 **Quy tắc nghiệp vụ:**
 
 - **`BR-10.1` (Nội dung một liên kết):** Mỗi liên kết giữa một khách hàng cá nhân và một doanh nghiệp ghi nhận: Chức danh, Phòng ban công tác, **Vai trò liên kết** (Phụ lục A, A.5), Ngày bắt đầu, Ngày kết thúc và **Trạng thái liên kết** (Phụ lục A, A.5b: Đang công tác / Đã nghỉ việc / Tạm ngưng).
 
+  **Lý do nghiệp vụ:** Một người có thể là giám đốc ở công ty này và cố vấn ở công ty khác; không ghi riêng chức danh và thời gian cho từng liên kết thì không biết nên liên hệ họ với tư cách nào và ở đâu.
+
 - **`BR-10.2` (Doanh nghiệp chính):** Mỗi khách hàng có tối đa **một** Doanh nghiệp chính, dùng để hiển thị mặc định trên danh sách và báo cáo tổng quan. Đặt một liên kết khác làm chính thì liên kết cũ tự động mất trạng thái chính.
 
+  **Lý do nghiệp vụ:** Danh sách và báo cáo cần một công ty duy nhất để hiển thị mặc định; nhiều Doanh nghiệp chính làm báo cáo theo doanh nghiệp đếm một người nhiều lần.
+
 - **`BR-10.3` (Quản lý liên kết):** Người dùng thêm, sửa và gỡ liên kết doanh nghiệp ngay trên hồ sơ khách hàng. Số liên kết tối đa trên một khách hàng theo gói dịch vụ tại `NFR-11`. Liên kết hiển thị ở cả hai phía: trên hồ sơ khách hàng và trong danh sách nhân sự của doanh nghiệp.
+
+  **Lý do nghiệp vụ:** Liên kết phải sửa được ngay nơi nhân viên làm việc, và hiển thị ở cả hai phía để người mở hồ sơ doanh nghiệp không bỏ sót một nhân sự đã được khai báo từ phía khách hàng.
 
 - **`BR-10.4` (Xử lý khi liên kết chuyển sang Đã nghỉ việc):** Khi một liên kết chuyển sang "Đã nghỉ việc", hệ thống:
   - **(a)** tự động gắn trạng thái tiếp cận **"Không còn hiệu lực"** (Phụ lục A, A.10) cho email và số điện thoại công việc thuộc doanh nghiệp đó, và loại chúng khỏi các chiến dịch gửi tự động. Trạng thái này **khác** với "Không tiếp cận được" và **người dùng đảo lại được** khi khách quay lại công ty cũ;
@@ -705,9 +865,19 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Nhân viên Kinh doanh, Quản trị viên.
 
+**Điều kiện tiên quyết:** Người khai báo có ô (Khách hàng, Sửa) bao phủ ít nhất một trong hai khách hàng, và ô (Khách hàng, Xem) bao phủ khách hàng còn lại.
+
+**Luồng chính:**
+
+1. Trên hồ sơ khách hàng A, người dùng thêm quan hệ, chọn khách hàng B và loại quan hệ (`BR-11.1`).
+2. Hệ thống ghi nhận cả hai chiều (`BR-11.2`).
+3. Người dùng gỡ quan hệ ở một phía; hệ thống gỡ cả hai chiều.
+
 **Quy tắc nghiệp vụ:**
 
 - **`BR-11.1` (Loại quan hệ):** Chọn từ danh mục chuẩn (Phụ lục A, A.6): Quản lý trực tiếp / Cấp dưới · Người giới thiệu / Được giới thiệu · Thành viên gia đình · Đối tác kinh doanh · Trợ lý / Người đại diện.
+
+  **Lý do nghiệp vụ:** Quan hệ nhập tự do không thống kê và không lọc được; danh mục chuẩn cho phép tìm "mọi người giới thiệu" hay "mọi quản lý trực tiếp" để bán hàng qua mạng lưới.
 
 - **`BR-11.2` (Tính đối xứng):** Khi tạo quan hệ "A là Quản lý trực tiếp của B", hệ thống tự động ghi nhận chiều ngược lại "B là Cấp dưới của A"; các loại quan hệ hai chiều như nhau (Thành viên gia đình, Đối tác kinh doanh) hiển thị cùng một nhãn ở cả hai phía. Gỡ quan hệ ở một phía thì chiều ngược lại cũng được gỡ.
 
@@ -782,11 +952,24 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 *Cách đọc bảng:* giai đoạn in nghiêng kèm "(lùi)" là bước lùi trên phễu tuyến tính, chịu nguyên tắc 3. Ma trận điều chỉnh các bước chuyển **do người dùng quyết định**; giai đoạn do thao tác gộp bản ghi sinh ra được `BR-19.8` tính và nằm ngoài ma trận theo `BR-12.6` (ii). Bước chuyển do hệ thống tự sinh theo nguyên tắc 1 hợp lệ theo thiết kế (`BR-12.9`). Ma trận là tham số cấu hình theo tenant (Phụ lục B, `CFG-12-01`); riêng nguyên tắc 4 (`BR-12.3`, `BR-12.8`) và ràng buộc quyền loại khách (`BR-12.4`) là sàn bắt buộc.
 
+**Điều kiện tiên quyết:** Người chuyển giai đoạn thủ công có ô (Khách hàng, Chuyển giai đoạn vòng đời) bao phủ bản ghi; bước lùi, loại khách, mở lại và các bước có kiểm soát khác cần thêm quyền quản trị tương ứng tại Mục 5.2.
+
+**Luồng chính:**
+
+1. Người dùng mở hồ sơ, chọn "Chuyển giai đoạn vòng đời"; hệ thống chỉ liệt kê các giai đoạn đích hợp lệ theo Ma trận Chuyển đổi và quyền của người dùng.
+2. Người dùng chọn giai đoạn đích và lý do khi quy tắc yêu cầu.
+3. Hệ thống ghi bước chuyển vào Lịch sử giai đoạn (`BR-12.1`).
+4. Song song, hệ thống tự sinh các bước chuyển theo nguyên tắc 1 từ sự kiện Cơ hội bán hàng (`BR-12.9`).
+
 **Quy tắc nghiệp vụ:**
 
 - **`BR-12.1` (Ghi nhận mỗi lần chuyển giai đoạn):** Mọi bước chuyển giai đoạn tuân thủ ma trận trên; mỗi lần chuyển, hệ thống ghi nhận thời điểm chuyển và người thực hiện (hoặc "Hệ thống" kèm sự kiện nguồn) vào Lịch sử giai đoạn (`FEAT-13`).
 
+  **Lý do nghiệp vụ:** Không có dấu vết người và thời điểm của từng bước chuyển thì không phân tích được vận tốc phễu, không phân biệt được bước do người hay do hệ thống, và không truy được trách nhiệm khi một khách bị loại sai.
+
 - **`BR-12.2` (Tự động nâng cấp từ sự kiện Cơ hội bán hàng):** Khi một khách hàng được tạo Cơ hội bán hàng mới, giai đoạn tự động nâng lên tối thiểu Opportunity. Khi Cơ hội chuyển sang Thắng, giai đoạn tự động nâng lên Customer. Sự kiện tạo Cơ hội và đóng thắng do phân hệ Cơ hội bán hàng phát ra — xem [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) (`BR-18.4` của tài liệu đó).
+
+  **Lý do nghiệp vụ:** Giai đoạn phải phản ánh thực tế bán hàng (nguyên tắc 1); nếu nhân viên phải tự cập nhật sau khi tạo hoặc thắng cơ hội, phễu luôn trễ so với thực tế và báo cáo doanh thu theo giai đoạn sai.
 
 - **`BR-12.3` (Nhiều cơ hội & xử lý khi mọi cơ hội thất bại):**
   - Khách hàng đã đạt Customer (có ít nhất một Cơ hội Thắng) **không bị hạ hạng** khi các cơ hội bán thêm tiếp theo bị Thua.
@@ -794,7 +977,7 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
   **Lý do nghiệp vụ:** Hạ một khách đã trả tiền về tiền bán hàng chỉ vì một đơn bán thêm thất bại sẽ đẩy họ vào chiến dịch săn khách mới và làm sai báo cáo doanh thu. Với khách chưa mua, thất bại của cơ hội không có nghĩa là khách hết tiềm năng — họ cần được nuôi dưỡng, không bị loại.
 
-- **`BR-12.3b` (Cơ hội mở duy nhất biến mất mà không qua đóng Thua):** Định nghĩa giai đoạn Opportunity là "đang có ít nhất một Cơ hội mở gắn với khách hàng chưa từng là Customer". Khi Cơ hội mở duy nhất đó không còn gắn với khách hàng **mà không qua đóng Thua** — bị xóa mềm, được chuyển sang gắn với khách hàng khác, hoặc khách hàng bị gỡ khỏi Cơ hội — và khách hàng không còn Cơ hội mở nào khác, hệ thống áp **đúng cách xử lý của `BR-12.3`** cho khách chưa từng là Customer: tự động chuyển sang Nurturing, bắt buộc chọn Lý do không chuyển đổi từ A.2.
+- **`BR-12.3b` (Cơ hội mở duy nhất biến mất mà không qua đóng Thua):** Định nghĩa giai đoạn Opportunity là "đang có ít nhất một Cơ hội mở gắn với khách hàng chưa từng là Customer". Khi Cơ hội mở duy nhất đó không còn gắn với khách hàng **mà không qua đóng Thua** — bị xóa mềm, được chuyển sang gắn với khách hàng khác, hoặc khách hàng bị gỡ khỏi Cơ hội — và khách hàng không còn Cơ hội mở nào khác, hệ thống áp **đúng cách xử lý của `BR-12.3`** cho khách chưa từng là Customer: tự động chuyển sang Nurturing, bắt buộc chọn Lý do không chuyển đổi từ A.2. **Không áp** khi Cơ hội bị xóa mềm hoặc gỡ liên kết do Hoàn tác Chuyển đổi: khi đó khách trở về đúng giai đoạn trước khi chuyển đổi theo `BR-14.2` (c), `BR-14.5`.
 
   **Lý do nghiệp vụ:** Hệ quả quan sát được giống hệt trường hợp toàn bộ Cơ hội Thua — khách không còn Cơ hội mở nào — nên phải nhận cùng một xử lý; nếu không, khách đứng mãi ở Opportunity dù không có Cơ hội nào đang vận động, làm sai báo cáo phễu và khiến khách này không bao giờ vào lại vòng nuôi dưỡng của Marketing.
 
@@ -802,7 +985,7 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
   **Lý do nghiệp vụ:** Nguyên tắc 1 (giai đoạn phản ánh thực tế) chi phối các sự kiện thương mại mới phát sinh, không chi phối việc sửa lại một sự kiện quá khứ đã ghi sai — áp dụng nguyên tắc 1 một cách máy móc vào tình huống này sẽ tự động hạ một khách hàng đang được nguyên tắc 4 bảo vệ tuyệt đối, chỉ vì một thao tác sửa dữ liệu ở một phân hệ khác, mà không ai trong tổ chức chủ động quyết định điều đó.
 
-- **`BR-12.4` (Chuyển Disqualified):** Chỉ Quản lý Kinh doanh trở lên mới được chuyển khách hàng ở giai đoạn tiền bán hàng sang Disqualified, bắt buộc chọn lý do loại từ A.1. Mở lại một bản ghi Disqualified về Lead hoặc Nurturing cũng chỉ Quản lý Kinh doanh trở lên thực hiện, bắt buộc chọn lý do từ A.17.
+- **`BR-12.4` (Chuyển Disqualified):** Chỉ người giữ quyền quản trị **Duyệt vòng đời khách hàng** (Mục 5.2) trên bản ghi mà ô (Khách hàng, Chuyển giai đoạn vòng đời) của họ bao phủ — trong tài liệu gọi tắt là "Quản lý Kinh doanh trở lên" — mới được chuyển khách hàng ở giai đoạn tiền bán hàng sang Disqualified, bắt buộc chọn lý do loại từ A.1. Mở lại một bản ghi Disqualified về Lead hoặc Nurturing cũng chỉ Quản lý Kinh doanh trở lên thực hiện, bắt buộc chọn lý do từ A.17.
 
   **Lý do nghiệp vụ:** Loại khách là quyết định rút một bản ghi khỏi mọi chiến dịch và mọi phân bổ; nếu nhân viên tự loại được, khách khó chăm sóc sẽ bị loại để làm đẹp chỉ số cá nhân.
 
@@ -816,6 +999,8 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 - **`BR-12.5` (Chuyển Churned):** Khi khách hàng chuyển sang Churned, hệ thống tự động thông báo Quản lý Khách hàng Hiện hữu và Quản lý Kinh doanh phụ trách, đồng thời dừng toàn bộ chiến dịch tiếp thị tự động đối với khách hàng đó.
 
+  **Lý do nghiệp vụ:** Khách rời bỏ vẫn nhận thư khuyến mãi tự động là trải nghiệm tệ và rủi ro khiếu nại; người phụ trách quan hệ phải biết ngay để chủ động giữ chân hoặc ghi nhận nguyên nhân.
+
 - **`BR-12.5b` (Chiến dịch Tái tiếp cận — đường về Nurturing của khách đã rời bỏ):** Một bản ghi Churned chỉ được đưa trở lại Nurturing khi thuộc một **Chiến dịch Tái tiếp cận (Win-Back) đã được phê duyệt**. Ba ràng buộc:
   - **(a) Người phê duyệt:** **Quản lý Marketing cùng Quản lý Kinh doanh phụ trách tập khách đó** — một bên chịu trách nhiệm nội dung tiếp cận, một bên chịu trách nhiệm quan hệ khách hàng.
   - **(b) Ghi nhận:** phê duyệt được ghi trên chính chiến dịch kèm phạm vi tập khách, thời hạn hiệu lực và người phê duyệt, và ghi nhật ký (`NFR-07`).
@@ -827,13 +1012,13 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
   **Ngoại lệ duy nhất — nguyên tắc 1:** Bước chuyển do hệ thống tự sinh từ sự kiện Cơ hội bán hàng (`BR-12.9`) và bước chuyển do nguyên tắc giai đoạn tiến xa nhất khi gộp (`BR-19.8`) **luôn hợp lệ theo thiết kế**, trong hai tình huống: **(i)** tenant cấu hình lại ma trận theo `CFG-12-01` và vô tình tắt một bước chuyển thuộc nguyên tắc 1 — nguyên tắc 1 vẫn thắng; **(ii)** thao tác gộp sinh ra bước chuyển theo `BR-19.8` — mọi bước chuyển thuộc nhóm này hợp lệ, **bất kể ma trận có liệt kê hay không**. Các ô "chỉ qua gộp" trong ma trận là ví dụ tường minh của nhóm (ii), không phải danh sách đóng.
 
-  **Lý do nhóm (ii) nằm ngoài ma trận:** giai đoạn sau gộp không phải quyết định của người dùng về giai đoạn mà là hệ quả bắt buộc của `BR-19.8` — người dùng chỉ quyết định gộp hai bản ghi nào, giai đoạn kết quả **không thể ghi đè thủ công**. Nếu buộc liệt kê, ma trận phải chứa gần như mọi cặp giai đoạn và mất ý nghĩa kiểm soát đối với thao tác thủ công. Đổi lại, mỗi bước chuyển sinh từ gộp **bắt buộc** ghi nhật ký kèm thông báo cho Người phụ trách rà soát, và hoàn tác được trong thời hạn hoàn tác gộp (`BR-20.3`).
+  **Lý do nghiệp vụ:** Nhóm (ii) nằm ngoài ma trận vì giai đoạn sau gộp không phải quyết định của người dùng về giai đoạn mà là hệ quả bắt buộc của `BR-19.8` — người dùng chỉ quyết định gộp hai bản ghi nào, giai đoạn kết quả **không thể ghi đè thủ công**. Nếu buộc liệt kê, ma trận phải chứa gần như mọi cặp giai đoạn và mất ý nghĩa kiểm soát đối với thao tác thủ công. Đổi lại, mỗi bước chuyển sinh từ gộp **bắt buộc** ghi nhật ký kèm thông báo cho Người phụ trách rà soát, và hoàn tác được trong thời hạn hoàn tác gộp (`BR-20.3`).
 
 - **`BR-12.7` (Hạ hạng bắt buộc ghi lý do):** Mọi bước lùi về giai đoạn thấp hơn trên phễu tuyến tính, kể cả Evangelist → Customer, bắt buộc chọn lý do từ A.3 và chỉ dành cho Quản lý Kinh doanh trở lên. Lịch sử hạ hạng được ghi nhận riêng để phân tích chất lượng thẩm định của đội ngũ (`FEAT-13`). **Ngoại lệ duy nhất:** bước về Lead hoặc Subscriber do Hoàn tác Chuyển đổi (`BR-14.2`) dùng lý do hoàn tác riêng.
 
   **Lý do nghiệp vụ:** Bước lùi không có lý do làm mất khả năng phân biệt giữa thẩm định sai, khách đổi nhu cầu và nhập liệu nhầm — ba vấn đề cần ba cách khắc phục khác nhau.
 
-- **`BR-12.8` (Ngoại lệ gian lận với khách đã trả tiền):** Khi phát hiện một khách hàng ở Customer, Evangelist **hoặc Churned** là gian lận (thông tin giả, mạo danh, lừa đảo), **chỉ Quản trị viên hoặc Chủ sở hữu** được chuyển sang Disqualified, chỉ với lý do thuộc nhóm Gian lận của A.1. Hệ thống bắt buộc hiển thị cảnh báo về ảnh hưởng tới báo cáo doanh thu đã ghi nhận và yêu cầu xác nhận hai bước. Quản lý Kinh doanh **không** có quyền này. Ba giai đoạn thuộc quy tắc này và sáu giai đoạn tiền bán hàng thuộc `BR-12.4` hợp thành đủ chín giai đoạn có thể bị loại; giai đoạn thứ mười là chính Disqualified.
+- **`BR-12.8` (Ngoại lệ gian lận với khách đã trả tiền) — sàn bắt buộc:** Khi phát hiện một khách hàng ở Customer, Evangelist **hoặc Churned** là gian lận (thông tin giả, mạo danh, lừa đảo), **chỉ Người có toàn quyền** được chuyển sang Disqualified — năng lực này không đưa được vào bất kỳ vai trò nào, chỉ với lý do thuộc nhóm Gian lận của A.1. Hệ thống bắt buộc hiển thị cảnh báo về ảnh hưởng tới báo cáo doanh thu đã ghi nhận và yêu cầu xác nhận hai bước. Người giữ quyền Duyệt vòng đời khách hàng **không** có quyền này. Ba giai đoạn thuộc quy tắc này và sáu giai đoạn tiền bán hàng thuộc `BR-12.4` hợp thành đủ chín giai đoạn có thể bị loại; giai đoạn thứ mười là chính Disqualified.
 
   **Lý do nghiệp vụ:** Loại một khách đã từng trả tiền tác động tới doanh thu đã ghi nhận; đây phải là quyết định hiếm, của cấp quản trị, và chỉ với lý do gian lận — một khách đã trả tiền không thể bị loại vì "không đủ ngân sách".
 
@@ -845,6 +1030,8 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
   - Tạo thủ công, tạo từ biểu mẫu website, tạo từ hội thoại, nhập khẩu từ tệp → **Lead**;
   - Đăng ký nhận bản tin/tài liệu (không thể hiện nhu cầu mua) → **Subscriber**;
   - Hồ sơ Khách hàng Tạm (`BR-01.1b`) → chưa gán giai đoạn cho tới khi trở thành khách hàng chính thức.
+
+  **Lý do nghiệp vụ:** Giai đoạn khởi tạo phản ánh mức độ thể hiện nhu cầu của nguồn: người đăng ký bản tin chưa thể hiện ý định mua, nên đưa vào Lead sẽ đẩy họ vào hàng đợi kinh doanh quá sớm; Hồ sơ Tạm chưa định danh nên không thuộc phễu.
 
 **Tiêu chí Chấp nhận:**
 
@@ -899,11 +1086,23 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Mọi người dùng có quyền xem khách hàng; Quản lý Kinh doanh và Quản lý Marketing (báo cáo).
 
+**Điều kiện tiên quyết:** Người xem có ô (Khách hàng, Xem) bao phủ bản ghi; báo cáo tổng hợp tính trên các bản ghi trong mức Xem của người xem.
+
+**Luồng chính:**
+
+1. Mỗi lần giai đoạn đổi, hệ thống ghi một dòng lịch sử (`BR-13.1`).
+2. Người dùng xem lịch sử trên hồ sơ (`BR-13.2`).
+3. Người dùng mở báo cáo vận tốc phễu và chất lượng thẩm định (`BR-13.3`).
+
 **Quy tắc nghiệp vụ:**
 
 - **`BR-13.1` (Nội dung ghi nhận):** Mỗi lần chuyển giai đoạn ghi nhận: giai đoạn trước, giai đoạn sau, thời gian đã ở giai đoạn cũ (theo ngày và giờ), lý do chuyển (nếu có), người thực hiện hoặc "Hệ thống" kèm sự kiện nguồn.
 
+  **Lý do nghiệp vụ:** Thời gian ở từng giai đoạn là cơ sở đo điểm nghẽn của quy trình bán hàng; lý do chuyển là cơ sở rà soát chất lượng thẩm định của từng người.
+
 - **`BR-13.2` (Tra cứu lịch sử):** Người dùng xem lịch sử giai đoạn ngay trên hồ sơ khách hàng, theo thứ tự thời gian.
+
+  **Lý do nghiệp vụ:** Nhân viên tiếp nhận khách cần biết ngay khách từng bị loại hay hạ hạng vì sao trước khi liên hệ lại, không phải đi tìm trong báo cáo.
 
 - **`BR-13.3` (Phạm vi tính vận tốc phễu):** Báo cáo tỷ lệ chuyển đổi và vận tốc chuyển đổi chỉ tính trên 7 giai đoạn phễu tuyến tính. Thời gian một bản ghi nằm ở ba trạng thái đặc biệt được báo cáo riêng dưới dạng **"thời gian ngoài phễu"**, không cộng vào vận tốc phễu chính. Các bước hạ hạng (`BR-12.7`) được thống kê riêng trong báo cáo chất lượng thẩm định.
 
@@ -926,6 +1125,8 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Nhân viên Kinh doanh, Quản lý Kinh doanh.
 
+**Điều kiện tiên quyết:** Khách hàng đã có Người phụ trách (`BR-14.6`); người chuyển đổi có ô (Khách hàng, Sửa) bao phủ khách hàng; tạo doanh nghiệp cần ô (Doanh nghiệp, Tạo) = Có; tạo Cơ hội cần quyền tạo Cơ hội theo [`deals-pipeline-srs.md`](./deals-pipeline-srs.md). Khách hàng chưa từng được chuyển đổi thành công.
+
 **Luồng chính:**
 
 1. Người dùng bấm **"Chuyển đổi Tiềm năng"** trên hồ sơ khách hàng tiềm năng.
@@ -934,7 +1135,7 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
    - **Doanh nghiệp:** liên kết với một doanh nghiệp đã có, tạo mới doanh nghiệp từ tên công ty của khách, hoặc — với khách loại B2C — chọn "Không liên kết Doanh nghiệp" (`BR-01.6`).
    - **Cơ hội bán hàng:** tùy chọn tạo ngay một Cơ hội (tên, giá trị dự kiến, phễu, giai đoạn khởi đầu). Nếu doanh nghiệp được liên kết **đã có Cơ hội đang mở trên cùng phễu**, hệ thống hiển thị Cơ hội đó và mặc định gắn Liên hệ vào Cơ hội sẵn có (`BR-14.3`).
 3. Người dùng bấm "Xác nhận chuyển đổi".
-4. Hệ thống cập nhật Liên hệ, tạo/liên kết Doanh nghiệp, tạo Cơ hội mới **hoặc** gắn Liên hệ vào Cơ hội sẵn có, gán Người phụ trách thống nhất, rồi chuyển người dùng tới Cơ hội tương ứng.
+4. Hệ thống cập nhật Liên hệ, tạo/liên kết Doanh nghiệp, tạo Cơ hội mới **hoặc** gắn Liên hệ vào Cơ hội sẵn có, xác định Người phụ trách theo `BR-14.7`, rồi chuyển người dùng tới Cơ hội tương ứng.
 
 **Quy tắc nghiệp vụ:**
 
@@ -942,17 +1143,21 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
   **Lý do nghiệp vụ:** Một chuyển đổi dở dang (đã tạo doanh nghiệp nhưng chưa tạo cơ hội) để lại bản ghi mồ côi mà người dùng không biết phải dọn hay chuyển đổi lại, và lần chuyển đổi lại sẽ sinh trùng.
 
-- **`BR-14.2` (Hoàn tác Chuyển đổi):** Trong vòng **24 giờ** sau khi chuyển đổi thành công (Phụ lục B, `CFG-14-01`), Quản lý Kinh doanh trở lên được **Hoàn tác Chuyển đổi**, với điều kiện Cơ hội vừa tạo **chưa có hoạt động thực tế nào** (chưa có ghi chú, chưa chuyển giai đoạn bán hàng, chưa đính kèm tài liệu). Khi hoàn tác:
-  - (a) Cơ hội vừa tạo bị xóa mềm;
+- **`BR-14.2` (Hoàn tác Chuyển đổi):** Trong vòng **24 giờ** sau khi chuyển đổi thành công (Phụ lục B, `CFG-14-01`), người giữ quyền quản trị **Hoàn tác Chuyển đổi Tiềm năng** (Mục 5.2) có ô (Khách hàng, Sửa) bao phủ khách hàng được **Hoàn tác Chuyển đổi**, với điều kiện Cơ hội vừa tạo **chưa có hoạt động thực tế nào** (chưa có ghi chú, chưa chuyển giai đoạn bán hàng, chưa đính kèm tài liệu). Khi hoàn tác:
+  - (a) Cơ hội vừa tạo bị xóa mềm và **không khôi phục được** từ Thùng rác;
   - (b) Doanh nghiệp vừa tạo bị xóa mềm nếu chưa có khách hàng nào khác liên kết;
   - (c) Liên hệ trở về **đúng giai đoạn trước khi chuyển đổi** — bước chuyển hợp lệ theo `BR-12.9`, **không** yêu cầu lý do hạ hạng theo `BR-12.7`, nhưng bắt buộc chọn **Lý do hoàn tác** từ A.15;
   - (d) Điểm tiềm năng và nguồn gốc tiếp thị được giữ nguyên;
   - (e) Toàn bộ thao tác được ghi nhật ký (`NFR-07`).
 
+  Điều kiện đầy đủ, quyền cần có và nhánh gắn vào Cơ hội sẵn có quy định tại `BR-14.5` — danh sách duy nhất mà [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) `BR-04.5` dẫn chiếu.
+
   **Lý do nghiệp vụ:** Chuyển đổi nhầm là sai sót thường gặp; không có đường hoàn tác thì cách duy nhất là xóa tay từng bản ghi, làm hỏng lịch sử giai đoạn và nguồn gốc của khách. Giới hạn "chưa có hoạt động" bảo đảm hoàn tác không xóa mất công việc thật đã làm trên Cơ hội.
 
-- **`BR-14.3` (Chống tạo trùng Cơ hội khi chuyển đổi):** Trước khi tạo Cơ hội mới, hệ thống bắt buộc kiểm tra doanh nghiệp được liên kết đã có **Cơ hội nào đang mở trên cùng phễu đích** hay chưa.
-  - **Nếu có:** mặc định gắn Liên hệ vào Cơ hội đang mở đó, không tạo Cơ hội mới; người thực hiện được thông báo rõ đang gắn vào Cơ hội nào.
+- **`BR-14.3` (Chống tạo trùng Cơ hội khi chuyển đổi):** Trước khi tạo Cơ hội mới, hệ thống bắt buộc kiểm tra doanh nghiệp được liên kết đã có **Cơ hội nào đang mở trên cùng phễu đích** hay chưa, **chỉ xét các Cơ hội nằm trong ô (Cơ hội, Sửa) của người thực hiện chuyển đổi** — thống nhất với [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) `BR-33.1`, `BR-01.8`; Cơ hội ngoài phạm vi không được gợi ý và không bị tiết lộ.
+  - **Nếu có đúng một:** mặc định gắn Liên hệ vào Cơ hội đó, không tạo Cơ hội mới; người thực hiện được thông báo rõ đang gắn vào Cơ hội nào.
+  - **Nếu có nhiều hơn một:** hệ thống không tự chọn; người thực hiện bắt buộc chọn một Cơ hội trong danh sách hoặc chọn tạo Cơ hội mới.
+  - **Người phụ trách của Cơ hội sẵn có không đổi** khi Liên hệ được gắn vào; Cơ hội tạo mới có Người phụ trách là người thực hiện chuyển đổi.
   - **Nếu người dùng vẫn muốn tạo riêng:** được chủ động chọn tạo Cơ hội mới, và quyết định này được ghi nhật ký để rà soát chất lượng dữ liệu.
   - Phạm vi kiểm tra là **theo từng phễu**, không phải toàn doanh nghiệp — một doanh nghiệp có thể có song song một Cơ hội bán mới và một Cơ hội gia hạn ở hai phễu khác nhau.
 
@@ -960,11 +1165,27 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 - **`BR-14.4` (Giai đoạn khi gắn vào Cơ hội sẵn có):** Khi Liên hệ được gắn vào một Cơ hội đang mở thay vì tạo Cơ hội mới, giai đoạn của Liên hệ vẫn được nâng lên Opportunity theo `BR-12.2`, vì thực tế thương mại (người này đang tham gia một thương vụ) là như nhau ở cả hai nhánh.
 
-- **`BR-14.5` (Hoàn tác Chuyển đổi ở nhánh gắn vào Cơ hội sẵn có):** `BR-14.2` áp dụng nguyên vẹn cho các bước (c), (d), (e); các bước (a) và (b) **không áp dụng** ở nhánh này, vì Cơ hội và Doanh nghiệp liên quan đã tồn tại từ trước lần chuyển đổi này và có thể đang phục vụ một thương vụ khác — hoàn tác không bao giờ được xóa chúng. Thay vào đó:
-  - **(a')** Hệ thống chỉ **gỡ liên kết** giữa Liên hệ và Cơ hội sẵn có, với điều kiện tương đương: Liên hệ đó **chưa có hoạt động thực tế nào của riêng mình** trên Cơ hội (chưa được gắn Vai trò liên hệ khác với lúc gắn tự động, chưa có ghi chú hay hoạt động nhắc tới Liên hệ này gắn với Cơ hội đó);
-  - **(b')** Cơ hội sẵn có và Doanh nghiệp liên quan **giữ nguyên**, không bị xóa mềm, không bị ảnh hưởng.
+  **Lý do nghiệp vụ:** Thực tế thương mại — người này đang tham gia một thương vụ — là như nhau dù cơ hội mới tạo hay đã có; để hai nhánh cho hai giai đoạn khác nhau sẽ làm cùng một tình huống báo cáo khác nhau.
 
-  **Lý do nghiệp vụ:** Cơ hội sẵn có ở nhánh `BR-14.3` không phải sản phẩm của lần chuyển đổi đang được hoàn tác — nó có thể đang được đàm phán bởi một nhân viên khác từ trước. Áp nguyên bước (a)/(b) của `BR-14.2` vào nhánh này sẽ xóa mất một thương vụ có thật không liên quan gì tới sai sót đang được sửa.
+- **`BR-14.5` (Điều kiện Hoàn tác Chuyển đổi — danh sách duy nhất):** Mọi phân hệ dẫn chiếu danh sách này; [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) `BR-04.5` chỉ quy định phía Cơ hội. Hoàn tác thực hiện được khi và chỉ khi thỏa **đồng thời**:
+  - **(1) Thời hạn:** còn trong `CFG-14-01` kể từ lượt chuyển đổi.
+  - **(2) Quyền:** người hoàn tác giữ quyền quản trị Hoàn tác Chuyển đổi Tiềm năng và có ô (Khách hàng, Sửa) bao phủ Liên hệ; ô (Cơ hội, Xoá) bao phủ Cơ hội vừa tạo; ô (Doanh nghiệp, Xoá) bao phủ Doanh nghiệp vừa tạo sẽ bị xóa mềm; ô (Cơ hội, Sửa) bao phủ Cơ hội sẵn có sẽ bị gỡ liên kết.
+  - **(3) Chưa có hoạt động thực tế:** Cơ hội vừa tạo chưa có ghi chú, chưa chuyển giai đoạn bán hàng, chưa đính kèm tài liệu; ở nhánh gắn vào Cơ hội sẵn có, **Liên hệ chưa có hoạt động thực tế nào của riêng mình** trên Cơ hội đó (chưa được gắn Vai trò liên hệ khác với lúc gắn tự động, chưa có ghi chú hay hoạt động nhắc tới Liên hệ này gắn với Cơ hội đó).
+  - **(4) Toàn bộ hoặc không:** thiếu bất kỳ điều kiện nào thì hành động hoàn tác bị vô hiệu kèm giải thích nêu đúng điều kiện còn thiếu — hoàn tác không bao giờ thực hiện một phần.
+
+  Ở nhánh gắn vào Cơ hội sẵn có, các bước (a) và (b) của `BR-14.2` **không áp dụng**, vì Cơ hội và Doanh nghiệp liên quan đã tồn tại từ trước và có thể đang phục vụ một thương vụ khác. Thay vào đó:
+  - **(a')** Hệ thống chỉ **gỡ liên kết** giữa Liên hệ và Cơ hội sẵn có, và **gỡ nguồn gốc bổ sung** mà lượt chuyển đổi đã ghi thêm vào Cơ hội đó;
+  - **(b')** Cơ hội sẵn có, Người phụ trách của nó và Doanh nghiệp liên quan **giữ nguyên**, không bị xóa mềm.
+
+  **Lý do nghiệp vụ:** Hai phân hệ cùng chạm một lượt hoàn tác; nếu mỗi bên giữ một danh sách điều kiện, hai danh sách sẽ lệch nhau và một lượt hoàn tác thành công ở bên này bị từ chối ở bên kia. Cơ hội bị xóa do hoàn tác không khôi phục được vì đó là thương vụ đã được xác định là ghi nhầm; khôi phục nó là sống lại một sai sót. Cơ hội sẵn có ở nhánh `BR-14.3` không phải sản phẩm của lần chuyển đổi đang được hoàn tác — nó có thể đang được đàm phán bởi một nhân viên khác từ trước. Áp nguyên bước (a)/(b) của `BR-14.2` vào nhánh này sẽ xóa mất một thương vụ có thật không liên quan gì tới sai sót đang được sửa.
+
+- **`BR-14.6` (Chuyển đổi bản ghi chưa có Người phụ trách):** Khách hàng tiềm năng đang chờ phân công trong hàng đợi, hoặc bản ghi giữ chỗ, **không chuyển đổi được** cho tới khi có Người phụ trách: người muốn chuyển đổi phải nhận việc trước (`BR-31.9` (c)) hoặc được gán theo `BR-34.1`. Nút "Chuyển đổi Tiềm năng" trên bản ghi chưa có Người phụ trách bị vô hiệu kèm lối "Nhận việc" khi người dùng đủ điều kiện.
+
+  **Lý do nghiệp vụ:** Chuyển đổi gán Người phụ trách cho Liên hệ và Cơ hội; làm việc đó trên một bản ghi chưa ai nhận là cách nhận việc đi vòng qua điều kiện của hàng đợi, và khiến khách rời đơn vị tiếp nhận mà không ai ghi nhận người chịu trách nhiệm.
+
+- **`BR-14.7` (Người phụ trách sau chuyển đổi):** Chuyển đổi **không** là một thao tác Gán: Liên hệ **giữ Người phụ trách hiện tại**; Doanh nghiệp và Cơ hội **tạo mới** trong lượt chuyển đổi do người thực hiện chuyển đổi phụ trách (thống nhất [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) `BR-33.1`); Doanh nghiệp và Cơ hội **sẵn có** giữ Người phụ trách của chúng. Mọi thay đổi Người phụ trách khác — kể cả giao Cơ hội vừa tạo cho chính Người phụ trách của Liên hệ — là thao tác riêng sau chuyển đổi, chịu ô Gán của loại dữ liệu đó theo `BR-34.1`.
+
+  **Lý do nghiệp vụ:** Nếu chuyển đổi tự đổi người phụ trách, một người có quyền sửa khách hàng sẽ dùng nó để chiếm khách của đồng nghiệp, hoặc giao cơ hội cho người mà chính họ không được phép giao — đi vòng qua ô Gán. Người tạo cơ hội phụ trách nó để luôn có người chịu trách nhiệm ngay từ đầu.
 
 **Tiêu chí Chấp nhận:**
 
@@ -978,7 +1199,15 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | `AC-14.2.3` | Chuyển đổi lúc 09:00, thời hạn 24 giờ | 08:59 hôm sau mở hồ sơ; 09:05 hôm sau mở lại | Lúc 08:59 còn hành động hoàn tác; lúc 09:05 hành động không còn hiển thị |
 | `AC-14.2.4` | Chuyển đổi đã gắn vào doanh nghiệp có sẵn 3 liên hệ khác | Hoàn tác | Doanh nghiệp không bị xóa |
 | `AC-14.2.5` | Nhân viên Kinh doanh xem hồ sơ vừa chuyển đổi | Tìm hành động hoàn tác | Không khả dụng với Nhân viên |
-| `AC-14.3.1` | Doanh nghiệp Vina có Cơ hội "Cung ứng Q3" đang mở trên Phễu A | Chuyển đổi Lead "Nguyễn Văn Bình" của Vina, chọn Phễu A | Hộp thoại hiển thị Cơ hội "Cung ứng Q3" và mặc định gắn Bình vào đó; không phát sinh Cơ hội thứ hai; dự báo doanh thu không tăng |
+| `AC-14.3.1` | Doanh nghiệp Vina có đúng một Cơ hội "Cung ứng Q3" đang mở trên Phễu A, do nhân viên K phụ trách, nằm trong ô (Cơ hội, Sửa) của người chuyển đổi | Chuyển đổi Lead "Nguyễn Văn Bình" của Vina, chọn Phễu A | Hộp thoại hiển thị Cơ hội "Cung ứng Q3" và mặc định gắn Bình vào đó; không phát sinh Cơ hội thứ hai; dự báo doanh thu không tăng; Người phụ trách Cơ hội vẫn là K |
+| `AC-14.3.4` | Cơ hội đang mở duy nhất của Vina trên Phễu A nằm ngoài ô (Cơ hội, Sửa) của người chuyển đổi | Chuyển đổi Lead của Vina, chọn Phễu A | Không có gợi ý gắn, không lộ tên hay giá trị Cơ hội đó; Cơ hội mới được tạo |
+| `AC-14.3.5` | Vina có hai Cơ hội đang mở trên Phễu A trong phạm vi người chuyển đổi | Chuyển đổi Lead của Vina, chọn Phễu A | Hộp thoại liệt kê hai Cơ hội và bắt buộc chọn một hoặc chọn tạo mới; không có lựa chọn mặc định |
+| `AC-14.7.1` | Khách K do nhân viên E phụ trách; Quản lý Q (ô Sửa Khách hàng bao phủ K) chuyển đổi K, tạo doanh nghiệp mới và Cơ hội mới | Xác nhận chuyển đổi | Liên hệ K vẫn do E phụ trách; doanh nghiệp và Cơ hội mới do Q phụ trách; muốn giao Cơ hội cho E, Q dùng thao tác Gán riêng, chịu ô (Cơ hội, Gán người phụ trách) của Q |
+| `AC-14.6.1` | Khách tiềm năng T nằm trong hàng đợi chưa phân công | Thành viên đơn vị tiếp nhận mở hồ sơ T | Nút "Chuyển đổi Tiềm năng" bị vô hiệu kèm lối "Nhận việc"; sau khi nhận việc, chuyển đổi được |
+| `AC-14.5.3` | Chuyển đổi đã gắn Liên hệ vào Cơ hội sẵn có và ghi thêm nguồn gốc "Sự kiện" vào Cơ hội đó | Quản lý hoàn tác | Liên hệ bị gỡ khỏi Cơ hội; nguồn gốc "Sự kiện" bổ sung bị gỡ; Người phụ trách Cơ hội không đổi |
+| `AC-14.5.4` | Cơ hội bị xóa mềm do hoàn tác chuyển đổi | Người có ô (Cơ hội, Xoá) mở Thùng rác | Cơ hội hiển thị nhãn "Xóa do hoàn tác chuyển đổi", không có hành động Khôi phục |
+| `AC-14.2.6` | Quản lý có quyền Hoàn tác Chuyển đổi nhưng ô (Doanh nghiệp, Xoá) không bao phủ doanh nghiệp vừa tạo | Mở hành động hoàn tác | Hành động bị vô hiệu, nêu thiếu ô (Doanh nghiệp, Xoá); không bản ghi nào bị thay đổi |
+| `AC-12.3b.4` | Khách ở Lead được chuyển đổi kèm Cơ hội mới, lên Opportunity | Quản lý hoàn tác chuyển đổi trong thời hạn | Khách về Lead; không bị chuyển sang Nurturing và không bị hỏi Lý do không chuyển đổi |
 | `AC-14.3.2` | Tiếp nối AC-14.3.1 | Nhân viên chọn vẫn tạo Cơ hội riêng | Cơ hội thứ hai được tạo; nhật ký ghi quyết định kèm người thực hiện |
 | `AC-14.3.3` | Doanh nghiệp Vina có Cơ hội đang mở trên Phễu A | Chuyển đổi một Lead của Vina, chọn Phễu B | Cơ hội mới được tạo trên Phễu B, không có gợi ý gắn vào Cơ hội ở Phễu A |
 | `AC-14.4.1` | Tiếp nối AC-14.3.1 | Xem giai đoạn của Bình | Bình ở Opportunity |
@@ -991,28 +1220,48 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Mô tả nghiệp vụ:** Khi khách hàng tiềm năng được tạo tự động từ các kênh số (biểu mẫu website, tích hợp từ hệ thống ngoài, trợ lý trò chuyện tự động, quảng cáo) mà không có người tạo trực tiếp, hệ thống tự động phân bổ Người phụ trách theo bộ quy tắc định sẵn.
 
-**Vai trò sử dụng chính:** Tiến trình Hệ thống (thực thi), Quản lý Kinh doanh (cấu hình quy tắc), Quản trị viên.
+**Vai trò sử dụng chính:** Tiến trình Hệ thống (thực thi), Quản lý Kinh doanh (cấu hình quy tắc), thành viên đơn vị tiếp nhận (nhận việc từ hàng đợi), Quản trị viên.
+
+**Điều kiện tiên quyết:** Nguồn đã có đơn vị tiếp nhận (`BR-31.9`); quy tắc phân bổ do người giữ quyền Cấu hình phân bổ khách hàng tiềm năng thiết lập trong phạm vi ô Gán của mình (`BR-31.10`).
+
+**Luồng chính:**
+
+1. Một khách hàng tiềm năng đến từ nguồn không có người tạo trực tiếp; hệ thống kiểm tra trùng lặp và áp ưu tiên Người phụ trách hiện hữu (`BR-31.6`).
+2. Không trùng thì khách vào hàng đợi của đơn vị tiếp nhận của nguồn dưới dạng bản ghi chờ phân công (`BR-31.9`).
+3. Hệ thống áp các quy tắc phân bổ theo thứ tự ưu tiên (`BR-31.3b`) và gán Người phụ trách trong giới hạn `BR-31.10`.
+4. Không khớp quy tắc nào thì khách nằm lại trong hàng đợi chưa phân công; thành viên đơn vị tiếp nhận nhận việc hoặc người có ô Gán phân công thủ công (`BR-31.4`).
+5. Hệ thống theo dõi cam kết phản hồi lần đầu và thu hồi, phân bổ lại khi quá hạn (`BR-31.7`).
 
 **Quy tắc nghiệp vụ:**
 
 - **`BR-31.1` (Chia vòng lần lượt):** Khi không có quy tắc đặc biệt nào khớp, hệ thống chia khách hàng tiềm năng lần lượt đều nhau cho các thành viên kinh doanh **đang khả dụng** trong nhóm. Người đang ở trạng thái "không khả dụng" (`BR-34.6`) không nhận phân bổ mới.
 
+  **Lý do nghiệp vụ:** Chia đều là cách công bằng và dễ hiểu nhất khi không có căn cứ chuyên môn nào; bỏ qua người không khả dụng để khách không rơi vào tay người đang nghỉ.
+
 - **`BR-31.2` (Theo vùng địa lý):** Nếu khách hàng tiềm năng có thông tin quốc gia hoặc tỉnh/thành, ưu tiên phân bổ cho nhân viên phụ trách vùng địa lý tương ứng.
 
+  **Lý do nghiệp vụ:** Khách được phục vụ bởi người hiểu thị trường địa phương và có thể gặp trực tiếp thì chuyển đổi tốt hơn; doanh nghiệp tổ chức đội theo vùng cần phân bổ đi theo cấu trúc đó.
+
 - **`BR-31.3` (Theo ngành nghề):** Nếu khách hàng tiềm năng có thông tin ngành nghề, ưu tiên phân bổ cho nhân viên chuyên ngành tương ứng.
+
+  **Lý do nghiệp vụ:** Ngành có quy trình mua và thuật ngữ riêng; nhân viên chuyên ngành tư vấn đúng ngay từ cuộc gọi đầu.
 
 - **`BR-31.3b` (Thứ tự ưu tiên giữa các quy tắc):** Khi khớp nhiều quy tắc cùng lúc, hệ thống áp dụng theo thứ tự giảm dần: **(1)** Người phụ trách hiện hữu (`BR-31.6` — ưu tiên tuyệt đối); **(2)** Vùng địa lý; **(3)** Ngành nghề; **(4)** Chia vòng lần lượt; **(5)** Hàng đợi "Chưa phân công" (`BR-31.4`). Thứ tự từ (2) đến (4) là tham số cấu hình (Phụ lục B, `CFG-31-02`); vị trí (1) cố định.
 
   **Lý do nghiệp vụ:** Có tổ chức phân đội theo ngành trước, có tổ chức phân theo vùng trước; nhưng không tổ chức nào muốn một khách đang có người phụ trách lại bị chia cho người thứ hai.
 
-- **`BR-31.4` (Khi không khớp quy tắc nào):** Khi không có quy tắc nào khớp hoặc không có nhân viên khả dụng, khách hàng tiềm năng được đưa vào hàng đợi **"Chưa phân công"** và Quản lý Kinh doanh nhận thông báo để phân công thủ công.
+- **`BR-31.4` (Khi không khớp quy tắc nào):** Khi không có quy tắc nào khớp hoặc không có nhân viên khả dụng, khách hàng tiềm năng nằm lại trong **hàng đợi "Chưa phân công" của đơn vị tiếp nhận** (`BR-31.9`); người phụ trách đơn vị tiếp nhận nhận thông báo. Thành viên đơn vị tiếp nhận tự nhận việc, hoặc người có ô (Khách hàng, Gán) bao phủ đơn vị tiếp nhận phân công thủ công cho người đạt điều kiện người nhận của `BR-34.1`.
 
-- **`BR-31.5` (Quyền cấu hình):** Quy tắc phân bổ chỉ được tạo, sửa, xóa bởi Quản lý Kinh doanh, Quản trị viên và Chủ sở hữu — khớp ma trận Mục 5 dòng `FEAT-31`.
+  **Lý do nghiệp vụ:** Không có điểm đến tường minh thì khách không khớp quy tắc nào trở thành vô chủ (Nguyên tắc 5); hàng đợi thuộc đúng đơn vị tiếp nhận để chính đội đó thấy và nhận, thay vì dồn hết cho một người quản lý.
 
-- **`BR-31.6` (Ưu tiên tuyệt đối cho Người phụ trách hiện hữu):** Trước khi áp bất kỳ quy tắc phân bổ nào, hệ thống bắt buộc kiểm tra trùng lặp (`FEAT-17`). Nếu khách hàng tiềm năng mới trùng với một bản ghi đã có **Người phụ trách đang hoạt động**, hệ thống:
+- **`BR-31.5` (Quyền cấu hình):** Quy tắc phân bổ chỉ được tạo, sửa, xóa bởi người giữ quyền quản trị **Cấu hình phân bổ khách hàng tiềm năng** (Mục 5.2; mặc định ở vai trò Quản lý) và Người có toàn quyền, trong giới hạn ô Gán tại `BR-31.10` (a) — khớp ma trận Mục 5 dòng `FEAT-31`.
+
+  **Lý do nghiệp vụ:** Quy tắc phân bổ quyết định ai nhận khách nào, tức là quyết định thu nhập và khối lượng công việc của cả đội; người không chịu trách nhiệm về kết quả của đội không được tự đổi nó.
+
+- **`BR-31.6` (Ưu tiên tuyệt đối cho Người phụ trách hiện hữu):** Trước khi áp bất kỳ quy tắc phân bổ nào, hệ thống bắt buộc kiểm tra trùng lặp (`FEAT-17`). Nếu khách hàng tiềm năng mới trùng với một bản ghi đã có **Người phụ trách** (Đang hoạt động hoặc đang Tạm ngưng), hệ thống:
   - **không tạo bản ghi mới** và **không phân bổ cho người khác** — tương tác mới được ghi vào Dòng thời gian của bản ghi hiện hữu;
   - thông báo cho Người phụ trách hiện hữu: "Khách hàng bạn đang phụ trách vừa phát sinh yêu cầu mới từ kênh [tên kênh]";
-  - nếu Người phụ trách hiện hữu đã rời tổ chức hoặc bị vô hiệu hóa, bản ghi được phân bổ lại theo quy tắc thông thường kèm ghi chú lý do chuyển giao.
+  - nếu Người phụ trách hiện hữu đang Tạm ngưng, bản ghi **không** được phân bổ lại: Người phụ trách giữ nguyên (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-42.1`), yêu cầu mới chuyển cho người xử lý thay đã chỉ định khi tạm ngưng, không có thì cho quản lý trực tiếp của người đó — hoặc quản lý tạm thời nếu đã được chỉ định (`BR-34.4` (b)); người đang Tạm ngưng không nhận thông báo nào. Người đã rời workspace không còn là Người phụ trách của bản ghi nào, vì gỡ khỏi workspace chỉ xảy ra sau khi mọi bản ghi đã có người nhận (`BR-34.4` (c)).
 
   Để "chống trùng chủ" không thành chỗ mất doanh thu, yêu cầu mới trên bản ghi đã có chủ bắt buộc sinh ra một **"Yêu cầu chờ xử lý"** có cam kết thời gian riêng, áp cùng bộ thời hạn tại `BR-31.7` theo mức ưu tiên của bản ghi. Quá hạn thì leo thang lên Quản lý Kinh doanh, và Quản lý được **chỉ định người xử lý thay** (không đổi Người phụ trách chính, có thể dùng Đội ngũ phụ trách tại `FEAT-35`). Người phụ trách đang nghỉ phép hoặc "không khả dụng" (`BR-34.6`) thì yêu cầu được chuyển ngay cho người xử lý thay.
 
@@ -1028,7 +1277,7 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
   Ba dải điểm **luôn được tính lại từ hai ngưỡng tại `CFG-15-01`**, không đóng cứng con số, nên khi tenant hiệu chỉnh ngưỡng thì ba dải vẫn kề nhau và không chồng lấn.
 
-  Nếu khách vẫn không được phản hồi sau **hai lần thời hạn** nêu trên, hệ thống tự động **thu hồi và phân bổ lại** cho thành viên khác theo `BR-31.1`, ghi lý do "Quá hạn phản hồi" vào lịch sử và thông báo Quản lý Kinh doanh. Tối đa **2 lần thu hồi tự động** cho mỗi khách; đến lần thứ ba, khách được đưa vào hàng đợi "Chưa phân công" để Quản lý Kinh doanh phân công thủ công và chịu trách nhiệm. Đồng hồ cam kết **dừng** khi bản ghi bị đánh dấu Lead rác (`BR-12.4b`) hoặc bị gắn Hạn chế xử lý (`BR-30.6`), và không áp dụng cho bản ghi nhập khẩu trước khi có tương tác đầu tiên (`BR-15.7` (a)).
+  Nếu khách vẫn không được phản hồi sau **hai lần thời hạn** nêu trên, hệ thống tự động **thu hồi và phân bổ lại** cho thành viên khác theo `BR-31.1`, ghi lý do "Quá hạn phản hồi" vào lịch sử và thông báo Quản lý Kinh doanh. Tối đa **2 lần thu hồi tự động** cho mỗi khách; đến lần thứ ba, khách được đưa vào hàng đợi "Chưa phân công" của đơn vị tiếp nhận (`BR-31.9`) để người có ô (Khách hàng, Gán) bao phủ đơn vị đó phân công thủ công và chịu trách nhiệm. Thu hồi và phân bổ lại chịu cùng giới hạn của `BR-31.10`. Đồng hồ cam kết **dừng** khi bản ghi bị đánh dấu Lead rác (`BR-12.4b`) hoặc bị gắn Hạn chế xử lý (`BR-30.6`), và không áp dụng cho bản ghi nhập khẩu trước khi có tương tác đầu tiên (`BR-15.7` (a)).
 
   **Lý do nghiệp vụ:** Tốc độ phản hồi lần đầu là yếu tố quyết định tỷ lệ chuyển đổi của khách hàng tiềm năng. Giới hạn số lần thu hồi để khách không bị quay vòng vô hạn giữa các nhân viên mà không ai chịu trách nhiệm.
 
@@ -1038,11 +1287,29 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 - **`BR-31.8` (Bằng chứng "đã liên hệ lần đầu"):** Chỉ các bằng chứng sau được công nhận:
   - **Nhóm 1 — bằng chứng hệ thống tự sinh:** cuộc gọi có ghi nhận thời lượng, email đã gửi từ hệ thống, tin nhắn đã gửi trên kênh đã tích hợp, hoặc cuộc hẹn đã được tạo với khách hàng. Các bằng chứng này do `FEAT-36` sinh tự động (`BR-36.5`) nên không tạo khống được.
-  - **Nhóm 2 — liên hệ ngoài hệ thống có xác nhận của Quản lý:** gặp trực tiếp, khách chỉ trả lời qua kênh cá nhân của nhân viên, hoặc nhân viên gọi bằng số không tích hợp. Nhân viên khai báo và **Quản lý Kinh doanh xác nhận**; mỗi nhân viên dùng tối đa **10 lần/tháng** (Phụ lục B, `CFG-31-04`), có ghi nhật ký, và được **thống kê riêng** trong `KPI-03`.
+  - **Nhóm 2 — liên hệ ngoài hệ thống có xác nhận của Quản lý:** gặp trực tiếp, khách chỉ trả lời qua kênh cá nhân của nhân viên, hoặc nhân viên gọi bằng số không tích hợp. Nhân viên khai báo và **người giữ quyền quản trị Xác nhận liên hệ ngoài hệ thống** (Mục 5.2; mặc định Quản lý) có ô (Khách hàng, Gán) bao phủ bản ghi xác nhận — người xác nhận phải khác người khai báo; mỗi nhân viên dùng tối đa **10 lần/tháng** (Phụ lục B, `CFG-31-04`), có ghi nhật ký, và được **thống kê riêng** trong `KPI-03`.
   - **Không được công nhận:** ghi chú thủ công đơn thuần không kèm bằng chứng nhóm 1 hoặc nhóm 2.
   - **Khi không gian làm việc chưa tích hợp kênh nào** sinh được bằng chứng nhóm 1, cơ chế **thu hồi tự động tại `BR-31.7` không được kích hoạt** — hệ thống chỉ nhắc nhở và ghi vào báo cáo tồn đọng.
 
   **Lý do nghiệp vụ:** Nếu ghi chú tay được tính, nhân viên chỉ cần gõ "đã gọi, không bắt máy" là đạt cam kết, và `KPI-03` đạt trên giấy trong khi khách chưa được liên hệ. Ngược lại, thu hồi khách khỏi người đang thực sự làm việc chỉ vì hệ thống không nhìn thấy công việc đó sẽ khiến khách nhận cuộc gọi thứ hai từ cùng công ty.
+
+- **`BR-31.9` (Hàng đợi khách hàng tiềm năng và đơn vị tiếp nhận):** Phân hệ khai báo hàng đợi của mình theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-35.10` – `BR-35.14`:
+  - **(a) Nguồn và đơn vị tiếp nhận:** mỗi nguồn sinh khách hàng tiềm năng không có người tạo trực tiếp — từng biểu mẫu website, từng tích hợp từ hệ thống ngoài, từng trợ lý trò chuyện tự động, từng nguồn quảng cáo, từng kênh hội thoại sinh Hồ sơ Khách hàng Tạm — có đúng một **đơn vị tiếp nhận**, tùy chọn "gồm các đơn vị con". Nguồn mới nhận đơn vị tiếp nhận mặc định theo loại nguồn (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `CFG-35-01`, tìm từ Đơn vị chính của người tạo nguồn lên đơn vị gốc); chọn đơn vị khác, đổi đơn vị tiếp nhận của nguồn đang có, bật hay tắt "gồm các đơn vị con" chỉ do Người có toàn quyền thực hiện (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-35.12`). Nguồn chưa có đơn vị tiếp nhận không kích hoạt hay công khai được. Lô nhập khẩu vào hàng đợi khai báo đơn vị tiếp nhận theo `BR-23.5`.
+  - **(b) Loại bản ghi:** mọi khách hàng tiềm năng đi vào hàng đợi là **bản ghi chờ phân công** — thuộc đơn vị tiếp nhận cho tới khi có Người phụ trách, sau đó thuộc đơn vị theo Người phụ trách (`BR-01.3`). Phân hệ không có bản ghi công việc. Khách trùng với một bản ghi đã có Người phụ trách Đang hoạt động hoặc Tạm ngưng không vào hàng đợi (`BR-31.6`).
+  - **(c) Thấy và nhận việc:** mọi thành viên của đơn vị tiếp nhận — Đơn vị chính hoặc kiêm nhiệm ở bất kỳ mức nào, cả nhánh khi bật "gồm các đơn vị con" — có ô (Khách hàng, Xem) khác Không có đều thấy khách chưa có Người phụ trách trong hàng đợi, bất kể mức Xem. **Nhận việc** là thao tác Gán cho chính mình, chỉ khả dụng khi ô (Khách hàng, Gán) của người đó khác Không có (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-35.11`); người có ô Gán bao phủ đơn vị tiếp nhận gán được cho người khác, chỉ khi đạt `BR-34.1` — ô Gán mức Chỉ của mình chỉ cho nhận việc về mình.
+  - **(d) Giai đoạn chưa chốt và trả về hàng đợi:** bản ghi chờ phân công được coi là **chưa chốt** khi chưa từng được Chuyển đổi Tiềm năng thành công (`FEAT-14`) và đang ở giai đoạn tiền bán hàng khác Opportunity. Chỉ bản ghi chưa chốt mới áp được "Trả về hàng đợi" khi người phụ trách chuyển phòng, bị tạm ngưng hay rời workspace (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-35.13`): bản ghi về hàng đợi hiện tại của nguồn đã sinh ra nó; nguồn không còn thì về đơn vị tiếp nhận mặc định của loại nguồn đó, tìm từ đơn vị bản ghi đang thuộc lên gốc; bản ghi nhập vào hàng đợi một đơn vị (`BR-23.5`) về hàng đợi đơn vị đó. Khách hàng do chính nhân viên tạo hay nhập không qua hàng đợi không có lựa chọn này.
+  - **(e) Không chuyển hàng đợi:** phân hệ không khai báo chuyển hàng đợi, vì quy tắc chuyển hàng đợi chỉ dành cho bản ghi công việc (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-35.14`). Bản ghi chờ phân công đổi đơn vị khi được gán Người phụ trách, hoặc khi Người có toàn quyền đổi đơn vị tiếp nhận của nguồn — khi đó mọi bản ghi chờ phân công chưa gán của nguồn chuyển sang đơn vị mới.
+  - **(f) Hồ sơ Khách hàng Tạm** là bản ghi chờ phân công của đơn vị tiếp nhận của kênh hội thoại sinh ra nó, và không vào phân bổ tự động cho tới khi trở thành khách hàng chính thức (`BR-01.1b`).
+
+  **Lý do nghiệp vụ:** Mọi mức truy cập tính theo Người phụ trách; một khách hàng tiềm năng chưa ai phụ trách sẽ không thuộc phạm vi của ai nếu không có đơn vị tiếp nhận, và đội kinh doanh không thấy để nhận. Nhưng một khách hàng sống nhiều năm không được mắc kẹt ở đơn vị tiếp nhận ban đầu sau khi đã có người phụ trách, nên đây là bản ghi chờ phân công chứ không phải bản ghi công việc. Chỉ khách chưa chuyển đổi mới quay lại hàng đợi được, vì khách đã vào thương vụ cần một người nhận bàn giao cụ thể chứ không phải một hàng chờ.
+
+- **`BR-31.10` (Phân bổ tự động là thao tác Gán):** Phân bổ tự động (`BR-31.1` – `BR-31.7`) là thao tác Gán do Hệ thống thực hiện thay **người chịu trách nhiệm quy tắc** — người tạo hoặc sửa quy tắc gần nhất:
+  - **(a)** Một quy tắc gắn với hàng đợi của một đơn vị tiếp nhận. Người cấu hình chỉ tạo quy tắc cho hàng đợi mà ô (Khách hàng, Gán) của mình bao phủ đơn vị tiếp nhận, và chỉ chọn người nhận nằm trong phạm vi ô Gán đó — kể cả với quy tắc theo vùng địa lý (`BR-31.2`) và theo ngành nghề (`BR-31.3`).
+  - **(b)** Mỗi lượt phân bổ chỉ giao cho người nhận nằm trong **phần giao** của phạm vi ô Gán lúc thiết lập và phạm vi hiện tại của người chịu trách nhiệm quy tắc (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-35.8`). Người nhận phải Đang hoạt động, khả dụng (`BR-34.6`) và có ô (Khách hàng, Sửa) khác Không có (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-43.2`); người không còn thỏa bị bỏ khỏi vòng chia, và quy tắc không còn người nhận nào thì khách nằm lại trong hàng đợi chưa phân công (`BR-31.4`).
+  - **(c)** Khi người chịu trách nhiệm quy tắc bị Tạm ngưng hoặc rời workspace, quy tắc tạm dừng — khách mới nằm lại trong hàng đợi chưa phân công — và người phụ trách đơn vị tiếp nhận cùng Người có toàn quyền được thông báo để chuyển người chịu trách nhiệm hoặc tắt quy tắc; quy tắc là một tiến trình chạy thay người đó trong danh sách bước rời workspace (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `FEAT-43`). Kích hoạt lại người đó không tự chạy lại quy tắc.
+  - **(d)** Thu hồi và phân bổ lại khi quá hạn (`BR-31.7`) chịu cùng giới hạn.
+
+  **Lý do nghiệp vụ:** Phân bổ là giao bản ghi cho người khác. Nếu không giới hạn theo ô Gán, người cấu hình quy tắc giao được khách cho những người, ở những đơn vị mà chính họ không được phép giao — tự nới phạm vi qua một tiến trình chạy ngầm. Khi người đặt quy tắc đã bị thu hẹp quyền hoặc nghỉ việc, quy tắc không được tiếp tục giao việc nhân danh họ.
 
 **Tiêu chí Chấp nhận:**
 
@@ -1050,10 +1317,23 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | --- | --- | --- | --- |
 | `AC-31.1.1` | Nhóm có 3 nhân viên khả dụng, không có quy tắc vùng/ngành khớp | 3 khách hàng tiềm năng mới lần lượt đổ về | Mỗi nhân viên nhận đúng 1 khách |
 | `AC-31.1.2` | Một trong 3 nhân viên đang nghỉ phép (không khả dụng) | 2 khách mới đổ về | Hai khách được chia cho 2 nhân viên còn lại; người nghỉ phép không nhận |
-| `AC-31.2.1` | Có nhân viên phụ trách Miền Trung đang khả dụng | Khách mới từ biểu mẫu website có tỉnh/thành Đà Nẵng | Khách được gán cho nhân viên Miền Trung, không qua chia vòng |
+| `AC-31.2.1` | Biểu mẫu website có đơn vị tiếp nhận "Kinh doanh" bật "gồm các đơn vị con"; quy tắc vùng địa lý do Quản lý M chịu trách nhiệm, (Khách hàng, Gán) của M = Đơn vị và các đơn vị con tại "Kinh doanh", bao phủ "Kinh doanh – Miền Trung"; có nhân viên Miền Trung đang khả dụng | Khách mới từ biểu mẫu có tỉnh/thành Đà Nẵng | Khách được gán cho nhân viên Miền Trung, không qua chia vòng; khách thuộc Đơn vị chính của người nhận |
 | `AC-31.3b.1` | Tenant đặt thứ tự Ngành nghề trước Vùng địa lý | Khách mới khớp cả quy tắc vùng và quy tắc ngành | Khách được gán theo quy tắc ngành |
-| `AC-31.4.1` | Khách mới không có thông tin khớp quy tắc nào và không còn nhân viên khả dụng | Khách đổ về | Khách vào hàng đợi "Chưa phân công"; Quản lý Kinh doanh nhận thông báo |
+| `AC-31.4.1` | Biểu mẫu có đơn vị tiếp nhận "Kinh doanh – Hà Nội"; khách mới không có thông tin khớp quy tắc nào và không còn nhân viên khả dụng | Khách đổ về | Khách nằm trong hàng đợi "Chưa phân công" của "Kinh doanh – Hà Nội"; người phụ trách đơn vị nhận thông báo |
+| `AC-31.4.2` | Tiếp nối AC-31.4.1; nhân viên K thuộc "Kinh doanh – Hà Nội", (Khách hàng, Xem) = Chỉ của mình, (Khách hàng, Gán) = Chỉ của mình | K mở hàng đợi, bấm "Nhận việc" | K thấy khách dù mức Xem hẹp; sau khi nhận, K là Người phụ trách và khách thuộc Đơn vị chính của K |
+| `AC-31.4.3` | Thành viên "Kinh doanh – Hà Nội" có (Khách hàng, Gán) = Không có | Mở hàng đợi | Thấy khách chưa phân công; nút "Nhận việc" bị vô hiệu kèm giải thích |
 | `AC-31.5.1` | Nhân viên Kinh doanh | Mở màn hình quy tắc phân bổ | Không sửa được quy tắc |
+| `AC-31.9.1` | Người tạo biểu mẫu mới có Đơn vị chính ở chi nhánh Đà Nẵng; mặc định loại nguồn "biểu mẫu website" ghi đè cho chi nhánh là "Kinh doanh – Đà Nẵng" | Tạo biểu mẫu | Đơn vị tiếp nhận "Kinh doanh – Đà Nẵng" được chọn sẵn; chọn đơn vị khác bị vô hiệu kèm giải thích cần Người có toàn quyền |
+| `AC-31.9.2` | Biểu mẫu chưa có đơn vị tiếp nhận và không có mặc định nào | Bấm công khai biểu mẫu | Nút công khai bị vô hiệu kèm giải thích cần đặt đơn vị tiếp nhận |
+| `AC-31.9.3` | Khách tiềm năng T từ biểu mẫu do H nhận việc, chưa chuyển đổi, đang ở MQL; H bị tạm ngưng | Người thực hiện chọn "Trả về hàng đợi" cho khách hàng của H | T không còn Người phụ trách và hiện trong hàng đợi hiện tại của biểu mẫu đó |
+| `AC-31.9.4` | Khách K do H tự tạo bằng tay; H rời workspace | Mở bước bàn giao khách hàng của H | Không có lựa chọn "Trả về hàng đợi" cho K; K phải có người nhận |
+| `AC-31.9.5` | Khách T đã được Chuyển đổi Tiềm năng, đang ở Opportunity, đến từ biểu mẫu | Người phụ trách T bị tạm ngưng; mở lựa chọn xử lý bản ghi | Không có "Trả về hàng đợi" cho T; chỉ giữ nguyên hoặc chuyển tạm cho người xử lý thay |
+| `AC-31.9.6` | Người có ô Gán bao phủ khách chờ phân công T | Tìm thao tác "Chuyển sang hàng đợi khác" trên T | Không có thao tác này; chỉ có gán Người phụ trách |
+| `AC-31.9.7` | Quản trị viên đổi đơn vị tiếp nhận của biểu mẫu từ "Kinh doanh – Hà Nội" sang "Kinh doanh – Miền Bắc"; còn 12 khách chưa gán | Xác nhận | 12 khách chuyển sang hàng đợi "Kinh doanh – Miền Bắc"; màn hình đã hiển thị trước số bản ghi và số người có phạm vi thay đổi |
+| `AC-31.10.1` | Quản lý M có (Khách hàng, Gán) = Đơn vị và các đơn vị con tại "Miền Bắc" | M tạo quy tắc vùng địa lý và tìm chọn một nhân viên thuộc "Miền Nam" làm người nhận | Nhân viên "Miền Nam" không có trong danh sách chọn, kèm giải thích ngoài phạm vi ô Gán |
+| `AC-31.10.2` | Quy tắc do M thiết lập; sau đó ô Gán của M bị thu hẹp về Đơn vị của mình, loại khỏi phạm vi người nhận N ở đơn vị con | Khách mới khớp quy tắc | Khách không được giao cho N; được giao cho người nhận còn trong phần giao, hoặc nằm lại hàng đợi chưa phân công |
+| `AC-31.10.3` | M bị tạm ngưng | Khách mới khớp quy tắc của M | Quy tắc tạm dừng; khách nằm lại hàng đợi chưa phân công; người phụ trách đơn vị tiếp nhận và Người có toàn quyền nhận thông báo |
+| `AC-31.10.4` | Người nhận P trong vòng chia có (Khách hàng, Sửa) = Không có | Khách mới đổ về | P không được giao khách nào |
 | `AC-31.6.1` | Chị Mai do nhân viên A phụ trách | Một khách mới từ biểu mẫu website có email trùng chị Mai | Không có bản ghi mới; yêu cầu được ghi vào dòng thời gian của chị Mai; A nhận thông báo; một "Yêu cầu chờ xử lý" được tạo |
 | `AC-31.6.2` | Tiếp nối AC-31.6.1, A không xử lý quá thời hạn | Quá hạn | Quản lý Kinh doanh nhận leo thang và chỉ định được người xử lý thay; Người phụ trách chính vẫn là A |
 | `AC-31.6.3` | A đang khai báo nghỉ phép, người xử lý thay là B | Một yêu cầu mới của khách do A phụ trách đổ về | Yêu cầu chờ xử lý được chuyển ngay cho B |
@@ -1078,11 +1358,23 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Tiến trình Hệ thống (ghi nhận), Nhân viên Marketing (xem báo cáo), Quản lý Marketing (phân tích hiệu quả đầu tư).
 
+**Điều kiện tiên quyết:** Không có cho việc ghi nhận; xem báo cáo cần quyền quản trị Xem báo cáo nguồn gốc (`BR-32.4`).
+
+**Luồng chính:**
+
+1. Khi bản ghi được tạo, hệ thống ghi kênh nguồn gốc và tham số chiến dịch một lần (`BR-32.1` – `BR-32.3`).
+2. Người dùng xem trường nguồn gốc trên hồ sơ; người có quyền mở báo cáo phân tích nguồn gốc.
+3. Khi có lỗi kỹ thuật diện rộng, Người có toàn quyền sửa nguồn gốc theo lô (`BR-32.3b`).
+
 **Quy tắc nghiệp vụ:**
 
 - **`BR-32.1` (Kênh nguồn gốc):** Mỗi khách hàng ghi nhận **Kênh nguồn gốc chính** (Phụ lục A, A.7, gồm cả giá trị "Không xác định" dùng cho `KPI-08`) và **Chi tiết kênh con**.
 
+  **Lý do nghiệp vụ:** Không biết khách đến từ đâu thì không đo được kênh nào hiệu quả; giá trị "Không xác định" tách riêng để đo được mức thiếu dữ liệu (`KPI-08`) thay vì lẫn vào một kênh có thật.
+
 - **`BR-32.2` (Tham số chiến dịch):** Khi khách được tạo qua biểu mẫu website hoặc tích hợp từ hệ thống ngoài, hệ thống tự động ghi nhận toàn bộ tham số chiến dịch (UTM) đi kèm: nguồn, phương tiện, tên chiến dịch, nội dung và từ khóa.
+
+  **Lý do nghiệp vụ:** Tham số chiến dịch chỉ có giá trị khi được ghi tự động đúng lúc khách đến; nhập tay sau đó thì vừa sai vừa thiếu.
 
 - **`BR-32.3` (Không ghi đè nguồn gốc):** Kênh nguồn gốc và tham số chiến dịch được ghi nhận **một lần** tại thời điểm tạo bản ghi và **không được ghi đè** sau đó bởi bất kỳ nguồn nào — kể cả biểu mẫu gửi lại, nhập khẩu theo chiến lược cập nhật hay gộp bản ghi (`BR-19.5`) — theo nguyên tắc **ghi nhận điểm chạm đầu tiên**. Người dùng nghiệp vụ chỉ xem, không sửa.
 
@@ -1092,7 +1384,9 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
   **Lý do nghiệp vụ:** Không có ngoại lệ này thì cách duy nhất để chữa số liệu sai là xóa và tạo lại bản ghi, làm mất dòng thời gian, điểm tiềm năng và lịch sử giai đoạn — thiệt hại lớn hơn nhiều so với việc sai nguồn.
 
-- **`BR-32.4` (Quyền xem báo cáo nguồn gốc):** Chỉ Nhân viên Marketing trở lên được xem báo cáo phân tích nguồn gốc khách hàng và phân bổ doanh thu theo kênh; các vai trò khác chỉ xem trường nguồn gốc trên hồ sơ.
+- **`BR-32.4` (Quyền xem báo cáo nguồn gốc):** Chỉ người giữ quyền quản trị **Xem báo cáo nguồn gốc** (Mục 5.2; mặc định ở Marketing và Quản lý Marketing) và Người có toàn quyền được xem báo cáo phân tích nguồn gốc khách hàng và phân bổ doanh thu theo kênh; người khác chỉ xem trường nguồn gốc trên hồ sơ mà mình xem được.
+
+  **Lý do nghiệp vụ:** Báo cáo phân bổ doanh thu theo kênh cộng gộp dữ liệu của toàn tổ chức, kể cả của các đơn vị người xem không được thấy từng bản ghi; nó chỉ dành cho người chịu trách nhiệm ngân sách tiếp thị.
 
 **Tiêu chí Chấp nhận:**
 
@@ -1118,17 +1412,29 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Tiến trình Hệ thống (tính điểm), Quản lý Marketing (cấu hình), Nhân viên Kinh doanh và Marketing (sử dụng điểm để ưu tiên).
 
+**Điều kiện tiên quyết:** Không có cho việc tính điểm; sửa cấu hình cần quyền quản trị Cấu hình chấm điểm tiềm năng (`BR-15.4`).
+
+**Luồng chính:**
+
+1. Hệ thống tính Điểm Hồ sơ khi hồ sơ thay đổi và cộng Điểm Tương tác khi có hành vi (`BR-15.1` – `BR-15.3`).
+2. Khi điểm vượt ngưỡng, hệ thống thăng hạng hoặc gắn nhãn theo `BR-15.5`, kèm các chốt an toàn `BR-15.7`.
+3. Người có quyền chỉnh trọng số và ngưỡng; thay đổi áp từ lượt tính kế tiếp (`BR-15.4`).
+
 **Quy tắc nghiệp vụ:**
 
 - **`BR-15.1` (Điểm Hồ sơ):** Với khách loại B2B, mặc định: có email doanh nghiệp hợp lệ +10; có số điện thoại di động +10; có chức danh quản lý cấp cao (Giám đốc, Phó Chủ tịch, lãnh đạo cấp cao) +20; thuộc ngành nghề mục tiêu +15. Khách loại B2C áp bộ tiêu chí riêng, không dùng "email doanh nghiệp" và "chức danh quản lý" (`BR-01.6`).
 
+  **Lý do nghiệp vụ:** Khách có hồ sơ phù hợp tập khách mục tiêu đáng được ưu tiên ngay cả trước khi tương tác; tiêu chí B2B không áp được cho khách cá nhân, nên dùng chung sẽ chấm sai cả một tập khách.
+
 - **`BR-15.2` (Điểm Tương tác):** Mặc định: mở email chiến dịch +5 mỗi lần; nhấp liên kết trong email/tin nhắn +10 mỗi lần; gửi tin nhắn qua trò chuyện trực tuyến hoặc ứng dụng nhắn tin +15; đặt lịch hẹn hoặc tham gia buổi trình diễn sản phẩm +30.
+
+  **Lý do nghiệp vụ:** Hành vi thật thể hiện mức quan tâm thật; mức điểm tăng theo độ cam kết của hành vi — đặt lịch hẹn nói nhiều hơn mở một email.
 
 - **`BR-15.3` (Trần điểm & tần suất cộng điểm):** Điểm tiềm năng bằng Điểm Hồ sơ cộng Điểm Tương tác (sau khi đã áp suy giảm theo `FEAT-16`), chặn trong khoảng 0–100. Mỗi loại hành vi tương tác chỉ được cộng điểm **tối đa một lần mỗi ngày** cho mỗi khách hàng.
 
   **Lý do nghiệp vụ:** Không giới hạn tần suất thì một khách mở cùng một email mười lần (hoặc một công cụ tự động mở thư) sẽ thành "khách nóng" giả, chiếm chỗ ưu tiên của khách thật.
 
-- **`BR-15.4` (Cấu hình quy tắc chấm điểm):** Các mức điểm tại `BR-15.1`, `BR-15.2` là giá trị mặc định, cấu hình được theo không gian làm việc. Quản lý Marketing, Quản trị viên và Chủ sở hữu được sửa trọng số, thêm/xóa tiêu chí qua màn hình Cấu hình Quy tắc Chấm điểm — khớp ma trận Mục 5 dòng `FEAT-15`. Nhân viên Marketing chỉ xem, không sửa. Mọi thay đổi được ghi nhật ký và **áp dụng từ lượt tính điểm kế tiếp**, không tính lại điểm đã có.
+- **`BR-15.4` (Cấu hình quy tắc chấm điểm):** Các mức điểm tại `BR-15.1`, `BR-15.2` là giá trị mặc định, cấu hình được theo không gian làm việc. Người giữ quyền quản trị **Cấu hình chấm điểm tiềm năng** (Mục 5.2; mặc định ở Quản lý Marketing) và Người có toàn quyền được sửa trọng số, thêm/xóa tiêu chí qua màn hình Cấu hình Quy tắc Chấm điểm — khớp ma trận Mục 5 dòng `FEAT-15`. Người chỉ giữ quyền **Xem cấu hình chấm điểm** (mặc định ở Marketing) chỉ xem, không sửa. Mọi thay đổi được ghi nhật ký và **áp dụng từ lượt tính điểm kế tiếp**, không tính lại điểm đã có.
 
   **Lý do nghiệp vụ:** Tính lại toàn bộ điểm cũ sau mỗi lần chỉnh trọng số sẽ làm hàng loạt khách đột ngột vượt hoặc rơi khỏi ngưỡng, phát sinh thông báo và thăng hạng hàng loạt không phản ánh hành vi thật nào.
 
@@ -1142,6 +1448,8 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | **Dưới Ngưỡng MQL** | Tổng **< 40** | Không tự động thăng hạng; tiếp tục nuôi dưỡng qua chiến dịch định kỳ |
 
   Việc thăng hạng tự động tuân thủ ma trận tại `FEAT-12` — ma trận đã cho phép Subscriber → MQL, Lead → MQL và Nurturing → MQL.
+
+  **Lý do nghiệp vụ:** Ngưỡng gắn điểm với hành động cụ thể của đội ngũ: dưới ngưỡng thì Marketing tiếp tục nuôi dưỡng, đạt Ngưỡng SQL thì chuyển kinh doanh thẩm định; không có ngưỡng chung thì mỗi người tự đặt mốc và hai đội tranh cãi về chất lượng khách hàng tiềm năng.
 
 - **`BR-15.6` (Nguyên tắc chuyển giao Marketing → Kinh doanh):** Hệ thống chỉ tự động thăng hạng tối đa đến MQL. Bước MQL → SQL bắt buộc do con người (nhân viên kinh doanh thẩm định) thực hiện. Khách đạt Ngưỡng SQL nhưng chưa được thẩm định trong thời hạn cam kết được xử lý theo `BR-31.7`. Bước lên Opportunity do sự kiện Cơ hội bán hàng (`BR-12.9`) không thuộc phạm vi hạn chế này.
 
@@ -1184,13 +1492,27 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Tiến trình Hệ thống (chạy hằng ngày), Quản lý Kinh doanh (xử lý danh sách đề xuất nuôi dưỡng), Quản lý Marketing (cấu hình mốc và tỷ lệ).
 
+**Điều kiện tiên quyết:** Không có cho tiến trình suy giảm; chuyển khách sang Nurturing hay về Lead cần quyền quản trị Duyệt vòng đời khách hàng (`BR-16.4`, `BR-16.5`).
+
+**Luồng chính:**
+
+1. Tiến trình chạy hằng ngày, giảm Điểm Tương tác của khách không tương tác qua các mốc (`BR-16.1`, `BR-16.2`).
+2. Khi tổng điểm rơi dưới Ngưỡng MQL, hệ thống gắn cảnh báo và đưa khách thuộc diện vào danh sách đề xuất (`BR-16.4`).
+3. Người có quyền xử lý danh sách đề xuất; khách hoạt động trở lại được đưa về phễu (`BR-16.5`).
+
 **Quy tắc nghiệp vụ:**
 
 - **`BR-16.1` (Mốc suy giảm thứ nhất):** Tiến trình hệ thống chạy lúc **02:00 hằng ngày** theo múi giờ không gian làm việc (Mục 2.3). Nếu khách hàng không có tương tác nào trong **14 ngày**, Điểm Tương tác bị giảm **10%** so với điểm hiện có, làm tròn xuống số nguyên. Mốc 14 ngày chỉ trừ **một lần** cho tới khi chạm mốc thứ hai, không trừ lặp lại mỗi ngày.
 
+  **Lý do nghiệp vụ:** Điểm không giảm theo thời gian thì một khách quan tâm từ năm ngoái vẫn đứng đầu hàng đợi; trừ một lần mỗi mốc để điểm không về 0 chỉ sau vài tuần im lặng.
+
 - **`BR-16.2` (Mốc suy giảm thứ hai):** Nếu không có tương tác trong **30 ngày**, Điểm Tương tác bị giảm tiếp **25%** so với điểm hiện có, làm tròn xuống. Mỗi mốc áp dụng một lần trong mỗi khoảng không tương tác liên tục; khi khách có tương tác mới, việc đếm ngày không tương tác bắt đầu lại từ đầu. Các mốc và tỷ lệ là tham số cấu hình (Phụ lục B, `CFG-16-01`).
 
+  **Lý do nghiệp vụ:** Im lặng một tháng là dấu hiệu nguội rõ hơn hai tuần nên mức giảm lớn hơn; đếm lại từ đầu khi khách tương tác để phản ánh đúng sự quay lại.
+
 - **`BR-16.3` (Sàn điểm):** Điểm tiềm năng không bao giờ nhận giá trị âm; sàn là 0.
+
+  **Lý do nghiệp vụ:** Điểm âm không có nghĩa nghiệp vụ và làm khách mất nhiều tương tác mới mới vượt lại ngưỡng, không phản ánh hành vi hiện tại.
 
 - **`BR-16.4` (Ảnh hưởng đến giai đoạn vòng đời):** Điểm suy giảm **không tự động hạ giai đoạn vòng đời** ở bất kỳ giai đoạn nào. Khi tổng điểm rơi xuống dưới Ngưỡng MQL, hệ thống xử lý theo giai đoạn:
   - **Subscriber, Lead, MQL, SQL:** gắn cảnh báo **"Đã nguội"** trên hồ sơ và đưa vào **danh sách đề xuất chuyển Nurturing**. Việc chuyển sang Nurturing do Quản lý Kinh doanh quyết định, **bắt buộc chọn lý do từ A.16**. Bước chuyển này không thuộc `BR-12.7`, vì Nurturing nằm ngoài phễu tuyến tính.
@@ -1227,15 +1549,25 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 #### FEAT-17 — Nhận diện & Kiểm tra Trùng lặp Khách hàng
 
-**Mô tả nghiệp vụ:** Cảnh báo trùng lặp tức thì khi người dùng đang nhập thông tin, và cung cấp công cụ quét trùng lặp toàn không gian làm việc cho Quản trị viên và Quản trị Chất lượng Dữ liệu.
+**Mô tả nghiệp vụ:** Cảnh báo trùng lặp tức thì khi người dùng đang nhập thông tin, và cung cấp công cụ quét trùng lặp toàn không gian làm việc cho người giữ quyền quản trị Quét trùng lặp toàn workspace (mặc định Người có toàn quyền; doanh nghiệp cấp cho người làm Quản trị Chất lượng Dữ liệu).
 
 **Vai trò sử dụng chính:** Mọi người dùng tạo hoặc sửa khách hàng, Quản trị viên, Quản trị Chất lượng Dữ liệu.
+
+**Điều kiện tiên quyết:** Không có cho cảnh báo khi tạo/sửa; công cụ quét toàn không gian làm việc cần quyền quản trị Quét trùng lặp toàn workspace (Mục 5.2).
+
+**Luồng chính:**
+
+1. Khi người dùng nhập email hoặc số điện thoại, hệ thống so khớp theo hai mức tin cậy (`BR-17.1`) ngay khi rời ô.
+2. Hệ thống chặn hoặc cảnh báo theo chính sách (`BR-17.2`), và với bản ghi ngoài phạm vi thì hiển thị thông tin tối thiểu kèm ba hành động (`BR-17.3`).
+3. Người có quyền chạy công cụ quét, xem các cụm trùng và tỷ lệ trùng lặp (`BR-17.4`).
 
 **Quy tắc nghiệp vụ:**
 
 - **`BR-17.1` (Tiêu chí trùng lặp & mức độ tin cậy):**
   - **Tiêu chí chắc chắn:** trùng khớp chính xác địa chỉ email, hoặc số điện thoại đã chuẩn hóa (`BR-01.2`).
   - **Tiêu chí tham khảo:** trùng khớp họ tên kết hợp tên công ty (với khách B2C: họ tên kết hợp ngày sinh hoặc địa chỉ — `BR-01.6`). Tiêu chí này có tỷ lệ nhận diện sai cao với dữ liệu tiếng Việt (hai người khác nhau cùng tên tại một doanh nghiệp lớn; "Cty CP ABC" và "ABC Corp" là một công ty nhưng không khớp chữ), nên **tuyệt đối không dùng làm căn cứ gộp tự động** và **không bao giờ dùng để chặn tạo bản ghi**.
+
+  **Lý do nghiệp vụ:** Email và số điện thoại đã chuẩn hóa là định danh gần như duy nhất của một người, nên đủ tin cậy để chặn; họ tên thì không, và dùng nó để chặn hay gộp tự động sẽ nhập hai người khác nhau làm một — sai sót khó đảo ngược nhất của phân hệ.
 
 - **`BR-17.2` (Chính sách xử lý khi phát hiện trùng):** Tham số cấu hình (Phụ lục B, `CFG-17-01`), mặc định chuẩn hệ thống:
   - **Trùng theo Tiêu chí chắc chắn → chặn tạo bản ghi mới.** Hệ thống không cho lưu, thay vào đó dẫn người dùng tới bản ghi hiện hữu để bổ sung thông tin hoặc ghi nhận tương tác mới. Tenant đổi được sang "Chỉ cảnh báo, vẫn cho lưu"; khi đó mỗi lượt bỏ qua cảnh báo được ghi nhật ký.
@@ -1246,22 +1578,29 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 - **`BR-17.2b` (Các nguồn thực tế sinh ra bản ghi trùng):** Chặn tại màn hình tạo mới **không** loại bỏ được bản ghi trùng khỏi hệ thống, vì bản ghi trùng còn đến từ: nhập khẩu hàng loạt theo chiến lược người dùng chọn (`BR-23.3`); tích hợp và các kênh tự động có dữ liệu lệch định dạng; dữ liệu lịch sử tạo trước khi áp chính sách hoặc trong thời gian tenant cấu hình "chỉ cảnh báo"; trùng theo Tiêu chí tham khảo (vốn không bao giờ bị chặn); bản ghi từng được đánh dấu Định danh dùng chung nhưng sau đó xác định lại là cùng một người. Đây là lý do các tính năng gộp bản ghi (`FEAT-18`, `19`, `20`) vẫn cần thiết.
 
+  **Lý do nghiệp vụ:** Nếu coi chặn ở màn hình tạo mới là đủ, doanh nghiệp sẽ bỏ công cụ gộp và khối dữ liệu trùng từ nhập khẩu, tích hợp và lịch sử không bao giờ được dọn, làm `KPI-01` không đạt được.
+
 - **`BR-17.2c` (Cam kết thời gian cho ba loại yêu cầu tại `BR-17.3`):** Ba hành động tại `BR-17.3` dùng chung thời hạn với `BR-31.7` — mặc định **4 giờ làm việc** (Phụ lục B, `CFG-31-01`) — nhưng hành vi khi quá hạn khác nhau:
   - **(i) Yêu cầu quyền truy cập:** quá hạn thì leo thang lên Quản lý Kinh doanh của Người phụ trách; nếu Quản lý cũng không xử lý trong thời hạn thứ hai, hệ thống **tự cấp quyền đọc tạm có ghi nhật ký** theo cơ chế `BR-35.4` (cột (C) của `BR-04.3`). Quyền tự cấp này có hiệu lực **7 ngày** hoặc hết sớm hơn khi Người phụ trách/Quản lý xử lý yêu cầu, tùy điều kiện nào đến trước; hết hạn mà yêu cầu chưa được xử lý thì yêu cầu đóng với lý do **"Không được xử lý"** và người yêu cầu phải tạo yêu cầu mới.
-  - **(ii) Đề nghị chuyển giao:** chỉ leo thang lên Quản lý Kinh doanh, **không** có hành vi tự động nào, vì chuyển giao quyền phụ trách luôn cần quyết định của con người (`FEAT-34`).
+  - **(ii) Yêu cầu nhận bàn giao:** chỉ leo thang, **không** có hành vi tự động nào, vì chuyển giao quyền phụ trách luôn cần quyết định của con người (`FEAT-34`). Thứ tự: Người phụ trách → quản lý trực tiếp của Người phụ trách → người có ô (Khách hàng, Gán) bao phủ cả đơn vị của bản ghi lẫn đơn vị của người yêu cầu (gần nhất trong cây tổ chức) → Người có toàn quyền; ở mỗi bậc, người không đạt `BR-34.1` với người yêu cầu chỉ chuyển tiếp lên bậc kế. Yêu cầu không ai xử lý sau khi bậc cuối cũng quá thời hạn được đóng với lý do **"Không được xử lý"**; người yêu cầu được báo.
   - **(iii) Đề nghị gộp:** leo thang lên Quản trị Chất lượng Dữ liệu hoặc Quản trị viên, **không** có hành vi tự động nào, vì gộp tác động khó đảo ngược lên đồng thuận và giai đoạn của cả hai bản ghi (`BR-19.6`, `BR-19.8`).
 
   **Lý do nghiệp vụ:** Nếu yêu cầu không có thời hạn và không ai buộc phải trả lời, nhân viên đang có khách trước mặt sẽ bỏ dùng và quay về cách lách tại `BR-17.2`. Quyền tự cấp phải có hạn, nếu không một quyền cấp vì im lặng sẽ tồn tại vĩnh viễn.
 
 - **`BR-17.3` (Hiển thị bản ghi ngoài phạm vi dữ liệu):** Áp dụng cho **cả hai** tình huống: (i) bản ghi trùng được cảnh báo khi tạo/sửa nhưng nằm ngoài phạm vi dữ liệu của người dùng; (ii) người dùng mở trực tiếp một bản ghi ngoài phạm vi (kể cả khi vừa mất quyền đọc tạm theo `BR-35.4` (d)). Hệ thống **không** hiển thị "không có quyền truy cập" mà hiển thị **thông tin tối thiểu để nhận diện**: tên khách hàng dạng viết tắt, tên Người phụ trách, Đơn vị tổ chức phụ trách và thời điểm tương tác gần nhất, kèm **ba hành động**:
-  - **"Yêu cầu quyền truy cập"** (xin quyền đọc hoặc quyền sửa) và **"Đề nghị chuyển giao"** — gửi tới Người phụ trách hiện hữu và Quản lý Kinh doanh của họ;
+  - **"Yêu cầu quyền truy cập"** (xin quyền đọc hoặc quyền sửa) — gửi tới Người phụ trách hiện hữu và quản lý trực tiếp của họ;
+  - **"Yêu cầu nhận bàn giao"** — người dùng xin nhận khách về mình phụ trách; khác với đề nghị chuyển do chính Người phụ trách khởi tạo (`BR-34.1b`). Chỉ người có ô (Khách hàng, Gán) đạt `BR-34.1` với **người yêu cầu là người nhận** mới chấp thuận được; bất kỳ ai nhận yêu cầu mà không đạt `BR-34.1` với người yêu cầu — kể cả Người phụ trách hiện hữu chỉ có ô Gán mức Chỉ của mình — không chấp thuận được mà chỉ **chuyển tiếp** lên theo `BR-17.2c` (ii);
   - **"Đề nghị gộp"** — gửi tới **Quản trị Chất lượng Dữ liệu hoặc Quản trị viên**; Người phụ trách hiện hữu chỉ nhận thông báo để biết, không phải người duyệt.
 
-  Cả ba tạo ra một bản ghi yêu cầu có vòng đời và cam kết thời gian theo `BR-35.3b`.
+  Mọi hành động tạo ra một bản ghi yêu cầu có vòng đời và cam kết thời gian theo `BR-35.3b`.
 
-  **Lý do nghiệp vụ:** Người **duy nhất** nhìn thấy trùng lặp trong vận hành là nhân viên đang làm việc với khách, nhưng quyền gộp đòi quyền Xóa mà Nhân viên Kinh doanh không có. Nếu nhân viên nhận cảnh báo trùng mà không biết là ai và không có đường báo, cách lách phổ biến nhất là thêm dấu chấm vào email để lưu cho xong — và `KPI-01` không thể đạt với khối dữ liệu lịch sử tại `BR-17.2b`. Gộp tác động lên đồng thuận và giai đoạn của cả hai bản ghi nên vượt thẩm quyền của một người phụ trách.
+  **Bản ghi bị nguồn chặn:** khi bản ghi chịu một nguồn chặn — lượt chặn trên bản ghi, chính sách Từ chối, hoặc là bản ghi giữ chỗ (`BR-23.5`) — với người dùng, hệ thống chỉ hiển thị nhãn trung lập **"Bị hạn chế truy cập"**, không có thông tin nhận diện nào (không tên viết tắt, không Người phụ trách, không đơn vị, không thời điểm tương tác), và chỉ còn hành động **"Đề nghị gộp"** gửi tới Người có toàn quyền (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-39.4`, `BR-39.6` bước 3). Áp cả khi kiểm tra trùng lặp lúc tạo bản ghi mới khớp với một bản ghi như vậy.
+
+  **Lý do nghiệp vụ:** Người **duy nhất** nhìn thấy trùng lặp trong vận hành là nhân viên đang làm việc với khách, nhưng quyền gộp đòi quyền Xóa mà Nhân viên Kinh doanh không có. Nếu nhân viên nhận cảnh báo trùng mà không biết là ai và không có đường báo, cách lách phổ biến nhất là thêm dấu chấm vào email để lưu cho xong — và `KPI-01` không thể đạt với khối dữ liệu lịch sử tại `BR-17.2b`. Gộp tác động lên đồng thuận và giai đoạn của cả hai bản ghi nên vượt thẩm quyền của một người phụ trách. Nhận bàn giao là một lượt Gán nên chỉ người có ô Gán đủ rộng mới chấp thuận được. Bản ghi bị chặn mà vẫn lộ người phụ trách hay đơn vị thì lượt chặn — vốn đặt vì lý do pháp lý hay hợp đồng — bị đọc vòng qua cảnh báo trùng.
 
 - **`BR-17.4` (Định nghĩa đo Tỷ lệ trùng lặp):** Phục vụ `KPI-01`: tỷ lệ trùng lặp = **số bản ghi dư thừa** chia cho **tổng số bản ghi đang hoạt động** — cùng đơn vị là bản ghi, không phải cặp. Các bản ghi đang hoạt động (chưa xóa mềm) khớp nhau theo Tiêu chí chắc chắn được nhóm thành từng cụm; cụm gồm *n* bản ghi đóng góp *n − 1* bản ghi dư thừa. Loại khỏi phép đo: bản ghi mang nhãn **Định danh dùng chung** (`BR-30.2`) và **Hồ sơ Khách hàng Tạm** (`BR-01.1b`). Công cụ quét trùng lặp toàn không gian làm việc hiển thị kết quả theo đúng các cụm này.
+
+  **Lý do nghiệp vụ:** Đếm theo cặp làm một cụm ba bản ghi trùng thành ba cặp và thổi phồng tỷ lệ; đếm số bản ghi dư thừa phản ánh đúng số bản ghi cần gộp bỏ. Loại định danh dùng chung và hồ sơ tạm vì chúng không phải trùng lặp cần xử lý.
 
 **Tiêu chí Chấp nhận:**
 
@@ -1275,9 +1614,14 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | `AC-17.2c.1` | Nhân viên C gửi Yêu cầu quyền truy cập, không ai phản hồi | Quá 4 giờ làm việc | Quản lý Kinh doanh của Người phụ trách nhận leo thang |
 | `AC-17.2c.2` | Tiếp nối AC-17.2c.1 | Quá thêm 4 giờ làm việc mà Quản lý không xử lý | C được cấp quyền đọc tạm, thấy hồ sơ ở mức che cột (C); lượt cấp có trong nhật ký |
 | `AC-17.2c.3` | Tiếp nối AC-17.2c.2, không ai xử lý yêu cầu | Qua 7 ngày kể từ lúc tự cấp | Quyền đọc tạm hết hiệu lực; yêu cầu đóng với lý do "Không được xử lý" |
-| `AC-17.2c.4` | Đề nghị chuyển giao không được phản hồi | Quá hai lần thời hạn | Chỉ có leo thang; Người phụ trách không đổi |
+| `AC-17.2c.4` | Yêu cầu nhận bàn giao không được phản hồi | Quá hai lần thời hạn | Chỉ có leo thang; Người phụ trách không đổi |
+| `AC-17.2c.6` | E ("Kinh doanh 2") yêu cầu nhận khách của A ("Kinh doanh 1"); quản lý trực tiếp của A chỉ có Gán bao phủ "Kinh doanh 1"; Giám đốc G có Gán bao phủ cả "Khối Kinh doanh" | Quản lý của A mở yêu cầu; sau đó không ai xử lý ở bậc G và Người có toàn quyền tới hết thời hạn | Quản lý của A chỉ chuyển tiếp được, yêu cầu tới G; khi bậc cuối quá hạn, yêu cầu đóng với lý do "Không được xử lý" và E được báo; Người phụ trách vẫn là A |
 | `AC-17.2c.5` | Đề nghị gộp không được phản hồi | Quá hai lần thời hạn | Chỉ có leo thang tới Quản trị Chất lượng Dữ liệu/Quản trị viên; hai bản ghi không bị gộp |
-| `AC-17.3.1` | Bản ghi trùng thuộc phòng khác, ngoài phạm vi người tạo | Cảnh báo trùng xuất hiện | Thấy tên viết tắt, tên Người phụ trách, đơn vị phụ trách, thời điểm tương tác gần nhất và ba hành động; không thấy "không có quyền truy cập" |
+| `AC-17.3.1` | Bản ghi trùng thuộc phòng khác, ngoài phạm vi người tạo, không chịu nguồn chặn nào | Cảnh báo trùng xuất hiện | Thấy tên viết tắt, tên Người phụ trách, đơn vị phụ trách, thời điểm tương tác gần nhất và các hành động "Yêu cầu quyền truy cập", "Yêu cầu nhận bàn giao", "Đề nghị gộp"; không thấy "không có quyền truy cập" |
+| `AC-17.3.3` | Đã có bản ghi giữ chỗ cho N với email x@ (`BR-23.5`) | Một nhân viên tạo khách mới với email x@ | Cảnh báo trùng chỉ hiển thị "Bị hạn chế truy cập", không tên viết tắt, Người phụ trách hay đơn vị; chỉ có "Đề nghị gộp", gửi tới Người có toàn quyền |
+| `AC-17.3.4` | Quản trị viên đặt lượt chặn cho nhân viên E trên khách K | E mở đường dẫn tới K | Chỉ thấy nhãn "Bị hạn chế truy cập" và "Đề nghị gộp"; không có "Yêu cầu quyền truy cập" hay "Yêu cầu nhận bàn giao" |
+| `AC-17.3.5` | E gửi "Yêu cầu nhận bàn giao" cho khách do A phụ trách; A có (Khách hàng, Gán) = Chỉ của mình | A mở yêu cầu | Không có nút chấp thuận; chỉ có "Chuyển tiếp lên" |
+| `AC-17.3.6` | Tiếp nối AC-17.3.5; quản lý Q của A có (Khách hàng, Gán) = Đơn vị và các đơn vị con bao phủ đơn vị của E | Q chấp thuận | E là Người phụ trách; nếu ô Gán của Q không bao phủ đơn vị của E thì nút chấp thuận bị vô hiệu kèm giải thích |
 | `AC-17.3.2` | Tiếp nối AC-17.3.1 | Bấm "Đề nghị gộp" | Yêu cầu được gửi tới Quản trị Chất lượng Dữ liệu hoặc Quản trị viên; Người phụ trách hiện hữu chỉ nhận thông báo |
 | `AC-17.4.1` | Không gian làm việc có 1.000 bản ghi hoạt động thuộc diện đo, trong đó một cụm 3 bản ghi trùng email và một cụm 2 bản ghi trùng số điện thoại; ngoài ra có 2 bản ghi dùng chung một email đã gắn nhãn Định danh dùng chung (không thuộc diện đo) | Quản trị viên chạy công cụ quét trùng lặp | Kết quả hiển thị 2 cụm; tỷ lệ trùng lặp là 3/1.000 = 0,3% |
 
@@ -1289,9 +1633,19 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Người có quyền Xóa trên khách hàng/doanh nghiệp, Quản trị viên, Quản trị Chất lượng Dữ liệu.
 
+**Điều kiện tiên quyết:** Người thực hiện có ô (Khách hàng, Xoá) — hoặc (Doanh nghiệp, Xoá) — bao phủ cả hai bản ghi; không bản ghi nào đang có yêu cầu chủ thể dữ liệu chưa hoàn tất (`BR-19.6`).
+
+**Luồng chính:**
+
+1. Người dùng chọn hai bản ghi và mở Xem trước gộp.
+2. Hệ thống hiển thị bảng so sánh, số bản ghi con sẽ chuyển, và các trường bị khóa kèm lý do (`BR-18.1`, `BR-18.2`).
+3. Người dùng chọn giá trị cho các trường không bị khóa, chỉ định Doanh nghiệp chính và Người phụ trách, rồi chuyển sang thực thi gộp (`FEAT-19`).
+
 **Quy tắc nghiệp vụ:**
 
 - **`BR-18.1` (So sánh hai cột):** Màn hình Xem trước hiển thị bảng so sánh hai cột của hai bản ghi và số lượng bản ghi con của từng bản ghi sẽ được chuyển giao.
+
+  **Lý do nghiệp vụ:** Gộp là thao tác khó đảo ngược; người thực hiện phải thấy trước quy mô tác động — một khách có 40 cơ hội và một khách có 0 cơ hội cần mức thận trọng khác nhau.
 
 - **`BR-18.2` (Quyền chọn trường và các trường bị cưỡng chế):** Người thực hiện chủ động chọn từng trường muốn giữ từ bản ghi nào — **trừ các trường dưới đây, hệ thống tự quyết định và khóa lựa chọn thủ công**, hiển thị rõ lý do ngay tại màn hình:
 
@@ -1330,19 +1684,35 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Người có quyền Xóa trên khách hàng/doanh nghiệp, Quản trị viên, Quản trị Chất lượng Dữ liệu.
 
+**Điều kiện tiên quyết:** Như `FEAT-18`; người thực hiện đã qua bước Xem trước.
+
+**Luồng chính:**
+
+1. Người dùng xác nhận gộp.
+2. Hệ thống chuyển toàn bộ bản ghi con sang Bản ghi Chính, áp các trường bị cưỡng chế, xóa mềm bản ghi phụ và ghi Sổ cái Hoàn tác Gộp (`BR-19.2`, `BR-19.3`) — tất cả cùng thành công hoặc cùng thất bại (`NFR-04`).
+3. Hệ thống thông báo cho các Người phụ trách liên quan (`BR-19.9`).
+
 **Quy tắc nghiệp vụ:**
 
-- **`BR-19.1` (Quyền hạn bắt buộc):** Thao tác gộp yêu cầu **quyền Xóa**, vì bản ghi phụ bị xóa mềm sau khi gộp.
+- **`BR-19.1` (Quyền hạn bắt buộc):** Thao tác gộp yêu cầu ô (Khách hàng, Xoá) — hoặc (Doanh nghiệp, Xoá) — **bao phủ cả hai bản ghi**, vì bản ghi phụ bị xóa mềm sau khi gộp và Bản ghi Chính bị thay đổi.
+
+  **Lý do nghiệp vụ:** Gộp xóa đi một bản ghi; nếu chỉ cần quyền sửa, người không được xóa vẫn xóa được bất kỳ khách nào bằng cách gộp nó vào một bản ghi khác.
 
 - **`BR-19.2` (Chuyển giao toàn bộ dữ liệu liên quan):** Toàn bộ ghi chú, công việc, vé hỗ trợ, cơ hội bán hàng, lịch sử hội thoại và mối quan hệ của bản ghi phụ được chuyển sang Bản ghi Chính.
 
+  **Lý do nghiệp vụ:** Gộp mà để lại ghi chú, vé hay cơ hội ở bản ghi phụ đã xóa mềm thì các thực thể đó mất khách hàng và sẽ bị dọn dẹp cùng bản ghi phụ.
+
 - **`BR-19.3` (Ghi sổ cái gộp):** Mỗi lần gộp tạo một mục trong Sổ cái Hoàn tác Gộp, ghi: Bản ghi Chính, bản ghi phụ, **ảnh chụp dữ liệu gốc** của bản ghi phụ tại thời điểm gộp, **ảnh chụp trạng thái đồng thuận, Hạn chế xử lý và trạng thái tiếp cận của Bản ghi Chính ngay trước khi gộp** (dùng khi hoàn tác, `BR-20.2`), người thực hiện và thời điểm.
+
+  **Lý do nghiệp vụ:** Không có ảnh chụp dữ liệu gốc thì hoàn tác gộp không biết trả bản ghi phụ về trạng thái nào; không có ảnh chụp trạng thái đồng thuận của Bản ghi Chính thì hoàn tác có thể để lại một Đồng ý mượn của bản ghi kia.
 
 - **`BR-19.4` (Xung đột vai trò liên hệ trên cùng Cơ hội):** Danh mục Vai trò Liên hệ trên Cơ hội (Phụ lục A.4) **do từng Không gian làm việc tự định nghĩa** — không phải danh sách cố định của hệ thống — và dùng chung giữa hồ sơ khách hàng và Cơ hội bán hàng, theo đúng quy định tại [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) (`BR-22.1` của tài liệu đó); tài liệu này không định nghĩa lại danh mục, chỉ đặc tả cách xử lý khi gộp. Khi hai bản ghi cùng tham gia một Cơ hội với vai trò khác nhau, hệ thống giữ vai trò đứng **trước** trong thứ tự mà Quản trị viên đã sắp xếp cho danh mục đó (thứ tự này là một thuộc tính của chính danh mục, không phải một danh sách ưu tiên riêng do phân hệ này định nghĩa).
 
   **Lý do nghiệp vụ:** Nếu danh mục do tenant tự định nghĩa nhưng thứ tự ưu tiên khi gộp lại cố định trong mã nguồn, một tenant thêm vai trò mới (ví dụ "Người gác cổng ngân sách") sẽ không có vị trí nào trong thứ tự đó — hệ thống buộc phải đoán hoặc bỏ qua vai trò mới thêm. Gắn thứ tự vào chính danh mục (do tenant sắp xếp khi tạo/sửa) giữ được cả hai mục tiêu: tenant tự do định nghĩa vai trò, và gộp bản ghi luôn có kết quả xác định.
 
 - **`BR-19.5` (Bảo toàn nguồn gốc khi gộp):** Nguồn gốc và tham số chiến dịch (`BR-32.1`, `BR-32.2`) của Bản ghi Chính luôn được giữ, **không bị thay thế** bởi dữ liệu của bản ghi phụ. Nguồn gốc của bản ghi phụ được lưu đầy đủ trong ảnh chụp tại sổ cái gộp (`BR-19.3`) để đối chiếu báo cáo phân bổ doanh thu đa nguồn, dù không hiển thị trên hồ sơ Bản ghi Chính.
+
+  **Lý do nghiệp vụ:** Nguồn gốc là điểm chạm đầu tiên (`BR-32.3`); để bản ghi phụ ghi đè sẽ làm báo cáo phân bổ ngân sách đổi theo lựa chọn ngẫu nhiên bản ghi nào làm chính.
 
 - **`BR-19.6` (Trạng thái nghiêm ngặt nhất cho đồng thuận) — sàn bắt buộc, nghĩa vụ pháp lý:** Với mỗi kênh, trạng thái đồng thuận của Bản ghi Chính sau khi gộp được xác định như sau, bất kể bản ghi nào được chọn làm chính và bất kể người dùng chọn gì ở bước Xem trước; quy tắc **không thể ghi đè thủ công**:
   - **Từ chối nhận tin** ở bất kỳ bản ghi nào thì Bản ghi Chính nhận Từ chối nhận tin. Hai trạng thái được coi là **đối lập** khi một bên là Từ chối nhận tin.
@@ -1362,6 +1732,8 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
   - **Cùng một doanh nghiệp, chức danh khác nhau:** giữ **một** liên kết, ưu tiên chức danh của liên kết có ngày bắt đầu **muộn hơn** (phản ánh vị trí hiện tại); chức danh cũ lưu vào lịch sử liên kết.
   - **Hai Doanh nghiệp chính khác nhau:** Doanh nghiệp chính của Bản ghi Chính được giữ; liên kết của bản ghi phụ trở thành liên kết phụ. Người thực hiện chỉ định lại được tại bước Xem trước.
   - **Liên kết đã kết thúc (Đã nghỉ việc):** chuyển giao nguyên trạng, không tự kích hoạt lại.
+
+  **Lý do nghiệp vụ:** Một người không thể có hai chức danh cùng lúc ở cùng một công ty; giữ chức danh mới nhất phản ánh vị trí hiện tại, còn chức danh cũ vẫn cần cho lịch sử quan hệ.
 
 - **`BR-19.8` (Nguyên tắc giai đoạn tiến xa nhất) — sàn bắt buộc:** Sau khi gộp, Bản ghi Chính **luôn nhận giai đoạn tiến xa nhất** của hai bản ghi, bất kể bản ghi nào được chọn làm chính và bất kể lựa chọn ở bước Xem trước; không thể ghi đè thủ công, và thuộc `BR-12.6` (ii). Thứ tự so sánh khi có trạng thái ngoài phễu tuyến tính:
   - **Một** bản ghi ở giai đoạn tuyến tính, bản ghi kia ở trạng thái đặc biệt: lấy **giai đoạn tuyến tính**, trừ khi trạng thái đặc biệt là Churned — khi đó lấy Churned và thông báo Người phụ trách rà soát, vì Churned là thông tin giá trị hơn về thực trạng quan hệ.
@@ -1417,11 +1789,23 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Quản trị viên, Chủ sở hữu.
 
+**Điều kiện tiên quyết:** Người thực hiện giữ quyền quản trị Hoàn tác gộp (Mục 5.2; mặc định Người có toàn quyền); mục sổ cái còn trong thời hạn hoàn tác và không bản ghi nào đang chịu biện pháp phòng ngừa (`BR-33.7` (f)).
+
+**Luồng chính:**
+
+1. Người dùng mở Lịch sử gộp trên hồ sơ Bản ghi Chính, chọn mục sổ cái và bấm "Hoàn tác gộp" (`BR-20.1`).
+2. Hệ thống khôi phục bản ghi phụ, trả bản ghi con về đúng chủ cũ và tính lại trạng thái đồng thuận của cả hai bản ghi theo `BR-20.2`.
+3. Hệ thống ghi nhật ký và thông báo cho các Người phụ trách liên quan.
+
 **Quy tắc nghiệp vụ:**
 
-- **`BR-20.1` (Điểm thao tác):** Người có quyền mở **Lịch sử gộp** trên hồ sơ Bản ghi Chính và bấm **"Hoàn tác gộp"** trên mục sổ cái tương ứng.
+- **`BR-20.1` (Điểm thao tác):** Người giữ quyền quản trị **Hoàn tác gộp** (Mục 5.2) mở **Lịch sử gộp** trên hồ sơ Bản ghi Chính và bấm **"Hoàn tác gộp"** trên mục sổ cái tương ứng.
+
+  **Lý do nghiệp vụ:** Hoàn tác gộp tác động lên hai hồ sơ và trạng thái đồng thuận của cả hai; nó phải xuất phát từ đúng mục sổ cái để không hoàn tác nhầm lần gộp khác, và chỉ do người có thẩm quyền quản trị dữ liệu thực hiện.
 
 - **`BR-20.2` (Nội dung khôi phục):** Hệ thống khôi phục bản ghi phụ đã bị xóa mềm, trả lại các trường dữ liệu theo ảnh chụp trong sổ cái và trả các bản ghi con về đúng bản ghi sở hữu ban đầu. **Ngoại lệ bắt buộc cho đồng thuận, hạn chế xử lý và trạng thái tiếp cận:** với mỗi kênh của bản ghi được khôi phục, hệ thống bắt đầu từ trạng thái trong ảnh chụp, rồi áp **theo thứ tự thời gian** mọi lượt ghi nhận trên Bản ghi Chính trong thời gian gộp — lượt đồng thuận ghi ở cấp kênh áp cho kênh đó của bản ghi được khôi phục; lượt gắn với một địa chỉ cụ thể (số điện thoại đổi chủ, trạng thái tiếp cận) chỉ áp cho đúng địa chỉ đó — lượt đồng thuận (kể cả lượt hạ về Chưa có đồng thuận do đổi chủ số và dấu "tự khôi phục"), Hạn chế xử lý, và trạng thái tiếp cận Không còn hiệu lực, Không tiếp cận được — nhưng chỉ nhận những lượt làm trạng thái **chặt hơn** theo thứ tự hoàn tác **Từ chối nhận tin > Chưa có đồng thuận > Đồng ý tự khôi phục > Đồng ý là căn cứ**, cộng với các lượt **nới mức là hành vi của chính chủ** qua đúng điểm đến (tự xác nhận Đồng ý, tự đăng ký lại, xác nhận lại để gỡ dấu "tự khôi phục" — `BR-30.3` (e), `BR-30.10`) được ghi trên đúng điểm đến vốn thuộc bản ghi đó; ngoài các lượt ấy, kết quả không bao giờ nâng mức so với ảnh chụp. Bỏ qua các lượt có nguồn "Yêu cầu chưa xác minh được danh tính" của một biện pháp phòng ngừa đã kết thúc (`BR-33.7`) — hạ mức và Hạn chế xử lý đó không phải ý muốn của chủ thể; mọi lượt "Tự khôi phục khi dỡ biện pháp phòng ngừa" cũng bị bỏ qua, trừ dấu "tự khôi phục" của biện pháp hết hạn — dấu này được áp; lượt ghi nhận mới tạo khi khách xác minh thành công (`BR-33.7` (e)) vẫn được áp. **Bản ghi Chính** cũng được tính lại theo cùng cách, bắt đầu từ ảnh chụp trạng thái của chính nó ngay trước khi gộp (`BR-19.3`): mọi Đồng ý mà nó có được chỉ nhờ bằng chứng của bản ghi phụ (`BR-19.6`) bị bỏ, còn các lượt làm chặt hơn và các lượt nới mức là hành vi của chính chủ nêu trên vẫn được áp. Các điểm đến vốn thuộc bản ghi phụ (đã chuyển sang Bản ghi Chính theo `BR-19.10`) rời Bản ghi Chính và trở về bản ghi phụ; mọi lượt ghi nhận trên chúng trong thời gian gộp đi theo làm lịch sử và bằng chứng, còn trạng thái vẫn tính theo đúng cách trên. Điểm đến được thêm mới trong thời gian gộp ở lại Bản ghi Chính; lượt nới mức của chính chủ trên điểm đến đó chỉ tính cho Bản ghi Chính. Hạn chế xử lý đã được dỡ trong thời gian gộp theo đúng một nhánh dỡ hợp lệ của `BR-30.6` (chính chủ rút yêu cầu qua kênh đã xác minh) được coi là lượt nới mức của chính chủ và chỉ được áp cho bản ghi mà kênh đã xác minh đó vốn thuộc về. Thứ tự chặt của trạng thái tiếp cận theo bảng của `BR-18.2`. Hoàn tác gộp không bao giờ khôi phục một Đồng ý mà khách đã rút trong thời gian hai bản ghi là một, và không bao giờ biến một Đồng ý chưa được chính chủ xác nhận lại thành căn cứ (`BR-30.10`).
+
+  **Lý do nghiệp vụ:** Hoàn tác gộp phải trả lại đúng hai người như trước, nhưng không được xóa những gì khách đã nói trong thời gian hai bản ghi là một: lời từ chối đã đưa ra phải được giữ, và một đồng ý chỉ có nhờ bản ghi kia phải bị bỏ.
 
 - **`BR-20.3` (Thời hạn hoàn tác & bảo vệ khỏi dọn dẹp):** Hoàn tác gộp có hiệu lực trong **90 ngày** kể từ thời điểm gộp (Phụ lục B, `CFG-20-01`), **cộng thêm** mọi khoảng thời gian hoàn tác bị chặn vì một trong hai bản ghi đang chịu biện pháp phòng ngừa (`BR-33.7` (f)). Trong thời hạn này, bản ghi phụ **được loại khỏi dọn dẹp vĩnh viễn** của `BR-05.4` (xem `BR-05.6` (b)). Quá thời hạn, hành động "Hoàn tác gộp" không còn hiển thị và bản ghi phụ mới vào diện dọn dẹp; sổ cái gộp vẫn được lưu vĩnh viễn (`NFR-05`).
 
@@ -1465,9 +1849,19 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Quản trị viên.
 
+**Điều kiện tiên quyết:** Có ít nhất một giao dịch gộp bị gián đoạn; người xử lý giữ quyền quản trị Hoàn tác gộp.
+
+**Luồng chính:**
+
+1. Người xử lý mở danh sách giao dịch gộp cần xử lý (`BR-21.2`).
+2. Chọn một giao dịch và chọn hoàn tất nốt hoặc đưa về trạng thái trước khi gộp (`BR-21.1`).
+3. Hệ thống thực hiện và ghi nhật ký.
+
 **Quy tắc nghiệp vụ:**
 
-- **`BR-21.1` (Đưa về một trong hai trạng thái toàn vẹn):** Quản trị viên xử lý giao dịch gộp bị gián đoạn bằng một trong hai cách: **hoàn tất nốt** các bước chuyển giao bản ghi con còn dang dở, hoặc **đưa cả hai bản ghi về trạng thái trước khi gộp**. Kết quả cuối cùng luôn là một trong hai trạng thái toàn vẹn — đã gộp xong hoặc chưa gộp — đúng yêu cầu `NFR-04`; không bao giờ tồn tại trạng thái một phần bản ghi con đã chuyển, một phần chưa.
+- **`BR-21.1` (Đưa về một trong hai trạng thái toàn vẹn):** Người giữ quyền quản trị Hoàn tác gộp xử lý giao dịch gộp bị gián đoạn bằng một trong hai cách: **hoàn tất nốt** các bước chuyển giao bản ghi con còn dang dở, hoặc **đưa cả hai bản ghi về trạng thái trước khi gộp**. Kết quả cuối cùng luôn là một trong hai trạng thái toàn vẹn — đã gộp xong hoặc chưa gộp — đúng yêu cầu `NFR-04`; không bao giờ tồn tại trạng thái một phần bản ghi con đã chuyển, một phần chưa.
+
+  **Lý do nghiệp vụ:** Trạng thái nửa vời khiến cùng một khách có dữ liệu ở hai nơi và không ai biết nơi nào đúng; chỉ hai trạng thái cuối hợp lệ thì người xử lý luôn biết mình đang đưa dữ liệu về đâu.
 
 - **`BR-21.2` (Danh sách giao dịch cần xử lý):** Mọi giao dịch gộp bị gián đoạn được liệt kê cho Quản trị viên kèm hai bản ghi liên quan và thời điểm gián đoạn; mỗi lượt xử lý được ghi nhật ký (`NFR-07`).
 
@@ -1489,11 +1883,21 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Mô tả nghiệp vụ:** Tải lên tệp danh bạ dạng bảng tính (Excel hoặc CSV) dung lượng lớn để nhập khẩu hàng loạt.
 
-**Vai trò sử dụng chính:** Người có **quyền Nhập dữ liệu** trên khách hàng/doanh nghiệp, Quản trị viên.
+**Vai trò sử dụng chính:** Người có ô (Khách hàng, Nhập) hoặc (Doanh nghiệp, Nhập) khác Không có, Quản trị viên.
+
+**Điều kiện tiên quyết:** Người dùng có ô Nhập trên loại dữ liệu cần nhập khác Không có.
+
+**Luồng chính:**
+
+1. Người dùng chọn tệp; hệ thống kiểm tra dung lượng ngay khi chọn (`BR-22.2`).
+2. Hệ thống tiếp nhận tệp và chuyển sang bước ánh xạ cột (`FEAT-23`).
+3. Sau khi người dùng xác nhận, tiến trình nhập chạy nền (`BR-22.1`).
 
 **Quy tắc nghiệp vụ:**
 
-- **`BR-22.1` (Xử lý nền):** Tệp tải lên được tiếp nhận và xử lý nền theo hàng đợi; người dùng không phải chờ trên màn hình, và tiến trình nhập không làm chậm các thao tác khác của người dùng trong không gian làm việc. Tệp gốc được lưu trong thời hạn tại `BR-33.8` rồi tự động xóa.
+- **`BR-22.1` (Xử lý nền):** Tệp tải lên được tiếp nhận và xử lý nền theo hàng đợi; người dùng không phải chờ trên màn hình, và tiến trình nhập không làm chậm các thao tác khác của người dùng trong không gian làm việc. Tệp gốc được lưu trong thời hạn tại `BR-33.8` rồi tự động xóa. Lô nhập chạy nền là **tiến trình chạy thay người nhập** (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-35.8`): mỗi dòng chỉ được tạo, cập nhật hay gán trong phần giao của mức lúc khởi chạy và mức hiện tại của người nhập trên các ô Nhập, Sửa, Gán; dòng ra ngoài phần giao là dòng lỗi (`BR-24.2`). Người nhập bị tạm ngưng hoặc rời workspace thì lô tạm dừng, quản lý trực tiếp và Người có toàn quyền được thông báo để chuyển người khởi chạy hoặc dừng hẳn; kích hoạt lại không tự chạy tiếp.
+
+  **Lý do nghiệp vụ:** Tệp hàng chục nghìn dòng mất nhiều phút để xử lý; bắt người dùng chờ trên màn hình thì họ đóng trình duyệt giữa chừng và lô nhập dở dang.
 
 - **`BR-22.2` (Giới hạn dung lượng):** Dung lượng tối đa mỗi lần tải lên mặc định **50 MB** (Phụ lục B, `CFG-22-02`). Tệp vượt giới hạn bị từ chối ngay tại bước tải lên, kèm hướng dẫn chia nhỏ tệp.
 
@@ -1503,10 +1907,12 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 | Mã AC | Bối cảnh | Hành động | Kết quả mong đợi |
 | --- | --- | --- | --- |
-| `AC-22.1.1` | Người có quyền Nhập dữ liệu | Tải tệp 15 MB chứa 10.000 dòng, bắt đầu nhập, rồi chuyển sang màn hình khác | Tiến trình tiếp tục chạy nền; người dùng thao tác bình thường; theo dõi được tiến độ khi quay lại |
+| `AC-22.1.1` | Người có ô (Khách hàng, Nhập) khác Không có | Tải tệp 15 MB chứa 10.000 dòng, bắt đầu nhập, rồi chuyển sang màn hình khác | Tiến trình tiếp tục chạy nền; người dùng thao tác bình thường; theo dõi được tiến độ khi quay lại |
 | `AC-22.2.1` | Giới hạn 50 MB | Chọn tệp 60 MB để tải lên | Bị từ chối ngay khi chọn tệp, kèm hướng dẫn chia nhỏ; không chuyển sang bước ánh xạ cột |
 | `AC-22.2.2` | Màn hình tải tệp | Quan sát trước khi chọn tệp | Giới hạn dung lượng hiện hành được hiển thị |
-| `AC-22.2.3` | Người dùng không có quyền Nhập dữ liệu | Tìm chức năng nhập khẩu | Không khả dụng |
+| `AC-22.2.3` | Người dùng có ô (Khách hàng, Nhập) = Không có | Tìm chức năng nhập khẩu | Không khả dụng |
+| `AC-22.1.2` | Lô 10.000 dòng đang chạy; ô (Khách hàng, Gán) của người nhập bị thu hẹp từ Đơn vị và các đơn vị con về Đơn vị của mình | Lô chạy tiếp | Các dòng còn lại gán cho người ngoài đơn vị của người nhập thành dòng lỗi vượt quyền |
+| `AC-22.1.3` | Lô đang chạy, người nhập bị tạm ngưng | Quan sát lô | Lô tạm dừng; quản lý trực tiếp và Người có toàn quyền nhận thông báo; kích hoạt lại người nhập không tự chạy tiếp |
 
 ---
 
@@ -1516,11 +1922,23 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Người dùng thực hiện nhập dữ liệu.
 
+**Điều kiện tiên quyết:** Tệp đã được tiếp nhận (`FEAT-22`).
+
+**Luồng chính:**
+
+1. Trợ lý đọc tiêu đề cột và đề xuất trường đích (`BR-23.1`).
+2. Người dùng chỉnh ánh xạ, chọn chiến lược trùng lặp và trường tra cứu khi cập nhật (`BR-23.2` – `BR-23.4`).
+3. Người dùng ánh xạ cột Người phụ trách hoặc cột Đơn vị tiếp nhận nếu cần (`BR-23.5`), chọn cơ sở đồng thuận (`BR-30.4`) và bắt đầu nhập.
+
 **Quy tắc nghiệp vụ:**
 
 - **`BR-23.1` (Nhận diện tiêu đề cột):** Tự động nhận diện tiêu đề cột phổ biến bằng tiếng Việt, tiếng Ả Rập và tiếng Anh (ví dụ "Số điện thoại", "Phone", "Mobile", "Email", "Họ tên", "Full Name").
 
+  **Lý do nghiệp vụ:** Tệp danh bạ đến từ nhiều nguồn với tiêu đề khác nhau; tự nhận diện các tiêu đề phổ biến giảm phần lớn thao tác ánh xạ tay và lỗi ánh xạ lệch cột.
+
 - **`BR-23.2` (Chỉnh ánh xạ):** Người dùng sửa được ánh xạ thủ công hoặc bỏ qua các cột không cần nhập. Cột không ánh xạ được trường nào thuộc nhóm Định danh KYC khi nhóm này đang tắt (`BR-01.5b`).
+
+  **Lý do nghiệp vụ:** Đề xuất tự động có thể sai; người nhập phải sửa được trước khi chạy. Không cho ánh xạ vào nhóm KYC khi nhóm đang tắt để nhập khẩu không thành đường lưu dữ liệu mà doanh nghiệp đã quyết định không thu.
 
 - **`BR-23.3` (Chiến lược xử lý trùng lặp cho từng lô):** Người dùng chọn cho mỗi lô: **Bỏ qua bản ghi trùng** (mặc định) hoặc **Cập nhật dữ liệu mới vào bản ghi cũ**. Lựa chọn **"Tạo bản ghi mới dù trùng"** chỉ khả dụng khi người thực hiện xác nhận lô dữ liệu thuộc trường hợp Định danh dùng chung (lối ra tại `BR-17.2`) — khi đó các bản ghi tạo ra tự động mang nhãn Định danh dùng chung và lượt xác nhận được ghi nhật ký. Chiến lược cập nhật không thay đổi được nguồn gốc (`BR-32.3`), không nâng được mức đồng thuận (`BR-30.10`) và không tạo được bước chuyển giai đoạn ngoài ma trận (`BR-12.6`).
 
@@ -1529,6 +1947,15 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 - **`BR-23.4` (Trường tra cứu bắt buộc khi cập nhật):** Khi chọn chiến lược cập nhật, người dùng **bắt buộc** chọn trường dùng để tìm bản ghi cũ: **(a)** mã khách hàng nội bộ (chính xác nhất); **(b)** địa chỉ email; **(c)** số điện thoại. Dòng không khớp bản ghi nào được xử lý như tạo mới và được đánh dấu cảnh báo trong báo cáo kết quả.
 
   **Lý do nghiệp vụ:** Cập nhật mà không nói rõ tìm bản ghi cũ theo gì sẽ ghi đè nhầm dữ liệu của người khác khi tên trùng nhau.
+
+- **`BR-23.5` (Người phụ trách, đơn vị tiếp nhận và bản ghi giữ chỗ của dòng nhập):** Nhập từ tệp không đi qua hàng đợi, trừ khi tệp chỉ định đơn vị tiếp nhận (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-35.10`):
+  - **(a) Cột Người phụ trách:** mỗi giá trị chịu ô (Khách hàng, Gán) của người nhập. Giá trị ngoài phạm vi ô Gán, trỏ tới người đang Tạm ngưng, Đã rời hoặc không tồn tại là **dòng lỗi** (`BR-24.2`).
+  - **(b) Giữ chỗ cho người chưa chấp nhận lời mời:** giá trị trỏ tới thành viên **Đang chờ chấp nhận** (gồm lời mời Chờ gửi và lời mời đang tạm treo) tạo **bản ghi giữ chỗ**: ô Người phụ trách để trống kèm nhãn "giữ chỗ cho" người được mời — nên không ai thấy bản ghi qua mức "của mình" hay chuỗi cấp dưới; bản ghi thuộc Đơn vị chính ghi trong lời mời, và ô Gán của người nhập được xét trên đơn vị đó; lời mời không ghi Đơn vị chính thì dòng đó là dòng lỗi. Không ai nhận việc được trên bản ghi giữ chỗ, và bản ghi bị chặn với mọi người trừ nhóm ngoại lệ tại [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-39.6` bước 3 — kể cả người có mức Toàn workspace như vai trò Kiểm toán cũng không thấy. Khi Đơn vị chính trong lời mời được sửa, bản ghi giữ chỗ chuyển theo.
+  - **(c) Kết thúc giữ chỗ:** khi người được mời chấp nhận, bản ghi tự gán cho họ nếu vai trò của họ có ô (Khách hàng, Sửa) khác Không có; nếu không, bản ghi thành bản ghi chờ phân công của hàng đợi đơn vị đó và người phụ trách đơn vị được báo. Người phụ trách hoặc đồng phụ trách đơn vị giữ chỗ hay đơn vị cấp trên trong nhánh có ô Gán bao phủ, hoặc Người có toàn quyền, gán lại được bản ghi giữ chỗ — việc đó chấm dứt giữ chỗ. Lời mời bị từ chối, hết hạn, bị thu hồi, hoặc thành viên đang chờ bị gỡ thì bản ghi thành bản ghi chờ phân công bình thường của hàng đợi đơn vị đó.
+  - **(d) Cột Đơn vị tiếp nhận:** tệp có thể ánh xạ cột này thay cho cột Người phụ trách để đưa bản ghi vào hàng đợi của một đơn vị dưới dạng bản ghi chờ phân công (`BR-31.9`). Giá trị chịu [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-35.12`: người nhập không có toàn quyền chỉ dùng được đơn vị tiếp nhận mặc định của loại nguồn "Nhập khẩu từ tệp" tìm được từ Đơn vị chính của mình; giá trị khác là dòng lỗi.
+  - **(e)** Cả hai cột trống thì người nhập là Người phụ trách của mọi dòng.
+
+  **Lý do nghiệp vụ:** Doanh nghiệp mới thường nhập danh bạ cũ cùng lúc mời đội ngũ; nếu bắt buộc mọi người nhận phải đã vào workspace, họ phải nhập hai lần hoặc gán tạm cho một người rồi bàn giao lại hàng nghìn bản ghi. Nhưng bản ghi giữ chỗ không được thành vùng xám ai cũng thấy hoặc không ai quản: nó thuộc đúng đơn vị người được mời sẽ vào, chỉ người phụ trách đơn vị đó quản lý, và tự về hàng đợi khi lời mời không thành. Giới hạn theo ô Gán để nhập khẩu không thành cách giao khách cho người mà người nhập không được phép giao.
 
 **Tiêu chí Chấp nhận:**
 
@@ -1542,6 +1969,16 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | `AC-23.3.2` | Người dùng mở danh sách chiến lược trùng lặp | Tìm "Tạo bản ghi mới dù trùng" | Lựa chọn chỉ khả dụng sau khi người dùng xác nhận lô thuộc trường hợp Định danh dùng chung; khi dùng, bản ghi tạo ra mang nhãn Định danh dùng chung |
 | `AC-23.4.1` | Chọn chiến lược cập nhật | Bỏ trống trường tra cứu, bấm bắt đầu | Không bắt đầu được; yêu cầu chọn trường tra cứu |
 | `AC-23.4.2` | Chiến lược cập nhật theo email; một dòng có email không khớp bản ghi nào | Chạy nhập | Dòng đó được tạo mới và có cảnh báo trong báo cáo kết quả |
+| `AC-23.5.1` | Nhân viên Kinh doanh nhập 200 khách, không ánh xạ cột Người phụ trách hay Đơn vị tiếp nhận | Nhập xong | Nhân viên đó là Người phụ trách của 200 khách; không bản ghi nào vào hàng đợi |
+| `AC-23.5.2` | Người nhập có (Khách hàng, Gán) = Chỉ của mình | Nhập tệp có cột Người phụ trách trỏ tới đồng nghiệp | Các dòng đó báo lỗi vượt quyền |
+| `AC-23.5.3` | Tệp có cột Người phụ trách; 3 dòng trỏ tới người đang Tạm ngưng | Nhập | 3 dòng báo lỗi nêu lý do; các dòng khác nhập bình thường |
+| `AC-23.5.4` | Quản trị viên nhập 1.200 dòng gán cho N đang chờ chấp nhận lời mời, lời mời ghi Đơn vị chính "Kinh doanh – Đà Nẵng" | Lô chạy; đồng nghiệp cùng đội và người giữ vai trò Kiểm toán mở danh sách | Không ai trong số đó thấy 1.200 bản ghi; người phụ trách "Kinh doanh – Đà Nẵng" (có Xem bao phủ) thấy bản ghi kèm nhãn "giữ chỗ cho N", không có nút nhận việc |
+| `AC-23.5.5` | Tiếp nối AC-23.5.4 | N chấp nhận lời mời với vai trò Nhân viên Kinh doanh | 1.200 bản ghi tự gán cho N |
+| `AC-23.5.6` | Như AC-23.5.4 nhưng vai trò trong lời mời của N có (Khách hàng, Sửa) = Không có | N chấp nhận | Bản ghi không tự gán cho N; thành bản ghi chờ phân công của "Kinh doanh – Đà Nẵng"; người phụ trách đơn vị được báo |
+| `AC-23.5.7` | Như AC-23.5.4 | N từ chối lời mời | 1.200 bản ghi thành bản ghi chờ phân công trong hàng đợi "Kinh doanh – Đà Nẵng"; thành viên đơn vị nhận việc được |
+| `AC-23.5.8` | Như AC-23.5.4; người phụ trách "Kinh doanh – Đà Nẵng" có ô Gán bao phủ | Gán lại 10 bản ghi giữ chỗ cho K | 10 bản ghi thuộc K, hết giữ chỗ; khi N chấp nhận, chỉ các bản ghi còn lại tự gán cho N |
+| `AC-23.5.9` | Lời mời của N không ghi Đơn vị chính | Nhập dòng gán cho N | Dòng đó báo lỗi nêu thiếu Đơn vị chính trong lời mời |
+| `AC-23.5.10` | Nhân viên Marketing có quyền nhập, không có toàn quyền; mặc định loại nguồn "Nhập khẩu từ tệp" tìm từ Đơn vị chính của họ là "Kinh doanh – Hà Nội" | Nhập tệp có cột Đơn vị tiếp nhận ghi "Kinh doanh – Hà Nội" cho 300 dòng và "Kinh doanh – Đà Nẵng" cho 20 dòng | 300 dòng vào hàng đợi "Kinh doanh – Hà Nội" dưới dạng bản ghi chờ phân công; 20 dòng báo lỗi đơn vị tiếp nhận không hợp lệ |
 
 ---
 
@@ -1551,11 +1988,21 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Tiến trình Hệ thống, người dùng thực hiện nhập dữ liệu.
 
+**Điều kiện tiên quyết:** Người dùng đã xác nhận bắt đầu nhập ở `FEAT-23`.
+
+**Luồng chính:**
+
+1. Tiến trình nền xử lý tệp theo từng phần, kiểm tra từng dòng và nhập dòng hợp lệ.
+2. Người dùng theo dõi tiến độ (`BR-24.1`).
+3. Khi xong, hệ thống tạo tệp báo cáo lỗi nếu có dòng lỗi và gửi thông báo kèm đường tải về (`BR-24.2`).
+
 **Quy tắc nghiệp vụ:**
 
 - **`BR-24.1` (Theo dõi tiến độ):** Người dùng theo dõi tiến độ gần như tức thời: số dòng đã xử lý, số dòng thành công, số dòng lỗi.
 
-- **`BR-24.2` (Tệp báo cáo lỗi):** Nếu có dòng lỗi, hệ thống tạo tệp báo cáo lỗi, mỗi dòng lỗi kèm nguyên nhân cụ thể, và cấp đường tải về có hiệu lực **24 giờ** (thống nhất `BR-25.2`). Các nguyên nhân lỗi gồm: sai định dạng email; số điện thoại không chuẩn hóa được; **thiếu cả email lẫn số điện thoại** (vi phạm `BR-01.1` — thiếu họ tên **không** phải lỗi); bước chuyển giai đoạn không hợp lệ (`BR-12.6`); thiếu trường tra cứu khi chọn chiến lược cập nhật (`BR-23.4`); trùng lặp bị chặn theo chính sách (`BR-17.2`).
+  **Lý do nghiệp vụ:** Người nhập cần biết lô có đang chạy, chạy đến đâu và có nhiều lỗi không để quyết định dừng sửa tệp sớm, thay vì chờ tới cuối mới phát hiện cả lô sai.
+
+- **`BR-24.2` (Tệp báo cáo lỗi):** Nếu có dòng lỗi, hệ thống tạo tệp báo cáo lỗi, mỗi dòng lỗi kèm nguyên nhân cụ thể, và cấp đường tải về có hiệu lực **24 giờ** (thống nhất `BR-25.2`). Các nguyên nhân lỗi gồm: sai định dạng email; số điện thoại không chuẩn hóa được; **thiếu cả email lẫn số điện thoại** (vi phạm `BR-01.1` — thiếu họ tên **không** phải lỗi); bước chuyển giai đoạn không hợp lệ (`BR-12.6`); thiếu trường tra cứu khi chọn chiến lược cập nhật (`BR-23.4`); trùng lặp bị chặn theo chính sách (`BR-17.2`); dòng ra ngoài phần giao của mức người nhập lúc khởi chạy và hiện tại (`BR-22.1`); Người phụ trách ngoài phạm vi ô Gán của người nhập, đang Tạm ngưng, Đã rời hoặc không tồn tại; lời mời của người được giữ chỗ không ghi Đơn vị chính; đơn vị tiếp nhận không hợp lệ (`BR-23.5`).
 
   **Lý do nghiệp vụ:** Một nguyên nhân chung chung ("dòng không hợp lệ") buộc người dùng tự dò từng ô trong hàng trăm dòng; nguyên nhân cụ thể cho phép sửa đúng chỗ và nhập lại.
 
@@ -1577,28 +2024,41 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Mô tả nghiệp vụ:** Xuất danh sách khách hàng ra tệp theo bộ lọc tùy chỉnh, có hạn mức, có phê duyệt cho lần xuất lớn, có nhật ký, và bảo vệ đường tải về.
 
-**Vai trò sử dụng chính:** Người có **quyền Xuất dữ liệu**, Nhân viên Kinh doanh (trong giới hạn `BR-25.5`), Quản trị viên.
+**Vai trò sử dụng chính:** Người có ô (Khách hàng, Xuất) khác Không có — mặc định Nhân viên Kinh doanh trong giới hạn `BR-25.5` — và Người có toàn quyền.
+
+**Điều kiện tiên quyết:** Người xuất có ô (Khách hàng, Xuất) — hoặc (Doanh nghiệp, Xuất) — khác Không có.
+
+**Luồng chính:**
+
+1. Người dùng chọn bộ lọc và các trường cần xuất; hệ thống chỉ liệt kê trường người đó được xuất.
+2. Hệ thống kiểm tra hạn mức và ngưỡng phê duyệt (`BR-25.4`, `BR-25.5`); vượt ngưỡng thì tạo yêu cầu phê duyệt gửi đúng người duyệt trước khi tạo tệp.
+3. Tệp được tạo nền với giá trị theo đúng mức hiển thị của người xuất, chỉ chứa bản ghi trong mức Xuất của họ (`BR-25.1`).
+4. Người dùng tải tệp qua đường tải một lần (`BR-25.2`); lần xuất được ghi nhật ký (`BR-25.3`).
 
 **Quy tắc nghiệp vụ:**
 
 - **`BR-25.1` (Xuất nền, đúng mức hiển thị):** Việc xuất chạy nền theo hàng đợi, hỗ trợ hàng chục nghìn bản ghi mà không làm chậm hệ thống; số bản ghi tối đa mỗi lần xuất theo gói dịch vụ (`NFR-11`). Giá trị trong tệp xuất tuân theo **đúng mức hiển thị của người xuất** tại `BR-04.3` (`NFR-06`).
 
+  **Lý do nghiệp vụ:** Xuất là đường dữ liệu rời khỏi hệ thống; nếu tệp chứa giá trị đầy đủ hơn màn hình, mọi chính sách che chỉ cần một nút xuất để vô hiệu.
+
 - **`BR-25.2` (Bảo vệ đường tải về):** Đường tải về có hiệu lực **24 giờ**, **chỉ dùng được một lần**, và tên tệp được chuẩn hóa an toàn. Cùng thời hạn áp dụng cho đường tải tệp báo cáo lỗi nhập khẩu (`BR-24.2`).
+
+  **Lý do nghiệp vụ:** Đường tải về bị chuyển tiếp qua email hay chat là đường rò rỉ phổ biến; giới hạn thời gian và một lần dùng làm đường tải mất giá trị khi bị lộ.
 
 - **`BR-25.3` (Nhật ký xuất dữ liệu):** Mỗi lần xuất bắt buộc ghi: người xuất, thời điểm, bộ lọc đã dùng, **danh sách trường được xuất** và **danh sách bản ghi được xuất**. Nhật ký xuất chịu cùng chế độ kiểm soát truy cập như nhật ký kiểm toán (`NFR-14`).
 
   **Lý do nghiệp vụ:** Đây là căn cứ chính để trả lời câu hỏi "dữ liệu của khách hàng đã ra ngoài những đâu" khi thực thi quyền chủ thể dữ liệu (`BR-33.8`) và khi có nghi vấn lấy dữ liệu hàng loạt.
 
 - **`BR-25.4` (Ngưỡng xuất lớn cần phê duyệt):** Một lần xuất bắt buộc được phê duyệt **trước khi tệp được tạo** khi thỏa bất kỳ điều kiện nào dưới đây:
-  - **Với các vai trò có quyền Xuất dữ liệu đầy đủ** (Quản lý Kinh doanh, Nhân viên và Quản lý Marketing, Quản trị viên, Chủ sở hữu): lần xuất **vượt 5.000 bản ghi** (Phụ lục B, `CFG-25-01`).
-  - **Với Nhân viên Kinh doanh:** lần xuất làm vượt **giá trị nhỏ hơn** giữa ngưỡng xuất lớn (`CFG-25-01`) và hạn mức ngày (`CFG-25-02`) — cần Quản lý Kinh doanh phê duyệt từng lần, và một lần phê duyệt **không được nâng tổng lượng xuất trong ngày lên quá hai lần hạn mức ngày**.
-  - **Trường thuộc nhóm Định danh KYC — giới hạn theo mục đích, không theo hạn mức:** chỉ **Quản trị viên và Chủ sở hữu** xuất được, mỗi lần bắt buộc có **Người phụ trách Bảo vệ Dữ liệu đồng phê duyệt** (hoặc người thứ hai theo quy tắc thay thế tại `NFR-14`) kèm khai báo mục đích đúng với mục đích đã đăng ký tại `BR-01.5b`. **Nhân viên Kinh doanh, Quản lý Kinh doanh, Nhân viên Marketing và Quản lý Marketing không xuất được nhóm trường này trong bất kỳ trường hợp nào.**
+  - **Với người có ô (Khách hàng, Xuất) rộng hơn Chỉ của mình:** lần xuất **vượt 5.000 bản ghi** (Phụ lục B, `CFG-25-01`).
+  - **Với người có ô (Khách hàng, Xuất) = Chỉ của mình** (mặc định: Nhân viên Kinh doanh, `BR-25.5`): lần xuất làm vượt **giá trị nhỏ hơn** giữa ngưỡng xuất lớn (`CFG-25-01`) và hạn mức ngày (`CFG-25-02`) — cần phê duyệt từng lần, và một lần phê duyệt **không được nâng tổng lượng xuất trong ngày lên quá hai lần hạn mức ngày**.
+  - **Trường thuộc nhóm Định danh KYC — sàn bắt buộc, giới hạn theo mục đích, không theo hạn mức:** chỉ **Người có toàn quyền** xuất được, mỗi lần bắt buộc có **Người phụ trách Bảo vệ Dữ liệu đồng phê duyệt** (hoặc người thứ hai theo quy tắc thay thế tại `NFR-14`) kèm khai báo mục đích đúng với mục đích đã đăng ký tại `BR-01.5b`. Năng lực xuất nhóm trường này **không đưa được vào bất kỳ vai trò nào** — dựng sẵn hay tự tạo — qua điều chỉnh ô hay vai trò tự tạo (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-25.3`).
 
-  **Người phê duyệt là quản lý trực tiếp theo tuyến báo cáo của người xuất:** Quản lý Kinh doanh phê duyệt cho Nhân viên Kinh doanh; Quản lý Marketing phê duyệt cho Nhân viên Marketing; Chủ sở hữu phê duyệt cho Quản trị viên và các vai trò quản lý; với chính Chủ sở hữu, người phê duyệt là Người phụ trách Bảo vệ Dữ liệu (hoặc người thứ hai theo `NFR-14`). **Không vai trò nào tự phê duyệt lần xuất của chính mình.**
+  **Người phê duyệt là quản lý trực tiếp của người xuất** theo chuỗi quản lý tại [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) Mục 1.4; người xuất không có quản lý trực tiếp, hoặc là Người có toàn quyền, thì người phê duyệt là Chủ sở hữu; với chính Chủ sở hữu, người phê duyệt là Người phụ trách Bảo vệ Dữ liệu (hoặc người thứ hai theo `NFR-14`). **Không ai tự phê duyệt lần xuất của chính mình.**
 
-  **Lý do nghiệp vụ:** Xuất là thao tác đưa dữ liệu cá nhân ra khỏi hệ thống; một lần xuất chạm ngưỡng luôn phải có hai người khác nhau đứng tên. Phê duyệt theo tuyến báo cáo vì buộc đội kinh doanh xin phê duyệt của Marketing là sai tuyến và sẽ bị bỏ qua trong thực tế. Nhóm KYC bị khóa theo mục đích: mở đường phê duyệt cho Marketing sẽ vô hiệu chính giới hạn mục đích tại `BR-01.5b` đúng ở điểm dữ liệu rời khỏi hệ thống.
+  **Lý do nghiệp vụ:** Xuất là thao tác đưa dữ liệu cá nhân ra khỏi hệ thống; một lần xuất chạm ngưỡng luôn phải có hai người khác nhau đứng tên. Phê duyệt theo tuyến báo cáo vì buộc một nhân viên xin phê duyệt của người ở đội khác là sai tuyến và sẽ bị bỏ qua trong thực tế. Nhóm KYC bị khóa theo mục đích ở cấp sàn: nếu năng lực xuất KYC cấp được qua vai trò, chỉ cần một vai trò tự tạo là vô hiệu chính giới hạn mục đích tại `BR-01.5b` đúng ở điểm dữ liệu rời khỏi hệ thống.
 
-- **`BR-25.5` (Quyền xuất dữ liệu của Nhân viên Kinh doanh):** Nhân viên Kinh doanh được xuất dữ liệu **trong phạm vi dữ liệu của mình**, với ba ràng buộc: **(a)** hạn mức mặc định **2.000 bản ghi/người/ngày** (Phụ lục B, `CFG-25-02`), chỉ vượt được khi có phê duyệt theo `BR-25.4`; **(b)** **không** xuất được trường thuộc nhóm Định danh KYC; **(c)** mọi lần xuất ghi nhật ký theo `BR-25.3`.
+- **`BR-25.5` (Xuất dữ liệu ở mức Chỉ của mình):** Người có ô (Khách hàng, Xuất) = Chỉ của mình — theo ma trận mặc định là Nhân viên Kinh doanh — được xuất các khách hàng mình phụ trách, với ba ràng buộc: **(a)** hạn mức mặc định **2.000 bản ghi/người/ngày** (Phụ lục B, `CFG-25-02`), chỉ vượt được khi có phê duyệt theo `BR-25.4`; **(b)** **không** xuất được trường thuộc nhóm Định danh KYC; **(c)** mọi lần xuất ghi nhật ký theo `BR-25.3`.
 
   **Lý do nghiệp vụ:** Nhu cầu hằng ngày (in danh sách khách để đi gặp, chuẩn bị danh sách mời hội thảo) nếu không có đường hợp lệ thì cách làm thật sẽ là sao chép màn hình vào bảng tính hoặc chụp màn hình — hoàn toàn không có nhật ký, phá vỡ `BR-25.3`.
 
@@ -1611,12 +2071,13 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | `AC-25.2.1` | Tệp xuất sẵn sàng | Tải về lần thứ nhất, rồi dùng lại cùng đường tải | Lần thứ nhất thành công; lần thứ hai bị từ chối |
 | `AC-25.2.2` | Tệp xuất sẵn sàng lúc 10:00, chưa tải | Mở đường tải lúc 10:05 hôm sau | Bị từ chối vì hết hiệu lực |
 | `AC-25.3.1` | Nhân viên Marketing xuất 800 bản ghi với 5 trường | Người có quyền đọc nhật ký toàn phần mở nhật ký xuất | Thấy người xuất, thời điểm, bộ lọc, đủ 5 trường và 800 bản ghi |
-| `AC-25.4.1` | Quản lý Kinh doanh xuất 6.000 bản ghi | Bấm xuất | Tệp chưa được tạo; yêu cầu phê duyệt gửi Chủ sở hữu |
-| `AC-25.4.2` | Nhân viên Marketing xuất 6.000 bản ghi | Bấm xuất | Yêu cầu phê duyệt gửi Quản lý Marketing |
+| `AC-25.4.1` | Quản lý Kinh doanh được cấp (Khách hàng, Xuất) = Đơn vị và các đơn vị con, không có quản lý trực tiếp | Xuất 6.000 bản ghi | Tệp chưa được tạo; yêu cầu phê duyệt gửi Chủ sở hữu |
+| `AC-25.4.2` | Nhân viên Marketing được cấp ô Xuất = Toàn workspace, quản lý trực tiếp là Quản lý Marketing Q | Xuất 6.000 bản ghi | Yêu cầu phê duyệt gửi Q |
 | `AC-25.4.3` | Chủ sở hữu xuất 6.000 bản ghi | Bấm xuất | Yêu cầu phê duyệt gửi Người phụ trách Bảo vệ Dữ liệu; Chủ sở hữu không tự phê duyệt được |
 | `AC-25.4.4` | Quản trị viên chọn trường Số Căn cước công dân khi xuất | Bấm xuất, không khai báo mục đích | Không tạo được yêu cầu; bắt buộc khai báo mục đích và cần Người phụ trách Bảo vệ Dữ liệu đồng phê duyệt |
 | `AC-25.4.5` | Quản lý Marketing mở danh sách trường xuất | Tìm trường thuộc nhóm KYC | Không có trường KYC nào để chọn |
-| `AC-25.5.1` | Nhân viên Kinh doanh A đã xuất 1.500 bản ghi hôm nay, hạn mức 2.000 | Xuất thêm 600 bản ghi | Lần xuất bị giữ lại và chuyển thành yêu cầu phê duyệt gửi Quản lý Kinh doanh (không gửi Quản lý Marketing) |
+| `AC-25.4.6` | Người có quyền Quản lý vai trò tạo vai trò tự tạo và tìm cách cấp năng lực xuất nhóm KYC | Mở cấu hình ô | Lựa chọn bị vô hiệu kèm giải thích Sàn bắt buộc `BR-25.4` |
+| `AC-25.5.1` | Nhân viên Kinh doanh A đã xuất 1.500 bản ghi hôm nay, hạn mức 2.000 | Xuất thêm 600 bản ghi | Lần xuất bị giữ lại và chuyển thành yêu cầu phê duyệt gửi quản lý trực tiếp của A (không gửi Quản lý Marketing) |
 | `AC-25.5.2` | Tiếp nối AC-25.5.1, Quản lý đã phê duyệt | A xuất tiếp tới tổng 4.001 bản ghi trong ngày | Phần vượt 4.000 bản ghi (hai lần hạn mức) không xuất được |
 | `AC-25.5.3` | A mở danh sách trường xuất | Tìm trường Số Căn cước công dân | Không có trong danh sách; không có đường phê duyệt nào mở được |
 
@@ -1628,9 +2089,19 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Mọi người dùng trong không gian làm việc.
 
+**Điều kiện tiên quyết:** Người dùng có ô (Khách hàng, Xem) khác Không có.
+
+**Luồng chính:**
+
+1. Người dùng đặt điều kiện lọc, cột và thứ tự sắp xếp, lưu thành danh sách (`BR-26.1`).
+2. Người dùng chia sẻ danh sách cho đồng nghiệp hoặc nhóm.
+3. Người nhận mở danh sách và chỉ thấy bản ghi trong mức Xem của chính mình (`BR-26.2`).
+
 **Quy tắc nghiệp vụ:**
 
 - **`BR-26.1` (Nội dung một danh sách):** Một danh sách lưu cấu hình cột hiển thị, điều kiện lọc kết hợp (**và** / **hoặc**) và thứ tự sắp xếp.
+
+  **Lý do nghiệp vụ:** Mỗi đội có các bộ lọc dùng hằng ngày; lưu lại giúp không phải dựng lại bộ lọc phức tạp mỗi lần, và chia sẻ giúp cả đội nhìn cùng một tập khách.
 
 - **`BR-26.2` (Chia sẻ cấu hình, không chia sẻ dữ liệu):** Danh sách dùng chung chỉ chia sẻ **cấu hình bộ lọc**; mỗi người mở danh sách chỉ thấy các bản ghi thuộc phạm vi dữ liệu của chính mình, với mức che theo `BR-04.3`.
 
@@ -1641,7 +2112,7 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | Mã AC | Bối cảnh | Hành động | Kết quả mong đợi |
 | --- | --- | --- | --- |
 | `AC-26.1.1` | Người dùng lọc "Giai đoạn là MQL **và** (tỉnh/thành là Hà Nội **hoặc** Đà Nẵng)", chọn 5 cột, sắp xếp theo điểm giảm dần | Lưu thành danh sách, mở lại hôm sau | Danh sách giữ đúng điều kiện, cột và thứ tự sắp xếp |
-| `AC-26.2.1` | Quản lý Kinh doanh chia sẻ danh sách "Khách VIP phòng 1" cho Nhân viên A có phạm vi "Chỉ của mình" | A mở danh sách | A chỉ thấy các khách VIP do A phụ trách hoặc được chia sẻ cho A |
+| `AC-26.2.1` | Quản lý Kinh doanh chia sẻ danh sách "Khách VIP phòng 1" cho Nhân viên A có (Khách hàng, Xem) = Chỉ của mình | A mở danh sách | A chỉ thấy các khách VIP do A phụ trách hoặc được chia sẻ cho A |
 
 ---
 
@@ -1653,6 +2124,13 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Mọi người dùng có quyền xem khách hàng.
 
+**Điều kiện tiên quyết:** Người xem có ô (Khách hàng, Xem) bao phủ bản ghi, hoặc có quyền đọc tự động (`BR-35.4`).
+
+**Luồng chính:**
+
+1. Người dùng mở thẻ Dòng thời gian trên hồ sơ.
+2. Hệ thống hợp nhất sự kiện từ các nguồn (`BR-27.1`), lọc theo phạm vi đọc riêng của từng mục và mức che (`BR-27.2`), hiển thị mới nhất trước.
+
 **Quy tắc nghiệp vụ:**
 
 - **`BR-27.1` (Các nguồn sự kiện hợp nhất):**
@@ -1662,6 +2140,8 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
   - **Công việc & lịch hẹn:** cuộc gọi, cuộc họp, việc cần làm.
   - **Hội thoại đa kênh:** các phiên trò chuyện qua trò chuyện trực tuyến và các ứng dụng nhắn tin đã tích hợp.
   - **Thay đổi trạng thái:** đổi giai đoạn vòng đời, gộp bản ghi, thay đổi Người phụ trách.
+
+  **Lý do nghiệp vụ:** Ngữ cảnh khách hàng nằm rải ở nhiều phân hệ; chỉ khi mọi nguồn hội tụ về một luồng thì người tiếp nhận mới biết đủ trước khi trả lời khách (vấn đề 1 tại Mục 2.1).
 
 - **`BR-27.2` (Thứ tự và phạm vi đọc):** Sự kiện hiển thị theo thời gian mới nhất trước. Mỗi sự kiện vẫn tuân theo phạm vi đọc riêng của nó (ví dụ phạm vi đọc ghi chú tại `BR-36.1`) và chính sách che mặt nạ tại `FEAT-04`.
 
@@ -1684,9 +2164,19 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Nhân viên Hỗ trợ (gồm Tư vấn viên trò chuyện trực tuyến).
 
+**Điều kiện tiên quyết:** Người dùng đang xử lý một hội thoại gắn với khách hàng trong Hộp thư Đa kênh.
+
+**Luồng chính:**
+
+1. Tư vấn viên mở hội thoại; khung ngữ cảnh hiển thị ngay bên cạnh (`BR-28.1`), trong ngưỡng hiệu năng `BR-28.2`.
+2. Quyền xem đi theo quan hệ với bản ghi: mức Xem thông thường hoặc quyền đọc tự động khi hội thoại còn mở (`BR-35.4`).
+3. Tư vấn viên mở hồ sơ 360 độ từ khung khi cần.
+
 **Quy tắc nghiệp vụ:**
 
 - **`BR-28.1` (Nội dung khung ngữ cảnh):** Hiển thị đồng thời: thông tin liên hệ, doanh nghiệp trực thuộc, giai đoạn vòng đời, **3 Cơ hội bán hàng gần nhất**, **3 Vé hỗ trợ gần nhất** và các ghi chú ghim. Mức hiển thị của thông tin liên hệ áp đúng `FEAT-04` theo quan hệ của người xem với bản ghi — với Nhân viên Hỗ trợ đang xử lý vé/hội thoại là **cột (C)**; khung ngữ cảnh **không** có chính sách che riêng. Ghi chú ghim được lọc theo phạm vi đọc của người xem (`BR-36.7`).
+
+  **Lý do nghiệp vụ:** Tư vấn viên cần đúng những gì giúp trả lời ngay — khách là ai, đang mua gì, vừa khiếu nại gì; ghi chú thương lượng nội bộ không cần cho việc đó nên được lọc theo phạm vi đọc.
 
 - **`BR-28.2` (Cam kết hiệu năng):** Ngưỡng **nghiệm thu bắt buộc** là phản hồi dưới **150 mili giây với 95% lượt truy vấn** (`NFR-02`); mức **50 mili giây với 50% lượt truy vấn** là mục tiêu tối ưu mong đợi, không dùng làm tiêu chí đạt/không đạt.
 
@@ -1711,11 +2201,23 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Mọi người dùng có quyền cập nhật khách hàng.
 
+**Điều kiện tiên quyết:** Người thêm, sửa kênh liên lạc có ô (Khách hàng, Sửa) bao phủ bản ghi.
+
+**Luồng chính:**
+
+1. Người dùng thêm hoặc sửa kênh liên lạc, đặt kênh chính cho mỗi loại (`BR-29.1`).
+2. Hệ thống cập nhật trạng thái tiếp cận từ kết quả gửi nhận và từ sự kiện nghiệp vụ (`BR-29.2`).
+3. Kênh không tiếp cận được bị loại khỏi gửi tự động (`BR-29.3`).
+
 **Quy tắc nghiệp vụ:**
 
 - **`BR-29.1` (Một kênh chính mỗi loại):** Mỗi loại kênh có tối đa **một** kênh chính. Đặt một kênh khác làm chính thì kênh cũ tự động mất trạng thái chính.
 
-- **`BR-29.2` (Bốn trạng thái tiếp cận):** Theo danh mục A.10: ba trạng thái kỹ thuật — **Đã xác thực** (đã gửi nhận thành công), **Không tiếp cận được** (email hỏng hoặc số không tồn tại), **Chưa kiểm tra** — và một trạng thái nghiệp vụ **Không còn hiệu lực** — địa chỉ không còn thuộc về khách hàng: do `BR-10.4` sinh ra khi khách rời doanh nghiệp sở hữu địa chỉ, hoặc khi nhà mạng/nền tảng báo số điện thoại đã đổi chủ (`campaigns-srs.md`, `BR-28.4`); trong trường hợp đổi chủ, mọi Đồng ý nhận tin trên các kênh dùng số đó chuyển về Chưa có đồng thuận. Thứ tự thắng khi gộp quy định tại `BR-18.2`.
+  **Lý do nghiệp vụ:** Nhiều kênh chính cho cùng một loại làm hệ thống không biết gửi vào đâu và gửi lặp cho khách.
+
+- **`BR-29.2` (Bốn trạng thái tiếp cận):** Theo danh mục A.10: ba trạng thái kỹ thuật — **Đã xác thực** (đã gửi nhận thành công), **Không tiếp cận được** (email hỏng hoặc số không tồn tại), **Chưa kiểm tra** — và một trạng thái nghiệp vụ **Không còn hiệu lực** — địa chỉ không còn thuộc về khách hàng: do `BR-10.4` sinh ra khi khách rời doanh nghiệp sở hữu địa chỉ, hoặc khi nhà mạng/nền tảng báo số điện thoại đã đổi chủ ([`campaigns-srs.md`](./campaigns-srs.md) `BR-28.4`); trong trường hợp đổi chủ, mọi Đồng ý nhận tin trên các kênh dùng số đó chuyển về Chưa có đồng thuận. Thứ tự thắng khi gộp quy định tại `BR-18.2`.
+
+  **Lý do nghiệp vụ:** Phân biệt địa chỉ hỏng (không đảo được) với địa chỉ không còn thuộc về khách (đảo được khi khách quay lại) để vừa không gửi nhầm người, vừa không khóa vĩnh viễn một địa chỉ có thể dùng lại.
 
 - **`BR-29.3` (Loại trừ khỏi gửi tự động):** Kênh ở trạng thái Không tiếp cận được bị tự động loại khỏi mọi chiến dịch gửi email/tin nhắn tự động.
 
@@ -1737,19 +2239,29 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Vai trò sử dụng chính:** Nhân viên và Quản lý Marketing (quản lý đồng thuận theo kênh), Nhân viên Kinh doanh (ghi nhận đồng thuận khi trao đổi trực tiếp), Nhân viên Hỗ trợ (hạ đồng thuận khi khách yêu cầu ngay trong vé/hội thoại đang mở — `BR-35.4` (a)), Quản lý Kinh doanh (trong phạm vi đơn vị), Quản trị viên.
 
+**Điều kiện tiên quyết:** Hạ mức đồng thuận không cần quyền riêng ngoài việc tiếp cận được bản ghi (Nguyên tắc 3); nâng mức cần ô (Khách hàng, Ghi nhận đồng thuận) bao phủ bản ghi và bằng chứng theo `BR-30.10`.
+
+**Luồng chính:**
+
+1. Người dùng hoặc chính khách hàng thay đổi đồng thuận trên một kênh; hệ thống lưu bằng chứng không sửa được (`BR-30.3`).
+2. Mọi lượt gửi khai báo nhóm mục đích; hệ thống áp chi phối của Từ chối nhận tin theo nhóm (`BR-30.5`, `BR-30.7`, `BR-30.9`).
+3. Hệ thống cưỡng chế quy tắc nâng mức trên mọi nguồn tác động (`BR-30.10`).
+
 **Quy tắc nghiệp vụ:**
 
-- **`BR-30.1` (Đồng thuận theo từng kênh):** Trạng thái đồng thuận được lưu **độc lập cho từng kênh** (email, tin nhắn SMS, WhatsApp, Zalo ZNS — theo số điện thoại, Zalo OA — theo người quan tâm Tài khoản Chính thức, và các kênh tích hợp khác; kênh tích hợp khác luôn yêu cầu Đồng ý trước cho nhóm Tiếp thị cho tới khi được đưa vào chính sách gửi tiếp thị), nhận một trong ba giá trị: **Đồng ý nhận tin** (có bằng chứng theo `BR-30.3`), **Từ chối nhận tin**, **Chưa có đồng thuận**. **Chưa có đồng thuận** là giá trị mặc định của mọi kênh trên mọi đường tạo hồ sơ hoặc thêm kênh liên lạc (tạo tay, tạo từ hội thoại, từ biểu mẫu, từ tích hợp, nhập khẩu) khi không kèm bằng chứng Đồng ý; trên các kênh doanh nghiệp yêu cầu Đồng ý trước theo chính sách gửi tiếp thị (`campaigns-srs.md`, `BR-30.1`, `CFG-CAMP-74`, mặc định mọi kênh), nó chặn nhóm Tiếp thị giống Từ chối nhận tin; và được nâng lên Đồng ý nhận tin theo đúng quy tắc nâng mức của `BR-30.10`. Khách từ chối trên một kênh chỉ tác động lên kênh đó, trừ khi khách chọn **"Hủy nhận tin trên toàn bộ mọi kênh"**. Phạm vi tác động của Từ chối nhận tin quy định tại `BR-30.5` — chặn nhóm thư Tiếp thị, không chặn mọi loại thư.
+- **`BR-30.1` (Đồng thuận theo từng kênh):** Trạng thái đồng thuận được lưu **độc lập cho từng kênh** (email, tin nhắn SMS, WhatsApp, Zalo ZNS — theo số điện thoại, Zalo OA — theo người quan tâm Tài khoản Chính thức, và các kênh tích hợp khác; kênh tích hợp khác luôn yêu cầu Đồng ý trước cho nhóm Tiếp thị cho tới khi được đưa vào chính sách gửi tiếp thị), nhận một trong ba giá trị: **Đồng ý nhận tin** (có bằng chứng theo `BR-30.3`), **Từ chối nhận tin**, **Chưa có đồng thuận**. **Chưa có đồng thuận** là giá trị mặc định của mọi kênh trên mọi đường tạo hồ sơ hoặc thêm kênh liên lạc (tạo tay, tạo từ hội thoại, từ biểu mẫu, từ tích hợp, nhập khẩu) khi không kèm bằng chứng Đồng ý; trên các kênh doanh nghiệp yêu cầu Đồng ý trước theo chính sách gửi tiếp thị ([`campaigns-srs.md`](./campaigns-srs.md) `BR-30.1`, `CFG-CAMP-74`, mặc định mọi kênh), nó chặn nhóm Tiếp thị giống Từ chối nhận tin; và được nâng lên Đồng ý nhận tin theo đúng quy tắc nâng mức của `BR-30.10`. Khách từ chối trên một kênh chỉ tác động lên kênh đó, trừ khi khách chọn **"Hủy nhận tin trên toàn bộ mọi kênh"**. Phạm vi tác động của Từ chối nhận tin quy định tại `BR-30.5` — chặn nhóm thư Tiếp thị, không chặn mọi loại thư.
 
   **Lý do nghiệp vụ:** Nhiều doanh nghiệp phải có sự đồng ý **trước** mới được gửi tiếp thị, và việc có yêu cầu hay không trên từng kênh là chính sách của doanh nghiệp; nếu chỉ có hai giá trị, mọi hồ sơ chưa ai hỏi ý kiến đều phải mang một trong hai nhãn sai — hoặc Đồng ý không có căn cứ, hoặc Từ chối trong khi khách chưa từng từ chối. Zalo ZNS và Zalo OA tách riêng vì người nhận có thể đồng ý nhận tin qua Tài khoản Chính thức mình đang quan tâm mà không đồng ý nhận tin theo số điện thoại, và ngược lại.
 
 - **`BR-30.2` (Định danh dùng chung):** Một số điện thoại hoặc email được đánh dấu **Định danh dùng chung** (ví dụ số tổng đài, số lễ tân, email gia đình) để hệ thống không coi các khách hàng khác nhau dùng chung định danh đó là trùng lặp và không gợi ý gộp họ.
 
-- **`BR-30.3` (Bằng chứng đồng thuận):** Mỗi lần trạng thái đồng thuận thay đổi, hệ thống bắt buộc lưu bộ bằng chứng **không sửa được** gồm: **(a)** thời điểm ghi nhận; **(b)** nguồn thu thập — **bắt buộc chọn từ A.8**, không nhập tự do; **(c)** nội dung điều khoản khách đã đồng ý (phiên bản văn bản đồng thuận tại thời điểm đó); **(d)** người hoặc tiến trình ghi nhận; **(e)** đồng ý đã được **xác nhận qua chính điểm đến** hay chưa (mã hoặc liên kết gửi tới đúng email/số điện thoại đó — `campaigns-srs.md`, `BR-09.3`). Bằng chứng được lưu **vĩnh viễn** kể cả khi khách đổi trạng thái nhiều lần, chỉ chịu ngoại lệ khử định danh tại `BR-33.8`.
+  **Lý do nghiệp vụ:** Gia đình, lễ tân và tổng đài dùng chung định danh là chuyện hằng ngày; không có nhãn này thì kiểm tra trùng lặp chặn sai và công cụ gộp gợi ý nhập hai người khác nhau làm một.
+
+- **`BR-30.3` (Bằng chứng đồng thuận):** Mỗi lần trạng thái đồng thuận thay đổi, hệ thống bắt buộc lưu bộ bằng chứng **không sửa được** gồm: **(a)** thời điểm ghi nhận; **(b)** nguồn thu thập — **bắt buộc chọn từ A.8**, không nhập tự do; **(c)** nội dung điều khoản khách đã đồng ý (phiên bản văn bản đồng thuận tại thời điểm đó); **(d)** người hoặc tiến trình ghi nhận; **(e)** đồng ý đã được **xác nhận qua chính điểm đến** hay chưa (mã hoặc liên kết gửi tới đúng email/số điện thoại đó — [`campaigns-srs.md`](./campaigns-srs.md) `BR-09.3`). Bằng chứng được lưu **vĩnh viễn** kể cả khi khách đổi trạng thái nhiều lần, chỉ chịu ngoại lệ khử định danh tại `BR-33.8`.
 
   **Lý do nghiệp vụ:** Khi bị khiếu nại, doanh nghiệp phải chứng minh được cơ sở xử lý dữ liệu tại đúng thời điểm gửi tin; bằng chứng sửa được hoặc chỉ lưu trạng thái cuối cùng thì không chứng minh được gì.
 
-- **`BR-30.4` (Đồng thuận qua nhập khẩu hàng loạt):** Dữ liệu nhập khẩu **không được** mặc định nhận trạng thái Đồng ý nhận tin. Lô chọn một cơ sở tạo Đồng ý nhận tin ("Khách hàng đã đăng ký trực tiếp", "Dữ liệu từ sự kiện có phiếu đồng ý") bắt buộc đính kèm tài liệu chứng minh nguồn gốc lô; lô vượt `CFG-30-03` bản ghi cần Người phụ trách Bảo vệ Dữ liệu chấp thuận trước khi Đồng ý có hiệu lực. Người nhập khẩu **bắt buộc chọn** Cơ sở đồng thuận cho lô từ A.11 — giao diện không cho bỏ trống. Danh mục có sẵn giá trị **"Không có cơ sở đồng thuận"** để khai báo trung thực; khi chọn giá trị này (hoặc cơ sở khai báo không đủ chứng minh đồng thuận tiếp thị), toàn bộ lô nhận **Chưa có đồng thuận** — lô chưa từng từ chối nên không được gắn Từ chối nhận tin; việc lô có nhận tiếp thị hay không do chính sách gửi tiếp thị của doanh nghiệp quyết định (`campaigns-srs.md`, `BR-30.1`, `CFG-CAMP-74`).
+- **`BR-30.4` (Đồng thuận qua nhập khẩu hàng loạt):** Dữ liệu nhập khẩu **không được** mặc định nhận trạng thái Đồng ý nhận tin. Lô chọn một cơ sở tạo Đồng ý nhận tin ("Khách hàng đã đăng ký trực tiếp", "Dữ liệu từ sự kiện có phiếu đồng ý") bắt buộc đính kèm tài liệu chứng minh nguồn gốc lô; lô vượt `CFG-30-03` bản ghi cần Người phụ trách Bảo vệ Dữ liệu chấp thuận trước khi Đồng ý có hiệu lực. Người nhập khẩu **bắt buộc chọn** Cơ sở đồng thuận cho lô từ A.11 — giao diện không cho bỏ trống. Danh mục có sẵn giá trị **"Không có cơ sở đồng thuận"** để khai báo trung thực; khi chọn giá trị này (hoặc cơ sở khai báo không đủ chứng minh đồng thuận tiếp thị), toàn bộ lô nhận **Chưa có đồng thuận** — lô chưa từng từ chối nên không được gắn Từ chối nhận tin; việc lô có nhận tiếp thị hay không do chính sách gửi tiếp thị của doanh nghiệp quyết định ([`campaigns-srs.md`](./campaigns-srs.md) `BR-30.1`, `CFG-CAMP-74`).
 
   **Lý do nghiệp vụ:** Danh bạ mua về hoặc thu thập không rõ nguồn là nguồn vi phạm đồng thuận phổ biến nhất; mặc định Đồng ý sẽ biến mỗi lần nhập khẩu thành một lần vi phạm hàng loạt.
 
@@ -1758,18 +2270,18 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | Nhóm mục đích | Nội dung thuộc nhóm | Chịu chi phối của Từ chối nhận tin? |
 | --- | --- | :---: |
 | **Tiếp thị & Quảng bá** | Bản tin định kỳ, chiến dịch khuyến mãi, thư nuôi dưỡng tự động, mời sự kiện thương mại, thư tái tiếp cận | **Có — chặn tuyệt đối** |
-| **Giao dịch & Dịch vụ** | Phản hồi vé hỗ trợ, xác nhận đơn hàng, hóa đơn/nhắc thanh toán, thông báo bảo trì, cảnh báo bảo mật, thông báo pháp lý bắt buộc, Thông báo dịch vụ hàng loạt theo (`campaigns-srs.md`, `FEAT-45`), **thư báo giá, thư hợp đồng, thư xác nhận cuộc hẹn, thư trả lời một yêu cầu do chính khách hàng đưa ra** | Không |
+| **Giao dịch & Dịch vụ** | Phản hồi vé hỗ trợ, xác nhận đơn hàng, hóa đơn/nhắc thanh toán, thông báo bảo trì, cảnh báo bảo mật, thông báo pháp lý bắt buộc, Thông báo dịch vụ hàng loạt theo ([`campaigns-srs.md`](./campaigns-srs.md) `FEAT-45`), **thư báo giá, thư hợp đồng, thư xác nhận cuộc hẹn, thư trả lời một yêu cầu do chính khách hàng đưa ra** | Không |
 | **Liên lạc 1-1 do nhân viên chủ động** | Email/tin nhắn nhân viên gửi trực tiếp trong quá trình phục vụ khách, thỏa **đồng thời cả bốn tiêu chí** tại `BR-30.7` | Không (mặc định), nhưng **bắt buộc ghi nhật ký** |
 
-  **Cổng kiểm soát gửi Tiếp thị dùng chung (sàn bắt buộc):** mọi lượt gửi thuộc nhóm Tiếp thị & Quảng bá — dù phát ra từ phân hệ Chiến dịch, từ thao tác gửi thư cho danh sách hay lịch gửi tự động của phân hệ này, hay từ bất kỳ phân hệ nào khác — đều phải đi qua cùng một bộ kiểm tra tại thời điểm gửi đặc tả tại (`campaigns-srs.md`, `FEAT-44`): đồng thuận và bằng chứng, hạn chế xử lý, trạng thái tiếp cận, dấu vết chặn gửi, tạm chặn chờ xác nhận lời từ chối, Danh sách không quảng cáo, nhãn quảng cáo, khung giờ yên lặng, giới hạn 24 giờ và giới hạn tần suất, dừng khẩn cấp, căn cứ theo dõi hành vi, cấm trường nhạy cảm trong cá nhân hóa, loại tên thương hiệu SMS và loại mẫu tin, thông tin nhận diện người gửi và liên kết hủy nhận tin, ghi ngược hủy nhận tin, khiếu nại, điểm đến hỏng và chặn doanh nghiệp; và được đếm chung vào các giới hạn đó. Mọi kết quả được ghi vào sổ cái của cổng kèm căn cứ cho phép lượt gửi — bằng chứng Đồng ý, hoặc phiên bản chính sách khi kênh không yêu cầu Đồng ý trước (`campaigns-srs.md`, `BR-23.1`; hàng 13 của `BR-33.8`).
+  **Cổng kiểm soát gửi Tiếp thị dùng chung (sàn bắt buộc):** mọi lượt gửi thuộc nhóm Tiếp thị & Quảng bá — dù phát ra từ phân hệ Chiến dịch, từ thao tác gửi thư cho danh sách hay lịch gửi tự động của phân hệ này, hay từ bất kỳ phân hệ nào khác — đều phải đi qua cùng một bộ kiểm tra tại thời điểm gửi đặc tả tại ([`campaigns-srs.md`](./campaigns-srs.md) `FEAT-44`): đồng thuận và bằng chứng, hạn chế xử lý, trạng thái tiếp cận, dấu vết chặn gửi, tạm chặn chờ xác nhận lời từ chối, Danh sách không quảng cáo, nhãn quảng cáo, khung giờ yên lặng, giới hạn 24 giờ và giới hạn tần suất, dừng khẩn cấp, căn cứ theo dõi hành vi, cấm trường nhạy cảm trong cá nhân hóa, loại tên thương hiệu SMS và loại mẫu tin, thông tin nhận diện người gửi và liên kết hủy nhận tin, ghi ngược hủy nhận tin, khiếu nại, điểm đến hỏng và chặn doanh nghiệp; và được đếm chung vào các giới hạn đó. Mọi kết quả được ghi vào sổ cái của cổng kèm căn cứ cho phép lượt gửi — bằng chứng Đồng ý, hoặc phiên bản chính sách khi kênh không yêu cầu Đồng ý trước ([`campaigns-srs.md`](./campaigns-srs.md) `BR-23.1`; hàng 13 của `BR-33.8`).
 
-  Tenant **không được** cấu hình để nhóm Tiếp thị thoát khỏi chi phối của Từ chối nhận tin (sàn pháp lý); tenant **được** cấu hình nhóm Liên lạc 1-1 có chịu chi phối hay không (Phụ lục B, `CFG-30-01`).
+  Tenant **không được** cấu hình để nhóm Tiếp thị thoát khỏi chi phối của Từ chối nhận tin (sàn bắt buộc); tenant **được** cấu hình nhóm Liên lạc 1-1 có chịu chi phối hay không (Phụ lục B, `CFG-30-01`).
 
   **Lý do nghiệp vụ:** Nếu Từ chối nhận tin chặn tất cả, khách bấm "hủy nhận bản tin" hôm nay rồi mai gửi vé hỗ trợ sẽ không được trả lời — sự cố phục vụ khách xảy ra ngay tuần đầu; khách đang thương lượng hợp đồng không nhận được báo giá, và nhân viên sẽ gửi từ hộp thư cá nhân, đưa nội dung thương lượng ra khỏi hệ thống. Ngược lại, nếu không phân loại rõ, hệ thống sẽ gửi thư tiếp thị cho người đã từ chối.
 
 - **`BR-30.6` (Trạng thái Hạn chế xử lý):** Khi khách yêu cầu hạn chế xử lý (`FEAT-33`), hồ sơ mang trạng thái **Hạn chế xử lý**, kèm lượt ghi nhận gồm thời điểm, người thực hiện và **nguồn** — "Yêu cầu trực tiếp của khách hàng" hay "Yêu cầu chưa xác minh được danh tính" (biện pháp phòng ngừa, `BR-33.7`), cùng danh mục nguồn với A.8:
-  - **Dừng:** toàn bộ nhóm thư Tiếp thị; chấm điểm và suy giảm điểm (`FEAT-15`, `FEAT-16`); thăng hạng vòng đời **do ngưỡng điểm** (`BR-15.5`); thu hồi và phân bổ lại tự động (`BR-31.7`); **đồng hồ cam kết phản hồi lần đầu** (`BR-31.7`) — bản ghi vì vậy bị loại khỏi mẫu đo `KPI-03`; đưa vào danh sách phân khúc chiến dịch — trừ Thông báo dịch vụ mục đích thu hồi sản phẩm, cảnh báo an toàn và thông báo luật định theo (`campaigns-srs.md`, `FEAT-45`, `BR-45.4`).
-  - **Vẫn chạy:** nhóm thư Giao dịch & Dịch vụ, để doanh nghiệp thực hiện nghĩa vụ hợp đồng — riêng Thông báo dịch vụ gửi hàng loạt, chỉ các mục đích thu hồi sản phẩm, cảnh báo an toàn và thông báo luật định (`campaigns-srs.md`, `BR-45.4`); và **các bước chuyển giai đoạn theo nguyên tắc 1** (`BR-12.2`, `BR-12.9`).
+  - **Dừng:** toàn bộ nhóm thư Tiếp thị; chấm điểm và suy giảm điểm (`FEAT-15`, `FEAT-16`); thăng hạng vòng đời **do ngưỡng điểm** (`BR-15.5`); thu hồi và phân bổ lại tự động (`BR-31.7`); **đồng hồ cam kết phản hồi lần đầu** (`BR-31.7`) — bản ghi vì vậy bị loại khỏi mẫu đo `KPI-03`; đưa vào danh sách phân khúc chiến dịch — trừ Thông báo dịch vụ mục đích thu hồi sản phẩm, cảnh báo an toàn và thông báo luật định theo ([`campaigns-srs.md`](./campaigns-srs.md) `FEAT-45`, `BR-45.4`).
+  - **Vẫn chạy:** nhóm thư Giao dịch & Dịch vụ, để doanh nghiệp thực hiện nghĩa vụ hợp đồng — riêng Thông báo dịch vụ gửi hàng loạt, chỉ các mục đích thu hồi sản phẩm, cảnh báo an toàn và thông báo luật định ([`campaigns-srs.md`](./campaigns-srs.md) `BR-45.4`); và **các bước chuyển giai đoạn theo nguyên tắc 1** (`BR-12.2`, `BR-12.9`).
   - **Dỡ trạng thái:** khi **chính chủ thể dữ liệu rút lại yêu cầu qua kênh đã xác minh** theo `BR-33.7` — do **Quản trị viên** thực hiện một mình; hoặc theo nhánh dỡ sớm biện pháp phòng ngừa tại `BR-33.7` (b) — cần **Quản trị viên cùng Người phụ trách Bảo vệ Dữ liệu**; hoặc biện pháp phòng ngừa tự kết thúc khi hết hạn (`BR-33.7` (a), do hệ thống thực hiện) hay khi khách xác minh thành công (`BR-33.7` (e)) — trừ khi chính yêu cầu đã xác minh là yêu cầu Hạn chế xử lý, thì Hạn chế xử lý được giữ với lượt ghi nhận mới. Mọi nhánh ghi nhật ký (`NFR-07`) và làm đồng hồ cam kết chạy lại từ thời điểm dỡ.
 
   **Lý do nghiệp vụ:** Hệ thống không được thúc nhân viên liên hệ một người vừa yêu cầu hạn chế xử lý. Nguyên tắc 1 chỉ ghi nhận một thực tế thương mại đã xảy ra, không phải hoạt động xử lý dữ liệu cho mục đích tiếp thị — nếu dừng cả nhóm này, hồ sơ của một khách đang ký hợp đồng sẽ đứng sai giai đoạn. Thẩm quyền dỡ khác nhau theo nhánh vì nhánh thứ nhất làm đúng ý nguyện vừa được xác minh của chủ thể, còn nhánh thứ hai dỡ một biện pháp bảo vệ mà chủ thể chưa xác minh được danh tính. Không có đường dỡ thì một khách đổi ý bị đóng băng vĩnh viễn.
@@ -1780,11 +2292,13 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
   - **(c)** **không** dùng **mẫu chiến dịch** do Marketing tạo trong công cụ chiến dịch — mẫu thư nghiệp vụ cá nhân do nhân viên hoặc đội kinh doanh soạn (thư theo dõi sau cuộc gọi, thư giới thiệu, thư hỏi lịch gặp) **vẫn được phép**;
   - **(d)** **không gửi theo lô cho toàn bộ một danh sách** — việc mở một danh sách hiển thị rồi chọn thủ công vài khách hàng cụ thể **vẫn thỏa** tiêu chí này.
 
-  Lượt gửi không thỏa đủ bốn tiêu chí **bắt buộc thuộc nhóm Tiếp thị**, trừ nội dung Giao dịch & Dịch vụ nêu tại `BR-30.5`; trong đó, gửi **hàng loạt** một nội dung Giao dịch & Dịch vụ chỉ được qua Thông báo dịch vụ theo (`campaigns-srs.md`, `FEAT-45`) — danh mục mục đích đóng, cấm nội dung quảng bá, có phê duyệt của Người phụ trách Bảo vệ Dữ liệu. Thư báo giá, thư hợp đồng, thư xác nhận cuộc hẹn và thư trả lời yêu cầu của khách thuộc nhóm Giao dịch & Dịch vụ (`BR-30.5`), không xét theo bốn tiêu chí này và không chịu trần số người nhận.
+  Lượt gửi không thỏa đủ bốn tiêu chí **bắt buộc thuộc nhóm Tiếp thị**, trừ nội dung Giao dịch & Dịch vụ nêu tại `BR-30.5`; trong đó, gửi **hàng loạt** một nội dung Giao dịch & Dịch vụ chỉ được qua Thông báo dịch vụ theo ([`campaigns-srs.md`](./campaigns-srs.md) `FEAT-45`) — danh mục mục đích đóng, cấm nội dung quảng bá, có phê duyệt của Người phụ trách Bảo vệ Dữ liệu. Thư báo giá, thư hợp đồng, thư xác nhận cuộc hẹn và thư trả lời yêu cầu của khách thuộc nhóm Giao dịch & Dịch vụ (`BR-30.5`), không xét theo bốn tiêu chí này và không chịu trần số người nhận.
 
   **Lý do nghiệp vụ:** Không có bộ tiêu chí quan sát được, một chiến dịch tiếp thị chỉ cần gửi từ tài khoản nhân viên là ra khỏi tầm chi phối của Từ chối nhận tin, biến cam kết "không thể ghi đè" tại `BR-19.6` thành hình thức.
 
 - **`BR-30.8` (Giám sát nhóm Liên lạc 1-1):** Hằng tháng, hệ thống báo cáo cho Người phụ trách Bảo vệ Dữ liệu và Chủ sở hữu khối lượng thư nhóm Liên lạc 1-1 đã gửi tới các khách đang Từ chối nhận tin, chia theo người gửi; khối lượng vượt mức bất thường được cảnh báo để rà soát dấu hiệu lách quy tắc.
+
+  **Lý do nghiệp vụ:** Tiêu chí của nhóm Liên lạc 1-1 quan sát được nhưng vẫn có thể bị lách bằng cách gửi nhiều lượt nhỏ; giám sát theo người gửi là cách phát hiện việc lách đó mà không chặn công việc thật.
 
 - **`BR-30.9` (Mặc định an toàn khi thiếu khai báo nhóm) — sàn bắt buộc:** Mọi lượt gửi **không khai báo nhóm mục đích** được mặc định xếp vào **nhóm Tiếp thị**.
 
@@ -1792,10 +2306,10 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 - **`BR-30.10` (Cưỡng chế đồng thuận trên mọi nguồn tác động) — sàn bắt buộc:** Bảng trường bị cưỡng chế tại `BR-18.2` chỉ điều chỉnh thao tác gộp; quy tắc này mở rộng cơ chế cưỡng chế ra mọi nguồn tác động còn lại:
   - **Nguyên tắc bất biến:** chỉ **hành vi của chính chủ thể dữ liệu** (tự đăng ký, tự bấm liên kết xác nhận, tự trả lời trên kênh của mình) hoặc **bằng chứng đồng thuận mới hợp lệ theo `BR-30.3`** mới **nâng** được từ Từ chối nhận tin hoặc Chưa có đồng thuận lên Đồng ý nhận tin. **Ngoại lệ duy nhất:** khi dỡ biện pháp phòng ngừa, hệ thống trả kênh về đúng trạng thái trước khi áp theo `BR-33.7` (e) — từ Từ chối về Đồng ý (dỡ sớm hoặc khách xác minh thành công: là căn cứ như trước khi áp; hết hạn: đánh dấu "tự khôi phục", chưa là căn cứ) hoặc về Chưa có đồng thuận — vì lời từ chối đó không phải của chủ thể.
-  - **Nâng từ Từ chối nhận tin** — bất kể nguồn của lời từ chối, trừ ngoại lệ của biện pháp phòng ngừa nêu trên: chỉ được nâng lên Đồng ý khi **chính chủ** xác nhận qua liên kết hoặc mã gửi tới chính điểm đến đó; ghi nhận thủ công của nhân viên và nhập khẩu không nâng được (`campaigns-srs.md`, `BR-26.5`).
+  - **Nâng từ Từ chối nhận tin** — bất kể nguồn của lời từ chối, trừ ngoại lệ của biện pháp phòng ngừa nêu trên: chỉ được nâng lên Đồng ý khi **chính chủ** xác nhận qua liên kết hoặc mã gửi tới chính điểm đến đó; ghi nhận thủ công của nhân viên và nhập khẩu không nâng được ([`campaigns-srs.md`](./campaigns-srs.md) `BR-26.5`).
   - **Nhập khẩu theo chiến lược cập nhật (`BR-23.3`):** **không bao giờ** hạ mức nghiêm ngặt của bản ghi hiện hữu. Bản ghi đang Từ chối mà dòng nhập vào là Đồng ý thì giữ Từ chối, và dòng đó được ghi vào báo cáo kết quả với ghi chú "Không nâng được mức đồng thuận — thiếu bằng chứng của chủ thể".
-  - **Chỉnh sửa thủ công bởi bất kỳ vai trò nào có quyền ghi trên bản ghi** — Nhân viên và Quản lý Kinh doanh, Nhân viên và Quản lý Marketing, Nhân viên Hỗ trợ khi tiếp nhận yêu cầu của khách: được **hạ** xuống Từ chối nhận tin tự do; **nâng** từ **Chưa có đồng thuận** lên Đồng ý nhận tin bắt buộc kèm bằng chứng theo `BR-30.3` có **tài liệu chứng minh đính kèm** (phiếu đồng ý, bản ghi cuộc gọi, ảnh chụp biểu mẫu) với nguồn thu thập từ A.8 — không có bằng chứng thì giao diện không cho lưu.
-  - **Hạ về Chưa có đồng thuận:** hệ thống hạ một kênh từ Đồng ý về Chưa có đồng thuận khi nhà mạng hoặc nền tảng báo số điện thoại đổi chủ (`campaigns-srs.md`, `BR-28.4`), với bằng chứng nguồn tương ứng trong A.8. Đồng ý được tự khôi phục khi dỡ biện pháp phòng ngừa vì hết hạn (`BR-33.7` (e)) được đánh dấu "tự khôi phục" để các phân hệ gửi tin nhận biết (`campaigns-srs.md`, `BR-32.1`); dấu này chỉ được gỡ khi **chính chủ** xác nhận lại qua liên kết hoặc mã gửi tới chính điểm đến — người có quyền sửa hồ sơ gửi được yêu cầu xác nhận lại đó, nhưng không tự gỡ dấu được.
+  - **Chỉnh sửa thủ công** bởi người có ô (Khách hàng, Ghi nhận đồng thuận) bao phủ bản ghi — theo ma trận mặc định gồm Nhân viên Kinh doanh, Quản lý, Marketing, Quản lý Marketing — và bởi người đang xử lý vé/hội thoại theo `BR-35.4` (a) khi tiếp nhận yêu cầu của khách (chỉ hạ): được **hạ** xuống Từ chối nhận tin tự do; **nâng** từ **Chưa có đồng thuận** lên Đồng ý nhận tin bắt buộc kèm bằng chứng theo `BR-30.3` có **tài liệu chứng minh đính kèm** (phiếu đồng ý, bản ghi cuộc gọi, ảnh chụp biểu mẫu) với nguồn thu thập từ A.8 — không có bằng chứng thì giao diện không cho lưu.
+  - **Hạ về Chưa có đồng thuận:** hệ thống hạ một kênh từ Đồng ý về Chưa có đồng thuận khi nhà mạng hoặc nền tảng báo số điện thoại đổi chủ ([`campaigns-srs.md`](./campaigns-srs.md) `BR-28.4`), với bằng chứng nguồn tương ứng trong A.8. Đồng ý được tự khôi phục khi dỡ biện pháp phòng ngừa vì hết hạn (`BR-33.7` (e)) được đánh dấu "tự khôi phục" để các phân hệ gửi tin nhận biết ([`campaigns-srs.md`](./campaigns-srs.md) `BR-32.1`); dấu này chỉ được gỡ khi **chính chủ** xác nhận lại qua liên kết hoặc mã gửi tới chính điểm đến — người có quyền sửa hồ sơ gửi được yêu cầu xác nhận lại đó, nhưng không tự gỡ dấu được.
   - Mọi lượt nâng mức đồng thuận, từ bất kỳ nguồn nào, đều được ghi nhật ký (`NFR-07`).
 
   **Lý do nghiệp vụ:** Không có quy tắc này, cam kết "Từ chối nhận tin không thể bị ghi đè" chỉ đúng với thao tác gộp, trong khi hai đường vào phổ biến hơn — nhập khẩu và sửa tay — vẫn hở.
@@ -1855,15 +2369,32 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | **Yêu cầu hạn chế xử lý** | Giữ dữ liệu nhưng dừng mọi hoạt động tiếp thị và tự động hóa (`BR-30.6`) | **Tức thì** — người tiếp nhận (Nhân viên Hỗ trợ, Quản lý Kinh doanh) gắn trạng thái Hạn chế xử lý ngay tại bước ghi nhận |
 | **Yêu cầu rút lại đồng thuận** | Chuyển toàn bộ kênh sang Từ chối nhận tin | **Tức thì** |
 
+**Điều kiện tiên quyết:** Tiếp nhận cần quyền quản trị Tiếp nhận yêu cầu chủ thể dữ liệu (Mục 5.2) hoặc quyền đọc tự động trên bản ghi; thực thi bản sao, chỉnh sửa, xóa và đóng yêu cầu chỉ do Người có toàn quyền.
+
+**Luồng chính:**
+
+1. Người tiếp nhận ghi nhận yêu cầu thành bản ghi theo dõi (`BR-33.1`); với yêu cầu hạn chế xử lý và rút đồng thuận, thực thi ngay.
+2. Người xử lý xác minh danh tính theo mức rủi ro (`BR-33.7`); không xác minh được thì hệ thống áp biện pháp phòng ngừa.
+3. Người xử lý thực thi yêu cầu, áp ngoại lệ nghĩa vụ lưu trữ khi có (`BR-33.3`), và với yêu cầu xóa thì xử lý mọi nơi lưu (`BR-33.8`).
+4. Hệ thống phát hành Biên bản Hoàn tất Xử lý; Người có toàn quyền đóng yêu cầu và phản hồi khách.
+
 **Quy tắc nghiệp vụ:**
 
 - **`BR-33.1` (Tiếp nhận & theo dõi):** Mỗi yêu cầu là một bản ghi theo dõi riêng, gắn với khách hàng liên quan, ghi: loại yêu cầu, ngày tiếp nhận, hạn xử lý, người xử lý, trạng thái (Đã tiếp nhận / Đang xử lý / Đã hoàn tất / Bị từ chối kèm lý do). Hệ thống cảnh báo khi yêu cầu sắp đến hạn. Chỉ Quản trị viên và Chủ sở hữu đóng được yêu cầu và phát hành phản hồi chính thức cho khách.
 
+  **Lý do nghiệp vụ:** Nghĩa vụ có thời hạn chỉ thực hiện được khi mỗi yêu cầu có người chịu trách nhiệm, hạn và trạng thái rõ ràng; yêu cầu nằm trong hộp thư của một nhân viên thì không ai biết nó sắp quá hạn.
+
 - **`BR-33.2` (Xóa vĩnh viễn có kiểm soát):** Chỉ Quản trị viên hoặc Chủ sở hữu thực hiện, bắt buộc xác nhận hai bước và **không qua Thùng rác**. Sau khi hoàn tất, hệ thống chỉ giữ một bản ghi tối thiểu chứng minh đã thực hiện nghĩa vụ (mã bản ghi đã xóa, loại yêu cầu, thời điểm hoàn tất, người thực hiện) — không chứa dữ liệu cá nhân.
+
+  **Lý do nghiệp vụ:** Xóa theo quyền chủ thể không phục hồi được, nên phải do người có thẩm quyền cao nhất thực hiện với xác nhận hai bước; bản ghi tối thiểu là bằng chứng doanh nghiệp đã thực hiện nghĩa vụ mà không giữ lại chính dữ liệu đã xóa.
 
 - **`BR-33.3` (Ngoại lệ nghĩa vụ lưu trữ):** Khách còn nghĩa vụ hợp đồng, hóa đơn hoặc tranh chấp pháp lý đang xử lý thì yêu cầu xóa bị **từ chối một phần** theo cơ sở "nghĩa vụ pháp lý phải lưu trữ": hệ thống xóa dữ liệu tiếp thị và dữ liệu liên hệ không cần thiết, giữ dữ liệu tối thiểu phục vụ nghĩa vụ pháp lý, và bắt buộc ghi rõ lý do từ chối một phần trong bản ghi theo dõi để phản hồi khách.
 
+  **Lý do nghiệp vụ:** Quyền xóa của khách không xóa được nghĩa vụ lưu trữ hợp đồng và hóa đơn của doanh nghiệp; xóa tất cả làm doanh nghiệp vi phạm nghĩa vụ khác, còn từ chối tất cả làm doanh nghiệp vi phạm quyền của khách.
+
 - **`BR-33.4` (Chặn xung đột với gộp):** Bản ghi đang có yêu cầu chủ thể dữ liệu chưa hoàn tất không được gộp (thống nhất `BR-19.6`).
+
+  **Lý do nghiệp vụ:** Gộp trong lúc đang xử lý làm thay đổi tập dữ liệu mà yêu cầu nhắm tới; người xử lý không còn xác định được phần nào là của chủ thể đã yêu cầu.
 
 - **`BR-33.5` (Chính sách lưu trữ dữ liệu không hoạt động):** Khách hàng không phát sinh tương tác nào trong **36 tháng** liên tục và không ở Customer/Evangelist được đưa vào danh sách đề xuất rà soát lưu trữ (Phụ lục B, `CFG-33-02`). Quản trị viên quyết định lưu trữ dài hạn hoặc xóa. Hệ thống **không tự động xóa** hồ sơ khách hàng đã định danh còn nằm ngoài Thùng rác — hành vi này **cố định**.
 
@@ -1874,7 +2405,7 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
   - **(d)** dọn dẹp Thùng rác quá thời hạn (`BR-05.4`) — dữ liệu mà con người đã quyết định xóa, chịu toàn bộ chốt an toàn tại `BR-05.6`;
   - **(e)** tự động xóa **tệp nhập khẩu gốc** khi hết thời hạn lưu (`BR-33.8`, `CFG-22-01`) và **tài liệu xác minh danh tính** thu theo `BR-33.7` sau 30 ngày kể từ khi yêu cầu hoàn tất (`BR-01.5b`) — tệp phục vụ một tiến trình đã kết thúc, không phải hồ sơ khách hàng.
 
-  - **(f)** tự động khử định danh sổ cái người nhận chiến dịch, sự kiện tương tác gắn danh tính và thẻ gắn tự động từ tương tác khi hết thời hạn lưu của phân hệ Chiến dịch (`campaigns-srs.md`, `BR-32.3`) — dữ liệu hành vi phục vụ một đợt gửi đã kết thúc, không phải hồ sơ khách hàng.
+  - **(f)** tự động khử định danh sổ cái người nhận chiến dịch, sự kiện tương tác gắn danh tính và thẻ gắn tự động từ tương tác khi hết thời hạn lưu của phân hệ Chiến dịch ([`campaigns-srs.md`](./campaigns-srs.md) `BR-32.3`) — dữ liệu hành vi phục vụ một đợt gửi đã kết thúc, không phải hồ sơ khách hàng.
 
   Ngoài sáu ngoại lệ này, không tiến trình nào được tự động xóa dữ liệu khách hàng.
 
@@ -1901,7 +2432,7 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
   - **(b) Thẩm quyền dỡ sớm:** Quản trị viên **cùng** Người phụ trách Bảo vệ Dữ liệu (hoặc người thứ hai theo `NFR-14`), khi xác định người yêu cầu không phải chủ thể dữ liệu hoặc khi khách xác nhận không có yêu cầu nào. Việc dỡ được ghi nhật ký.
   - **(c) Bắt buộc thông báo:** Người phụ trách bản ghi được thông báo khi biện pháp phòng ngừa được áp, nêu rõ lý do và thời hạn.
   - **(d) Ghi nhận đúng bản chất:** bằng chứng đồng thuận cho lượt hạ mức này dùng nguồn **"Yêu cầu chưa xác minh được danh tính"** (A.8), **không** ghi là "Yêu cầu trực tiếp của khách hàng".
-  - **(e) Trả về đúng trạng thái trước khi áp:** khi biện pháp kết thúc — hết hạn, dỡ sớm theo (b), hoặc khách bổ sung xác minh thành công — **chỉ** những kênh mà trạng thái hiện tại vẫn là lượt hạ mức của chính biện pháp này (nguồn "Yêu cầu chưa xác minh được danh tính") được trả về đúng trạng thái ngay trước khi áp: Đồng ý (dỡ sớm hoặc xác minh thành công: là căn cứ; hết hạn: đánh dấu "tự khôi phục", `BR-30.10`) hoặc Chưa có đồng thuận, với nguồn "Tự khôi phục khi dỡ biện pháp phòng ngừa" (A.8), tham chiếu tới bằng chứng gốc, và giữ nguyên mọi thuộc tính của trạng thái trước khi áp — phiên bản điều khoản (`BR-30.3` (c)), việc đã hay chưa xác nhận qua điểm đến (`BR-30.3` (e)), và dấu "tự khôi phục" nếu có; lần khôi phục không bao giờ biến một Đồng ý vốn chưa là căn cứ thành căn cứ. Kênh có bất kỳ thay đổi đồng thuận nào khác trong thời gian áp — chính chủ từ chối hay xác nhận Đồng ý mới, tư vấn viên ghi nhận từ chối, khiếu nại thư rác, người nhận chặn doanh nghiệp, số điện thoại đổi chủ (`campaigns-srs.md`, `BR-28.4`) — giữ trạng thái mới nhất đó. Khi khách xác minh thành công, yêu cầu được xử lý theo đúng nội dung của nó: hệ thống **tạo một lượt ghi nhận mới** cho mỗi lượt hạ mức và Hạn chế xử lý thuộc phạm vi yêu cầu, với nguồn "Yêu cầu trực tiếp của khách hàng" — lượt cũ mang nguồn "Yêu cầu chưa xác minh được danh tính" giữ nguyên, không bị sửa (`BR-30.3`) — và trạng thái hiện tại của các kênh đó từ nay xuất phát từ lượt mới; (e) chỉ áp cho các kênh yêu cầu đó không tác động tới.
+  - **(e) Trả về đúng trạng thái trước khi áp:** khi biện pháp kết thúc — hết hạn, dỡ sớm theo (b), hoặc khách bổ sung xác minh thành công — **chỉ** những kênh mà trạng thái hiện tại vẫn là lượt hạ mức của chính biện pháp này (nguồn "Yêu cầu chưa xác minh được danh tính") được trả về đúng trạng thái ngay trước khi áp: Đồng ý (dỡ sớm hoặc xác minh thành công: là căn cứ; hết hạn: đánh dấu "tự khôi phục", `BR-30.10`) hoặc Chưa có đồng thuận, với nguồn "Tự khôi phục khi dỡ biện pháp phòng ngừa" (A.8), tham chiếu tới bằng chứng gốc, và giữ nguyên mọi thuộc tính của trạng thái trước khi áp — phiên bản điều khoản (`BR-30.3` (c)), việc đã hay chưa xác nhận qua điểm đến (`BR-30.3` (e)), và dấu "tự khôi phục" nếu có; lần khôi phục không bao giờ biến một Đồng ý vốn chưa là căn cứ thành căn cứ. Kênh có bất kỳ thay đổi đồng thuận nào khác trong thời gian áp — chính chủ từ chối hay xác nhận Đồng ý mới, tư vấn viên ghi nhận từ chối, khiếu nại thư rác, người nhận chặn doanh nghiệp, số điện thoại đổi chủ ([`campaigns-srs.md`](./campaigns-srs.md) `BR-28.4`) — giữ trạng thái mới nhất đó. Khi khách xác minh thành công, yêu cầu được xử lý theo đúng nội dung của nó: hệ thống **tạo một lượt ghi nhận mới** cho mỗi lượt hạ mức và Hạn chế xử lý thuộc phạm vi yêu cầu, với nguồn "Yêu cầu trực tiếp của khách hàng" — lượt cũ mang nguồn "Yêu cầu chưa xác minh được danh tính" giữ nguyên, không bị sửa (`BR-30.3`) — và trạng thái hiện tại của các kênh đó từ nay xuất phát từ lượt mới; (e) chỉ áp cho các kênh yêu cầu đó không tác động tới.
   - **(f) Không hoàn tác gộp trong thời gian áp:** bản ghi đang chịu biện pháp phòng ngừa, hoặc đã gộp với một bản ghi đang chịu, không hoàn tác gộp được (`BR-20.1`) cho tới khi biện pháp kết thúc, để trạng thái do biện pháp đặt ra không bị chép sang một bản ghi không còn gắn với yêu cầu. Thời hạn hoàn tác và việc bảo vệ bản ghi phụ khỏi dọn dẹp vĩnh viễn được **kéo dài thêm** đúng bằng thời gian bị chặn (`BR-20.3`), để quyền hoàn tác không mất vì biện pháp này.
 
   **Lý do nghiệp vụ:** Khi mọi phương thức xác minh đều bất khả (Hồ sơ Tạm không có kênh xác thực; khách cá nhân chỉ có một số điện thoại chưa xác thực), từ chối trắng sẽ biến quy tắc chống mạo danh thành quy tắc từ chối có hệ thống quyền của đúng nhóm dữ liệu rủi ro nhất. Ngược lại, nếu biện pháp phòng ngừa là vĩnh viễn và không ai dỡ được, một email mạo danh là đủ để rút một khách đang trả tiền khỏi mọi chiến dịch mãi mãi — và ở quy mô lớn có thể bị dùng để đóng băng cả một tập khách hàng. Ghi sai nguồn bằng chứng là ghi sai sự thật vào chính kho chứng cứ dùng khi bị khiếu nại.
@@ -1922,8 +2453,8 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | 10 | Nhật ký xuất dữ liệu (`BR-25.3`) | Giữ ở dạng đã khử định danh; là căn cứ liệt kê tập trường và tập bản ghi của khách từng được xuất ra ngoài |
 | 11 | Nội dung hội thoại đa kênh — thuộc [`omnichat-srs.md`](./omnichat-srs.md) | **Khử định danh hoặc xóa** toàn bộ nội dung hội thoại gắn với khách, gồm tệp đính kèm. **Sàn tối thiểu đặt cho tài liệu đó:** Hộp thư Đa kênh thực thi được quyền xóa theo khách hàng trên mọi kênh trong một lần thao tác, hoàn tất trong cùng thời hạn của yêu cầu và trả về xác nhận để đưa vào Biên bản Hoàn tất Xử lý — sàn này được thỏa bởi `BR-23.3` và `BR-23.1` của `omnichat-srs.md`. Phần dữ liệu đang bị **Tạm dừng xóa theo yêu cầu pháp lý** (`BR-23.7` của `omnichat-srs.md`) mang trạng thái **Đang tạm dừng theo yêu cầu pháp lý** trong Biên bản, và yêu cầu xóa **giữ ở trạng thái chưa hoàn tất** cho tới khi tạm dừng được gỡ |
 | 12 | Nội dung Vé hỗ trợ và tệp đính kèm — thuộc [`tickets-srs.md`](./tickets-srs.md) | **Khử định danh** nội dung vé (giữ dữ liệu thống kê vận hành như thời gian xử lý, phân loại) và **xóa tệp đính kèm** do khách gửi. **Sàn tối thiểu đặt cho tài liệu đó:** như hàng 11. Khi phân hệ Vé hỗ trợ chưa đặc tả quy tắc thực thi quyền xóa theo khách hàng thỏa sàn này, **Biên bản Hoàn tất Xử lý bắt buộc nêu rõ nội dung Vé hỗ trợ nằm ngoài phạm vi được bảo đảm** |
-| 13 | Sổ cái người nhận chiến dịch, sổ cái của cổng kiểm soát gửi tiếp thị dùng chung, vị trí trong chuỗi nuôi dưỡng, bản ghi tạm chặn chờ xác nhận lời từ chối, bản ghi tạm ngừng do lỗi hộp thư lặp lại, tệp xuất sổ cái còn hiệu lực, nhật ký kiểm toán của phân hệ Chiến dịch, ánh xạ liên kết hủy nhận tin, bản ghi Từ chối Thông báo dịch vụ không thiết yếu — thuộc [`campaigns-srs.md`](./campaigns-srs.md) | **Khử định danh** dòng sổ cái (xóa điểm đến, liên kết tới hồ sơ, thông điệp lỗi gốc; giữ trạng thái và số liệu tổng hợp), đưa khách ra khỏi mọi chuỗi nuôi dưỡng, ngắt ánh xạ của liên kết theo dõi; xóa bản ghi Từ chối Thông báo dịch vụ không thiết yếu cùng hồ sơ — khách đã xóa không còn là người nhận được (`campaigns-srs.md`, `BR-32.2`, `BR-45.8`) |
-| 14 | Dấu vết chặn gửi của mọi điểm đến của khách (yêu cầu xóa được coi là rút đồng thuận tiếp thị) — thuộc [`campaigns-srs.md`](./campaigns-srs.md) | **Giữ ở dạng không đọc ngược được** theo nghĩa vụ tôn trọng lời từ chối (`campaigns-srs.md`, `BR-32.4`); không gắn thông tin nào khác về khách |
+| 13 | Sổ cái người nhận chiến dịch, sổ cái của cổng kiểm soát gửi tiếp thị dùng chung, vị trí trong chuỗi nuôi dưỡng, bản ghi tạm chặn chờ xác nhận lời từ chối, bản ghi tạm ngừng do lỗi hộp thư lặp lại, tệp xuất sổ cái còn hiệu lực, nhật ký kiểm toán của phân hệ Chiến dịch, ánh xạ liên kết hủy nhận tin, bản ghi Từ chối Thông báo dịch vụ không thiết yếu — thuộc [`campaigns-srs.md`](./campaigns-srs.md) | **Khử định danh** dòng sổ cái (xóa điểm đến, liên kết tới hồ sơ, thông điệp lỗi gốc; giữ trạng thái và số liệu tổng hợp), đưa khách ra khỏi mọi chuỗi nuôi dưỡng, ngắt ánh xạ của liên kết theo dõi; xóa bản ghi Từ chối Thông báo dịch vụ không thiết yếu cùng hồ sơ — khách đã xóa không còn là người nhận được ([`campaigns-srs.md`](./campaigns-srs.md) `BR-32.2`, `BR-45.8`) |
+| 14 | Dấu vết chặn gửi của mọi điểm đến của khách (yêu cầu xóa được coi là rút đồng thuận tiếp thị) — thuộc [`campaigns-srs.md`](./campaigns-srs.md) | **Giữ ở dạng không đọc ngược được** theo nghĩa vụ tôn trọng lời từ chối ([`campaigns-srs.md`](./campaigns-srs.md) `BR-32.4`); không gắn thông tin nào khác về khách |
 
   **Biên bản Hoàn tất Xử lý:** thay cho mọi tuyên bố "đã xóa xong", hệ thống phát hành một biên bản liệt kê **từng hàng** của bảng trên kèm trạng thái — **Đã xóa / Đã khử định danh / Đã thu hồi / Được giữ theo nghĩa vụ pháp lý / Đang tạm dừng theo yêu cầu pháp lý** — và số lượng đối tượng đã xử lý ở mỗi hàng. Trạng thái "Đang tạm dừng theo yêu cầu pháp lý" khác "Được giữ theo nghĩa vụ pháp lý" ở chỗ đây là **hoãn có điều kiện**: yêu cầu sẽ được thi hành lại khi tạm dừng được gỡ.
 
@@ -1956,7 +2487,7 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | `AC-33.7.7` | Trong thời gian áp biện pháp, chính K bấm liên kết hủy nhận tin trên email | Biện pháp được dỡ | Email giữ Từ chối nhận tin; các kênh khác trở về trạng thái trước khi áp |
 | `AC-33.7.8` | Trong thời gian áp biện pháp, nhà mạng báo số của K đổi chủ | Biện pháp hết hạn | SMS của K ở Chưa có đồng thuận (theo lượt đổi chủ), không trả về Đồng ý |
 | `AC-33.7.9` | Trong thời gian áp biện pháp, chính K bấm liên kết xác nhận Đồng ý email mới | Biện pháp hết hạn | Email giữ Đồng ý mới là căn cứ, không bị trả về trạng thái cũ |
-| `AC-33.7.10` | Email của K đã Từ chối từ trước khi áp biện pháp | Áp biện pháp, rồi hồ sơ K bị xóa vĩnh viễn khỏi Thùng rác trong thời gian áp | Email giữ nguồn từ chối cũ; dấu vết chặn gửi được tạo (`campaigns-srs.md`, `BR-32.4`) |
+| `AC-33.7.10` | Email của K đã Từ chối từ trước khi áp biện pháp | Áp biện pháp, rồi hồ sơ K bị xóa vĩnh viễn khỏi Thùng rác trong thời gian áp | Email giữ nguồn từ chối cũ; dấu vết chặn gửi được tạo ([`campaigns-srs.md`](./campaigns-srs.md) `BR-32.4`) |
 | `AC-33.7.11` | Bản ghi đang chịu biện pháp phòng ngừa | Quản trị viên thử hoàn tác gộp | Không cho phép cho tới khi biện pháp kết thúc |
 | `AC-33.7.13` | Email của K mang dấu "tự khôi phục" sau khi biện pháp hết hạn | Nhân viên có quyền sửa hồ sơ mở phần đồng thuận | Kênh hiển thị "Đồng ý — tự khôi phục, cần chính chủ xác nhận lại"; có thao tác "Gửi yêu cầu xác nhận lại"; không có thao tác tự gỡ dấu |
 | `AC-33.7.14` | Tiếp nối AC-33.7.13; nhân viên gửi yêu cầu xác nhận lại | K bấm liên kết trong email xác nhận | Dấu "tự khôi phục" được gỡ; nhật ký ghi hành vi của chủ thể |
@@ -1981,29 +2512,49 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Mô tả nghiệp vụ:** Chuyển Người phụ trách của một hoặc hàng loạt khách hàng sang nhân viên khác, và bảo đảm không bản ghi nào trở thành vô chủ khi một nhân viên rời tổ chức, chuyển bộ phận, nghỉ phép hoặc vắng mặt dài.
 
-**Vai trò sử dụng chính:** Chính người dùng — bất kể vai trò — (tự khai báo nghỉ phép và người xử lý thay), Người phụ trách hiện tại (bàn giao ngang cho đồng nghiệp cùng nhóm), Quản lý Kinh doanh (trong phạm vi đơn vị), Quản trị viên, Chủ sở hữu.
+**Vai trò sử dụng chính:** Chính người dùng — bất kể vai trò — (tự khai báo nghỉ phép và người xử lý thay), Người phụ trách hiện tại (đề nghị chuyển cho một người cụ thể, trả về hàng đợi), quản lý trực tiếp, người có ô Gán bao phủ bản ghi (chuyển giao), người thực hiện tạm ngưng hoặc quy trình rời workspace theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `FEAT-42`, `FEAT-43`.
 
 **Bối cảnh nghiệp vụ:** Nhân viên nghỉ việc là sự kiện hằng tháng ở mọi đội kinh doanh. Vì phạm vi truy cập bị giới hạn theo `BR-01.4`, danh bạ của nhân viên rời đi sẽ thành vùng chết nếu không có công cụ bàn giao: đồng nghiệp không thấy, Quản lý chỉ thấy trong phạm vi đơn vị, và tổ chức buộc phải cấp quyền xem toàn bộ cho tất cả để chữa cháy — phá vỡ mô hình phân quyền tại Mục 5.
 
+**Điều kiện tiên quyết:** Người thực hiện và người nhận theo `BR-34.1`, riêng đường đề nghị theo `BR-34.1b`; quy trình tạm ngưng, rời workspace và chuyển phòng theo `BR-34.4`, `BR-34.9`.
+
+**Luồng chính:**
+
+1. Người có quyền chọn một hoặc nhiều bản ghi, chọn người nhận và phạm vi thực thể con, xem trước tác động rồi xác nhận (`BR-34.1` – `BR-34.3`).
+2. Khi một thành viên bị tạm ngưng, lượt tạm ngưng có hiệu lực ngay; sau đó người thực hiện chọn giữ nguyên, chuyển tạm hoặc trả về hàng đợi cho khách hàng của người đó (`BR-34.4`).
+3. Khi một thành viên rời workspace, bước "Bản ghi đang phụ trách" của quy trình rời workspace gọi tới chuyển giao theo tính năng này; chưa xong thì chưa gỡ được thành viên (`BR-34.4`).
+4. Người dùng tự khai báo nghỉ phép kèm người xử lý thay; hệ thống tự áp trạng thái không khả dụng khi không đăng nhập quá lâu (`BR-34.6`).
+
 **Quy tắc nghiệp vụ:**
 
-- **`BR-34.1` (Chuyển giao đơn lẻ):** Trên hồ sơ khách hàng hoặc doanh nghiệp, người có quyền đổi được Người phụ trách. Hệ thống ghi vào lịch sử bản ghi và thông báo cho cả người giao và người nhận. Đơn vị tổ chức của bản ghi chuyển theo Người phụ trách mới ngay lập tức, theo `BR-01.3`.
+- **`BR-34.1` (Chuyển giao đơn lẻ & điều kiện người nhận):** Trên hồ sơ khách hàng hoặc doanh nghiệp, người có ô (Khách hàng, Gán) — hoặc (Doanh nghiệp, Gán) — ở mức M bao phủ bản ghi đổi được Người phụ trách, **chỉ sang người mà sau khi đổi, bản ghi vẫn nằm trong mức M của chính người gán** (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-25.6`): mức Chỉ của mình chỉ cho **nhận việc về mình**, không cho giao bản ghi của mình sang người khác; mức Đơn vị của mình cho giao trong đơn vị; giao sang đơn vị khác cần mức rộng hơn bao phủ đơn vị đích. **Điều kiện người nhận** — mọi quy tắc khác của tài liệu dẫn chiếu tới đây: người nhận Đang hoạt động (hoặc Đang chờ chấp nhận khi giữ chỗ theo `BR-23.5`), có ô Xem và ô Sửa của loại dữ liệu đó khác Không có (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-25.6`, thống nhất [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) `BR-01.2`); người thực hiện chỉ chọn chính mình làm người nhận khi mọi ô của mình trên loại dữ liệu đó đã bao phủ bản ghi trước khi chuyển (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-43.2`, `BR-43.4`). Khi lượt chuyển kèm thực thể con (`BR-34.3`), cùng quy tắc đích áp trên ô Gán **của từng loại dữ liệu** — (Cơ hội, Gán người phụ trách), (Vé hỗ trợ, Gán) — và người nhận phải có ô Xem, ô Sửa của loại đó khác Không có. Ngoài ra, **Người phụ trách hiện tại luôn có hai đường**, kể cả khi ô Gán của họ chỉ là Chỉ của mình: trả về hàng đợi mà bản ghi đang thuộc (chỉ với bản ghi chờ phân công chưa chốt, `BR-31.9` (d)), và đề nghị chuyển cho một người cụ thể (`BR-34.1b`). Hệ thống ghi vào lịch sử bản ghi và thông báo cho cả người giao và người nhận. Đơn vị tổ chức của bản ghi chuyển theo Người phụ trách mới ngay lập tức, theo `BR-01.3`.
 
-- **`BR-34.1b` (Bàn giao ngang giữa đồng nghiệp):** **Người phụ trách hiện tại** tự khởi tạo được "Đề nghị chuyển giao" cho một đồng nghiệp **trong cùng nhóm/đơn vị tổ chức**, không cần Quản lý thực hiện thay. Chuyển giao có hiệu lực khi **người nhận chấp nhận**; hệ thống thông báo cho Quản lý Kinh doanh, và Quản lý được **thu hồi trong 3 ngày làm việc** nếu không đồng ý. Chuyển giao ra ngoài nhóm/đơn vị vẫn phải do Quản lý trở lên thực hiện.
+  **Lý do nghiệp vụ:** Giao bản ghi cho người không sửa được thì bản ghi bị đóng băng; tự nhận về mình thì mọi ô mức Chỉ của mình của người nhận phủ thêm bản ghi đó, nên chuyển giao không được là cách nhận quyền xóa hay xuất khách hàng mà mình vốn không có. Giữ bản ghi trong mức của người gán để ô Gán không thành đường đẩy khách sang đơn vị mà người gán không có thẩm quyền.
 
-  **Lý do nghiệp vụ:** Hoán đổi khách giữa hai nhân viên (đổi địa bàn, khách quen của đồng nghiệp, khách yêu cầu đổi người phụ trách) xảy ra liên tục; nếu mọi lượt đều qua Quản lý thì Quản lý thành người chuyển bản ghi hộ, và trong lúc chờ, đồng nghiệp không thấy bản ghi nên khách gọi vào không ai có ngữ cảnh — dẫn tới việc chuyển thông tin khách qua kênh chat nội bộ, đưa dữ liệu ra khỏi hệ thống.
+- **`BR-34.1b` (Đề nghị chuyển cho đồng nghiệp):** **Người phụ trách hiện tại**, bất kể mức ô Gán, tự khởi tạo được "Đề nghị chuyển giao" cho một người cụ thể, không cần Quản lý thực hiện thay (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-25.6` (b)). Đề nghị **chỉ chuyển bản ghi khách hàng hoặc doanh nghiệp đó**, không kèm thực thể con. Đề nghị chỉ có hiệu lực khi **người nhận chấp nhận**, và tại lúc chấp nhận người nhận phải tự đạt đúng điều kiện nhận việc của tài liệu đó: Đang hoạt động; ô (Khách hàng, Gán) — hoặc (Doanh nghiệp, Gán) — khác Không có; xem được bản ghi theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-39.6`, gồm cả qua lượt chia sẻ và Đội ngũ phụ trách; và không bị nguồn chặn nào; cộng một điều kiện của phân hệ mà [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-25.6` cho phép: ô Sửa của loại dữ liệu đó khác Không có. Không có giới hạn cùng đơn vị. Đề nghị hết hạn theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `CFG-25-01` hoặc khi Người phụ trách đổi. Trong lúc chờ, bản ghi vẫn thuộc người đề nghị. Khi đề nghị được chấp nhận, quản lý trực tiếp của người đề nghị được thông báo; lượt chuyển có hiệu lực ngay, không có khoảng chờ để quản lý thu hồi — người có ô Gán đạt `BR-34.1` vẫn giao lại được nếu không đồng ý; cùng cách với [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) `BR-01.2`.
+
+  **Lý do nghiệp vụ:** Người nhận tự đạt điều kiện nhận việc nên đề nghị không cấp cho ai thứ họ không tự nhận được — không cần thêm giới hạn đơn vị hay quyền thu hồi riêng. Hoán đổi khách giữa hai nhân viên (đổi địa bàn, khách quen của đồng nghiệp, khách yêu cầu đổi người phụ trách) xảy ra liên tục; nếu mọi lượt đều qua Quản lý thì Quản lý thành người chuyển bản ghi hộ, và trong lúc chờ, đồng nghiệp không thấy bản ghi nên khách gọi vào không ai có ngữ cảnh — dẫn tới việc chuyển thông tin khách qua kênh chat nội bộ, đưa dữ liệu ra khỏi hệ thống.
 
 - **`BR-34.2` (Chuyển giao hàng loạt):** Chọn nhiều bản ghi theo bộ lọc (Người phụ trách, Đơn vị tổ chức, Giai đoạn vòng đời, Thẻ) và chuyển giao đồng thời. **Bắt buộc có bước xem trước** hiển thị tổng số khách hàng, số doanh nghiệp, số Cơ hội đang mở và số Vé hỗ trợ đang mở bị ảnh hưởng trước khi xác nhận.
 
-- **`BR-34.3` (Phạm vi thực thể con):** Người thực hiện chọn một trong ba mức: **(a)** chỉ khách hàng/doanh nghiệp; **(b)** kèm Cơ hội và Vé hỗ trợ **đang mở**; **(c)** kèm toàn bộ, gồm cả thực thể đã đóng. Mặc định là **(b)** (Phụ lục B, `CFG-34-01`).
+  **Lý do nghiệp vụ:** Nhân viên nghỉ việc thường phụ trách hàng trăm khách; chuyển từng bản ghi là không khả thi, nhưng chuyển hàng loạt mà không thấy trước quy mô thì dễ chuyển nhầm cả danh bạ của một đội.
 
-- **`BR-34.4` (Chốt an toàn khi vô hiệu hóa người dùng) — sàn bắt buộc:** Hệ thống **không cho phép** vô hiệu hóa một người dùng khi người đó còn là Người phụ trách của bất kỳ bản ghi nào, cho tới khi người thực hiện chỉ định người nhận bàn giao. Khi cần vô hiệu hóa gấp (ví dụ rủi ro bảo mật), hệ thống cho phép **bàn giao tạm về Quản lý trực tiếp** của người đó làm mặc định, và đưa toàn bộ bản ghi vào danh sách **"Chờ bàn giao lại"**.
+- **`BR-34.3` (Phạm vi thực thể con):** Người thực hiện chọn một trong ba mức: **(a)** chỉ khách hàng/doanh nghiệp; **(b)** kèm Cơ hội và Vé hỗ trợ **đang mở**; **(c)** kèm Cơ hội đang mở và **mọi** Vé hỗ trợ, gồm vé đã đóng. Mặc định là **(b)** (Phụ lục B, `CFG-34-01`). **Cơ hội đã đóng (Thắng hoặc Thua) không bao giờ đổi Người phụ trách** ở bất kỳ mức nào (theo [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) `BR-37.2`). Mỗi thực thể con chỉ đổi Người phụ trách khi ô Gán **của chính loại dữ liệu đó** — (Cơ hội, Gán người phụ trách), (Vé hỗ trợ, Gán) — của người thực hiện bao phủ nó, sau khi chuyển vẫn nằm trong mức Gán đó, và người nhận đạt điều kiện tương ứng theo `BR-34.1` và tài liệu sở hữu loại dữ liệu đó. Phần Cơ hội của lượt chuyển kèm thực thể con tuân đúng [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) `BR-37.1`: bắt buộc ghi lý do; Người phụ trách đơn vị của đơn vị nhận được thông báo khi cơ hội sang đơn vị khác; Công việc nhắc chưa xử lý, tỷ lệ chia doanh số đang chờ và danh sách Người theo dõi đi theo cơ hội. Vé hỗ trợ là **bản ghi công việc**: đổi Người phụ trách không đổi đơn vị của vé — vé vẫn thuộc đơn vị tiếp nhận của hàng đợi (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-35.11`; quy tắc chi tiết tại [`tickets-srs.md`](./tickets-srs.md)). Thực thể người thực hiện không có quyền, hoặc người nhận không đạt điều kiện, **không chuyển** và được liệt kê trong **danh sách bỏ qua** ở bước xem trước và trong kết quả.
 
-  **Lý do nghiệp vụ:** Vô hiệu hóa trước, bàn giao sau là cách chắc chắn nhất để tạo ra hàng trăm bản ghi vô chủ mà không ai biết cho tới khi khách phàn nàn.
+  **Lý do nghiệp vụ:** Cơ hội và vé đang mở cần người theo tiếp ngay, nên đi cùng khách hàng theo mặc định; thực thể đã đóng thuộc thành tích lịch sử của người cũ, chuyển theo sẽ làm sai báo cáo thành tích. Quyền Gán trên khách hàng không phải quyền Gán trên cơ hội hay vé; chuyển kèm mà không xét ô của từng loại là đường vòng giao cơ hội và vé mà người thực hiện không được giao.
 
-- **`BR-34.5` (Báo cáo bản ghi vô chủ):** Báo cáo thường trực **"Bản ghi không có Người phụ trách hoạt động"** (người phụ trách đã bị vô hiệu hóa, đã rời tổ chức, hoặc để trống), phục vụ Quản lý và Quản trị Chất lượng Dữ liệu rà soát định kỳ.
+- **`BR-34.4` (Không bản ghi vô chủ khi nhân sự tạm ngưng hoặc rời workspace) — sàn bắt buộc:**
+  - **(a) Tạm ngưng không bị chặn:** tạm ngưng một thành viên luôn thực hiện ngay, không bị chặn vì người đó còn là Người phụ trách của bản ghi nào (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-42.4`), và không bị chặn khi nhật ký tạm thời không ghi được — lượt tạm ngưng có hiệu lực, bản ghi nhật ký được ghi bù ngay khi nhật ký phục hồi (ADR-0010).
+  - **(b) Xử lý bản ghi sau tạm ngưng:** ngay sau đó, như một thao tác riêng, người thực hiện chọn cho khách hàng và doanh nghiệp người đó đang phụ trách một trong ba cách: **giữ nguyên**; **chuyển tạm** cho một người xử lý thay đạt điều kiện người nhận của `BR-34.1` — mặc định đề xuất là quản lý trực tiếp của người bị tạm ngưng; hoặc **trả về hàng đợi** — chỉ với bản ghi chờ phân công còn chưa chốt (`BR-31.9` (d)). Yêu cầu chờ xử lý (`BR-31.6`) và mọi thông báo nghiệp vụ về khách do người bị tạm ngưng phụ trách chuyển ngay cho người xử lý thay; khi chọn giữ nguyên, chuyển cho quản lý trực tiếp của người đó, hoặc quản lý tạm thời nếu đã được chỉ định (thống nhất [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) `BR-16.6`); người bị tạm ngưng không nhận thông báo (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-42.1`). Bản ghi giữ nguyên xuất hiện trong báo cáo `BR-34.5`. Khi người đó được kích hoạt lại, đề xuất trả về người cũ chỉ gồm các bản ghi còn mở **mà người xử lý thay vẫn đang phụ trách** (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-42.4`) — bản ghi đã được trả về hàng đợi hay đã giao tiếp cho người khác không thuộc đề xuất — và được gửi tới người xử lý thay và quản lý trực tiếp.
+  - **(c) Rời workspace bị chặn khi còn bản ghi:** thành viên chỉ được gỡ khỏi workspace khi mọi khách hàng và doanh nghiệp người đó đang phụ trách đã có người nhận theo `BR-34.1`, hoặc đã được trả về hàng đợi theo `BR-31.9` (d) — bước bắt buộc "Bản ghi đang phụ trách" của quy trình rời workspace (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `FEAT-43`, `BR-43.1`). Đối tượng của bước này xác định tại lúc bắt đầu quy trình, không bị lượt "Tạm ngưng ngay" trong cùng quy trình làm mất. Trong quy trình rời workspace và xử lý bản ghi sau tạm ngưng, người thực hiện **không cần** ô Gán bao phủ bản ghi; chỉ áp điều kiện người nhận theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-43.2`, `BR-43.4` (thống nhất [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) `BR-37.3`).
 
-- **`BR-34.6` (Nghỉ phép & ủy quyền tạm):** **Chính người dùng — bất kể vai trò** — tự khai báo được khoảng thời gian nghỉ phép kèm người xử lý thay; Quản lý Kinh doanh khai báo được thay cho thành viên trong nhóm mình. Trong khoảng đó, người dùng được coi là **"không khả dụng"**: không nhận khách hàng tiềm năng mới (`BR-31.1`), yêu cầu chờ xử lý chuyển ngay cho người xử lý thay (`BR-31.6`), nhưng **quyền phụ trách chính không thay đổi**. Trạng thái không khả dụng cũng được áp **tự động** khi người dùng không đăng nhập quá **14 ngày liên tiếp**. Với nhánh tự động — vốn không có ai được khai báo làm người xử lý thay:
+  **Lý do nghiệp vụ:** Cắt truy cập của người có nghi vấn phải nhanh và không phụ thuộc việc tìm được người nhận bàn giao, nên tạm ngưng không bao giờ bị chặn — kể cả bởi sự cố nhật ký, vì thu hẹp quyền chậm lại là rủi ro thật còn nhật ký ghi bù thì không mất dấu vết. Nhưng gỡ hẳn trước rồi bàn giao sau là cách chắc chắn nhất tạo ra hàng trăm bản ghi vô chủ mà không ai biết cho tới khi khách phàn nàn (Nguyên tắc 5).
+
+- **`BR-34.5` (Báo cáo bản ghi vô chủ):** Báo cáo thường trực **"Bản ghi không có Người phụ trách hoạt động"** (người phụ trách đang Tạm ngưng, đã rời workspace, hoặc để trống — không gồm bản ghi chờ phân công đang nằm trong hàng đợi của đơn vị tiếp nhận và bản ghi giữ chỗ, vốn đã có nơi theo dõi), phục vụ Quản lý và Quản trị Chất lượng Dữ liệu rà soát định kỳ.
+
+  **Lý do nghiệp vụ:** Bản ghi vô chủ không tự lộ ra; không có báo cáo thường trực thì chỉ khi khách phàn nàn doanh nghiệp mới biết một tập khách không ai chăm sóc.
+
+- **`BR-34.6` (Nghỉ phép & ủy quyền tạm):** **Chính người dùng — bất kể vai trò** — tự khai báo được khoảng thời gian nghỉ phép kèm người xử lý thay; quản lý trực tiếp khai báo được thay cho cấp dưới của mình. Người xử lý thay phải thỏa điều kiện người nhận của `BR-34.1`. Trong khoảng đó, người dùng được coi là **"không khả dụng"**: không nhận khách hàng tiềm năng mới (`BR-31.1`), yêu cầu chờ xử lý chuyển ngay cho người xử lý thay (`BR-31.6`), nhưng **quyền phụ trách chính không thay đổi**. Trạng thái không khả dụng cũng được áp **tự động** khi người dùng không đăng nhập quá **14 ngày liên tiếp** (Phụ lục B, `CFG-34-02`). Trạng thái này khác Tạm ngưng: người dùng vẫn truy cập được và quyền không đổi; tự tạm ngưng vì không hoạt động là quy tắc riêng của [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `FEAT-42`. Với nhánh tự động — vốn không có ai được khai báo làm người xử lý thay:
   - **(a)** người xử lý thay mặc định là **Quản lý trực tiếp** của người đó, thống nhất `BR-34.4`;
   - **(b)** hệ thống **bắt buộc thông báo** cho chính người dùng và cho Quản lý khi trạng thái được bật;
   - **(c)** trạng thái **tự hết hiệu lực ngay ở lần đăng nhập kế tiếp**.
@@ -2012,31 +2563,59 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 - **`BR-34.7` (Kiểm toán):** Mọi thao tác chuyển giao (đơn lẻ và hàng loạt) được ghi nhật ký (`NFR-07`): người thực hiện, người giao, người nhận, số lượng và danh sách bản ghi bị ảnh hưởng, thời điểm.
 
+  **Lý do nghiệp vụ:** Tranh chấp về khách hàng và hoa hồng sau khi nhân sự thay đổi chỉ phân xử được khi biết chắc ai đã giao khách nào cho ai, lúc nào.
+
 - **`BR-34.8` (Ghi nhận người xử lý thay để tính thành tích):** Khi một người **không phải Người phụ trách chính** xử lý một Yêu cầu chờ xử lý (`BR-31.6`) hoặc một Cơ hội phát sinh từ yêu cầu đó, hệ thống ghi nhận **"Người xử lý"** riêng biệt với Người phụ trách trên bản ghi yêu cầu. Báo cáo thành tích thể hiện được cả hai vai.
 
   **Lý do nghiệp vụ:** Khách cũ hỏi mua thêm là nơi sinh tranh chấp nội bộ đầu tiên về thành tích và hoa hồng; không ghi nhận thì hai người tranh nhau một đơn mà không có căn cứ phân xử, hoặc không ai nhận vì biết không được tính công.
+
+- **`BR-34.9` (Chuyển phòng — đổi Đơn vị chính của Người phụ trách):** Khi một thành viên đổi Đơn vị chính (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-11.5`, `BR-11.9`), bước "cách xử lý bản ghi" của danh sách bước bắt buộc người thực hiện chọn cho Khách hàng và cho Doanh nghiệp người đó đang phụ trách, **không có lựa chọn nào được chọn sẵn**:
+  - **(a) Đi theo người** — bản ghi đổi đơn vị theo Người phụ trách (`BR-01.3`). Lựa chọn này **bị chặn** cho loại dữ liệu mà sau thay đổi người đó không còn ô Sửa khác Không có.
+  - **(b) Bàn giao lại** — cho người nhận đạt `BR-34.1`, theo `BR-34.1` – `BR-34.3`.
+  - **(c) Trả về hàng đợi** — chỉ với bản ghi chờ phân công chưa chốt (`BR-31.9` (d)).
+
+  Lựa chọn có thể khác nhau giữa Khách hàng và Doanh nghiệp, và chọn được theo từng nhóm bản ghi. Phần Cơ hội theo [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) `BR-37.3`. Như ở `BR-34.4` (c), người thực hiện không cần ô Gán; chỉ áp điều kiện người nhận.
+
+  **Lý do nghiệp vụ:** Chuyển phòng là lúc khách hàng dễ lạc nhất: đi theo người thì đơn vị cũ mất khách đang chăm sóc, bàn giao lại thì khách đổi đầu mối giữa chừng. Đây là quyết định kinh doanh nên phải có người chọn tường minh; mặc định ngầm làm khách âm thầm đổi đơn vị mà không ai quyết. Không cho đi theo người khi người đó không còn sửa được, vì bản ghi sẽ đứng tên một người không làm việc được trên nó.
 
 **Tiêu chí Chấp nhận:**
 
 | Mã AC | Bối cảnh | Hành động | Kết quả mong đợi |
 | --- | --- | --- | --- |
 | `AC-34.1.1` | Quản lý Kinh doanh mở hồ sơ khách do A phụ trách | Đổi Người phụ trách sang B | B là Người phụ trách; A và B đều nhận thông báo; lịch sử bản ghi ghi nhận |
-| `AC-34.1.2` | Khách hàng do A (thuộc Phòng Kinh doanh 1) phụ trách; Trưởng Phòng Kinh doanh 2 chưa thấy khách này trong "Đơn vị của mình" | Đổi Người phụ trách sang B thuộc Phòng Kinh doanh 2 | Khách hàng chuyển sang thuộc Phòng Kinh doanh 2 ngay lập tức; Trưởng Phòng Kinh doanh 2 thấy khách hàng này trong danh sách đơn vị mình |
-| `AC-34.1b.1` | A và C cùng nhóm | A gửi Đề nghị chuyển giao một khách cho C | Khách vẫn do A phụ trách cho tới khi C chấp nhận; sau khi C chấp nhận, C là Người phụ trách; Quản lý nhận thông báo |
-| `AC-34.1b.2` | Tiếp nối AC-34.1b.1, sau 2 ngày làm việc | Quản lý thu hồi chuyển giao | Khách trở lại do A phụ trách |
-| `AC-34.1b.3` | Tiếp nối AC-34.1b.1, đã qua 3 ngày làm việc | Quản lý tìm hành động thu hồi | Không còn khả dụng |
-| `AC-34.1b.4` | A và D thuộc hai đơn vị khác nhau | A tìm cách gửi Đề nghị chuyển giao cho D | Không chọn được D; chuyển giao ra ngoài đơn vị cần Quản lý thực hiện |
+| `AC-34.1.2` | Khách hàng do A (thuộc Phòng Kinh doanh 1) phụ trách; Giám đốc Kinh doanh G có (Khách hàng, Gán) = Đơn vị và các đơn vị con tại "Khối Kinh doanh", bao phủ cả Phòng Kinh doanh 1 và 2; Trưởng Phòng Kinh doanh 2 chưa thấy khách này | G đổi Người phụ trách sang B thuộc Phòng Kinh doanh 2 | Khách hàng chuyển sang thuộc Phòng Kinh doanh 2 ngay lập tức; Trưởng Phòng Kinh doanh 2 thấy khách hàng này trong danh sách đơn vị mình |
+| `AC-34.1.3` | Trưởng Phòng Kinh doanh 1 P có (Khách hàng, Gán) = Đơn vị và các đơn vị con tại Phòng Kinh doanh 1 | P tìm chọn B thuộc Phòng Kinh doanh 2 làm Người phụ trách mới cho khách của A | B không có trong danh sách người nhận, kèm giải thích bản ghi sẽ ra ngoài mức Gán của P |
+| `AC-34.1.4` | Nhân viên A có (Khách hàng, Gán) = Chỉ của mình | A mở hồ sơ khách mình phụ trách, tìm đổi Người phụ trách trực tiếp sang đồng nghiệp | Không có thao tác đổi trực tiếp; chỉ có "Đề nghị chuyển giao" và — nếu là khách chờ phân công chưa chốt — "Trả về hàng đợi" |
+| `AC-34.1b.1` | A và C cùng Đơn vị chính, C có (Khách hàng, Gán) = Chỉ của mình | A gửi Đề nghị chuyển giao một khách cho C | Khách vẫn do A phụ trách cho tới khi C chấp nhận; sau khi C chấp nhận, C là Người phụ trách; quản lý trực tiếp của A nhận thông báo; Cơ hội và vé của khách vẫn do người cũ phụ trách |
+| `AC-34.1b.2` | Tiếp nối AC-34.1b.1 | Quản lý trực tiếp của A tìm hành động "Thu hồi chuyển giao" | Không có; quản lý giao lại được bằng thao tác Gán nếu ô Gán của họ đạt `BR-34.1` |
+| `AC-34.1b.8` | A gửi Đề nghị cho C; C có ô Gán khác Không có nhưng (Khách hàng, Sửa) = Không có | C bấm chấp nhận | Từ chối, nêu thiếu ô Sửa; khách vẫn do A phụ trách |
+| `AC-34.1b.5` | A gửi Đề nghị cho C; C có (Khách hàng, Gán) = Không có | C bấm chấp nhận | Từ chối, nêu C chưa đạt điều kiện nhận việc; khách vẫn do A phụ trách |
+| `AC-34.1b.6` | A gửi Đề nghị cho C, `CFG-25-01` của tài liệu Phân quyền = 3 ngày | C không phản hồi trong 3 ngày | Đề nghị hết hạn; khách vẫn do A phụ trách; A được báo |
+| `AC-34.1b.4` | A và D khác Đơn vị chính; D là thành viên Đội ngũ phụ trách của khách, có ô (Khách hàng, Gán) khác Không có | A gửi Đề nghị cho D, D chấp nhận | D là Người phụ trách; khách chuyển sang đơn vị của D |
+| `AC-34.1b.7` | D khác đơn vị, không xem được khách theo bất kỳ nguồn nào | D bấm chấp nhận đề nghị | Từ chối, nêu D không xem được bản ghi |
 | `AC-34.2.1` | A phụ trách 450 khách hàng, 20 doanh nghiệp, 8 Cơ hội mở, 3 Vé mở | Quản lý lọc "Người phụ trách là A", chọn chuyển cho B | Bước xem trước hiển thị đúng 450, 20, 8, 3 trước khi xác nhận |
-| `AC-34.3.1` | Tiếp nối AC-34.2.1, dùng mức mặc định | Xác nhận | Khách hàng, doanh nghiệp, 8 Cơ hội mở và 3 Vé mở chuyển sang B; các Cơ hội đã đóng của A giữ nguyên |
-| `AC-34.4.1` | A còn phụ trách 450 khách hàng | Quản trị viên vô hiệu hóa tài khoản A | Bị chặn, yêu cầu chỉ định người nhận bàn giao |
-| `AC-34.4.2` | Cùng bối cảnh, cần vô hiệu hóa gấp | Quản trị viên chọn bàn giao tạm về Quản lý trực tiếp | A bị vô hiệu hóa; các bản ghi thuộc Quản lý trực tiếp và có trong danh sách "Chờ bàn giao lại" |
+| `AC-34.3.1` | Tiếp nối AC-34.2.1, dùng mức mặc định; người thực hiện có ô Gán bao phủ cả bốn loại dữ liệu | Xác nhận | Khách hàng, doanh nghiệp, 8 Cơ hội mở và 3 Vé mở chuyển sang B; 3 vé vẫn thuộc đơn vị tiếp nhận của hàng đợi; các Cơ hội đã đóng của A giữ nguyên |
+| `AC-34.3.3` | A có 2 Cơ hội đã Thắng và 1 Cơ hội Thua; người thực hiện chọn mức (c) | Xác nhận chuyển cho B | 3 Cơ hội đã đóng vẫn do A phụ trách; báo cáo kết quả của chúng không đổi |
+| `AC-34.3.4` | Chuyển kèm Cơ hội đang mở sang B thuộc đơn vị khác | Xác nhận mà bỏ trống lý do | Không xác nhận được; sau khi nhập lý do, người phụ trách đơn vị của B được báo; Công việc nhắc và Người theo dõi của các cơ hội đi theo |
+| `AC-34.3.2` | Như AC-34.3.1 nhưng người thực hiện có (Vé hỗ trợ, Gán) = Không có | Xem trước rồi xác nhận | Bước xem trước nêu "3 vé sẽ bị bỏ qua — thiếu quyền Gán trên Vé hỗ trợ"; sau xác nhận, vé giữ Người phụ trách cũ và có trong danh sách bỏ qua của kết quả |
+| `AC-34.4.1` | A còn phụ trách 450 khách hàng | Người có quyền Tạm ngưng người dùng tạm ngưng A | A bị tạm ngưng ngay; màn hình đề nghị xử lý 450 khách hàng: giữ nguyên, chuyển tạm, hoặc trả về hàng đợi cho các khách chờ phân công chưa chốt |
+| `AC-34.4.2` | Tiếp nối AC-34.4.1 | Chọn chuyển tạm, chấp nhận người xử lý thay đề xuất là quản lý trực tiếp M của A | 450 khách chuyển tạm cho M; khi A được kích hoạt lại, M và quản lý trực tiếp nhận đề xuất trả các bản ghi còn mở về A |
+| `AC-34.4.3` | Nhật ký tạm thời không ghi được | Tạm ngưng A | A bị tạm ngưng và đăng xuất ngay; khi nhật ký phục hồi, bản ghi nhật ký của lượt tạm ngưng xuất hiện với thời điểm thực |
+| `AC-34.4.4` | A bị tạm ngưng, người thực hiện chọn giữ nguyên | Mở báo cáo "Bản ghi không có Người phụ trách hoạt động" | 450 khách của A có trong báo cáo; yêu cầu chờ xử lý mới của các khách này chuyển cho quản lý trực tiếp của A (hoặc quản lý tạm thời nếu có); A không nhận thông báo |
+| `AC-34.4.7` | 450 khách chuyển tạm cho M; trong thời gian A tạm ngưng, M giao 50 khách cho K | A được kích hoạt lại | Đề xuất trả về A chỉ gồm 400 khách M vẫn đang phụ trách |
+| `AC-34.4.5` | A còn 450 khách hàng, đã mở quy trình rời workspace | Tìm nút Gỡ | Nút Gỡ bị vô hiệu cho tới khi bước "450 khách hàng" hoàn tất |
+| `AC-34.4.6` | Bước bàn giao khách hàng của A | Chọn người nhận có (Khách hàng, Sửa) = Không có | Người đó không chọn được, kèm lý do |
 | `AC-34.5.1` | Sau khi bàn giao toàn bộ bản ghi của A | Mở báo cáo "Bản ghi không có Người phụ trách hoạt động" | Không còn bản ghi nào thuộc A |
 | `AC-34.6.1` | Một Nhân viên Kinh doanh, một Nhân viên Hỗ trợ, một Nhân viên Marketing và một Quản lý Marketing | Mỗi người tự khai báo nghỉ phép 5 ngày kèm người xử lý thay | Cả bốn lưu thành công; trong khoảng nghỉ không ai nhận phân bổ mới; quyền phụ trách chính của họ không đổi |
-| `AC-34.6.2` | Quản lý Kinh doanh | Khai báo nghỉ phép thay cho một thành viên trong nhóm | Lưu thành công |
-| `AC-34.6.3` | Nhân viên Kinh doanh | Tìm cách khai báo nghỉ phép thay cho đồng nghiệp | Không khả dụng |
+| `AC-34.6.2` | Quản lý trực tiếp của nhân viên E | Khai báo nghỉ phép thay cho E | Lưu thành công |
+| `AC-34.6.3` | Nhân viên Kinh doanh không phải quản lý trực tiếp của đồng nghiệp | Tìm cách khai báo nghỉ phép thay cho đồng nghiệp | Không khả dụng |
 | `AC-34.6.4` | Nhân viên E không đăng nhập 14 ngày liên tiếp, không khai báo nghỉ phép | Qua mốc 14 ngày | E ở trạng thái không khả dụng; người xử lý thay là Quản lý trực tiếp; E và Quản lý nhận thông báo; không bản ghi nào đổi Người phụ trách |
 | `AC-34.6.5` | Tiếp nối AC-34.6.4 | E đăng nhập lại | Trạng thái không khả dụng hết ngay; E trở lại vòng phân bổ mà không cần Quản trị viên can thiệp |
 | `AC-34.7.1` | Sau chuyển giao hàng loạt tại AC-34.3.1 | Người có quyền đọc nhật ký mở nhật ký | Thấy người thực hiện, A, B, số lượng và danh sách bản ghi, thời điểm |
+| `AC-34.9.1` | Nhân viên A (phụ trách 120 khách, 10 doanh nghiệp) chuyển từ "Kinh doanh 1" sang "Kinh doanh 2" | Người thực hiện mở bước xử lý bản ghi | Ba lựa chọn hiển thị cho Khách hàng và cho Doanh nghiệp, không lựa chọn nào được chọn sẵn; không xác nhận được khi chưa chọn |
+| `AC-34.9.2` | Tiếp nối; chọn "Đi theo người" cho khách hàng | Xác nhận | 120 khách thuộc "Kinh doanh 2" ngay; quản lý "Kinh doanh 1" không còn thấy qua mức Đơn vị của mình |
+| `AC-34.9.3` | Sau khi đổi, vai trò gợi ý của "Kinh doanh 2" làm (Khách hàng, Sửa) của A = Không có | Mở lựa chọn cho khách hàng | "Đi theo người" bị vô hiệu kèm giải thích; chỉ còn bàn giao lại hoặc trả về hàng đợi |
+| `AC-34.9.4` | 15 trong 120 khách là khách chờ phân công chưa chốt từ biểu mẫu; 105 khách A tự tạo | Chọn "Trả về hàng đợi" | Lựa chọn chỉ áp cho 15 khách; 105 khách còn lại phải chọn đi theo người hoặc bàn giao lại |
 | `AC-34.8.1` | A nghỉ phép, B xử lý một Yêu cầu chờ xử lý và tạo Cơ hội từ đó | Mở báo cáo thành tích | Cơ hội hiển thị A là Người phụ trách và B là Người xử lý |
 
 ---
@@ -2045,27 +2624,42 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Mô tả nghiệp vụ:** Cho phép nhiều người cùng phục vụ một khách hàng với các mức quyền khác nhau, bổ sung cho mô hình một Người phụ trách.
 
-**Vai trò sử dụng chính:** Người phụ trách bản ghi (chia sẻ bản ghi mình phụ trách), Nhân viên Hỗ trợ (đối tượng chính nhận quyền đọc tự động — `BR-35.4`), Quản lý Kinh doanh, Quản trị viên, Chủ sở hữu.
+**Vai trò sử dụng chính:** Người phụ trách bản ghi (chia sẻ bản ghi mình phụ trách), Nhân viên Hỗ trợ (đối tượng chính nhận quyền đọc tự động — `BR-35.4`), người có ô Gán bao phủ bản ghi, Người có toàn quyền.
 
 **Bối cảnh nghiệp vụ:** Một khách hàng doanh nghiệp lớn được phục vụ đồng thời bởi nhân viên kinh doanh, Quản lý Khách hàng Hiện hữu, nhân viên hỗ trợ và kế toán. Do Người phụ trách được gán cho người tạo (`BR-01.3`) — thực tế luôn là nhân viên kinh doanh — phạm vi "của mình" của Nhân viên Hỗ trợ gần như rỗng, khiến Ngữ cảnh Khách hàng một chạm (`FEAT-28`) không dùng được cho đúng đối tượng nó được thiết kế, và `KPI-02` không thể đạt.
+
+**Điều kiện tiên quyết:** Người chia sẻ là Người phụ trách, người có ô (Khách hàng, Gán) bao phủ bản ghi, hoặc Người có toàn quyền (`BR-35.2`).
+
+**Luồng chính:**
+
+1. Người chia sẻ thêm thành viên vào Đội ngũ phụ trách, chọn vai trò tham gia, mức quyền và ngày hết hiệu lực (`BR-35.1` – `BR-35.3`).
+2. Hệ thống tính quyền hiệu lực của thành viên là phần giao của năng lực theo vai trò và mức chia sẻ, và báo rõ khi lượt chia sẻ không có hiệu lực (`BR-35.5`).
+3. Khi một vé hoặc hội thoại đang mở được gắn với khách, hệ thống cấp quyền đọc tự động cho người đang xử lý và thu hồi khi vé/hội thoại đóng (`BR-35.4`).
+4. Mọi lượt chia sẻ, thu hồi và truy cập theo quyền đọc tự động được ghi nhật ký (`BR-35.6`).
 
 **Quy tắc nghiệp vụ:**
 
 - **`BR-35.1` (Đội ngũ phụ trách):** Mỗi khách hàng/doanh nghiệp có thể có một Đội ngũ phụ trách gồm nhiều thành viên (số tối đa theo gói tại `NFR-11`), mỗi thành viên mang một **vai trò tham gia** từ A.13 (Kinh doanh chính, Hỗ trợ kỹ thuật, Quản lý khách hàng, Kế toán công nợ, Quan sát) và một **mức quyền**: **Chỉ đọc** hoặc **Chỉnh sửa**. Mức quyền là **trần trên của lượt chia sẻ, không phải một lượt cấp quyền**: thành viên không có năng lực sửa theo vai trò thì dù được thêm ở mức Chỉnh sửa vẫn không sửa được — quyền hiệu lực là **phần giao** của năng lực vai trò và mức chia sẻ. Màn hình phải nói rõ điều này khi xảy ra.
 
-  **Vai trò nào được thêm vào đội ngũ:** mọi vai trò đều được, nhưng **Nhân viên và Quản lý Marketing chỉ được thêm với vai trò tham gia "Quan sát"** — khi đó họ áp cột (B) của bảng che mặt nạ như mọi thành viên Chỉ đọc (`BR-04.5b`), và **vẫn không đọc được** ghi chú phạm vi "Nội bộ đội bán hàng" (`BR-36.1`). Các vai trò khác — kể cả Nhân viên Hỗ trợ — được thêm với bất kỳ vai trò tham gia nào, và khi đó đọc được ghi chú "Nội bộ đội bán hàng" **của riêng bản ghi đó**.
+  **Ai được thêm vào đội ngũ:** mọi người có ô (Khách hàng, Xem) khác Không có đều được thêm. Người có ô (Khách hàng, Đọc ghi chú nội bộ) = Không có — theo ma trận mặc định là Marketing và Quản lý Marketing — **chỉ được thêm với vai trò tham gia "Quan sát"**, áp cột (B) của bảng che mặt nạ như mọi thành viên Chỉ đọc (`BR-04.5b`), và **vẫn không đọc được** ghi chú phạm vi "Nội bộ đội bán hàng" (`BR-36.1`), vì tư cách thành viên chỉ nới phạm vi chứ không cấp năng lực (`BR-35.5` (i)). Người có ô đó khác Không có — kể cả Nhân viên Hỗ trợ theo mặc định — được thêm với bất kỳ vai trò tham gia nào, và khi đó đọc được ghi chú "Nội bộ đội bán hàng" **của riêng bản ghi đó**.
 
-  **Lý do nghiệp vụ:** Nếu người mời tin rằng mình đã cấp quyền sửa còn người được mời thấy hệ thống từ chối, cả hai sẽ coi đó là lỗi. Marketing có tầm nhìn toàn tổ chức, nên nếu tư cách thành viên đội ngũ mở thêm quyền đọc nội dung thương lượng thì lệnh cấm tại `BR-36.1` và sàn của `CFG-36-03` bị vô hiệu chỉ bằng thao tác thêm thành viên.
+  **Lý do nghiệp vụ:** Nếu người mời tin rằng mình đã cấp quyền sửa còn người được mời thấy hệ thống từ chối, cả hai sẽ coi đó là lỗi. Người được doanh nghiệp chủ động không cho đọc ghi chú nội bộ — thường là người có tầm nhìn toàn tổ chức như Marketing — mà được mở lại quyền đó chỉ bằng thao tác thêm thành viên thì quyết định của doanh nghiệp bị vô hiệu bởi một người phụ trách bản ghi.
 
-- **`BR-35.2` (Quyền chia sẻ):** Người phụ trách bản ghi và Quản lý Kinh doanh thêm/bớt thành viên trong phạm vi của mình; Quản trị viên và Chủ sở hữu thao tác trên mọi bản ghi. Thành viên mức Chỉ đọc **không** được chia sẻ tiếp. Được chia sẻ một bản ghi đưa người đó **vào phạm vi dữ liệu của bản ghi ấy**.
+- **`BR-35.2` (Quyền chia sẻ):** Người phụ trách bản ghi và người có ô (Khách hàng, Gán) bao phủ bản ghi thêm/bớt thành viên; Người có toàn quyền thao tác trên mọi bản ghi. Mức quyền của lượt thêm không vượt mức hiệu lực của chính người thêm trên bản ghi đó, và không ai tự thêm chính mình (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-39.7`). Thành viên mức Chỉ đọc **không** được chia sẻ tiếp. Được chia sẻ một bản ghi đưa người đó **vào phạm vi dữ liệu của bản ghi ấy**.
+
+  **Lý do nghiệp vụ:** Người chịu trách nhiệm về khách mới biết ai cần cùng phục vụ; nhưng người chỉ được đọc mà chia sẻ tiếp được thì một lượt chia sẻ lan ra không kiểm soát, và người tự thêm mình thì tự nới phạm vi.
 
 - **`BR-35.3` (Chia sẻ có thời hạn):** Mỗi lượt chia sẻ được đặt ngày hết hiệu lực; hết hạn thì quyền tự động thu hồi và ghi vào lịch sử bản ghi.
 
-- **`BR-35.3b` (Vòng đời của Yêu cầu quyền truy cập, Đề nghị chuyển giao và Đề nghị gộp):** Ba hành động tại `BR-17.3` tạo ra một **bản ghi yêu cầu** có vòng đời riêng, không chỉ là một thông báo. Ba hành động sinh **bốn loại yêu cầu** vì "Yêu cầu quyền truy cập" cho chọn xin quyền đọc hoặc quyền sửa:
-  - **Nội dung:** người yêu cầu, khách hàng liên quan, loại yêu cầu (xin quyền đọc / xin quyền sửa / đề nghị chuyển giao / đề nghị gộp), lý do, thời điểm tạo, hạn xử lý, người xử lý, trạng thái (Chờ xử lý / Đã chấp thuận / Đã từ chối kèm lý do / Tự động cấp quyền đọc tạm do quá hạn — trạng thái cuối **chỉ áp dụng cho loại xin quyền đọc**).
-  - **Người xử lý:** xin quyền đọc/sửa và đề nghị chuyển giao — Người phụ trách hiện hữu, hoặc Quản lý Kinh doanh của họ sau khi leo thang; đề nghị gộp — Quản trị Chất lượng Dữ liệu hoặc Quản trị viên.
+  **Lý do nghiệp vụ:** Nhu cầu cùng phục vụ thường gắn với một dự án hay một đợt hỗ trợ; chia sẻ không có hạn sẽ tích tụ thành quyền tồn dư sau khi việc đã xong.
+
+- **`BR-35.3b` (Vòng đời của Yêu cầu quyền truy cập, Yêu cầu nhận bàn giao và Đề nghị gộp):** Ba hành động tại `BR-17.3` tạo ra một **bản ghi yêu cầu** có vòng đời riêng, không chỉ là một thông báo. Ba hành động sinh **bốn loại yêu cầu** vì "Yêu cầu quyền truy cập" cho chọn xin quyền đọc hoặc quyền sửa:
+  - **Nội dung:** người yêu cầu, khách hàng liên quan, loại yêu cầu (xin quyền đọc / xin quyền sửa / yêu cầu nhận bàn giao / đề nghị gộp), lý do, thời điểm tạo, hạn xử lý, người xử lý, trạng thái (Chờ xử lý / Đã chấp thuận / Đã từ chối kèm lý do / Tự động cấp quyền đọc tạm do quá hạn — trạng thái cuối **chỉ áp dụng cho loại xin quyền đọc**).
+  - **Người xử lý:** xin quyền đọc/sửa — Người phụ trách hiện hữu, hoặc quản lý trực tiếp của họ sau khi leo thang; yêu cầu nhận bàn giao — người có ô Gán đạt `BR-34.1` với người yêu cầu là người nhận; người không đạt chuyển tiếp lên theo thứ tự `BR-17.2c` (ii), và yêu cầu không ai xử lý đóng với lý do "Không được xử lý"; đề nghị gộp — Quản trị Chất lượng Dữ liệu hoặc Quản trị viên.
   - **Cam kết thời gian và hành vi khi quá hạn:** theo `BR-17.2c`. Hệ thống **không** tự cấp quyền sửa, **không** tự chuyển giao và **không** tự gộp trong bất kỳ trường hợp nào.
   - **Kiểm toán:** mọi thay đổi trạng thái của bản ghi yêu cầu được ghi nhật ký (`NFR-07`).
+
+  **Lý do nghiệp vụ:** Yêu cầu chỉ là một thông báo thì dễ bị bỏ qua và không ai biết đã quá hạn; có vòng đời và người xử lý rõ ràng thì người yêu cầu biết chờ ai, và hệ thống leo thang đúng người.
 
 - **`BR-35.4` (Quyền đọc tự động cho tuyến Hỗ trợ):** Khi một Vé hỗ trợ hoặc Hội thoại đa kênh **đang mở** được gắn với một khách hàng, nhân viên đang xử lý vé/hội thoại đó **tự động có quyền đọc** hồ sơ 360, Dòng thời gian và Ngữ cảnh Khách hàng của khách đó trong suốt thời gian vé/hội thoại còn mở, kể cả khi bản ghi nằm ngoài phạm vi dữ liệu thông thường của họ. Quyền này:
   - **(a)** là quyền **đọc**, không cho sửa dữ liệu nghiệp vụ — **ngoại lệ duy nhất** là hai thao tác của `FEAT-33` mà tuyến Hỗ trợ thực thi được ngay khi khách yêu cầu: **gắn Hạn chế xử lý** (`BR-30.6`) và **hạ đồng thuận xuống Từ chối nhận tin** (`BR-30.10`). Ngoại lệ chỉ có hiệu lực trong thời gian vé/hội thoại còn mở, và mỗi lượt đều ghi nhật ký;
@@ -2073,11 +2667,17 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
   - **(c)** **bắt buộc ghi nhật ký truy cập** để phát hiện lạm dụng;
   - **(d)** tự động hết hiệu lực khi vé/hội thoại đóng.
 
+  Quyền này là một **lượt cấp do phân hệ sinh ra** theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-39.5` — mức trần Chỉ đọc, nguồn sinh là vé hoặc hội thoại đang mở — nên chịu lượt chặn tường minh trên bản ghi và không nới lỏng lớp che nào (bước 3, bước 4 của `BR-39.6` tài liệu đó). Nó không bao giờ mở ghi chú phạm vi "Nội bộ đội bán hàng" (`BR-36.7`).
+
   **Lý do nghiệp vụ:** Đây là cơ chế giải quyết trực tiếp bế tắc của `FEAT-28`, thay cho việc cấp quyền xem toàn bộ cho mọi nhân viên hỗ trợ. Hai thao tác ghi được mở vì chúng chỉ thu hẹp phạm vi xử lý, đảo lại được, và là điều kiện để cam kết "Tức thì" tại `FEAT-33` có người thực thi — khách nói "đừng gửi tin cho tôi nữa" ngay trong hội thoại mà người đang nói chuyện với khách không làm được gì thì cam kết đó chỉ có trên giấy.
 
-- **`BR-35.5` (Phụ thuộc tài liệu Phân quyền):** Cơ chế thực thi phạm vi dữ liệu và thứ tự ưu tiên giữa quyền theo vai trò, quyền theo phạm vi tổ chức và quyền chia sẻ bản ghi thuộc [`iam-tenant-authorization.md`](./iam-tenant-authorization.md). Tài liệu này ràng buộc ba điểm: **(i)** chia sẻ nới rộng **phạm vi dữ liệu**, không nới rộng **năng lực theo vai trò**; **(ii)** chia sẻ **không nới lỏng bất kỳ mức che trường nào** — chính sách tại `FEAT-04` áp nguyên cho thành viên Đội ngũ phụ trách; **(iii)** một lượt chia sẻ **không vượt được** lượt chặn tường minh trên bản ghi do quản trị viên đặt (`BR-39.1` của tài liệu Phân quyền) — chia sẻ không lấy đi quyền nào, nhưng cũng không gỡ được một lệnh chặn đặt vì lý do pháp lý hoặc hợp đồng.
+- **`BR-35.5` (Phụ thuộc tài liệu Phân quyền):** Cơ chế thực thi phạm vi dữ liệu và thứ tự ưu tiên giữa quyền theo vai trò, quyền theo phạm vi tổ chức và quyền chia sẻ bản ghi thuộc [`iam-tenant-authorization.md`](./iam-tenant-authorization.md). Tài liệu này ràng buộc ba điểm: **(i)** chia sẻ nới rộng **phạm vi dữ liệu**, không nới rộng **năng lực theo vai trò**; **(ii)** chia sẻ **không nới lỏng bất kỳ mức che trường nào** — chính sách tại `FEAT-04` áp nguyên cho thành viên Đội ngũ phụ trách; **(iii)** một lượt chia sẻ **không vượt được** lượt chặn tường minh trên bản ghi do quản trị viên đặt (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-39.1`) — chia sẻ không lấy đi quyền nào, nhưng cũng không gỡ được một lệnh chặn đặt vì lý do pháp lý hoặc hợp đồng.
 
-- **`BR-35.6` (Kiểm toán):** Mọi thao tác chia sẻ, thu hồi chia sẻ và mọi lượt truy cập theo quyền đọc tự động tại `BR-35.4` được ghi nhật ký (`NFR-07`).
+  **Lý do nghiệp vụ:** Chia sẻ là cách mở cửa vào một bản ghi cho người cần phục vụ khách, không phải cách cấp năng lực hay gỡ một lệnh chặn; nếu chia sẻ làm được hai việc đó, người phụ trách bản ghi trở thành người cấp quyền không ai kiểm soát.
+
+- **`BR-35.6` (Kiểm toán):** Mọi thao tác chia sẻ, thu hồi chia sẻ và mọi lượt truy cập theo quyền đọc tự động tại `BR-35.4` được ghi nhật ký (`NFR-07`). Thao tác chỉ thu hẹp — thu hồi chia sẻ, gỡ thành viên Đội ngũ phụ trách, hạ mức Chỉnh sửa về Chỉ đọc, hết hiệu lực quyền đọc tự động hay quyền đọc tạm — **không bị chặn** khi nhật ký tạm thời không ghi được: thao tác có hiệu lực ngay và bản ghi nhật ký được ghi bù khi nhật ký phục hồi (ADR-0010). Thao tác nới rộng — thêm thành viên, nâng mức — không thực hiện được khi chưa ghi được nhật ký.
+
+  **Lý do nghiệp vụ:** Nhật ký chia sẻ là căn cứ duy nhất trả lời ai đã được mở cửa vào hồ sơ của một khách và vì sao. Thu hồi bị kẹt vì sự cố nhật ký nghĩa là một người lẽ ra đã mất quyền vẫn đọc được khách hàng — rủi ro thật hơn việc ghi nhật ký trễ vài phút; còn nới rộng không có dấu vết thì không bao giờ chấp nhận được.
 
 **Tiêu chí Chấp nhận:**
 
@@ -2085,7 +2685,8 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | --- | --- | --- | --- |
 | `AC-35.1.1` | Tập đoàn Đại Việt do A phụ trách | A thêm B (Quản lý khách hàng, Chỉnh sửa), C (Hỗ trợ kỹ thuật, Chỉ đọc), D (Kế toán công nợ, Chỉ đọc) | Cả ba truy cập được hồ sơ; B sửa được; C, D chỉ đọc |
 | `AC-35.1.2` | Một thành viên có vai trò hệ thống không có năng lực sửa khách hàng được thêm ở mức Chỉnh sửa | Thành viên đó mở hồ sơ | Không sửa được; màn hình giải thích quyền hiệu lực là phần giao giữa năng lực vai trò và mức chia sẻ |
-| `AC-35.1.3` | A thêm một Nhân viên Marketing vào đội ngũ | Mở danh sách vai trò tham gia | Chỉ chọn được "Quan sát" |
+| `AC-35.1.3` | A thêm một Nhân viên Marketing (ô Đọc ghi chú nội bộ = Không có theo mặc định) vào đội ngũ | Mở danh sách vai trò tham gia | Chỉ chọn được "Quan sát" |
+| `AC-35.1.7` | Doanh nghiệp điều chỉnh ô (Khách hàng, Đọc ghi chú nội bộ) của vai trò Marketing thành Chỉ của mình qua [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `CFG-29-02` | A thêm một Nhân viên Marketing vào đội ngũ với vai trò "Kinh doanh chính" | Thêm được; người đó đọc được ghi chú "Nội bộ đội bán hàng" của riêng bản ghi đó |
 | `AC-35.1.4` | Nhân viên Marketing là thành viên "Quan sát" | Mở ghi chú "Nội bộ đội bán hàng" của bản ghi | Không đọc được |
 | `AC-35.1.5` | Nhân viên Hỗ trợ C là thành viên đội ngũ | Mở ghi chú "Nội bộ đội bán hàng" của bản ghi đó | Đọc được |
 | `AC-35.1.6` | Gói tiêu chuẩn, đội ngũ đã có 10 thành viên | Thêm thành viên thứ 11 | Từ chối, nêu giới hạn của gói |
@@ -2099,6 +2700,8 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 | `AC-35.4.5` | Hội thoại đã đóng | C mở lại hồ sơ chị Mai và thử hạ đồng thuận | Chỉ thấy thông tin tối thiểu theo `BR-17.3`; không thực hiện được thao tác hạ đồng thuận |
 | `AC-35.5.1` | Quản trị viên đặt lượt chặn tường minh không cho D truy cập một khách hàng | A thêm D vào Đội ngũ phụ trách của khách đó | D vẫn không truy cập được; A được báo lượt chia sẻ không có hiệu lực |
 | `AC-35.5.2` | B là thành viên mức Chỉnh sửa | B xem trường KYC | Trường vẫn che hoàn toàn |
+| `AC-35.6.1` | Nhật ký tạm thời không ghi được | A thu hồi quyền của D trong Đội ngũ phụ trách | D mất truy cập ngay; khi nhật ký phục hồi, lượt thu hồi có trong nhật ký |
+| `AC-35.6.2` | Nhật ký tạm thời không ghi được | A thêm E vào Đội ngũ phụ trách | Không thực hiện được; màn hình nêu lý do và đề nghị thử lại |
 
 **Tham chiếu:** [ADR-0007](../docs/adr/0007-record-sharing-and-permission-precedence-contract.md) — hợp đồng nghiệp vụ về chia sẻ bản ghi và thứ tự ưu tiên quyền.
 
@@ -2112,16 +2715,24 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Bối cảnh nghiệp vụ:** Ghi chú được viện dẫn ở nhiều nơi (nguồn sự kiện của `FEAT-27`, hành động nhanh tại `BR-02.2`, ghi chú ghim tại `BR-28.1`, bằng chứng liên hệ tại `BR-31.8`). Trong vận hành thật, ghi chú chứa nội dung thương mại nhạy cảm ("khách sẵn sàng trả tới 800 triệu", "đang so sánh với đối thủ X"); nếu không quy định rõ ai đọc được và ai xóa được, nhân viên sẽ xóa lịch sử trước khi nghỉ việc hoặc ngừng ghi chú thật — làm rỗng giá trị cốt lõi mà `FEAT-27` và `KPI-02` hướng tới.
 
+**Điều kiện tiên quyết:** Người tạo ghi chú có ô (Khách hàng, Xem) bao phủ bản ghi hoặc quyền đọc tự động; người đọc ghi chú chịu phạm vi đọc tại `BR-36.1`.
+
+**Luồng chính:**
+
+1. Người dùng tạo ghi chú, chọn phạm vi đọc (mặc định theo `CFG-36-01`).
+2. Hệ thống tự sinh bản ghi hoạt động từ cuộc gọi, email, tin nhắn, cuộc hẹn trong hệ thống (`BR-36.5`).
+3. Người dùng ghim ghi chú, bổ sung nội dung hoặc ẩn ghi chú theo `BR-36.2` – `BR-36.4`.
+
 **Quy tắc nghiệp vụ:**
 
 - **`BR-36.1` (Phạm vi đọc):** Mỗi ghi chú có một trong **ba** phạm vi:
-  - **Nội bộ đội bán hàng (mặc định):** Người phụ trách, thành viên Đội ngũ phụ trách (`FEAT-35`) — theo tư cách thành viên, bất kể vai trò hệ thống —, Quản lý Kinh doanh của họ, Quản trị viên và Chủ sở hữu đọc được. **Nhân viên và Quản lý Marketing không đọc được — kể cả khi là thành viên đội ngũ** (`BR-35.1`).
+  - **Nội bộ đội bán hàng (mặc định):** người có ô (Khách hàng, Đọc ghi chú nội bộ) — thao tác đặc thù, Mục 5.1 — bao phủ bản ghi đọc được; thành viên Đội ngũ phụ trách (`FEAT-35`) đọc được ghi chú của riêng bản ghi đó khi ô này của họ khác Không có; Người có toàn quyền đọc được. Theo ma trận mặc định, Người phụ trách và quản lý của họ (vai trò Quản lý, mức Đơn vị và các đơn vị con) đọc được; **Marketing và Quản lý Marketing có ô này = Không có nên không đọc được — kể cả khi là thành viên đội ngũ** (`BR-35.1`). Quyền đọc tự động (`BR-35.4`) không bao giờ mở phạm vi này.
   - **Chung:** mọi người có quyền xem bản ghi đều đọc được, gồm Marketing và tuyến Hỗ trợ.
-  - **Giới hạn:** chỉ người tạo, Người phụ trách bản ghi và Quản lý trở lên.
+  - **Giới hạn:** chỉ người tạo, Người phụ trách bản ghi, các cấp trên trong chuỗi quản lý trực tiếp của Người phụ trách, và Người có toàn quyền.
 
   Phạm vi mặc định là tham số cấu hình (Phụ lục B, `CFG-36-01`).
 
-  **Lý do nghiệp vụ:** Nếu mặc định để toàn tổ chức đọc được — nhất là khi Marketing có tầm nhìn toàn tổ chức — nhân viên sẽ ngừng ghi chú thật hoặc ghi vào sổ riêng. Marketing cần dữ liệu phân khúc, không cần nội dung thương lượng giá.
+  **Lý do nghiệp vụ:** Nếu mặc định để toàn tổ chức đọc được — nhất là khi có người xem toàn tổ chức như Marketing — nhân viên sẽ ngừng ghi chú thật hoặc ghi vào sổ riêng. Người phân khúc cần dữ liệu phân khúc, không cần nội dung thương lượng giá. Gắn quyền đọc vào một ô riêng thay vì tên vai trò để doanh nghiệp tự quyết ai đọc được, và để mọi vai trò tự tạo được xử lý cùng một cách.
 
 - **`BR-36.2` (Sửa ghi chú):** Người tạo sửa được nội dung trong **24 giờ** đầu (Phụ lục B, `CFG-36-02`). Sau thời hạn đó chỉ được **bổ sung** nội dung mới, không sửa nội dung cũ.
 
@@ -2129,7 +2740,11 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 - **`BR-36.3` (Không xóa cứng) — sàn bắt buộc:** Ghi chú và bản ghi hoạt động **không được xóa vĩnh viễn** bởi người dùng thường. Thao tác "Xóa" chỉ **ẩn** ghi chú khỏi dòng thời gian, giữ nguyên nội dung và ghi nhật ký người ẩn (`NFR-07`). Quản trị viên xem được ghi chú đã ẩn. Ngoại lệ duy nhất là khi thực thi quyền chủ thể dữ liệu (`BR-33.8`).
 
-- **`BR-36.4` (Ghi chú ghim):** Người phụ trách bản ghi và Quản lý trở lên ghim được tối đa **3 ghi chú** lên đầu hồ sơ; các ghi chú ghim là nội dung hiển thị trong Ngữ cảnh Khách hàng một chạm (`BR-28.1`), sau khi lọc theo `BR-36.7`.
+  **Lý do nghiệp vụ:** Ghi chú là lịch sử trao đổi với khách; nếu xóa được, nhân viên sắp nghỉ việc có thể xóa dấu vết, và doanh nghiệp mất căn cứ khi có tranh chấp.
+
+- **`BR-36.4` (Ghi chú ghim):** Người phụ trách bản ghi và người có ô (Khách hàng, Sửa) bao phủ bản ghi ghim được tối đa **3 ghi chú** lên đầu hồ sơ; các ghi chú ghim là nội dung hiển thị trong Ngữ cảnh Khách hàng một chạm (`BR-28.1`), sau khi lọc theo `BR-36.7`.
+
+  **Lý do nghiệp vụ:** Ghi chú ghim là những gì mọi người phục vụ khách phải biết trước tiên; quá nhiều ghi chú ghim thì không còn gì nổi bật.
 
 - **`BR-36.5` (Bản ghi hoạt động tự động):** Hoạt động phát sinh trong hệ thống (cuộc gọi đã thực hiện kèm thời lượng, email đã gửi, tin nhắn đã gửi, cuộc hẹn đã tạo) được tự động ghi thành bản ghi hoạt động và **không cho sửa nội dung**. Đây là nguồn sinh bằng chứng liên hệ nhóm 1 (`BR-31.8`); bằng chứng nhóm 2 cũng được ghi thành bản ghi hoạt động nhưng đánh dấu rõ là do người dùng khai báo, kèm người xác nhận.
 
@@ -2137,10 +2752,12 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 - **`BR-36.6` (Thuộc phạm vi dữ liệu cá nhân):** Nội dung ghi chú và hoạt động thuộc phạm vi phải xử lý khi thực thi quyền xóa của chủ thể dữ liệu (`BR-33.8`).
 
+  **Lý do nghiệp vụ:** Ghi chú thường chứa thông tin cá nhân của khách; bỏ ngoài phạm vi xóa thì yêu cầu xóa không bao giờ hoàn tất thật.
+
 - **`BR-36.7` (Ghi chú trong Ngữ cảnh Khách hàng một chạm):** Khung ngữ cảnh là cơ chế truy cập chính của Nhân viên Hỗ trợ (`FEAT-28`), nhưng phạm vi mặc định của ghi chú là "Nội bộ đội bán hàng" mà tuyến Hỗ trợ không đọc được. Quy tắc:
   - Khung ngữ cảnh **lọc ghi chú theo phạm vi đọc của người xem** (`BR-36.1`).
   - Người ghim ghi chú được chọn **"Cho phép tuyến Hỗ trợ đọc"** trên từng ghi chú ghim, để chia sẻ đúng thông tin cần cho việc phục vụ (ví dụ "khách đang chờ xử lý khiếu nại lô hàng tháng 8") mà không mở nội dung thương lượng giá.
-  - Phạm vi ghi chú tuyến Hỗ trợ đọc được là tham số cấu hình (Phụ lục B, `CFG-36-03`), mặc định: phạm vi "Chung" cộng các ghi chú ghim đã được đánh dấu cho phép.
+  - Phạm vi ghi chú đọc được **qua quyền đọc tự động** là tham số cấu hình (Phụ lục B, `CFG-36-03`), mặc định: phạm vi "Chung" cộng các ghi chú ghim đã được đánh dấu cho phép; quyền đọc tự động không bao giờ mở phạm vi "Nội bộ đội bán hàng".
 
   **Lý do nghiệp vụ:** Không có quy tắc này, khung ngữ cảnh luôn rỗng phần ghi chú với đúng đối tượng nó phục vụ.
 
@@ -2169,20 +2786,20 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 **Điều kiện đo chung.** Mọi ngưỡng dưới đây được đo tại phía máy chủ (không tính thời gian dựng giao diện trên trình duyệt), trên môi trường nghiệm thu có cấu hình tương đương môi trường vận hành thật, với **50 người dùng đồng thời**, bằng công cụ đo tải do Trưởng nhóm Kiểm thử chỉ định, trên tập dữ liệu mẫu chuẩn: **1.000.000 khách hàng, 100.000 doanh nghiệp, và hồ sơ dùng để đo dòng thời gian có 500 sự kiện** (thêm một hồ sơ cực biên 10.000 sự kiện đo riêng, báo cáo tách biệt). Mỗi ngưỡng phải đạt trong **3 lần đo liên tiếp**.
 
-- **NFR-01 (Tìm kiếm & lọc danh bạ):** Tìm kiếm khách hàng theo tên, email, số điện thoại hoặc lọc theo danh sách phản hồi dưới **300 mili giây với 95% lượt truy vấn**.
-- **NFR-02 (Dòng thời gian 360 độ & Ngữ cảnh Khách hàng):** Phản hồi dưới **150 mili giây với 95% lượt truy vấn** — đây là **ngưỡng nghiệm thu duy nhất** cho cả hai chức năng. Mức 50 mili giây với 50% lượt truy vấn tại `BR-28.2` là mục tiêu tối ưu, không phải tiêu chí nghiệm thu.
-- **NFR-03 (Tốc độ nhập khẩu):** Tiến trình nhập khẩu xử lý tối thiểu **1.000 dòng/giây** với tệp dung lượng lớn.
+- **`NFR-01` (Tìm kiếm & lọc danh bạ):** Tìm kiếm khách hàng theo tên, email, số điện thoại hoặc lọc theo danh sách phản hồi dưới **300 mili giây với 95% lượt truy vấn**.
+- **`NFR-02` (Dòng thời gian 360 độ & Ngữ cảnh Khách hàng):** Phản hồi dưới **150 mili giây với 95% lượt truy vấn** — đây là **ngưỡng nghiệm thu duy nhất** cho cả hai chức năng. Mức 50 mili giây với 50% lượt truy vấn tại `BR-28.2` là mục tiêu tối ưu, không phải tiêu chí nghiệm thu.
+- **`NFR-03` (Tốc độ nhập khẩu):** Tiến trình nhập khẩu xử lý tối thiểu **1.000 dòng/giây** với tệp dung lượng lớn.
 
 ### 4.2 Độ tin cậy & Toàn vẹn Dữ liệu
 
-- **NFR-04 (Gộp & hoàn tác gộp toàn vẹn):** Gộp và hoàn tác gộp phải cùng thành công hoặc cùng thất bại như một đơn vị duy nhất. Nếu có lỗi ở bất kỳ bước chuyển giao nào, toàn bộ thao tác được hủy hoàn toàn, không để lại trạng thái dang dở; trường hợp gián đoạn ngoài ý muốn được xử lý theo `FEAT-21`.
-- **NFR-05 (Bảo toàn sổ cái gộp):** Mục sổ cái gộp được lưu vĩnh viễn và không bị xóa kể cả khi Bản ghi Chính bị xóa mềm, chỉ chịu ngoại lệ khử định danh tại `BR-33.8`.
+- **`NFR-04` (Gộp & hoàn tác gộp toàn vẹn):** Gộp và hoàn tác gộp phải cùng thành công hoặc cùng thất bại như một đơn vị duy nhất. Nếu có lỗi ở bất kỳ bước chuyển giao nào, toàn bộ thao tác được hủy hoàn toàn, không để lại trạng thái dang dở; trường hợp gián đoạn ngoài ý muốn được xử lý theo `FEAT-21`.
+- **`NFR-05` (Bảo toàn sổ cái gộp):** Mục sổ cái gộp được lưu vĩnh viễn và không bị xóa kể cả khi Bản ghi Chính bị xóa mềm, chỉ chịu ngoại lệ khử định danh tại `BR-33.8`.
 
 ### 4.3 An toàn & Bảo mật
 
-- **NFR-06 (Bảo vệ dữ liệu nhạy cảm):** Chính sách phân quyền trường được thực thi **đúng theo `FEAT-04`** — mức hiển thị của mỗi trường do nhóm trường (`BR-04.1`) và quan hệ của người xem với bản ghi (`BR-04.3`) quyết định, không do một quy tắc riêng ở mục này. Yêu cầu phi chức năng ở đây là: chính sách phải được thực thi **trên chính dữ liệu hệ thống trả ra**, sao cho dữ liệu vượt mức hiển thị cho phép **không bao giờ rời khỏi hệ thống** — kể cả khi giao diện bị can thiệp, và kể cả qua tệp xuất — và mọi lượt nâng mức hiển thị (`BR-04.4`) đều để lại dấu vết theo `NFR-07`.
+- **`NFR-06` (Bảo vệ dữ liệu nhạy cảm):** Chính sách phân quyền trường được thực thi **đúng theo `FEAT-04`** — mức hiển thị của mỗi trường do nhóm trường (`BR-04.1`) và quan hệ của người xem với bản ghi (`BR-04.3`) quyết định, không do một quy tắc riêng ở mục này. Yêu cầu phi chức năng ở đây là: chính sách phải được thực thi **trên chính dữ liệu hệ thống trả ra**, sao cho dữ liệu vượt mức hiển thị cho phép **không bao giờ rời khỏi hệ thống** — kể cả khi giao diện bị can thiệp, và kể cả qua tệp xuất — và mọi lượt nâng mức hiển thị (`BR-04.4`) đều để lại dấu vết theo `NFR-07`.
 
-- **NFR-07 (Nhật ký kiểm toán):** Danh mục dưới đây là **nguồn duy nhất** về các thao tác bắt buộc ghi nhật ký kiểm toán; một quy tắc viện dẫn `NFR-07` mà thao tác của nó không có trong danh mục là lỗi tài liệu.
+- **`NFR-07` (Nhật ký kiểm toán):** Danh mục dưới đây là **nguồn duy nhất** về các thao tác bắt buộc ghi nhật ký kiểm toán; một quy tắc viện dẫn `NFR-07` mà thao tác của nó không có trong danh mục là lỗi tài liệu.
   1. Mở khóa mặt nạ (`BR-04.4`).
   2. Hành động liên lạc trong hệ thống (`BR-04.6`).
   3. Xuất dữ liệu (`BR-25.3`).
@@ -2195,12 +2812,12 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
   10. Thay đổi quy tắc chấm điểm (`BR-15.4`).
   11. Chuyển giao quyền phụ trách (`BR-34.7`).
   12. Chia sẻ bản ghi, thêm thành viên Đội ngũ phụ trách, và mọi lượt truy cập theo quyền đọc tạm — gồm quyền đọc tự động của tuyến Hỗ trợ và quyền tự cấp khi yêu cầu quá hạn (`BR-35.6`, `BR-17.2c`).
-  13. Đọc hồ sơ khách hàng **ngoài phạm vi phụ trách** — lượt xem chỉ được phép nhờ mức Xem trên Khách hàng rộng hơn mức Sửa của chính người đó (`iam-tenant-authorization.md` BR-35.9). Áp như nhau cho mọi vai trò có cấu hình "xem rộng, sửa hẹp", dù là vai trò dựng sẵn Marketing (mặc định "Xem toàn bộ") hay vai trò doanh nghiệp tự tạo. Quản trị viên và Chủ sở hữu không thuộc sự kiện này vì mọi thao tác của họ đã được phủ bởi các sự kiện khác và bởi `NFR-14`. Khối lượng nhật ký sinh ra ở đây được chấp nhận có chủ đích: đó là cái giá của việc cấp tầm nhìn rộng cho một vai trò không phụ trách những bản ghi đó, và là căn cứ duy nhất trả lời được câu hỏi ai đã đọc hồ sơ của một khách hàng khi có khiếu nại.
+  13. Đọc hồ sơ khách hàng **ngoài phạm vi phụ trách** — lượt xem chỉ được phép nhờ mức Xem trên Khách hàng rộng hơn mức Sửa của chính người đó (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-35.9`). Áp như nhau cho mọi vai trò có cấu hình "xem rộng, sửa hẹp", dù là vai trò dựng sẵn — Nhân viên Kinh doanh (Xem = Đơn vị của mình, Sửa = Chỉ của mình), Marketing (Xem = Toàn workspace, Sửa = Không có), Kiểm toán — hay vai trò doanh nghiệp tự tạo. Quản trị viên và Chủ sở hữu không thuộc sự kiện này vì mọi thao tác của họ đã được phủ bởi các sự kiện khác và bởi `NFR-14`. Khối lượng nhật ký sinh ra ở đây được chấp nhận có chủ đích: đó là cái giá của việc cấp tầm nhìn rộng cho một vai trò không phụ trách những bản ghi đó, và là căn cứ duy nhất trả lời được câu hỏi ai đã đọc hồ sơ của một khách hàng khi có khiếu nại.
   14. Ẩn ghi chú (`BR-36.3`).
   15. Nâng mức đồng thuận từ mọi nguồn tác động (`BR-30.10`).
   16. Sửa nguồn gốc theo lô (`BR-32.3b`).
   17. Đọc nhật ký kiểm toán ở cả hai mức có quyền (`NFR-14`).
-  18. Mọi thay đổi trạng thái của bản ghi yêu cầu xin quyền đọc/sửa, đề nghị chuyển giao, đề nghị gộp (`BR-35.3b`).
+  18. Mọi thay đổi trạng thái của bản ghi yêu cầu xin quyền đọc/sửa, yêu cầu nhận bàn giao, đề nghị gộp (`BR-35.3b`).
   19. Bỏ qua cảnh báo trùng lặp khi tenant cấu hình "chỉ cảnh báo" (`BR-17.2`).
   20. Xác nhận "Đây là người khác dùng chung định danh này" (`BR-17.2`).
   21. Gắn nhãn Định danh dùng chung cho lô nhập khẩu chọn "Tạo bản ghi mới dù trùng" (`BR-23.3`).
@@ -2210,6 +2827,11 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
   25. Dỡ sớm biện pháp phòng ngừa khi không xác minh được chủ thể dữ liệu (`BR-33.7` (b)).
   26. Thay đổi tham số cấu hình (Phụ lục B).
   27. Xử lý yêu cầu chủ thể dữ liệu (`FEAT-33`), gồm gắn/dỡ Hạn chế xử lý (`BR-30.6`) và hạ đồng thuận theo yêu cầu của khách (`BR-35.4` (a)).
+  28. Thao tác trên hàng đợi khách hàng tiềm năng: nhận việc, gán từ hàng đợi, trả về hàng đợi, đổi đơn vị tiếp nhận của nguồn (`BR-31.9`); tạo, sửa, tạm dừng quy tắc phân bổ và đổi người chịu trách nhiệm quy tắc (`BR-31.10`).
+  29. Tạo, gán lại và kết thúc bản ghi giữ chỗ (`BR-23.5`).
+  30. Xử lý bản ghi của người bị tạm ngưng hoặc rời workspace — giữ nguyên, chuyển tạm, trả về hàng đợi (`BR-34.4`).
+
+  **Thu hẹp không bị chặn khi nhật ký lỗi:** thao tác chỉ thu hẹp điều người khác được làm hoặc được thấy — thu hồi chia sẻ, gỡ thành viên Đội ngũ phụ trách, hết hiệu lực quyền đọc tự động hay quyền đọc tạm, tạm ngưng thành viên, hạ đồng thuận, gắn Hạn chế xử lý — có hiệu lực ngay cả khi nhật ký tạm thời không ghi được, và bản ghi nhật ký được ghi bù với thời điểm thực khi nhật ký phục hồi (ADR-0010). Mọi thao tác khác trong danh mục không thực hiện được khi chưa ghi được nhật ký.
 
   Mỗi bản ghi nhật ký lưu: người thực hiện, thời điểm, bản ghi bị tác động, loại thao tác và **tên các trường bị tác động**.
 
@@ -2217,15 +2839,15 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
   **Lý do nghiệp vụ:** Nếu lưu giá trị thật, nhật ký trở thành kho dữ liệu cá nhân lớn nhất của phân hệ và là đường đi vòng qua chính sách che mặt nạ — người xem được nhật ký sẽ đọc được giá trị mà chính họ không có quyền mở khóa.
 
-- **NFR-08 (Thời hạn lưu nhật ký kiểm toán):** Nhật ký được lưu tối thiểu **24 tháng** (gói tiêu chuẩn) và **60 tháng** (gói Enterprise). Trong thời hạn này nhật ký **không cho sửa hoặc xóa từng bản ghi**, kể cả bởi Chủ sở hữu — ngoại lệ duy nhất là **khử định danh** khi thực thi quyền chủ thể dữ liệu (`BR-33.8`), do Quản trị viên cùng Người phụ trách Bảo vệ Dữ liệu thực hiện và để lại một bản ghi nhật ký về chính việc khử định danh đó.
+- **`NFR-08` (Thời hạn lưu nhật ký kiểm toán):** Nhật ký được lưu tối thiểu **24 tháng** (gói tiêu chuẩn) và **60 tháng** (gói Enterprise). Trong thời hạn này nhật ký **không cho sửa hoặc xóa từng bản ghi**, kể cả bởi Chủ sở hữu — ngoại lệ duy nhất là **khử định danh** khi thực thi quyền chủ thể dữ liệu (`BR-33.8`), do Quản trị viên cùng Người phụ trách Bảo vệ Dữ liệu thực hiện và để lại một bản ghi nhật ký về chính việc khử định danh đó.
 
-- **NFR-14 (Kiểm soát truy cập nhật ký kiểm toán) — sàn bắt buộc:** Nhật ký kiểm toán có **ba mức truy cập**:
+- **`NFR-14` (Kiểm soát truy cập nhật ký kiểm toán) — sàn bắt buộc:** Nhật ký kiểm toán có **ba mức truy cập**:
 
 | Mức | Ai được cấp | Phạm vi đọc |
 | --- | --- | --- |
 | **Toàn phần** | Chủ sở hữu và Người phụ trách Bảo vệ Dữ liệu | Toàn bộ nhật ký, truy vấn theo khoảng thời gian và theo bản ghi |
 | **Theo bản ghi đang xử lý** | Quản trị viên, **chỉ trong phạm vi một bản ghi đang có yêu cầu chủ thể dữ liệu hoặc thao tác gộp/khôi phục đang thực hiện** | Chỉ nhật ký của đúng bản ghi đó, chỉ trong thời gian yêu cầu còn mở — mức tối thiểu để thực hiện nghĩa vụ khử định danh (`BR-33.8`) và tra soát khi hoàn tác gộp |
-| **Không truy cập** | Mọi vai trò nghiệp vụ khác (Quản lý Kinh doanh, Marketing, Nhân viên Kinh doanh, Nhân viên Hỗ trợ) | — |
+| **Không truy cập** | Mọi người khác: mọi vai trò dựng sẵn — kể cả Kiểm toán và Kiểm toán quyền, vốn chỉ đọc nhật ký quyền theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `FEAT-41` chứ không đọc nhật ký kiểm toán của phân hệ — và mọi vai trò tự tạo | — |
 
   **Mọi lượt đọc nhật ký**, ở cả hai mức có quyền, đều được ghi nhật ký. Không hỗ trợ xuất toàn bộ nhật ký ra tệp trừ khi có phê duyệt kép theo quy tắc dưới.
 
@@ -2235,12 +2857,12 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 ### 4.4 Khả dụng, Sao lưu & Phục hồi
 
-- **NFR-09 (Mức độ khả dụng):** Phân hệ cam kết mức khả dụng tối thiểu **99,9% mỗi tháng**, không tính thời gian bảo trì có thông báo trước tối thiểu 48 giờ.
-- **NFR-10 (Sao lưu & phục hồi thảm họa):** Mức mất dữ liệu tối đa cho phép là **15 phút**; thời gian phục hồi mục tiêu là **4 giờ**. Quy trình phục hồi được diễn tập kiểm chứng tối thiểu **2 lần/năm**. Bản sao lưu được lưu theo cơ chế **cuốn vòng 35 ngày** — đây là con số mà bảng phạm vi xóa tại `BR-33.8` dựa vào, nên hai nơi phải giữ cùng một giá trị.
+- **`NFR-09` (Mức độ khả dụng):** Phân hệ cam kết mức khả dụng tối thiểu **99,9% mỗi tháng**, không tính thời gian bảo trì có thông báo trước tối thiểu 48 giờ.
+- **`NFR-10` (Sao lưu & phục hồi thảm họa):** Mức mất dữ liệu tối đa cho phép là **15 phút**; thời gian phục hồi mục tiêu là **4 giờ**. Quy trình phục hồi được diễn tập kiểm chứng tối thiểu **2 lần/năm**. Bản sao lưu được lưu theo cơ chế **cuốn vòng 35 ngày** — đây là con số mà bảng phạm vi xóa tại `BR-33.8` dựa vào, nên hai nơi phải giữ cùng một giá trị.
 
 ### 4.5 Khả năng mở rộng & Giới hạn dung lượng
 
-- **NFR-11 (Giới hạn theo gói dịch vụ):** Hệ thống áp dụng và hiển thị rõ các giới hạn sau:
+- **`NFR-11` (Giới hạn theo gói dịch vụ):** Hệ thống áp dụng và hiển thị rõ các giới hạn sau:
 
 | Giới hạn | Gói tiêu chuẩn | Gói Enterprise |
 | --- | --- | --- |
@@ -2255,79 +2877,132 @@ Khách hủy hợp đồng thì chuyển Churned, hệ thống thông báo ngư�
 
 ### 4.6 Đa ngôn ngữ & Định dạng theo vùng
 
-- **NFR-12 (Đa ngôn ngữ & hướng hiển thị):** Toàn bộ giao diện và thông báo nghiệp vụ hỗ trợ tối thiểu **tiếng Việt, tiếng Anh và tiếng Ả Rập**; tiếng Ả Rập bắt buộc hỗ trợ bố cục hiển thị từ phải sang trái. Tên riêng của khách hàng hiển thị đúng dấu và đúng ký tự gốc, không bị chuyển tự tự động.
-- **NFR-13 (Định dạng theo vùng):** Số điện thoại, ngày tháng, đơn vị tiền tệ và múi giờ hiển thị theo thiết lập vùng của từng không gian làm việc; dữ liệu được lưu theo một chuẩn quốc tế thống nhất để báo cáo đa vùng nhất quán.
+- **`NFR-12` (Đa ngôn ngữ & hướng hiển thị):** Toàn bộ giao diện và thông báo nghiệp vụ hỗ trợ tối thiểu **tiếng Việt, tiếng Anh và tiếng Ả Rập**; tiếng Ả Rập bắt buộc hỗ trợ bố cục hiển thị từ phải sang trái. Tên riêng của khách hàng hiển thị đúng dấu và đúng ký tự gốc, không bị chuyển tự tự động.
+- **`NFR-13` (Định dạng theo vùng):** Số điện thoại, ngày tháng, đơn vị tiền tệ và múi giờ hiển thị theo thiết lập vùng của từng không gian làm việc; dữ liệu được lưu theo một chuẩn quốc tế thống nhất để báo cáo đa vùng nhất quán.
 
 ---
 
 ## 5. Ma trận quyền truy cập tính năng
 
-| Mã FEAT | Tính năng | Nhân viên KD | Nhân viên Hỗ trợ | Quản lý KD | Nhân viên Marketing | Quản lý Marketing | Quản trị viên | Chủ sở hữu | Tiến trình Hệ thống |
+Mục này khai báo phần mà [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) giao cho phân hệ: các ô của loại dữ liệu Khách hàng và Doanh nghiệp, các thao tác đặc thù của phân hệ (`FEAT-24` của tài liệu đó), ma trận mặc định của các vai trò dựng sẵn (`FEAT-29` của tài liệu đó) và các quyền quản trị của phân hệ. Năm mức truy cập và mọi quy tắc phân giải phạm vi theo đúng tài liệu đó; Người có toàn quyền (Quản trị viên, Chủ sở hữu) có mức Toàn workspace ở mọi ô và mọi quyền quản trị dưới đây, trừ nơi Sàn bắt buộc nêu khác.
+
+### 5.1 Ma trận ô mặc định của vai trò dựng sẵn
+
+*Viết tắt trong bảng:* "Của mình" = Chỉ của mình; "Đơn vị" = Đơn vị của mình; "Đơn vị + con" = Đơn vị và các đơn vị con; "Toàn WS" = Toàn workspace; "—" = Không có.
+
+**Loại dữ liệu Khách hàng:**
+
+| Thao tác | Nhân viên Kinh doanh | Nhân viên Hỗ trợ | Quản lý | Marketing | Quản lý Marketing | Chỉ xem bản ghi được giao | Kiểm toán | Kiểm toán quyền |
+| --- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| Xem | Đơn vị | Đơn vị | Đơn vị + con | Toàn WS | Toàn WS | Của mình | Toàn WS | — |
+| Tạo | Có | — | Có | — | Có | — | — | — |
+| Sửa | Của mình | — | Đơn vị + con | — | Đơn vị | — | — | — |
+| Xoá | — | — | Đơn vị | — | — | — | — | — |
+| Xuất | Của mình (`BR-25.5`) | — | — | — | — | — | — | — |
+| Nhập | — | — | — | — | Đơn vị | — | — | — |
+| Gán người phụ trách | Của mình | — | Đơn vị + con | — | Đơn vị | — | — | — |
+| *Thao tác đặc thù:* Chuyển giai đoạn vòng đời (`BR-02.2`) | Của mình | — | Đơn vị + con | — | — | — | — | — |
+| *Thao tác đặc thù:* Gắn thẻ phân loại (`BR-03.1`) | Của mình | — | Đơn vị + con | Toàn WS | Toàn WS | — | — | — |
+| *Thao tác đặc thù:* Ghi nhận đồng thuận — nâng mức kèm bằng chứng (`BR-30.10`) | Của mình | — | Đơn vị + con | Toàn WS | Toàn WS | — | — | — |
+| *Thao tác đặc thù:* Đọc ghi chú nội bộ (`BR-36.1`) | Của mình | Của mình | Đơn vị + con | — | — | Của mình | — | — |
+| *Thao tác đặc thù:* Mở khóa mặt nạ — Nhóm 1, Nhóm 2 (`BR-04.4`) | — | — | — | — | — | — | — | — |
+| *Thao tác đặc thù:* Mở khóa Định danh KYC (`BR-04.4`; sàn `BR-04.7` — tối đa Chỉ của mình, cấp cần BVDL phê duyệt) | — | — | — | — | — | — | — | — |
+
+**Loại dữ liệu Doanh nghiệp:** các ô Xem, Tạo, Sửa, Xoá, Xuất, Nhập, Gán người phụ trách mang cùng giá trị như dòng tương ứng của Khách hàng; Doanh nghiệp không có thao tác đặc thù.
+
+Ghi chú về các ô:
+
+- Các ô tuân `BR-25.1` của [`iam-tenant-authorization.md`](./iam-tenant-authorization.md): không thao tác nào rộng hơn Xem cùng dòng. Các thao tác đặc thù hiển thị thành dòng riêng ở chế độ Cơ bản.
+- **Điểm chi tiết khác mức đặt sẵn chung của [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `FEAT-29`, có chủ đích:**
+  - **Nhân viên Kinh doanh — (Khách hàng, Xuất) = Chỉ của mình:** nhu cầu hằng ngày (danh sách đi gặp khách, danh sách mời hội thảo) mà không có đường xuất hợp lệ thì nhân viên chép màn hình ra bảng tính, ngoài mọi nhật ký (`BR-25.5`); vai trò vì vậy hiển thị "Tùy chỉnh" ở chế độ Cơ bản.
+  - **Nhân viên Kinh doanh — (Doanh nghiệp, Xuất) = Chỉ của mình:** cùng lý do; danh sách doanh nghiệp mình phụ trách là thông tin pháp nhân, không chứa trường nhạy cảm của hệ thống (`BR-04.7`).
+  - **Marketing — Gắn thẻ phân loại và Ghi nhận đồng thuận ở mức Toàn workspace** dù các thao tác khác trên Khách hàng là Không có: phân khúc theo thẻ và quản lý đồng thuận theo kênh là công việc cốt lõi của vai trò trên toàn tập khách; hai thao tác này không đổi dữ liệu liên hệ, giai đoạn hay người phụ trách, và nâng đồng thuận luôn cần bằng chứng (`BR-30.10`).
+- Hạ mức đồng thuận và gắn Hạn chế xử lý **không** cần ô Ghi nhận đồng thuận: ai tiếp cận được bản ghi — kể cả qua quyền đọc tự động — đều thực hiện được ngay (Nguyên tắc 3, `BR-35.4` (a)).
+- Tạo ghi chú và bản ghi hoạt động không phải sửa hồ sơ khách hàng: người xem được bản ghi — kể cả qua quyền đọc tự động — đều tạo được (`FEAT-36`).
+- Mở khóa mặt nạ không mặc định ở vai trò nào; doanh nghiệp cấp có chủ đích cho người cần, trong giới hạn hạn mức `CFG-04-02`. Năng lực xuất nhóm Định danh KYC không có ô và không cấp được qua vai trò (`BR-25.4`, sàn bắt buộc).
+
+### 5.2 Quyền quản trị của phân hệ
+
+Các quyền dạng có/không, không gắn với bản ghi, xuất hiện trong danh mục quyền quản trị của workspace (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `FEAT-24`). Quyền chỉ cho phép thao tác trên những bản ghi mà ô nêu ở cột "Phạm vi áp dụng" của người giữ quyền bao phủ.
+
+| Quyền quản trị | Thao tác được phép | Phạm vi áp dụng | Mặc định có ở vai trò dựng sẵn |
+| --- | --- | --- | --- |
+| **Duyệt vòng đời khách hàng** | Lùi giai đoạn (`BR-12.7`), chuyển Disqualified và mở lại (`BR-12.4`), duyệt Lead rác (`BR-12.4b`), sang Nurturing nhánh điểm nguội (`BR-16.4`), Nurturing → Lead (`BR-16.5`), quyết định sau cảnh báo tái phân loại (`BR-12.3c`) | Ô (Khách hàng, Chuyển giai đoạn vòng đời) | Quản lý |
+| **Hoàn tác Chuyển đổi Tiềm năng** | `BR-14.2`, `BR-14.5` | Đồng thời ô (Khách hàng, Sửa), (Cơ hội, Xoá) và (Doanh nghiệp, Xoá) bao phủ các thực thể bị tác động; (Cơ hội, Sửa) cho nhánh gắn vào Cơ hội sẵn có (`BR-14.5` (2)) | Quản lý |
+| **Cấu hình phân bổ khách hàng tiềm năng** | Tạo, sửa, xóa quy tắc phân bổ (`BR-31.5`, `BR-31.10`) | Ô (Khách hàng, Gán) bao phủ đơn vị tiếp nhận | Quản lý |
+| **Xác nhận liên hệ ngoài hệ thống** | Xác nhận bằng chứng nhóm 2 (`BR-31.8`) | Ô (Khách hàng, Gán) | Quản lý |
+| **Phê duyệt Tái tiếp cận — phía quan hệ khách hàng** | Một trong hai chữ ký của Chiến dịch Tái tiếp cận (`BR-12.5b` (a)) | Ô (Khách hàng, Gán) bao phủ tập khách | Quản lý |
+| **Phê duyệt Tái tiếp cận — phía nội dung** | Chữ ký còn lại của Chiến dịch Tái tiếp cận (`BR-12.5b` (a)) | Ô (Khách hàng, Xem) bao phủ tập khách | Quản lý Marketing |
+| **Cấu hình chấm điểm tiềm năng** | Sửa trọng số, tiêu chí, ngưỡng và suy giảm (`BR-15.4`, `CFG-15-01`, `CFG-15-02`, `CFG-16-01`) | Toàn workspace | Quản lý Marketing |
+| **Xem cấu hình chấm điểm** | Chỉ xem cấu hình chấm điểm (`BR-15.4`) | Toàn workspace | Marketing, Quản lý Marketing |
+| **Xem báo cáo nguồn gốc** | Báo cáo nguồn gốc và phân bổ doanh thu theo kênh (`BR-32.4`) | Toàn workspace | Marketing, Quản lý Marketing |
+| **Tiếp nhận yêu cầu chủ thể dữ liệu** | Tạo bản ghi theo dõi yêu cầu và thực thi ngay hai loại thu hẹp (`FEAT-33`) | Ô (Khách hàng, Xem) hoặc quyền đọc tự động | Nhân viên Hỗ trợ, Quản lý |
+| **Quét trùng lặp toàn workspace** | Công cụ quét và xử lý Đề nghị gộp (`BR-17.4`, `BR-35.3b`) | Toàn workspace | Không vai trò dựng sẵn nào — doanh nghiệp cấp cho người làm Quản trị Chất lượng Dữ liệu |
+| **Hoàn tác gộp** | Hoàn tác gộp và xử lý giao dịch gộp bị gián đoạn (`BR-20.1`, `BR-21.1`) | Ô (Khách hàng, Xoá) bao phủ cả hai bản ghi | Không vai trò dựng sẵn nào |
+| **Sửa nguồn gốc theo lô** | `BR-32.3b` | Toàn workspace | Không vai trò dựng sẵn nào |
+
+Các năng lực sau **không** là quyền quản trị cấp được — chúng là Sàn bắt buộc chỉ thuộc Người có toàn quyền: loại khách đã trả tiền vì gian lận (`BR-12.8`); thực thi bản sao, chỉnh sửa, xóa vĩnh viễn và đóng yêu cầu chủ thể dữ liệu (`BR-33.1`, `BR-33.2`); xuất nhóm Định danh KYC (`BR-25.4`). Phê duyệt xuất vượt ngưỡng và khai báo nghỉ phép thay đi theo **quan hệ quản lý trực tiếp** (`BR-25.4`, `BR-34.6`), không theo quyền quản trị; quản lý không đồng ý với một lượt chuyển theo đề nghị thì giao lại bằng ô Gán theo `BR-34.1`.
+
+### 5.3 Ma trận tính năng theo vai trò dựng sẵn
+
+Bảng dưới là hệ quả của 5.1 và 5.2 trên từng tính năng, để người đọc tra một chỗ; nếu bảng này và 5.1, 5.2 nói khác nhau thì 5.1, 5.2 đúng và bảng này phải sửa.
+
+| Mã FEAT | Tính năng | Nhân viên Kinh doanh | Nhân viên Hỗ trợ | Quản lý | Marketing | Quản lý Marketing | Quản trị viên | Chủ sở hữu | Tiến trình Hệ thống |
 | --- | --- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| `FEAT-01` | Tạo & Quản lý Khách hàng | Của mình | Của mình | Đơn vị của mình | Xem toàn bộ | Xem toàn bộ | **Toàn quyền** | **Toàn quyền** | — |
-| `FEAT-02` | Hồ sơ 360 độ | Của mình | Của mình + đọc tự động (`BR-35.4`) | Đơn vị của mình | Xem toàn bộ | Xem toàn bộ | **Toàn quyền** | **Toàn quyền** | — |
-| `FEAT-03` | Thẻ phân loại hàng loạt | Của mình | Của mình | Đơn vị của mình | **Cho phép** | **Cho phép** | **Toàn quyền** | **Toàn quyền** | — |
-| `FEAT-04` | Mở khóa mặt nạ dữ liệu | Có quyền Mở khóa mặt nạ | Có quyền Mở khóa mặt nạ | Có quyền Mở khóa mặt nạ | Có quyền Mở khóa mặt nạ | Có quyền Mở khóa mặt nạ | **Toàn quyền** | **Toàn quyền** | — |
-| `FEAT-05` | Thùng rác & Phục hồi Khách hàng | — | — | Có quyền Xóa, Đơn vị của mình; khôi phục theo `BR-05.3`, chịu `BR-05.6` | — | — | **Toàn quyền** | **Toàn quyền** | Dọn dẹp tự động (`BR-05.4`, chịu `BR-05.6`) |
-| `FEAT-06` | Tạo & Quản lý Doanh nghiệp | Của mình | Của mình | Đơn vị của mình | Xem toàn bộ | Xem toàn bộ | **Toàn quyền** | **Toàn quyền** | — |
-| `FEAT-07` | Cây Doanh nghiệp Mẹ – Con | Của mình | Của mình | Đơn vị của mình | Xem cấu trúc, không xem chỉ số tài chính hợp nhất (`BR-07.4` (c)) | Xem cấu trúc, không xem chỉ số tài chính hợp nhất (`BR-07.4` (c)) | **Toàn quyền** | **Toàn quyền** | — |
-| `FEAT-08` | Hồ sơ Doanh nghiệp | Của mình | Của mình | Đơn vị của mình | Xem toàn bộ | Xem toàn bộ | **Toàn quyền** | **Toàn quyền** | — |
-| `FEAT-09` | Thùng rác & Phục hồi Doanh nghiệp | — | — | Có quyền Xóa, Đơn vị của mình (`BR-09.2`) | — | — | **Toàn quyền** | **Toàn quyền** | Dọn dẹp tự động (`BR-05.4`) |
-| `FEAT-10` | Quan hệ Đa Doanh nghiệp | Của mình | Của mình + đọc tự động (`BR-35.4`, khung liên kết của hồ sơ 360 — `BR-02.1`) | Đơn vị của mình | Xem toàn bộ | Xem toàn bộ | **Toàn quyền** | **Toàn quyền** | Cập nhật trạng thái tiếp cận khi liên kết Đã nghỉ việc (`BR-10.4`) |
-| `FEAT-11` | Quan hệ Giữa các Cá nhân | Của mình | Của mình + đọc tự động (`BR-35.4`, khung liên kết — `BR-02.1`) | Đơn vị của mình | Xem toàn bộ | Xem toàn bộ | **Toàn quyền** | **Toàn quyền** | Ghi chiều ngược (`BR-11.2`) |
-| `FEAT-12` | Vòng đời & Ma trận Chuyển đổi | Của mình, chỉ bước tiến lên (nguyên tắc 2; lên SQL cần thẩm định — `BR-15.6`); đánh dấu "Lead rác" chờ duyệt (`BR-12.4b`) | Chỉ xem giai đoạn trong khung ngữ cảnh (`BR-28.1`); không chuyển giai đoạn (`BR-02.2`) | Đơn vị của mình, gồm bước lùi (`BR-12.7`), Disqualified và duyệt Lead rác (`BR-12.4`, `BR-12.4b`), mở lại Disqualified (`BR-12.4`), sang Nurturing nhánh điểm nguội (`BR-16.4`), Nurturing → Lead (`BR-16.5`), đồng phê duyệt Chiến dịch Tái tiếp cận (`BR-12.5b`) | Không chuyển giai đoạn thủ công (`BR-02.2`) — chỉ xem | Cấu hình thăng hạng tự động (`BR-15.4`, `BR-15.5`); không chuyển thủ công (`BR-02.2`), không lùi (`BR-12.7`), không loại (`BR-12.4`); đồng phê duyệt Chiến dịch Tái tiếp cận (`BR-12.5b`) | **Toàn quyền** (gồm ngoại lệ gian lận `BR-12.8`) | **Toàn quyền** (gồm ngoại lệ gian lận `BR-12.8`) | Bước chuyển tự sinh (`BR-12.9`), sang Nurturing khi mọi Cơ hội Thua (`BR-12.3`), thăng MQL theo ngưỡng (`BR-15.5`) |
-| `FEAT-13` | Lịch sử Giai đoạn | Của mình | Của mình | Đơn vị của mình | Xem toàn bộ | Xem toàn bộ | **Toàn quyền** | **Toàn quyền** | Ghi tự động |
-| `FEAT-14` | Chuyển đổi Tiềm năng | Của mình | — | Đơn vị của mình, gồm Hoàn tác Chuyển đổi (`BR-14.2`) | — | — | **Toàn quyền** | **Toàn quyền** | — |
-| `FEAT-15` | Chấm điểm Tiềm năng | Xem điểm, không sửa quy tắc (`BR-15.4`) | Xem điểm, không sửa quy tắc (`BR-15.4`) | Xem điểm, không sửa quy tắc (`BR-15.4`) | Xem cấu hình, không sửa (`BR-15.4`) | Cấu hình quy tắc (`BR-15.4`) | Cấu hình quy tắc (`BR-15.4`) | Cấu hình quy tắc (`BR-15.4`) | Tính điểm tự động |
-| `FEAT-16` | Suy giảm Điểm | — | — | Xử lý danh sách đề xuất Nurturing (`BR-16.4`), đưa Nurturing về Lead (`BR-16.5`) | — | — | **Toàn quyền** | **Toàn quyền** | Áp suy giảm hằng ngày (`BR-16.1`, `BR-16.2`) |
+| `FEAT-01` | Tạo & Quản lý Khách hàng | Xem Đơn vị; tạo; sửa Của mình | Xem Đơn vị | Xem, sửa Đơn vị + con; xóa Đơn vị | Xem Toàn WS | Xem Toàn WS; tạo; sửa Đơn vị | **Toàn quyền** | **Toàn quyền** | — |
+| `FEAT-02` | Hồ sơ 360 độ | Xem Đơn vị | Xem Đơn vị + đọc tự động (`BR-35.4`) | Đơn vị + con | Xem Toàn WS | Xem Toàn WS | **Toàn quyền** | **Toàn quyền** | — |
+| `FEAT-03` | Thẻ phân loại hàng loạt | Của mình | — | Đơn vị + con | Toàn WS | Toàn WS | **Toàn quyền** | **Toàn quyền** | — |
+| `FEAT-04` | Mở khóa mặt nạ dữ liệu | Khi được cấp ô Mở khóa | Khi được cấp ô Mở khóa | Khi được cấp ô Mở khóa | Khi được cấp ô Mở khóa | Khi được cấp ô Mở khóa | **Toàn quyền** | **Toàn quyền** | — |
+| `FEAT-05` | Thùng rác & Phục hồi Khách hàng | — | — | Xóa, khôi phục Đơn vị (`BR-05.3`), chịu `BR-05.6` | — | — | **Toàn quyền** | **Toàn quyền** | Dọn dẹp tự động (`BR-05.4`, chịu `BR-05.6`) |
+| `FEAT-06` | Tạo & Quản lý Doanh nghiệp | Xem Đơn vị; tạo; sửa Của mình | Xem Đơn vị | Xem, sửa Đơn vị + con; xóa Đơn vị | Xem Toàn WS | Xem Toàn WS; tạo; sửa Đơn vị | **Toàn quyền** | **Toàn quyền** | — |
+| `FEAT-07` | Cây Doanh nghiệp Mẹ – Con | Theo ô Doanh nghiệp; chỉ số tài chính theo ô Cơ hội (`BR-07.4`) | Xem cấu trúc theo ô Doanh nghiệp (`BR-07.4`) | Theo ô Doanh nghiệp và Cơ hội (`BR-07.4`) | Xem cấu trúc, không xem chỉ số tài chính hợp nhất (`BR-07.4` (c)) | Xem cấu trúc, không xem chỉ số tài chính hợp nhất (`BR-07.4` (c)) | **Toàn quyền** | **Toàn quyền** | — |
+| `FEAT-08` | Hồ sơ Doanh nghiệp | Xem Đơn vị | Xem Đơn vị | Đơn vị + con | Xem Toàn WS | Xem Toàn WS | **Toàn quyền** | **Toàn quyền** | — |
+| `FEAT-09` | Thùng rác & Phục hồi Doanh nghiệp | — | — | Xóa, khôi phục Đơn vị (`BR-09.2`) | — | — | **Toàn quyền** | **Toàn quyền** | Dọn dẹp tự động (`BR-05.4`) |
+| `FEAT-10` | Quan hệ Đa Doanh nghiệp | Xem Đơn vị; sửa Của mình | Xem Đơn vị + đọc tự động (`BR-35.4`, khung liên kết của hồ sơ 360 — `BR-02.1`) | Đơn vị + con | Xem Toàn WS | Xem Toàn WS; sửa Đơn vị | **Toàn quyền** | **Toàn quyền** | Cập nhật trạng thái tiếp cận khi liên kết Đã nghỉ việc (`BR-10.4`) |
+| `FEAT-11` | Quan hệ Giữa các Cá nhân | Xem Đơn vị; sửa Của mình | Xem Đơn vị + đọc tự động (`BR-35.4`, khung liên kết — `BR-02.1`) | Đơn vị + con | Xem Toàn WS | Xem Toàn WS; sửa Đơn vị | **Toàn quyền** | **Toàn quyền** | Ghi chiều ngược (`BR-11.2`) |
+| `FEAT-12` | Vòng đời & Ma trận Chuyển đổi | Của mình, chỉ bước tiến lên (nguyên tắc 2; lên SQL cần thẩm định — `BR-15.6`); đánh dấu "Lead rác" chờ duyệt (`BR-12.4b`) | Chỉ xem giai đoạn (`BR-28.1`); không chuyển giai đoạn (`BR-02.2`) | Đơn vị + con, cộng quyền Duyệt vòng đời khách hàng (5.2); đồng phê duyệt Chiến dịch Tái tiếp cận (`BR-12.5b`) | Không chuyển giai đoạn thủ công (`BR-02.2`) — chỉ xem | Cấu hình thăng hạng tự động (`BR-15.4`, `BR-15.5`); không chuyển thủ công (`BR-02.2`); đồng phê duyệt Chiến dịch Tái tiếp cận (`BR-12.5b`) | **Toàn quyền** (gồm ngoại lệ gian lận `BR-12.8`) | **Toàn quyền** (gồm ngoại lệ gian lận `BR-12.8`) | Bước chuyển tự sinh (`BR-12.9`), sang Nurturing khi mọi Cơ hội Thua (`BR-12.3`), thăng MQL theo ngưỡng (`BR-15.5`) |
+| `FEAT-13` | Lịch sử Giai đoạn | Xem Đơn vị | Xem Đơn vị | Đơn vị + con | Xem Toàn WS | Xem Toàn WS | **Toàn quyền** | **Toàn quyền** | Ghi tự động |
+| `FEAT-14` | Chuyển đổi Tiềm năng | Của mình | — | Chuyển đổi Đơn vị + con; Hoàn tác Chuyển đổi trong Đơn vị — phần giao của ô Sửa Khách hàng với ô Xoá Cơ hội, Doanh nghiệp mức Đơn vị (`BR-14.5`) | — | Đơn vị (ô Sửa) | **Toàn quyền** | **Toàn quyền** | — |
+| `FEAT-15` | Chấm điểm Tiềm năng | Xem điểm (`BR-15.4`) | Xem điểm (`BR-15.4`) | Xem điểm (`BR-15.4`) | Xem cấu hình, không sửa (`BR-15.4`) | Cấu hình quy tắc (`BR-15.4`) | Cấu hình quy tắc (`BR-15.4`) | Cấu hình quy tắc (`BR-15.4`) | Tính điểm tự động |
+| `FEAT-16` | Suy giảm Điểm | — | — | Xử lý danh sách đề xuất Nurturing (`BR-16.4`), đưa Nurturing về Lead (`BR-16.5`) | — | Cấu hình mốc và tỷ lệ (`CFG-16-01`) | **Toàn quyền** | **Toàn quyền** | Áp suy giảm hằng ngày (`BR-16.1`, `BR-16.2`) |
 | `FEAT-17` | Kiểm tra Trùng lặp | **Cho phép** (cảnh báo khi tạo/sửa) | **Cho phép** (cảnh báo khi tạo/sửa) | **Cho phép** (cảnh báo khi tạo/sửa) | **Cho phép** (cảnh báo khi tạo/sửa) | **Cho phép** (cảnh báo khi tạo/sửa) | **Cho phép**, gồm công cụ quét toàn không gian làm việc (`BR-17.4`) | **Cho phép**, gồm công cụ quét (`BR-17.4`) | Kiểm tra tức thì (`BR-17.1`) |
-| `FEAT-18` | Xem trước Tác động Gộp | — | — | Có quyền Xóa | — | — | **Cho phép** | **Cho phép** | — |
-| `FEAT-19` | Thực thi Gộp | — | — | Có quyền Xóa | — | — | **Cho phép** | **Cho phép** | — |
+| `FEAT-18` | Xem trước Tác động Gộp | — | — | Đơn vị (ô Xoá) | — | — | **Cho phép** | **Cho phép** | — |
+| `FEAT-19` | Thực thi Gộp | — | — | Đơn vị (ô Xoá, cả hai bản ghi — `BR-19.1`) | — | — | **Cho phép** | **Cho phép** | — |
 | `FEAT-20` | Hoàn tác Gộp | — | — | — | — | — | **Cho phép** | **Cho phép** | — |
 | `FEAT-21` | Khôi phục Gộp bị Gián đoạn | — | — | — | — | — | **Cho phép** | **Cho phép** | Liệt kê giao dịch gián đoạn (`BR-21.2`) |
-| `FEAT-22` | Tải tệp Nhập khẩu | — | — | Có quyền Nhập dữ liệu | Có quyền Nhập dữ liệu | Có quyền Nhập dữ liệu | **Cho phép** | **Cho phép** | Tự xóa tệp gốc hết hạn (`BR-33.8`) |
-| `FEAT-23` | Trợ lý Ánh xạ Cột | — | — | Có quyền Nhập dữ liệu | Có quyền Nhập dữ liệu | Có quyền Nhập dữ liệu | **Cho phép** | **Cho phép** | — |
-| `FEAT-24` | Xử lý Nhập & Báo cáo Lỗi | — | — | Có quyền Nhập dữ liệu | Có quyền Nhập dữ liệu | Có quyền Nhập dữ liệu | **Cho phép** | **Cho phép** | Xử lý nền theo hàng đợi |
-| `FEAT-25` | Xuất Dữ liệu | Của mình, chịu hạn mức ngày, không xuất KYC (`BR-25.5`) | — | Có quyền Xuất dữ liệu, không xuất KYC; duyệt lần xuất vượt hạn mức của Nhân viên KD (`BR-25.4`) | Có quyền Xuất dữ liệu, không xuất KYC (`BR-25.4`) | Có quyền Xuất dữ liệu, duyệt xuất lớn của Nhân viên Marketing; không xuất KYC (`BR-25.4`) | **Cho phép**, gồm KYC khi có Người phụ trách Bảo vệ Dữ liệu đồng phê duyệt (`BR-25.4`) | **Cho phép**, gồm KYC khi có đồng phê duyệt; duyệt xuất lớn cho Quản trị viên và các vai trò quản lý (`BR-25.4`) | Tạo tệp nền (`BR-25.1`) |
+| `FEAT-22` | Tải tệp Nhập khẩu | — | — | — | — | Đơn vị (ô Nhập) | **Cho phép** | **Cho phép** | Tự xóa tệp gốc hết hạn (`BR-33.8`) |
+| `FEAT-23` | Trợ lý Ánh xạ Cột | — | — | — | — | Đơn vị (ô Nhập); cột Người phụ trách chịu ô Gán (`BR-23.5`) | **Cho phép** | **Cho phép** | — |
+| `FEAT-24` | Xử lý Nhập & Báo cáo Lỗi | — | — | — | — | Đơn vị (ô Nhập) | **Cho phép** | **Cho phép** | Xử lý nền theo hàng đợi |
+| `FEAT-25` | Xuất Dữ liệu | Của mình, chịu hạn mức ngày, không xuất KYC (`BR-25.5`) | — | Khi được cấp ô Xuất, không xuất KYC (`BR-25.4`) | Khi được cấp ô Xuất, không xuất KYC (`BR-25.4`) | Khi được cấp ô Xuất, không xuất KYC (`BR-25.4`) | **Cho phép**, gồm KYC khi có Người phụ trách Bảo vệ Dữ liệu đồng phê duyệt (`BR-25.4`) | **Cho phép**, gồm KYC khi có đồng phê duyệt (`BR-25.4`) | Tạo tệp nền (`BR-25.1`) |
 | `FEAT-26` | Danh sách Hiển thị Dùng chung | **Cho phép** | **Cho phép** | **Cho phép** | **Cho phép** | **Cho phép** | **Toàn quyền** | **Toàn quyền** | — |
-| `FEAT-27` | Dòng thời gian 360 độ | Của mình | Của mình + đọc tự động (`BR-35.4`) | Đơn vị của mình | Xem toàn bộ | Xem toàn bộ | **Toàn quyền** | **Toàn quyền** | Hợp nhất sự kiện (`BR-27.1`) |
-| `FEAT-28` | Ngữ cảnh Khách hàng Một chạm | Của mình | Của mình + đọc tự động (`BR-35.4`) — cơ chế truy cập chính | Đơn vị của mình | — | — | **Toàn quyền** | **Toàn quyền** | — |
-| `FEAT-29` | Kênh liên lạc & Trạng thái Tiếp cận | Của mình | Của mình + đọc tự động (`BR-35.4`) | Đơn vị của mình | Xem toàn bộ | Xem toàn bộ | **Toàn quyền** | **Toàn quyền** | Cập nhật trạng thái tiếp cận (`BR-29.2`, `BR-29.3`) |
-| `FEAT-30` | Đồng thuận & Định danh Dùng chung | Của mình | Của mình, cộng hạ đồng thuận trên bản ghi đang có vé/hội thoại mở (`BR-35.4` (a)) | Đơn vị của mình | **Cho phép** | **Cho phép** trên toàn tổ chức; không đổi được `CFG-30-01`, `CFG-30-02` | **Toàn quyền** | **Toàn quyền** | Mặc định nhóm Tiếp thị khi thiếu khai báo (`BR-30.9`) |
-| `FEAT-31` | Phân bổ Tiềm năng Tự động | — | — | **Cho phép** cấu hình quy tắc (`BR-31.5`) | — | — | **Cho phép** | **Cho phép** | Thực thi phân bổ và thu hồi (`BR-31.1` – `BR-31.7`) |
+| `FEAT-27` | Dòng thời gian 360 độ | Xem Đơn vị | Xem Đơn vị + đọc tự động (`BR-35.4`) | Đơn vị + con | Xem Toàn WS | Xem Toàn WS | **Toàn quyền** | **Toàn quyền** | Hợp nhất sự kiện (`BR-27.1`) |
+| `FEAT-28` | Ngữ cảnh Khách hàng Một chạm | Xem Đơn vị | Xem Đơn vị + đọc tự động (`BR-35.4`) — cơ chế truy cập chính | Đơn vị + con | — | — | **Toàn quyền** | **Toàn quyền** | — |
+| `FEAT-29` | Kênh liên lạc & Trạng thái Tiếp cận | Xem Đơn vị; sửa Của mình | Xem Đơn vị + đọc tự động (`BR-35.4`) | Đơn vị + con | Xem Toàn WS | Xem Toàn WS; sửa Đơn vị | **Toàn quyền** | **Toàn quyền** | Cập nhật trạng thái tiếp cận (`BR-29.2`, `BR-29.3`) |
+| `FEAT-30` | Đồng thuận & Định danh Dùng chung | Ghi nhận Của mình | Hạ đồng thuận trên bản ghi xem được hoặc đang có vé/hội thoại mở (`BR-35.4` (a)) | Ghi nhận Đơn vị + con | Ghi nhận Toàn WS | Ghi nhận Toàn WS; không đổi được `CFG-30-01`, `CFG-30-02` | **Toàn quyền** | **Toàn quyền** | Mặc định nhóm Tiếp thị khi thiếu khai báo (`BR-30.9`) |
+| `FEAT-31` | Phân bổ Tiềm năng Tự động | Nhận việc từ hàng đợi của đơn vị mình (`BR-31.9` (c)) | — | Cấu hình quy tắc trong phạm vi ô Gán (`BR-31.5`, `BR-31.10`); gán từ hàng đợi | — | Nhận việc, gán từ hàng đợi trong Đơn vị (ô Gán) | **Cho phép**, gồm đổi đơn vị tiếp nhận của nguồn (`BR-31.9` (a)) | **Cho phép**, gồm đổi đơn vị tiếp nhận của nguồn | Thực thi phân bổ và thu hồi (`BR-31.1` – `BR-31.7`, `BR-31.10`) |
 | `FEAT-32` | Theo dõi Nguồn gốc | Xem trường trên hồ sơ (`BR-32.1`) | Xem trường trên hồ sơ (`BR-32.1`) | Xem trường trên hồ sơ (`BR-32.1`) | Xem báo cáo (`BR-32.4`) | Xem báo cáo và phân tích hiệu quả đầu tư (`BR-32.4`) | **Toàn quyền**, gồm sửa nguồn theo lô (`BR-32.3b`) | **Toàn quyền**, gồm sửa nguồn theo lô (`BR-32.3b`) | Ghi nhận tự động (`BR-32.2`) |
-| `FEAT-33` | Quyền Chủ thể Dữ liệu | — | Tiếp nhận, ghi nhận; gắn Hạn chế xử lý (`BR-30.6`) và hạ đồng thuận (`BR-30.10`) trên bản ghi Của mình hoặc đang có vé/hội thoại mở (`BR-35.4` (a)); không thực thi ba loại còn lại (`BR-33.2`, `BR-33.7`) | Tiếp nhận, ghi nhận; gắn Hạn chế xử lý và hạ đồng thuận trong Đơn vị của mình; không thực thi ba loại còn lại (`BR-33.2`, `BR-33.7`) | — | — | **Cho phép** (xử lý, xóa vĩnh viễn, đóng yêu cầu — `BR-33.1`) | **Cho phép** (xử lý, xóa vĩnh viễn, đóng yêu cầu — `BR-33.1`) | Khử định danh/xóa theo thời hạn lưu (`BR-01.5b`, `BR-33.6`); tự dỡ biện pháp phòng ngừa hết hạn (`BR-33.7` (a)) hoặc khi khách xác minh thành công (`BR-33.7` (e)) |
-| `FEAT-34` | Chuyển giao & Bàn giao | Bàn giao ngang trên bản ghi mình phụ trách, hiệu lực khi người nhận chấp nhận (`BR-34.1b`); tự khai báo nghỉ phép (`BR-34.6`) | Tự khai báo nghỉ phép (`BR-34.6`); bàn giao ngang nếu có bản ghi phụ trách (`BR-34.1b`) | **Cho phép** (Đơn vị của mình; chốt `BR-34.4`; thu hồi bàn giao ngang — `BR-34.1b`; khai báo nghỉ phép thay thành viên — `BR-34.6`) | Tự khai báo nghỉ phép (`BR-34.6`); bàn giao ngang nếu có bản ghi phụ trách (`BR-34.1b`) | Tự khai báo nghỉ phép (`BR-34.6`); bàn giao ngang nếu có bản ghi phụ trách (`BR-34.1b`) | **Toàn quyền** | **Toàn quyền** | Bật/tắt trạng thái không khả dụng tự động (`BR-34.6`) |
-| `FEAT-35` | Chia sẻ & Đội ngũ Phụ trách | Bản ghi mình phụ trách (`BR-35.2`) | Nhận quyền đọc tự động (`BR-35.4`); chia sẻ bản ghi mình phụ trách nếu có (`BR-35.2`) | **Cho phép** (Đơn vị của mình) | Chia sẻ bản ghi mình phụ trách nếu có (`BR-35.2`); được thêm vào đội ngũ chỉ với vai trò "Quan sát" (`BR-35.1`) | Chia sẻ bản ghi mình phụ trách nếu có (`BR-35.2`); được thêm vào đội ngũ chỉ với vai trò "Quan sát" (`BR-35.1`) | **Toàn quyền** | **Toàn quyền** | Cấp/thu hồi quyền đọc tự động (`BR-35.4`); thu hồi chia sẻ hết hạn (`BR-35.3`) |
-| `FEAT-36` | Ghi chú & Hoạt động | Của mình | Của mình + đọc tự động (`BR-35.4`); theo vai trò chỉ đọc ghi chú "Chung" và ghi chú ghim đã mở cho tuyến Hỗ trợ (`BR-36.7`); đọc thêm ghi chú "Nội bộ đội bán hàng" của bản ghi mà họ là thành viên đội ngũ (`BR-36.1`) | Đơn vị của mình | Chỉ ghi chú "Chung" (`BR-36.1`) | Chỉ ghi chú "Chung" (`BR-36.1`) | **Toàn quyền** | **Toàn quyền** | Tự sinh bản ghi hoạt động (`BR-36.5`) |
+| `FEAT-33` | Quyền Chủ thể Dữ liệu | — | Tiếp nhận, ghi nhận; gắn Hạn chế xử lý (`BR-30.6`) và hạ đồng thuận (`BR-30.10`) trên bản ghi xem được hoặc đang có vé/hội thoại mở (`BR-35.4` (a)); không thực thi ba loại còn lại (`BR-33.2`, `BR-33.7`) | Tiếp nhận, ghi nhận; gắn Hạn chế xử lý và hạ đồng thuận trong Đơn vị + con; không thực thi ba loại còn lại (`BR-33.2`, `BR-33.7`) | — | — | **Cho phép** (xử lý, xóa vĩnh viễn, đóng yêu cầu — `BR-33.1`) | **Cho phép** (xử lý, xóa vĩnh viễn, đóng yêu cầu — `BR-33.1`) | Khử định danh/xóa theo thời hạn lưu (`BR-01.5b`, `BR-33.6`); tự dỡ biện pháp phòng ngừa hết hạn (`BR-33.7` (a)) hoặc khi khách xác minh thành công (`BR-33.7` (e)) |
+| `FEAT-34` | Chuyển giao & Bàn giao | Đề nghị chuyển bản ghi mình phụ trách, hiệu lực khi người nhận chấp nhận (`BR-34.1b`); tự khai báo nghỉ phép (`BR-34.6`) | Tự khai báo nghỉ phép (`BR-34.6`); bàn giao ngang nếu có bản ghi phụ trách (`BR-34.1b`) | Chuyển giao và giao lại Đơn vị + con bằng ô Gán theo `BR-34.1`; chọn cách xử lý bản ghi khi cấp dưới đổi Đơn vị chính (`BR-34.9`); với cấp dưới: khai báo nghỉ phép thay (`BR-34.6`) | Tự khai báo nghỉ phép (`BR-34.6`); bàn giao ngang nếu có bản ghi phụ trách (`BR-34.1b`) | Chuyển giao Đơn vị (ô Gán); tự khai báo nghỉ phép (`BR-34.6`) | **Toàn quyền**, gồm xử lý bản ghi khi tạm ngưng và rời workspace (`BR-34.4`) | **Toàn quyền** | Bật/tắt trạng thái không khả dụng tự động (`BR-34.6`) |
+| `FEAT-35` | Chia sẻ & Đội ngũ Phụ trách | Bản ghi mình phụ trách (`BR-35.2`) | Nhận quyền đọc tự động (`BR-35.4`); chia sẻ bản ghi mình phụ trách nếu có (`BR-35.2`) | Đơn vị + con (ô Gán, `BR-35.2`) | Chia sẻ bản ghi mình phụ trách nếu có; được thêm vào đội ngũ chỉ với vai trò "Quan sát" (`BR-35.1`) | Chia sẻ trong Đơn vị (ô Gán); được thêm vào đội ngũ chỉ với vai trò "Quan sát" (`BR-35.1`) | **Toàn quyền** | **Toàn quyền** | Cấp/thu hồi quyền đọc tự động (`BR-35.4`); thu hồi chia sẻ hết hạn (`BR-35.3`) |
+| `FEAT-36` | Ghi chú & Hoạt động | Tạo trên bản ghi xem được; đọc ghi chú nội bộ Của mình (`BR-36.1`) | Tạo trên bản ghi xem được hoặc đọc tự động; đọc ghi chú "Chung" và ghi chú ghim đã mở cho tuyến Hỗ trợ (`BR-36.7`); đọc ghi chú "Nội bộ đội bán hàng" của bản ghi mình phụ trách hoặc là thành viên đội ngũ (`BR-36.1`) | Đơn vị + con | Chỉ ghi chú "Chung" (`BR-36.1`) | Chỉ ghi chú "Chung" (`BR-36.1`) | **Toàn quyền** | **Toàn quyền** | Tự sinh bản ghi hoạt động (`BR-36.5`) |
 
 **Ghi chú về ma trận:**
 
-1. **Từ vựng chuẩn** (định nghĩa một lần, dùng cho mọi ô):
+1. **Từ vựng:** mức truy cập trong ô theo đúng [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) Mục 1.4 (viết tắt như 5.1). **"Khi được cấp ô …"** — không mặc định ở vai trò dựng sẵn, chỉ có khi doanh nghiệp cấp. **"+ đọc tự động (`BR-35.4`)"** — ngoài mức thông thường, còn đọc được (có nhật ký) khách đang có vé/hội thoại mở mà mình đang xử lý. **"Cho phép" / "Toàn quyền"** — có quyền thực hiện; "Toàn quyền" gồm cả cấu hình và các ngoại lệ nêu trong ô. **"—"** — không có quyền. Phần điều kiện vượt ra ngoài từ vựng này trong một ô bắt buộc dẫn chiếu mã `BR` (Mục 2.4, Nguyên tắc 1).
 
-| Giá trị trong ô | Nghĩa | Quy tắc nguồn |
-| --- | --- | --- |
-| **Của mình** | Các bản ghi người dùng là Người phụ trách, cộng các bản ghi được chia sẻ tới họ | `BR-01.4`, `BR-35.2` |
-| **Đơn vị của mình** | Toàn bộ bản ghi thuộc Đơn vị tổ chức của người dùng và các đơn vị cấp dưới | `BR-01.4` |
-| **Xem toàn bộ** | Mức Xem là Toàn workspace, mức Sửa và các thao tác khác trên Khách hàng là Không có (trừ khi ô ghi khác); mỗi lượt đọc ngoài phạm vi phụ trách ghi nhật ký (`NFR-07`, mục 13) | `BR-01.4`, `CFG-05-02`, `iam-tenant-authorization.md` BR-35.7 |
-| **Có quyền [tên quyền]** | Chỉ dùng được khi vai trò được cấp đúng quyền chuyên biệt đó (Mở khóa mặt nạ, Xóa, Nhập dữ liệu, Xuất dữ liệu); không mặc định theo vai trò | — |
-| **Cho phép** / **Toàn quyền** | Có quyền thực hiện; "Toàn quyền" gồm cả cấu hình và các ngoại lệ nêu trong ô | — |
-| **+ đọc tự động (`BR-35.4`)** | Ngoài phạm vi thông thường, còn có quyền đọc có ghi nhật ký đối với khách đang có vé/hội thoại mở mà mình đang xử lý | `BR-35.4` |
-| **—** | Không có quyền | — |
+2. **Tầm nhìn rộng, sửa hẹp:** Marketing xem Toàn workspace nhưng không sửa; Nhân viên Kinh doanh xem cả đơn vị nhưng chỉ sửa bản ghi mình phụ trách. Mỗi lượt xem ngoài phạm vi phụ trách đều ghi nhật ký (`NFR-07` mục 13), áp theo cấu hình ô, không theo tên vai trò.
 
-   Ô chỉ dùng từ vựng chuẩn thì không cần dẫn chiếu mã `BR`; phần điều kiện vượt ra ngoài từ vựng chuẩn trong một ô bắt buộc dẫn chiếu mã `BR` (Mục 2.4, Nguyên tắc 1).
+3. **Cột Tiến trình Hệ thống** ghi phần việc hệ thống thực hiện tự động, song song với thao tác của người dùng — không phải một cột loại trừ các cột còn lại. Với `FEAT-16` và `FEAT-31`, không vai trò nào thực thi bằng thao tác tay ngoài nhận việc và gán từ hàng đợi; các cột vai trò chỉ thể hiện quyền cấu hình hoặc xử lý kết quả.
 
-2. **Tầm nhìn của Marketing:** "Xem toàn bộ" của Marketing khác "Của mình"/"Đơn vị của mình" của Kinh doanh — Marketing cần tầm nhìn toàn tổ chức để phân khúc chiến dịch, nhưng không sửa được trừ khi ô ghi rõ "Cho phép"/"Toàn quyền".
+4. **Ba vai trò dựng sẵn không có cột riêng ở 5.3:** **Chỉ xem bản ghi được giao** — chỉ xem các tính năng đọc (`FEAT-02`, `08`, `13`, `27`, `28`, `29`) trên bản ghi mình phụ trách, không có thao tác ghi nào; **Kiểm toán** — xem toàn workspace ở các tính năng đọc, không mở khóa mặt nạ, không xuất, không đọc ghi chú nội bộ và nhật ký kiểm toán của phân hệ (`NFR-14`); **Kiểm toán quyền** — không truy cập tính năng nào của phân hệ.
 
-3. **Cột Tiến trình Hệ thống** ghi phần việc hệ thống thực hiện tự động, song song với thao tác của người dùng — không phải một cột loại trừ bảy cột còn lại. Với `FEAT-16` và `FEAT-31`, không vai trò nào thực thi bằng thao tác tay; các cột vai trò chỉ thể hiện quyền cấu hình hoặc xử lý kết quả. Quyền đổi mốc và tỷ lệ suy giảm nằm ở `CFG-16-01`, không nằm trong ma trận.
+5. **Vai trò chức năng** (Quản lý Khách hàng Hiện hữu, Quản trị Chất lượng Dữ liệu) và chức danh Người phụ trách Bảo vệ Dữ liệu không có cột riêng vì không phải vai trò phân quyền; quyền hạn theo vai trò gốc và các quyền quản trị được cấp (Mục 2.2).
 
-4. **Vai trò chức năng** (Quản lý Khách hàng Hiện hữu, Quản trị Chất lượng Dữ liệu, Người phụ trách Bảo vệ Dữ liệu) không có cột riêng vì không phải vai trò phân quyền độc lập; quyền hạn theo vai trò gốc được cấp (Mục 2.2).
+6. **`FEAT-33`:** người tiếp nhận được thực thi ngay hai loại yêu cầu **chỉ thu hẹp** phạm vi xử lý và **đảo lại được** — gắn Hạn chế xử lý và hạ đồng thuận — vì bảng loại yêu cầu tại `FEAT-33` cam kết thực thi "Tức thì"; nếu phải chờ Người có toàn quyền thì cam kết đó không có người thực thi. Đóng yêu cầu, phát hành phản hồi chính thức và ba loại yêu cầu còn lại (bản sao, chỉnh sửa, xóa vĩnh viễn) chỉ thuộc Người có toàn quyền, tuân thủ `BR-33.2`, `BR-33.7`.
 
-5. **`FEAT-33`:** Nhân viên Hỗ trợ và Quản lý Kinh doanh được tiếp nhận, ghi nhận yêu cầu, và thực thi ngay hai loại yêu cầu **chỉ thu hẹp** phạm vi xử lý và **đảo lại được** — gắn Hạn chế xử lý và hạ đồng thuận — vì bảng loại yêu cầu tại `FEAT-33` cam kết thực thi "Tức thì"; nếu phải chờ Quản trị viên thì cam kết đó không có người thực thi. Đóng yêu cầu, phát hành phản hồi chính thức và ba loại yêu cầu còn lại (bản sao, chỉnh sửa, xóa vĩnh viễn) chỉ thuộc Quản trị viên và Chủ sở hữu, tuân thủ `BR-33.2`, `BR-33.7`.
+7. **Quyền theo quan hệ với bản ghi** (Người phụ trách, thành viên Đội ngũ phụ trách, người đang xử lý vé/hội thoại, thành viên đơn vị tiếp nhận với bản ghi chưa phân công, chính người dùng tự khai báo) là trục cộng thêm vào quyền theo vai trò, theo Nguyên tắc 2 tại Mục 2.4 và thứ tự hợp nhất [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-39.6`.
 
-6. **Quyền theo quan hệ với bản ghi** (Người phụ trách, thành viên Đội ngũ phụ trách, người đang xử lý vé/hội thoại, chính người dùng tự khai báo) là trục cộng thêm vào quyền theo vai trò, theo Nguyên tắc 2 tại Mục 2.4.
-
-7. **Mặc định và sàn:** toàn bộ các ô là giá trị mặc định chuẩn hệ thống, tức ma trận mặc định của các vai trò dựng sẵn (`iam-tenant-authorization.md` FEAT-29). Tenant điều chỉnh từng ô qua `CFG-05-02` (BR-29.4 của tài liệu đó), hoặc nhân bản vai trò rồi sửa; mọi vai trò tự tạo đặt được mức riêng cho từng thao tác (ví dụ Xem toàn bộ, Sửa chỉ của mình) theo cùng mô hình. Các ràng buộc mang nhãn "sàn bắt buộc" trong các quy tắc nghiệp vụ không điều chỉnh vượt được.
+8. **Mặc định và sàn:** toàn bộ ô và quyền quản trị ở 5.1, 5.2 là ma trận mặc định của các vai trò dựng sẵn. Doanh nghiệp điều chỉnh từng ô của vai trò dựng sẵn qua [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `CFG-29-02` (`BR-29.4` của tài liệu đó), hoặc sao chép vai trò rồi sửa; mọi vai trò tự tạo đặt được mức riêng cho từng thao tác theo cùng mô hình. Các ràng buộc mang nhãn "sàn bắt buộc" trong các quy tắc nghiệp vụ của tài liệu này — gồm nhóm Định danh KYC (`BR-01.5b`) và quyền đọc nhật ký kiểm toán (`NFR-14`) mà [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-25.3` dẫn chiếu — không điều chỉnh vượt được.
 
 ---
 
@@ -2355,8 +3030,8 @@ Người kiểm thử ghi rõ trong biên bản đã dùng cách nào và giá t
 4. **Kỳ vọng:** Liên hệ lên Opportunity (bước nhảy bậc hợp lệ theo `BR-12.9`), doanh nghiệp và Cơ hội 500 triệu được tạo, nhân viên được chuyển tới màn hình Cơ hội. Lịch sử giai đoạn ghi sự kiện nguồn "Chuyển đổi Tiềm năng".
 5. **Kịch bản phụ (tạo Cơ hội trực tiếp):** Nhân viên mở một khách ở MQL và tạo Cơ hội trực tiếp từ hồ sơ.
 6. **Kỳ vọng:** Không có lỗi "Bước chuyển giai đoạn không hợp lệ"; khách tự động lên Opportunity (`BR-12.2`, `BR-12.9`).
-7. **Kịch bản phụ (doanh nghiệp đã có Cơ hội đang mở — `BR-14.3`):** Một tuần sau, nhân viên khác chuyển đổi Lead "Nguyễn Văn Bình" cũng thuộc "Công ty CP Thực phẩm Vina", chọn cùng phễu với Cơ hội ở bước 2.
-8. **Kỳ vọng:** Hộp thoại hiển thị Cơ hội "Hợp đồng Cung ứng Nông sản Q3" đang mở và **mặc định gắn Bình vào Cơ hội đó**, không tạo Cơ hội thứ hai. Dự báo doanh thu vẫn là 500 triệu. Bình lên Opportunity (`BR-14.4`).
+7. **Kịch bản phụ (doanh nghiệp đã có Cơ hội đang mở — `BR-14.3`):** Một tuần sau, nhân viên khác cùng đơn vị — có ô (Cơ hội, Sửa) bao phủ Cơ hội ở bước 2 — chuyển đổi Lead "Nguyễn Văn Bình" (đã do nhân viên này phụ trách) cũng thuộc "Công ty CP Thực phẩm Vina", chọn cùng phễu với Cơ hội ở bước 2.
+8. **Kỳ vọng:** Hộp thoại hiển thị Cơ hội "Hợp đồng Cung ứng Nông sản Q3" đang mở và **mặc định gắn Bình vào Cơ hội đó**, không tạo Cơ hội thứ hai. Dự báo doanh thu vẫn là 500 triệu. Người phụ trách của Cơ hội không đổi. Bình lên Opportunity (`BR-14.4`). **Đối chiếu:** nếu Cơ hội đó nằm ngoài ô (Cơ hội, Sửa) của nhân viên, hộp thoại không gợi ý và không tiết lộ nó; Cơ hội mới được tạo.
 9. **Kịch bản phụ (chủ động tạo riêng):** Nhân viên xác nhận vẫn muốn tạo Cơ hội riêng cho Bình vì là dòng sản phẩm khác.
 10. **Kỳ vọng:** Cơ hội thứ hai được tạo, và **quyết định được ghi nhật ký** kèm người thực hiện.
 
@@ -2385,6 +3060,7 @@ Người kiểm thử ghi rõ trong biên bản đã dùng cách nào và giá t
 8. Quản trị viên tải tệp báo cáo lỗi.
 9. **Kỳ vọng:** Mỗi dòng lỗi có nguyên nhân cụ thể thuộc danh sách tại `BR-24.2`; không gộp thành một nguyên nhân chung.
 10. **Kỳ vọng bổ sung (`BR-15.7` (a)):** 9.850 bản ghi mới **không** thăng hạng MQL tự động trong 24 giờ đầu và **không** tính vào cam kết thời gian phản hồi cho tới khi có tương tác đầu tiên — kể cả bản ghi đủ điểm hồ sơ.
+11. **Kịch bản phụ (cột Người phụ trách và bản ghi giữ chỗ — `BR-23.5`):** Tệp có cột Người phụ trách: 500 dòng gán cho nhân viên N đang chờ chấp nhận lời mời (Đơn vị chính trong lời mời "Kinh doanh – Đà Nẵng"), 3 dòng gán cho người đang Tạm ngưng. **Kỳ vọng:** 3 dòng vào báo cáo lỗi kèm lý do; 500 bản ghi là bản ghi giữ chỗ cho N — người có mức Toàn workspace không thuộc nhóm ngoại lệ cũng không thấy; khi N chấp nhận với vai trò Nhân viên Kinh doanh, 500 bản ghi tự gán cho N; nếu N từ chối, chúng thành bản ghi chờ phân công của "Kinh doanh – Đà Nẵng".
 
 ---
 
@@ -2413,7 +3089,7 @@ Người kiểm thử ghi rõ trong biên bản đã dùng cách nào và giá t
 12. **Kịch bản phụ (ba mức đọc nhật ký — `NFR-14`):** Lần lượt bốn người mở nhật ký kiểm toán của bản ghi "Trần Thị Mai": Quản lý Kinh doanh của A; Quản trị viên khi **không** có yêu cầu nào đang mở trên bản ghi; Quản trị viên khi **đang** xử lý một yêu cầu chủ thể dữ liệu trên đúng bản ghi đó; Người phụ trách Bảo vệ Dữ liệu.
 13. **Kỳ vọng:** Quản lý Kinh doanh không truy cập được. Quản trị viên khi không có yêu cầu mở không truy cập được; khi đang xử lý yêu cầu thì chỉ đọc được nhật ký của đúng bản ghi đó và chỉ trong thời gian yêu cầu còn mở. Người phụ trách Bảo vệ Dữ liệu đọc được toàn phần. Mọi lượt đọc đều **sinh một bản ghi nhật ký mới**. Thử cấu hình mở quyền đọc toàn phần cho Quản lý Kinh doanh — **bị từ chối**, nêu rõ `NFR-14` là quy tắc cố định (phép thử C theo Kịch bản 22).
 14. **Kịch bản phụ (quyền xuất của Nhân viên Kinh doanh — `BR-25.5`, `BR-25.4`):** Nhân viên A xuất danh sách khách mình phụ trách, lần lượt thử: (i) chọn thêm trường Số Căn cước công dân; (ii) xuất 2.001 bản ghi trong một ngày; (iii) xin phê duyệt của Quản lý Kinh doanh rồi xuất tiếp.
-15. **Kỳ vọng:** (i) trường Số Căn cước công dân **không có** trong danh sách trường chọn được, và không có đường phê duyệt nào mở được. (ii) Lần xuất làm vượt hạn mức 2.000 bản ghi/ngày (`CFG-25-02`) bị giữ lại và chuyển thành yêu cầu phê duyệt gửi **Quản lý Kinh doanh** — không phải Quản lý Marketing. (iii) Sau phê duyệt, A xuất tiếp được nhưng tổng trong ngày **không vượt hai lần hạn mức**. Cả ba lần thao tác đều được ghi nhật ký (`BR-25.3`).
+15. **Kỳ vọng:** (i) trường Số Căn cước công dân **không có** trong danh sách trường chọn được, và không có đường phê duyệt nào mở được. (ii) Lần xuất làm vượt hạn mức 2.000 bản ghi/ngày (`CFG-25-02`) bị giữ lại và chuyển thành yêu cầu phê duyệt gửi **quản lý trực tiếp của A** — không phải Quản lý Marketing. (iii) Sau phê duyệt, A xuất tiếp được nhưng tổng trong ngày **không vượt hai lần hạn mức**. Cả ba lần thao tác đều được ghi nhật ký (`BR-25.3`).
 
 ---
 
@@ -2444,13 +3120,14 @@ Người kiểm thử ghi rõ trong biên bản đã dùng cách nào và giá t
 
 ### Kịch bản 9: Phân bổ Khách hàng Tiềm năng theo Vùng địa lý
 
-1. Một khách mới được tạo tự động từ biểu mẫu website với quốc gia Việt Nam, tỉnh/thành Đà Nẵng, không có người tạo trực tiếp.
+1. Một khách mới được tạo tự động từ biểu mẫu website với quốc gia Việt Nam, tỉnh/thành Đà Nẵng, không có người tạo trực tiếp. Biểu mẫu có đơn vị tiếp nhận "Kinh doanh" (gồm các đơn vị con); quy tắc vùng địa lý do Quản lý M chịu trách nhiệm, ô (Khách hàng, Gán) của M = Đơn vị và các đơn vị con tại "Kinh doanh".
 2. Hệ thống áp thứ tự ưu tiên tại `BR-31.3b`: kiểm tra Người phụ trách hiện hữu (không khớp vì là khách mới), rồi quy tắc vùng địa lý.
 3. **Kỳ vọng:** Có nhân viên phụ trách Miền Trung đang khả dụng → khách được gán trực tiếp cho nhân viên đó, không qua chia vòng.
 4. **Kịch bản phụ (không khớp quy tắc nào):** Một khách khác từ trợ lý trò chuyện tự động không có thông tin quốc gia/tỉnh/ngành khớp quy tắc nào, và không còn nhân viên khả dụng trong nhóm.
-5. **Kỳ vọng:** Khách vào hàng đợi "Chưa phân công"; Quản lý Kinh doanh nhận thông báo (`BR-31.4`).
+5. **Kỳ vọng:** Khách nằm lại trong hàng đợi "Chưa phân công" của đơn vị tiếp nhận của trợ lý trò chuyện (`BR-31.4`, `BR-31.9`); người phụ trách đơn vị đó nhận thông báo. Một nhân viên của đơn vị có (Khách hàng, Xem) = Chỉ của mình vẫn thấy khách trong hàng đợi và bấm "Nhận việc" được vì ô Gán = Chỉ của mình; sau khi nhận, khách thuộc Đơn vị chính của người nhận.
 6. **Kịch bản phụ (chống trùng chủ — `BR-31.6`):** Một khách mới từ biểu mẫu website có email trùng chị "Trần Thị Mai" do nhân viên A phụ trách.
 7. **Kỳ vọng:** Không tạo bản ghi mới, không chia cho người khác; yêu cầu được ghi vào dòng thời gian của chị Mai; A nhận thông báo và một Yêu cầu chờ xử lý được tạo.
+8. **Kịch bản phụ (phân bổ chịu ô Gán — `BR-31.10`):** Quản lý M, ô (Khách hàng, Gán) = Đơn vị và các đơn vị con tại "Miền Trung", tạo quy tắc vùng địa lý cho hàng đợi của biểu mẫu. **Kỳ vọng:** M chỉ chọn được người nhận thuộc "Miền Trung" và các đơn vị con; nhân viên "Miền Nam" không có trong danh sách. Khi M bị tạm ngưng, quy tắc tạm dừng, khách mới nằm lại hàng đợi chưa phân công, và người phụ trách đơn vị tiếp nhận cùng Người có toàn quyền nhận thông báo.
 
 ---
 
@@ -2516,13 +3193,13 @@ Người kiểm thử ghi rõ trong biên bản đã dùng cách nào và giá t
 ### Kịch bản 14: Nhân viên Nghỉ việc & Bàn giao Danh bạ
 
 1. Nhân viên A nghỉ việc, đang phụ trách 450 khách hàng, 20 doanh nghiệp, 8 Cơ hội mở và 3 vé hỗ trợ mở.
-2. Quản trị viên thử vô hiệu hóa tài khoản A ngay.
-3. **Kỳ vọng:** Bị **chặn**, yêu cầu chỉ định người nhận bàn giao (`BR-34.4`); nếu cần gấp, cho phép bàn giao tạm về Quản lý trực tiếp của A và đưa toàn bộ vào danh sách "Chờ bàn giao lại".
-4. Quản lý Kinh doanh lọc "Người phụ trách là A", chọn chuyển cho B, phạm vi "kèm Cơ hội và Vé đang mở".
-5. **Kỳ vọng:** Bước xem trước hiển thị đúng 450, 20, 8, 3 (`BR-34.2`). Sau xác nhận, toàn bộ sang B; B nhận thông báo; nhật ký ghi đủ danh sách bản ghi (`BR-34.7`).
-6. **Kỳ vọng bổ sung:** Báo cáo "Bản ghi không có Người phụ trách hoạt động" (`BR-34.5`) không còn bản ghi nào của A.
-7. **Kịch bản phụ (tự khai báo nghỉ phép — `BR-34.6`):** Lần lượt **bốn** người tự khai báo nghỉ phép 5 ngày kèm người xử lý thay: một Nhân viên Kinh doanh, một Nhân viên Hỗ trợ, một Nhân viên Marketing, một Quản lý Marketing. **Kỳ vọng:** cả bốn lưu thành công; trong khoảng nghỉ họ không nhận phân bổ mới (`BR-31.1`) và yêu cầu chờ xử lý chuyển cho người xử lý thay (`BR-31.6`), quyền phụ trách chính không đổi. **Đối chiếu:** Quản lý Kinh doanh khai báo được thay cho thành viên trong nhóm; Nhân viên Kinh doanh không khai báo được thay cho đồng nghiệp.
-8. **Kịch bản phụ (không khả dụng tự động):** Nhân viên E đi công tác dài, **không đăng nhập 14 ngày liên tiếp**, không khai báo nghỉ phép.
+2. Quản trị viên mở quy trình rời workspace cho A với lựa chọn "Tạm ngưng ngay".
+3. **Kỳ vọng:** A bị tạm ngưng và đăng xuất **ngay**, không bị chặn vì còn bản ghi (`BR-34.4` (a)); nút Gỡ bị vô hiệu cho tới khi bước "450 khách hàng, 20 doanh nghiệp" hoàn tất (`BR-34.4` (c)). Khách hàng tiềm năng chưa chốt mà A nhận từ hàng đợi biểu mẫu có thêm lựa chọn "Trả về hàng đợi" (`BR-31.9` (d)); khách do A tự tạo thì không.
+4. Quản lý Kinh doanh (ô Gán bao phủ khách của A) lọc "Người phụ trách là A", chọn chuyển cho B — B Đang hoạt động và có ô (Khách hàng, Sửa) khác Không có — phạm vi "kèm Cơ hội và Vé đang mở".
+5. **Kỳ vọng:** Bước xem trước hiển thị đúng 450, 20, 8, 3 (`BR-34.2`) và danh sách các thực thể sẽ bị bỏ qua vì Quản lý thiếu ô Gán của loại dữ liệu đó hoặc B không đạt điều kiện nhận (`BR-34.3`) — ví dụ 3 vé hỗ trợ khi Quản lý có (Vé hỗ trợ, Gán) = Không có. Sau xác nhận, mọi thực thể đủ điều kiện sang B, vé vẫn thuộc đơn vị tiếp nhận của hàng đợi; B nhận thông báo; nhật ký ghi đủ danh sách bản ghi đã chuyển và bị bỏ qua (`BR-34.7`).
+6. **Kỳ vọng bổ sung:** Báo cáo "Bản ghi không có Người phụ trách hoạt động" (`BR-34.5`) không còn bản ghi nào của A; nút Gỡ khả dụng sau khi các bước bắt buộc khác của quy trình rời workspace hoàn tất.
+7. **Kịch bản phụ (tự khai báo nghỉ phép — `BR-34.6`):** Lần lượt **bốn** người tự khai báo nghỉ phép 5 ngày kèm người xử lý thay: một Nhân viên Kinh doanh, một Nhân viên Hỗ trợ, một Nhân viên Marketing, một Quản lý Marketing. **Kỳ vọng:** cả bốn lưu thành công; trong khoảng nghỉ họ không nhận phân bổ mới (`BR-31.1`) và yêu cầu chờ xử lý chuyển cho người xử lý thay (`BR-31.6`), quyền phụ trách chính không đổi. **Đối chiếu:** quản lý trực tiếp khai báo được thay cho cấp dưới; Nhân viên Kinh doanh không khai báo được thay cho đồng nghiệp.
+8. **Kịch bản phụ (không khả dụng tự động):** Nhân viên E đi công tác dài, **không đăng nhập 14 ngày liên tiếp** (`CFG-34-02` mặc định), không khai báo nghỉ phép.
 9. **Kỳ vọng:** E ở trạng thái **không khả dụng**; người xử lý thay mặc định là Quản lý trực tiếp của E (`BR-34.6` (a)); E và Quản lý nhận thông báo (`BR-34.6` (b)); E không nhận phân bổ mới và yêu cầu chờ xử lý của khách do E phụ trách chuyển ngay cho Quản lý. **Không** bản ghi nào đổi Người phụ trách.
 10. **Kỳ vọng khi E quay lại:** ngay ở lần đăng nhập kế tiếp, trạng thái không khả dụng **tự hết hiệu lực** (`BR-34.6` (c)).
 
@@ -2536,7 +3213,7 @@ Người kiểm thử ghi rõ trong biên bản đã dùng cách nào và giá t
 4. **Kỳ vọng về bảo mật:** C **không sửa được dữ liệu nghiệp vụ** (tên, kênh liên lạc, giai đoạn, người phụ trách, thẻ) — ngoại lệ duy nhất là hai thao tác tại `BR-35.4` (a), kiểm ở bước 5. Số điện thoại và email công việc **che một phần** theo **cột (C)** — đủ để xác minh và liên lạc trong hệ thống (`BR-04.6`); KYC che hoàn toàn; lượt truy cập được ghi nhật ký (`BR-35.4` (c)).
 5. **Kỳ vọng về ngoại lệ ghi (`BR-35.4` (a)):** trong hội thoại, chị Mai nói "đừng gửi email tiếp thị cho tôi nữa". C hạ đồng thuận email xuống Từ chối nhận tin — **được phép**; C gắn được Hạn chế xử lý nếu khách yêu cầu; mỗi lượt ghi nhật ký. **Đối chiếu:** C thử nâng lại lên Đồng ý nhận tin — **bị từ chối** (`BR-30.10`).
 6. Hội thoại được đóng.
-7. **Kỳ vọng:** Quyền đọc của C tự hết hiệu lực (`BR-35.4` (d)). C thử hạ đồng thuận lần nữa — **bị từ chối**. C mở lại hồ sơ chị Mai — thấy **thông tin tối thiểu để nhận diện** (tên viết tắt, tên Người phụ trách, đơn vị phụ trách, thời điểm tương tác gần nhất) kèm **ba hành động** "Yêu cầu quyền truy cập", "Đề nghị chuyển giao", "Đề nghị gộp"; **không** có thông báo "không có quyền truy cập" (`BR-17.3`).
+7. **Kỳ vọng:** Quyền đọc của C tự hết hiệu lực (`BR-35.4` (d)). C thử hạ đồng thuận lần nữa — **bị từ chối**. C mở lại hồ sơ chị Mai — thấy **thông tin tối thiểu để nhận diện** (tên viết tắt, tên Người phụ trách, đơn vị phụ trách, thời điểm tương tác gần nhất) kèm **ba hành động** "Yêu cầu quyền truy cập", "Yêu cầu nhận bàn giao", "Đề nghị gộp"; **không** có thông báo "không có quyền truy cập" (`BR-17.3`).
 8. **Kỳ vọng phân luồng (`BR-17.3`, `BR-35.3b`):** C bấm "Đề nghị gộp" — yêu cầu gửi tới **Quản trị Chất lượng Dữ liệu hoặc Quản trị viên**; A chỉ nhận thông báo. Quá hạn thì **chỉ leo thang**, hệ thống **không** tự gộp.
 9. C bấm "Yêu cầu quyền truy cập" (xin quyền đọc) và không ai phản hồi.
 10. **Kỳ vọng (`BR-17.2c`):** quá 4 giờ làm việc, yêu cầu leo thang lên Quản lý Kinh doanh của A; quá thời hạn thứ hai, hệ thống **tự cấp quyền đọc tạm có ghi nhật ký** cho C, hiệu lực tối đa 7 ngày.
@@ -2635,7 +3312,7 @@ Người kiểm thử ghi rõ trong biên bản đã dùng cách nào và giá t
 7. Dịch tiếp tới **tháng thứ 19** kể từ tương tác gần nhất mà không ai quyết định (`CFG-33-03` = 18 tháng).
 8. **Kỳ vọng (trần lưu tuyệt đối — sàn bắt buộc):** Hệ thống **tự động khử định danh**: xóa định danh thiết bị/kênh chat và mọi dữ liệu nhận diện, **giữ** nội dung hội thoại ở dạng vô danh. Thử đặt `CFG-33-03` = **36 tháng** hoặc "vô hạn" — **bị từ chối cả hai**, miền chỉ nhận 6–18 tháng.
 9. **Nhánh C — trần lưu nhóm Định danh KYC.** Một khách ở Customer có nhóm KYC đã bật và hợp đồng gần nhất kết thúc tại mốc T. Dịch tới **tháng thứ 25** kể từ T (`CFG-01-03` = 24 tháng).
-10. **Kỳ vọng (`BR-01.5b` — sàn bắt buộc):** Các trường KYC **bị khử vĩnh viễn**, hồ sơ và dữ liệu kinh doanh **giữ nguyên**. Thử đặt `CFG-01-03` = **60 tháng** hoặc "vô hạn" — **bị từ chối cả hai**, miền chỉ nhận 6–24 tháng.
+10. **Kỳ vọng (`BR-01.5b` — sàn bắt buộc):** Các trường KYC **bị khử vĩnh viễn**, hồ sơ và dữ liệu kinh doanh **giữ nguyên**. Tìm lựa chọn "vô hạn" cho `CFG-01-03` — **không tồn tại**; đặt **121 tháng** — **bị từ chối**, miền chỉ nhận 1–120 tháng.
 11. **Nhánh D — dữ liệu không hoạt động.** Một hồ sơ đã định danh không có tương tác trong **37 tháng** (`CFG-33-02` = 36 tháng).
 12. **Kỳ vọng (`BR-33.5` — hành vi cố định):** Hồ sơ **không** bị tự xóa, chỉ vào **danh sách rà soát**. Không tồn tại lựa chọn "tự động xóa khi hết thời hạn rà soát" ở bất kỳ mức phân quyền nào, kể cả Chủ sở hữu.
 13. **Kỳ vọng đối chiếu sáu ngoại lệ (`BR-33.5`):** đúng **sáu** ngoại lệ — (f) khử định danh sổ cái chiến dịch hết hạn lưu, kiểm tại `campaigns-srs.md` `AC-32.3.1`; (a) khử KYC ở bước 10; (b) xóa Hồ sơ Tạm chưa có nhân viên phản hồi ở bước 4; (c) khử định danh Hồ sơ Tạm chạm trần ở bước 8; (d) dọn Thùng rác quá hạn (kiểm tại Kịch bản 20, gồm các chốt an toàn `BR-05.6`); (e) tự xóa tệp nhập khẩu gốc hết thời hạn và tài liệu xác minh danh tính sau 30 ngày — tải một tệp nhập khẩu, dịch tới ngày thứ 31 và xác nhận không còn tải về được. **Không** có tiến trình tự động xóa nào khác.
@@ -2644,7 +3321,7 @@ Người kiểm thử ghi rõ trong biên bản đã dùng cách nào và giá t
 
 ### Kịch bản 22: Kiểm chứng Sàn bắt buộc của Toàn bộ Tham số Cấu hình
 
-*Mục đích: chứng minh không ai — kể cả người có thẩm quyền cao nhất — đặt được giá trị vi phạm sàn của bất kỳ tham số nào. Cách chạy: với **mỗi tham số**, đăng nhập bằng **vai trò thấp nhất** khai ở cột "Thẩm quyền thay đổi" của Phụ lục B (chạy bằng Chủ sở hữu sẽ không phát hiện được lỗi phân quyền, vì Chủ sở hữu bao trùm mọi vai trò cấp dưới). Với **mọi dòng có dấu "+"**, chuẩn bị **cả hai tài khoản** vì dấu này luôn mang nghĩa "và" — kể cả khi hai vai trò ngang cấp (dòng `CFG-12-02` với "Quản lý Kinh doanh + Quản lý Marketing": chạy bằng cả hai). Nếu vai trò thứ hai không tồn tại trên tenant đang kiểm thử, dùng quy tắc thay thế người thứ hai (`NFR-14`) và ghi rõ vào biên bản. Tham số đã có bước kiểm chi tiết ở kịch bản khác được ghi rõ để không kiểm trùng.*
+*Mục đích: chứng minh không ai — kể cả người có thẩm quyền cao nhất — đặt được giá trị vi phạm sàn của bất kỳ tham số nào. Cách chạy: với **mỗi tham số**, đăng nhập bằng một tài khoản **chỉ giữ đúng quyền** khai ở cột "Thẩm quyền thay đổi" của Phụ lục B, không có toàn quyền (chạy bằng Chủ sở hữu sẽ không phát hiện được lỗi phân quyền, vì Chủ sở hữu bao trùm mọi quyền). Với **mọi dòng có dấu "+"**, chuẩn bị **cả hai tài khoản** vì dấu này luôn mang nghĩa "và" — kể cả khi hai quyền ngang cấp (dòng `CFG-12-02` với "Duyệt vòng đời khách hàng + Cấu hình chấm điểm tiềm năng": chạy bằng cả hai). Nếu vai trò thứ hai không tồn tại trên tenant đang kiểm thử, dùng quy tắc thay thế người thứ hai (`NFR-14`) và ghi rõ vào biên bản. Tham số đã có bước kiểm chi tiết ở kịch bản khác được ghi rõ để không kiểm trùng.*
 
 1. **Phép thử A — vượt miền:** nhập một giá trị **ngoài miền** khai tại Phụ lục B. **Kỳ vọng:** bị từ chối ngay tại màn hình nhập, nêu rõ miền hợp lệ; giá trị cũ không đổi.
 2. **Phép thử B — "không giới hạn":** tìm trong giao diện một lựa chọn "không giới hạn", "vô hạn", "tắt kiểm soát" hoặc tương đương. **Kỳ vọng:** với mọi tham số mức **Có sàn bắt buộc**, lựa chọn đó **không tồn tại** — không hiển thị, chứ không phải bị từ chối sau khi chọn.
@@ -2654,14 +3331,14 @@ Người kiểm thử ghi rõ trong biên bản đã dùng cách nào và giá t
 | Tham số | Nội dung sàn phải kiểm | Ghi chú |
 | --- | --- | --- |
 | `CFG-01-02` | Bật nhóm Định danh KYC mà **bỏ trống mục đích** → từ chối | — |
-| `CFG-01-03` | Đặt 60 tháng hoặc "vô hạn" → từ chối (miền 6–24 tháng) | Đã kiểm tại Kịch bản 21 bước 10 |
+| `CFG-01-03` | Tìm "vô hạn" → không tồn tại; đặt 121 tháng → từ chối (miền 1–120 tháng) | Đã kiểm tại Kịch bản 21 bước 10 |
 | `CFG-04-01` | Đặt Nhóm 3 (KYC) lên "Che một phần" ở bất kỳ cột nào → từ chối. Đặt cột (B), (C) hoặc (D) lên "Đầy đủ" → từ chối. Đặt cột (D) lên "Che một phần" → từ chối (trần của cột D là "Che hoàn toàn"). Đặt cột (A) lên "Đầy đủ" cho Nhóm 1 hoặc Nhóm 2 → **chấp nhận**. Đặt cột (A) lên "Đầy đủ" cho Nhóm 3 → từ chối | Sàn ba tầng, chưa kiểm ở kịch bản khác |
 | `CFG-04-02` | Tìm lựa chọn "không giới hạn" → không tồn tại | Đã kiểm tại Kịch bản 6 bước 9 |
 | `CFG-04-03` | Cấu hình để hành động liên lạc **không ghi nhật ký** → không tồn tại lựa chọn đó (`NFR-07`) | Nội dung sàn là nghĩa vụ ghi nhật ký |
 | `CFG-04-04` | Cấu hình để lượt thêm thành viên Đội ngũ phụ trách **không ghi nhật ký** → không tồn tại (`BR-35.6`) | Phần hạn mức đã kiểm tại Kịch bản 19 bước 5 |
 | `CFG-05-01` | Đặt **90 ngày** trong khi `CFG-20-01` đang ở **90 ngày** → **chấp nhận** (điều kiện là "không cao hơn"). Kiểm chứng không tồn tại giá trị nào trong miền 30–90 vi phạm ràng buộc chéo | Ràng buộc chéo đã đóng bằng miền |
-| `CFG-05-02` | Cấp quyền xuất Định danh KYC cho Marketing (`BR-25.4`, neo vào sàn `BR-01.5b`) → **từ chối**; cấp quyền đọc nhật ký kiểm toán cho Quản lý Kinh doanh (`NFR-14`, cố định) → **từ chối**. Đặt ô (Khách hàng, Sửa) của Marketing rộng hơn ô (Khách hàng, Xem) → **từ chối**, nêu rõ ô vi phạm (`iam-tenant-authorization.md` BR-25.1). Đối chứng: cấp quyền chuyển giai đoạn thủ công cho Marketing (`BR-02.2`, **không** phải sàn) → **chấp nhận**; thu hẹp ô (Khách hàng, Xem) của Marketing về Đơn vị của mình → **chấp nhận**, và giữ nguyên sau khi hệ thống cập nhật vai trò dựng sẵn | Ba ô bị chặn và hai ô đối chứng được phép |
-| `CFG-12-01` | Bật bước Customer → Lead → từ chối (`BR-12.3`). Hạ quyền loại khách xuống Nhân viên → từ chối (`BR-12.4`). Hạ quyền loại Customer/Evangelist/Churned xuống dưới Quản trị viên → từ chối (`BR-12.8`) | Ba sàn trong một tham số |
+| [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `CFG-29-02` (điều chỉnh ô của vai trò dựng sẵn) | Tìm năng lực xuất nhóm Định danh KYC để cấp cho Marketing hay một vai trò tự tạo → **không tồn tại** (`BR-25.4`, neo vào sàn `BR-01.5b`); cấp quyền đọc nhật ký kiểm toán cho vai trò Quản lý (`NFR-14`, cố định) → **từ chối**. Đặt ô (Khách hàng, Sửa) của Marketing rộng hơn ô (Khách hàng, Xem) → **từ chối**, nêu rõ ô vi phạm (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-25.1`). Đối chứng: điều chỉnh ô (Khách hàng, Chuyển giai đoạn vòng đời) cho Marketing (`BR-02.2`, **không** phải sàn) → **chấp nhận**; thu hẹp ô (Khách hàng, Xem) của Marketing về Đơn vị của mình → **chấp nhận**, và giữ nguyên sau khi bản phát hành đồng bộ vai trò dựng sẵn | Tham số thuộc tài liệu Phân quyền; ở đây chỉ kiểm sàn của phân hệ |
+| `CFG-12-01` | Bật bước Customer → Lead → từ chối (`BR-12.3`). Cho bước loại khách không cần quyền Duyệt vòng đời khách hàng → từ chối (`BR-12.4`). Cho người không có toàn quyền loại Customer/Evangelist/Churned vì gian lận → từ chối (`BR-12.8`) | Ba sàn trong một tham số |
 | `CFG-12-02` | Đặt giai đoạn khởi tạo là Customer, Evangelist, Churned hoặc Disqualified → từ chối | — |
 | `CFG-15-01` | Đặt điều kiện Điểm Tương tác tối thiểu của MQL về **0** → từ chối (`BR-15.7`). Đặt ba ngưỡng không tăng dần → từ chối | — |
 | `CFG-15-02` | Đặt thời gian hoãn thăng hạng dữ liệu nhập khẩu dưới **12 giờ** → từ chối | — |
@@ -2675,13 +3352,13 @@ Người kiểm thử ghi rõ trong biên bản đã dùng cách nào và giá t
 | `CFG-30-02` | Đặt 20 → từ chối (miền 1–10) | Đã kiểm tại Kịch bản 10 bước 4 |
 | `CFG-31-01` | Cấu hình để ghi chú tay đơn thuần được tính là bằng chứng liên hệ → không tồn tại (`BR-31.8`) | — |
 | `CFG-31-02` | Bỏ quy tắc Người phụ trách hiện hữu khỏi vị trí ưu tiên số 1 → từ chối | — |
-| `CFG-31-04` | Cấu hình để bằng chứng nhóm 2 **không cần Quản lý xác nhận** → không tồn tại (`BR-31.8`) | — |
+| `CFG-31-04` | Cấu hình để bằng chứng nhóm 2 **không cần người xác nhận**, hoặc để người khai báo tự xác nhận → không tồn tại (`BR-31.8`) | — |
 | `CFG-33-01` | Đặt **200 ngày** → từ chối (miền 30–150). Đặt **150 ngày** trong khi `CFG-33-03` ở **6 tháng = 180 ngày** → **chấp nhận** | Điểm cực biên đã kiểm tại Kịch bản 21 bước 4 |
 | `CFG-33-02` | Bật "tự động xóa khi hết thời hạn rà soát" → không tồn tại (`BR-33.5`) | Đã kiểm tại Kịch bản 21 bước 12 |
 | `CFG-33-03` | Đặt 36 tháng hoặc "vô hạn" → từ chối (miền 6–18 tháng) | Đã kiểm tại Kịch bản 21 bước 8 |
 | `CFG-33-04` | Tìm lựa chọn "vô hạn" → không tồn tại; đặt 60 ngày → từ chối (miền 7–30 ngày) | — |
 | `CFG-36-02` | Cấu hình cho phép **xóa cứng** ghi chú sau khi hết thời hạn sửa → không tồn tại (`BR-36.3`) | Nội dung sàn là cấm xóa cứng |
-| `CFG-36-03` | Tìm lựa chọn mở phạm vi "Nội bộ đội bán hàng" theo vai trò cho Marketing hoặc tuyến Hỗ trợ → không tồn tại (`BR-36.1`) | — |
+| `CFG-36-03` | Tìm lựa chọn mở phạm vi "Nội bộ đội bán hàng" cho người đọc qua quyền đọc tự động → không tồn tại (`BR-36.7`) | Mở ghi chú nội bộ cho một vai trò là điều chỉnh ô (Khách hàng, Đọc ghi chú nội bộ), không thuộc tham số này |
 
 5. **Kiểm các quy tắc mức "Cố định" (hàng cuối Phụ lục B):** với từng quy tắc ở hàng đó, tìm trong **toàn bộ** giao diện cấu hình của mọi vai trò — kể cả Chủ sở hữu — một tham số điều chỉnh được nội dung hàng đó khóa. **Kỳ vọng:** không tồn tại. Hai trường hợp có phần cấu hình được là hợp lệ: `BR-33.7` có `CFG-33-04` (thời hạn biện pháp phòng ngừa) và `BR-33.8` có `CFG-22-01` (thời hạn lưu tệp nhập khẩu gốc) — phần bị khóa là nghĩa vụ và phạm vi, không phải thời hạn.
 6. **Kỳ vọng về nhật ký:** mọi lượt thay đổi tham số **thành công** ở bước 1–5 đều có bản ghi nhật ký theo sự kiện "Thay đổi tham số cấu hình" của `NFR-07`, ghi người thực hiện, thời điểm, tham số và giá trị trước/sau. Lượt **bị từ chối** không sinh bản ghi nhật ký, vì không phải một thay đổi đã xảy ra.
@@ -2737,7 +3414,7 @@ Mục này chỉ chứa các điểm **chưa quyết định được điều g�
 
 **A.7 Kênh Nguồn gốc Khách hàng** — `BR-32.1`: Website · Quảng cáo Facebook · Quảng cáo Google · Zalo · Giới thiệu · Sự kiện/Hội thảo · Tiếp cận chủ động · Nhập khẩu từ tệp · Đối tác · Không xác định.
 
-**A.8 Nguồn thu thập Đồng thuận** — `BR-30.3`: Biểu mẫu đăng ký trên website · Hộp thoại đồng ý trên trò chuyện trực tuyến · Phiếu đồng ý tại sự kiện · Nhập khẩu từ tệp có khai báo cơ sở · Ghi nhận thủ công bởi nhân viên · Liên kết Hủy nhận tin trong email · Liên kết hủy nhận tin trong chiến dịch (mọi kênh, `campaigns-srs.md` `BR-26.4`) · Hủy nhận bằng một thao tác từ giao diện hộp thư · Từ khóa từ chối trong tin trả lời · Tư vấn viên ghi nhận từ chối · Người nhận chặn doanh nghiệp trên nền tảng nhắn tin · Người nhận tắt tin tiếp thị trên nền tảng · Đồng ý trên Tài khoản Chính thức hoặc trong tin nhắn nền tảng (`campaigns-srs.md`, `BR-09.3`) · Nhà mạng hoặc nền tảng báo số điện thoại đổi chủ (`campaigns-srs.md`, `BR-28.4`) · Khiếu nại thư rác · Yêu cầu trực tiếp của khách hàng · **Yêu cầu chưa xác minh được danh tính** (dùng cho lượt hạ mức đồng thuận do biện pháp phòng ngừa tại `BR-33.7` (d)) · **Tự khôi phục khi dỡ biện pháp phòng ngừa** (`BR-33.7` (e)).
+**A.8 Nguồn thu thập Đồng thuận** — `BR-30.3`: Biểu mẫu đăng ký trên website · Hộp thoại đồng ý trên trò chuyện trực tuyến · Phiếu đồng ý tại sự kiện · Nhập khẩu từ tệp có khai báo cơ sở · Ghi nhận thủ công bởi nhân viên · Liên kết Hủy nhận tin trong email · Liên kết hủy nhận tin trong chiến dịch (mọi kênh, `campaigns-srs.md` `BR-26.4`) · Hủy nhận bằng một thao tác từ giao diện hộp thư · Từ khóa từ chối trong tin trả lời · Tư vấn viên ghi nhận từ chối · Người nhận chặn doanh nghiệp trên nền tảng nhắn tin · Người nhận tắt tin tiếp thị trên nền tảng · Đồng ý trên Tài khoản Chính thức hoặc trong tin nhắn nền tảng ([`campaigns-srs.md`](./campaigns-srs.md) `BR-09.3`) · Nhà mạng hoặc nền tảng báo số điện thoại đổi chủ ([`campaigns-srs.md`](./campaigns-srs.md) `BR-28.4`) · Khiếu nại thư rác · Yêu cầu trực tiếp của khách hàng · **Yêu cầu chưa xác minh được danh tính** (dùng cho lượt hạ mức đồng thuận do biện pháp phòng ngừa tại `BR-33.7` (d)) · **Tự khôi phục khi dỡ biện pháp phòng ngừa** (`BR-33.7` (e)).
 
 **A.9 Giai đoạn Vòng đời** — `FEAT-12`: 10 giá trị và các bước chuyển hợp lệ tại Ma trận Chuyển đổi Giai đoạn, `FEAT-12`.
 
@@ -2765,11 +3442,11 @@ Mục này chỉ chứa các điểm **chưa quyết định được điều g�
 
 **Nguyên tắc:** Mọi quy tắc nghiệp vụ có nhiều hướng xử lý hợp lý tùy tenant là một tham số cấu hình cấp không gian làm việc, kèm giá trị mặc định chuẩn hệ thống; tenant tự điều chỉnh mà không cần thay đổi hệ thống hay chờ phát hành phiên bản mới. Phụ lục này là **nguồn duy nhất** về giá trị mặc định và miền giá trị; quy tắc trong thân tài liệu nêu giá trị mặc định chỉ để dễ đọc, và nếu hai nơi khác nhau thì đó là lỗi tài liệu phải sửa.
 
-**Quy ước thẩm quyền:** cột "Thẩm quyền thay đổi" nêu **vai trò thấp nhất** được đổi tham số. **Đây là một trục quyền riêng, độc lập với ma trận Mục 5:** ma trận quy định ai dùng được **tính năng** trên dữ liệu nghiệp vụ; cột này quy định ai đổi được **tham số cấu hình** của tính năng đó — một Quản lý Kinh doanh chỉ có "Đơn vị của mình" trên dữ liệu vẫn có thể đặt các mốc thời hạn phản hồi cho cả tenant, vì đó là quyết định nghiệp vụ thuộc chuyên môn của họ. **Chủ sở hữu và Quản trị viên bao trùm mọi vai trò cấp dưới** — đổi được mọi tham số mà một vai trò nghiệp vụ đổi được. Dấu **"+"** luôn có nghĩa **"và"**: mọi vai trò nối bằng "+" phải cùng phê duyệt một lượt thay đổi. "+ Người phụ trách Bảo vệ Dữ liệu" và "+ Quản trị Chất lượng Dữ liệu" là **người phê duyệt thứ hai bắt buộc** — thiếu thì không thực hiện được, kể cả bởi Chủ sở hữu. Khi vai trò thứ hai là Quản trị viên hoặc Chủ sở hữu, dấu "+" chỉ mang tính liệt kê, vai trò đứng trước tự thực hiện được.
+**Quy ước thẩm quyền:** cột "Thẩm quyền thay đổi" nêu **quyền cần có** để đổi tham số — một quyền quản trị của phân hệ (Mục 5.2), một cấp bậc thành viên hay một chức danh trách nhiệm — kèm vai trò dựng sẵn mặc định giữ quyền đó trong ngoặc; tên vai trò không phải điều kiện. **Đây là một trục quyền riêng, độc lập với mức truy cập trên dữ liệu:** người giữ quyền Cấu hình phân bổ khách hàng tiềm năng mà chỉ có mức "Đơn vị của mình" trên dữ liệu vẫn đặt được các mốc thời hạn phản hồi cho cả tenant, vì đó là quyết định nghiệp vụ thuộc chuyên môn của họ. **Chủ sở hữu và Quản trị viên bao trùm mọi quyền quản trị của phân hệ** — đổi được mọi tham số mà một quyền quản trị đổi được. Dấu **"+"** luôn có nghĩa **"và"**: mọi vai trò nối bằng "+" phải cùng phê duyệt một lượt thay đổi. "+ Người phụ trách Bảo vệ Dữ liệu" và "+ Quản trị Chất lượng Dữ liệu" là **người phê duyệt thứ hai bắt buộc** — thiếu thì không thực hiện được, kể cả bởi Chủ sở hữu. Khi vế thứ hai là Quản trị viên hoặc Chủ sở hữu, dấu "+" chỉ mang tính liệt kê, vế đứng trước tự thực hiện được.
 
-**Khi vai trò thứ hai không tồn tại hoặc trùng người:** áp quy tắc thay thế người thứ hai tại `NFR-14` — người thứ hai là **một Quản trị viên khác** với người thực hiện. Yêu cầu bất biến là **luôn có hai người khác nhau đứng tên**, không phải hai chức danh cụ thể; nếu không, một tenant chưa chỉ định Người phụ trách Bảo vệ Dữ liệu sẽ không đổi được các tham số có sàn pháp lý.
+**Khi vai trò thứ hai không tồn tại hoặc trùng người:** áp quy tắc thay thế người thứ hai tại `NFR-14` — người thứ hai là **một Quản trị viên khác** với người thực hiện. Yêu cầu bất biến là **luôn có hai người khác nhau đứng tên**, không phải hai chức danh cụ thể; nếu không, một tenant chưa chỉ định Người phụ trách Bảo vệ Dữ liệu sẽ không đổi được các tham số mức "Có sàn bắt buộc" cần người phê duyệt thứ hai.
 
-**Ba mức độ tự do:** **Tự do** — đặt giá trị bất kỳ trong miền. **Có sàn bắt buộc** — điều chỉnh được nhưng không nới lỏng dưới ngưỡng an toàn/pháp lý. **Cố định** — không cấu hình được, vì liên quan nghĩa vụ pháp lý hoặc toàn vẹn dữ liệu.
+**Ba mức độ tự do:** **Tự do** — đặt giá trị bất kỳ trong miền. **Có sàn bắt buộc** — điều chỉnh được nhưng không nới lỏng dưới ngưỡng an toàn do phân hệ khai báo. **Cố định** — không cấu hình được, vì liên quan cam kết với chủ thể dữ liệu hoặc toàn vẹn dữ liệu. Sàn không gắn với quy định của một quốc gia cụ thể; doanh nghiệp tự xác định nghĩa vụ áp dụng cho mình và đặt tham số trong miền cho phép.
 
 *Viết tắt trong bảng:* "BVDL" = Người phụ trách Bảo vệ Dữ liệu; "QTCLDL" = Quản trị Chất lượng Dữ liệu.
 
@@ -2777,48 +3454,49 @@ Mục này chỉ chứa các điểm **chưa quyết định được điều g�
 | --- | --- | --- | --- | --- | --- | --- |
 | `CFG-01-01` | `BR-01.6` | Loại khách hàng mặc định khi tạo mới | Khách hàng Doanh nghiệp (B2B) | B2B / B2C / Bắt buộc người dùng chọn | Chủ sở hữu | Tự do |
 | `CFG-01-02` | `BR-01.5b` | Bật/tắt nhóm trường Định danh KYC và mục đích sử dụng | **Tắt** | Bật (kèm khai báo mục đích) / Tắt | Chủ sở hữu + BVDL | **Có sàn bắt buộc** — bật thì bắt buộc khai báo mục đích |
-| `CFG-01-03` | `BR-01.5b` | Thời hạn lưu nhóm Định danh KYC sau khi hợp đồng gần nhất kết thúc | 24 tháng | 6 – 24 tháng | Chủ sở hữu + BVDL | **Có sàn bắt buộc** — hết hạn buộc tự khử định danh, không có lựa chọn "vô hạn" |
+| `CFG-01-03` | `BR-01.5b` | Thời hạn lưu nhóm Định danh KYC sau khi hợp đồng gần nhất kết thúc | 24 tháng | 1 – 120 tháng | Chủ sở hữu + BVDL | **Có sàn bắt buộc** — hết hạn buộc tự khử định danh, không có lựa chọn "vô hạn" |
 | `CFG-04-01` | `BR-04.3` | Chính sách che mặt nạ theo nhóm trường và quan hệ với bản ghi | Đúng bảng tại `BR-04.3` | Ma trận 3 nhóm trường × 4 cột quan hệ (A)(B)(C)(D), mỗi ô một trong 4 mức hiển thị tại `BR-04.2` | Chủ sở hữu + BVDL | **Có sàn bắt buộc** — ba sàn: **(i)** Nhóm 3 (KYC) chỉ ở mức Che hoàn toàn hoặc Ẩn trường ở **cả bốn** cột, chỉ mở được bằng quyền chuyên biệt theo `BR-04.4`, có nhật ký và chịu hạn mức `CFG-04-02`; **(ii)** cột (D) không cao hơn Che hoàn toàn cho bất kỳ nhóm nào; **(iii)** cột (B) và cột (C) không cao hơn Che một phần. Hệ quả: cột (A) là cột duy nhất nhận được mức Đầy đủ, và cột (A) đã chịu kiểm soát riêng tại `BR-04.5b` |
 | `CFG-04-02` | `BR-04.5` | Hạn mức mở khóa mặt nạ mỗi người mỗi ngày | 50 bản ghi/ngày | 10 – 200 | Chủ sở hữu + BVDL | **Có sàn bắt buộc** — không có lựa chọn "không giới hạn"; trần tuyệt đối 200 |
 | `CFG-04-03` | `BR-04.6` | Hạn mức hành động liên lạc trong hệ thống mỗi người mỗi ngày | 200 lượt/ngày | 50 – 1.000 | Chủ sở hữu | **Có sàn bắt buộc** — mọi lượt liên lạc luôn ghi nhật ký (`NFR-07`) |
 | `CFG-04-04` | `BR-04.5b` | Số bản ghi tối đa một người được thêm vào Đội ngũ phụ trách ở mức Chỉnh sửa mỗi tháng | 100 bản ghi/tháng | 20 – 500 | Chủ sở hữu + BVDL | **Có sàn bắt buộc** — mọi lượt thêm thành viên luôn ghi nhật ký (`BR-35.6`) |
 | `CFG-05-01` | `BR-05.4` | Thời hạn lưu bản ghi trong Thùng rác trước khi xóa vĩnh viễn | 30 ngày | 30 – 90 ngày (giới hạn trên theo gói dịch vụ) | Chủ sở hữu | **Có sàn bắt buộc** — không được cao hơn `CFG-20-01` |
-| `CFG-05-02` | Mục 5 | Ma trận phân quyền của các vai trò dựng sẵn: mức truy cập của từng ô (loại dữ liệu × thao tác) và các quyền không gắn với bản ghi, gồm phạm vi xem và quyền nhập/xuất của Marketing | Đúng ma trận Mục 5 | Từng ô điều chỉnh được, theo mức truy cập của `iam-tenant-authorization.md` FEAT-25; ô đã điều chỉnh được giữ khi hệ thống cập nhật vai trò dựng sẵn | Chủ sở hữu + BVDL | **Có sàn bắt buộc** — không được nới lỏng các ràng buộc có "sàn bắt buộc" trong các quy tắc; mức Sửa không rộng hơn mức Xem |
-| `CFG-12-01` | `FEAT-12` | Ma trận Chuyển đổi Giai đoạn — các bước chuyển được phép | Đúng ma trận tại `FEAT-12` | Từng bước chuyển bật/tắt | Quản lý Kinh doanh | **Có sàn bắt buộc** — ba sàn: không cho hạ Customer/Evangelist về giai đoạn tiền bán hàng (`BR-12.3`, nguyên tắc 4); không nới quyền loại khách dưới Quản lý Kinh doanh (`BR-12.4`); không nới quyền loại Customer/Evangelist/Churned vì gian lận dưới Quản trị viên (`BR-12.8`) |
-| `CFG-12-02` | `BR-12.10` | Giai đoạn mặc định theo từng nguồn tạo | Thủ công/Biểu mẫu website/Hội thoại/Nhập khẩu → Lead; Đăng ký bản tin → Subscriber; Hồ sơ Tạm → chưa gán | "Chưa gán giai đoạn" (chỉ cho nguồn Hồ sơ Tạm), hoặc một trong sáu giai đoạn tiền bán hàng | Quản lý Kinh doanh + Quản lý Marketing | **Có sàn bắt buộc** — không được đặt Customer, Evangelist, Churned hay Disqualified: một bản ghi vừa tạo chưa thể đã trả tiền hay đã rời bỏ |
-| `CFG-14-01` | `BR-14.2` | Thời hạn được Hoàn tác Chuyển đổi | 24 giờ | 1 – 168 giờ | Quản lý Kinh doanh | Tự do |
-| `CFG-15-01` | `BR-15.5` | Bộ ngưỡng điểm MQL / SQL / Ưu tiên cao | 40 / 70 / 85, kèm Điểm Tương tác ≥ 15 cho MQL | 0 – 100 mỗi ngưỡng, tăng dần | Quản lý Marketing | **Có sàn bắt buộc** — điều kiện Điểm Tương tác tối thiểu không được đặt về 0 (`BR-15.7`) |
-| `CFG-15-02` | `BR-15.7` | Hoãn thăng hạng cho dữ liệu nhập khẩu; chống thông báo lặp; độ trễ đánh giá lại | 24 giờ / 1 lần trong 30 ngày / 7 ngày | 12 – 168 giờ; 1 – 90 ngày; 0 – 30 ngày | Quản lý Marketing | **Có sàn bắt buộc** — hoãn thăng hạng không dưới 12 giờ (`BR-15.7` (a)) |
-| `CFG-16-01` | `BR-16.1`, `BR-16.2` | Các mốc ngày không tương tác và tỷ lệ suy giảm | 14 ngày −10%; 30 ngày −25% | 7 – 90 ngày mỗi mốc, mốc thứ hai luôn lớn hơn mốc thứ nhất; 0 – 50% mỗi tỷ lệ | Quản lý Marketing | **Có sàn bắt buộc** — hai mốc không được bằng nhau hay đảo thứ tự |
+| — (dẫn chiếu) | Mục 5 | Điều chỉnh từng ô của vai trò dựng sẵn trên Khách hàng và Doanh nghiệp, gồm thao tác đặc thù của phân hệ — **không còn là tham số của phân hệ này**; thực hiện qua [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `CFG-29-02` | Ma trận Mục 5.1 | Theo tài liệu Phân quyền | Theo tài liệu Phân quyền | **Có sàn bắt buộc** — sàn của phân hệ: không cấp được năng lực xuất nhóm Định danh KYC (`BR-25.4`), không mở được quyền đọc nhật ký kiểm toán (`NFR-14`), ô mở khóa nhóm KYC chịu `CFG-04-01` |
+| `CFG-12-01` | `FEAT-12` | Ma trận Chuyển đổi Giai đoạn — các bước chuyển được phép | Đúng ma trận tại `FEAT-12` | Từng bước chuyển bật/tắt | Quyền Duyệt vòng đời khách hàng (mặc định Quản lý) | **Có sàn bắt buộc** — ba sàn: không cho hạ Customer/Evangelist về giai đoạn tiền bán hàng (`BR-12.3`, nguyên tắc 4); bước loại khách luôn cần quyền Duyệt vòng đời khách hàng (`BR-12.4`); loại Customer/Evangelist/Churned vì gian lận chỉ do Người có toàn quyền (`BR-12.8`) |
+| `CFG-12-02` | `BR-12.10` | Giai đoạn mặc định theo từng nguồn tạo | Thủ công/Biểu mẫu website/Hội thoại/Nhập khẩu → Lead; Đăng ký bản tin → Subscriber; Hồ sơ Tạm → chưa gán | "Chưa gán giai đoạn" (chỉ cho nguồn Hồ sơ Tạm), hoặc một trong sáu giai đoạn tiền bán hàng | Quyền Duyệt vòng đời khách hàng + Quyền Cấu hình chấm điểm tiềm năng (mặc định Quản lý + Quản lý Marketing) | **Có sàn bắt buộc** — không được đặt Customer, Evangelist, Churned hay Disqualified: một bản ghi vừa tạo chưa thể đã trả tiền hay đã rời bỏ |
+| `CFG-14-01` | `BR-14.2`, `BR-14.5` | Thời hạn được Hoàn tác Chuyển đổi | 24 giờ | 1 – 168 giờ | Quyền Hoàn tác Chuyển đổi Tiềm năng (mặc định Quản lý) | Tự do |
+| `CFG-15-01` | `BR-15.5` | Bộ ngưỡng điểm MQL / SQL / Ưu tiên cao | 40 / 70 / 85, kèm Điểm Tương tác ≥ 15 cho MQL | 0 – 100 mỗi ngưỡng, tăng dần | Quyền Cấu hình chấm điểm tiềm năng (mặc định Quản lý Marketing) | **Có sàn bắt buộc** — điều kiện Điểm Tương tác tối thiểu không được đặt về 0 (`BR-15.7`) |
+| `CFG-15-02` | `BR-15.7` | Hoãn thăng hạng cho dữ liệu nhập khẩu; chống thông báo lặp; độ trễ đánh giá lại | 24 giờ / 1 lần trong 30 ngày / 7 ngày | 12 – 168 giờ; 1 – 90 ngày; 0 – 30 ngày | Quyền Cấu hình chấm điểm tiềm năng (mặc định Quản lý Marketing) | **Có sàn bắt buộc** — hoãn thăng hạng không dưới 12 giờ (`BR-15.7` (a)) |
+| `CFG-16-01` | `BR-16.1`, `BR-16.2` | Các mốc ngày không tương tác và tỷ lệ suy giảm | 14 ngày −10%; 30 ngày −25% | 7 – 90 ngày mỗi mốc, mốc thứ hai luôn lớn hơn mốc thứ nhất; 0 – 50% mỗi tỷ lệ | Quyền Cấu hình chấm điểm tiềm năng (mặc định Quản lý Marketing) | **Có sàn bắt buộc** — hai mốc không được bằng nhau hay đảo thứ tự |
 | `CFG-17-01` | `BR-17.2` | Chính sách khi phát hiện trùng theo Tiêu chí chắc chắn | Chặn tạo bản ghi mới | Chặn / Cảnh báo và vẫn cho lưu (có nhật ký) | Chủ sở hữu + QTCLDL | **Có sàn bắt buộc** — Tiêu chí tham khảo không bao giờ được dùng để chặn hoặc gộp tự động (`BR-17.1`) |
-| `CFG-19-01` | `BR-19.9` | Cách xác định Người phụ trách sau gộp | Người phụ trách của bản ghi có tương tác gần nhất | Tương tác gần nhất / Bản ghi Chính / Bắt buộc chỉ định thủ công | Quản lý Kinh doanh | Tự do |
+| `CFG-19-01` | `BR-19.9` | Cách xác định Người phụ trách sau gộp | Người phụ trách của bản ghi có tương tác gần nhất | Tương tác gần nhất / Bản ghi Chính / Bắt buộc chỉ định thủ công | Quyền Cấu hình phân bổ khách hàng tiềm năng (mặc định Quản lý) | Tự do |
 | `CFG-20-01` | `BR-20.3` | Thời hạn được hoàn tác gộp | 90 ngày | 90 – 365 ngày | Chủ sở hữu | **Có sàn bắt buộc** — lớn hơn hoặc bằng `CFG-05-01`; miền bắt đầu từ 90 ngày để mọi tổ hợp với miền của `CFG-05-01` đều hợp lệ |
 | `CFG-22-01` | `BR-33.8` | Thời hạn lưu tệp nhập khẩu gốc sau khi nhập xong | 30 ngày | 7 – 30 ngày | Quản trị viên + BVDL | **Có sàn bắt buộc** — trần 30 ngày tuyệt đối; hết hạn buộc tự xóa |
 | `CFG-22-02` | `BR-22.2` | Dung lượng tệp nhập khẩu tối đa mỗi lần | 50 MB | 10 – 200 MB (theo gói dịch vụ) | Chủ sở hữu | Tự do |
 | `CFG-25-01` | `BR-25.4` | Ngưỡng số bản ghi mỗi lần xuất cần phê duyệt trước | 5.000 bản ghi | 5.000 – 50.000 | Chủ sở hữu + BVDL | **Có sàn bắt buộc** — lần xuất chứa trường KYC luôn cần phê duyệt bất kể số lượng |
-| `CFG-25-02` | `BR-25.5`, `BR-25.4` | Hạn mức xuất dữ liệu của Nhân viên Kinh doanh mỗi người mỗi ngày | 2.000 bản ghi/ngày | 200 – 5.000 (không cao hơn giá trị nhỏ nhất của `CFG-25-01`, nên mọi tổ hợp đều hợp lệ) | Chủ sở hữu | **Có sàn bắt buộc** — vai trò này không bao giờ xuất được trường KYC; mọi lần xuất luôn ghi nhật ký (`BR-25.3`) |
+| `CFG-25-02` | `BR-25.5`, `BR-25.4` | Hạn mức xuất dữ liệu mỗi người mỗi ngày của người có ô (Khách hàng, Xuất) = Chỉ của mình | 2.000 bản ghi/ngày | 200 – 5.000 (không cao hơn giá trị nhỏ nhất của `CFG-25-01`, nên mọi tổ hợp đều hợp lệ) | Chủ sở hữu | **Có sàn bắt buộc** — không ai ở mức này xuất được trường KYC; mọi lần xuất luôn ghi nhật ký (`BR-25.3`) |
 | `CFG-30-01` | `BR-30.5` | Nhóm Liên lạc 1-1 có chịu chi phối của Từ chối nhận tin hay không | Không chịu, nhưng bắt buộc ghi nhật ký | Có / Không | Chủ sở hữu + BVDL | **Có sàn bắt buộc** — nhóm Tiếp thị luôn chịu chi phối, không cấu hình được |
 | `CFG-30-02` | `BR-30.7` | Số người nhận tối đa của một lượt gửi nhóm Liên lạc 1-1 | 5 | 1 – 10 | Chủ sở hữu + BVDL | **Có sàn bắt buộc** — trần tuyệt đối 10; trên mức đó là gửi hàng loạt và buộc thuộc nhóm Tiếp thị |
 | `CFG-30-03` | `BR-30.4` | Số bản ghi tối đa của một lô nhập khẩu tạo Đồng ý nhận tin mà không cần Người phụ trách Bảo vệ Dữ liệu chấp thuận | 1.000 | 0 – 10.000 (0 nghĩa là mọi lô đều cần chấp thuận) | Chủ sở hữu + BVDL | **Có sàn bắt buộc** — trần 10.000 |
-| `CFG-31-01` | `BR-31.7`, `BR-31.8`, `BR-17.2c`, `BR-35.3b` | Các mốc thời hạn phản hồi theo mức ưu tiên; số lần thu hồi tự động tối đa | 1 / 4 / 24 giờ làm việc; tối đa 2 lần | 0,5 – 72 giờ; 0 – 5 lần | Quản lý Kinh doanh | **Có sàn bắt buộc** — ghi chú tay đơn thuần không bao giờ được tính là bằng chứng liên hệ (`BR-31.8`) |
-| `CFG-31-02` | `BR-31.3b` | Thứ tự ưu tiên giữa các quy tắc phân bổ | Người phụ trách hiện hữu → Vùng địa lý → Ngành nghề → Chia vòng lần lượt → Chưa phân công | Sắp xếp lại các vị trí (2) đến (4) | Quản lý Kinh doanh + Quản trị viên | **Có sàn bắt buộc** — Người phụ trách hiện hữu luôn ở vị trí số 1 (`BR-31.6`) |
+| `CFG-31-01` | `BR-31.7`, `BR-31.8`, `BR-17.2c`, `BR-35.3b` | Các mốc thời hạn phản hồi theo mức ưu tiên; số lần thu hồi tự động tối đa | 1 / 4 / 24 giờ làm việc; tối đa 2 lần | 0,5 – 72 giờ; 0 – 5 lần | Quyền Cấu hình phân bổ khách hàng tiềm năng (mặc định Quản lý) | **Có sàn bắt buộc** — ghi chú tay đơn thuần không bao giờ được tính là bằng chứng liên hệ (`BR-31.8`) |
+| `CFG-31-02` | `BR-31.3b` | Thứ tự ưu tiên giữa các quy tắc phân bổ | Người phụ trách hiện hữu → Vùng địa lý → Ngành nghề → Chia vòng lần lượt → Chưa phân công | Sắp xếp lại các vị trí (2) đến (4) | Quyền Cấu hình phân bổ khách hàng tiềm năng + Quản trị viên | **Có sàn bắt buộc** — Người phụ trách hiện hữu luôn ở vị trí số 1 (`BR-31.6`) |
 | `CFG-31-03` | `BR-31.7b` | Lịch làm việc: múi giờ, ngày làm việc, giờ bắt đầu/kết thúc, ngày lễ | Thứ Hai – Thứ Sáu 08:00 – 17:30, không ngày lễ | Tự khai báo; tối thiểu một ngày làm việc trong tuần, giờ kết thúc sau giờ bắt đầu | Chủ sở hữu | Tự do |
-| `CFG-31-04` | `BR-31.8` | Số lần dùng bằng chứng liên hệ nhóm 2 mỗi người mỗi tháng | 10 lần/tháng | 0 – 50 | Quản lý Kinh doanh | **Có sàn bắt buộc** — luôn cần Quản lý xác nhận và luôn thống kê riêng trong `KPI-03` |
+| `CFG-31-04` | `BR-31.8` | Số lần dùng bằng chứng liên hệ nhóm 2 mỗi người mỗi tháng | 10 lần/tháng | 0 – 50 | Quyền Cấu hình phân bổ khách hàng tiềm năng (mặc định Quản lý) | **Có sàn bắt buộc** — luôn cần người giữ quyền Xác nhận liên hệ ngoài hệ thống, khác người khai báo, xác nhận; luôn thống kê riêng trong `KPI-03` |
 | `CFG-33-01` | `BR-33.6` | Thời hạn dọn dẹp Hồ sơ Tạm không có tương tác | 90 ngày kể từ tương tác gần nhất | 30 – 150 ngày | Quản trị viên + BVDL | **Có sàn bắt buộc** — phải nhỏ hơn `CFG-33-03` ít nhất 30 ngày (quy đổi 1 tháng = 30 ngày, Mục 2.3); miền dừng ở 150 ngày để mọi tổ hợp với giá trị nhỏ nhất 180 ngày của `CFG-33-03` đều hợp lệ |
 | `CFG-33-02` | `BR-33.5` | Thời hạn rà soát dữ liệu khách hàng không hoạt động | 36 tháng | 12 – 84 tháng | Chủ sở hữu + BVDL | **Có sàn bắt buộc** — thời hạn cấu hình được, nhưng hành vi "không tự động xóa" là cố định |
 | `CFG-33-03` | `BR-33.6` | Trần lưu tuyệt đối cho Hồ sơ Tạm đã có tương tác của nhân viên | 18 tháng kể từ tương tác gần nhất | 6 – 18 tháng | Chủ sở hữu + BVDL | **Có sàn bắt buộc** — hết trần buộc tự khử định danh, không có lựa chọn "vô hạn" |
 | `CFG-33-04` | `BR-33.7` | Thời hạn tối đa của biện pháp phòng ngừa khi không xác minh được chủ thể | 30 ngày | 7 – 30 ngày | Quản trị viên + BVDL | **Có sàn bắt buộc** — không có lựa chọn "vô hạn"; hết hạn buộc tự dỡ và bắt buộc thông báo Người phụ trách |
-| `CFG-34-01` | `BR-34.3` | Phạm vi thực thể con mặc định khi chuyển giao | Kèm Cơ hội và Vé hỗ trợ đang mở | Chỉ bản ghi / Kèm thực thể đang mở / Kèm toàn bộ | Quản lý Kinh doanh | Tự do |
+| `CFG-34-01` | `BR-34.3` | Phạm vi thực thể con mặc định khi chuyển giao | Kèm Cơ hội và Vé hỗ trợ đang mở | Chỉ bản ghi / Kèm thực thể đang mở / Kèm Cơ hội đang mở và mọi Vé hỗ trợ (Cơ hội đã đóng không bao giờ chuyển) | Người có toàn quyền | Tự do |
+| `CFG-34-02` | `BR-34.6` | Số ngày không đăng nhập liên tiếp để tự bật trạng thái không khả dụng | 14 ngày | 3 – 60 ngày | Chủ sở hữu | Tự do |
 | `CFG-36-01` | `BR-36.1` | Phạm vi đọc mặc định của ghi chú mới | Nội bộ đội bán hàng | Nội bộ đội bán hàng / Chung / Giới hạn | Chủ sở hữu | Tự do |
 | `CFG-36-02` | `BR-36.2` | Thời hạn người tạo được sửa ghi chú | 24 giờ | 0 – 168 giờ | Chủ sở hữu | **Có sàn bắt buộc** — hết thời hạn chỉ được bổ sung; không bao giờ được xóa cứng (`BR-36.3`) |
-| `CFG-36-03` | `BR-36.1`, `BR-36.7` | Phạm vi đọc ghi chú theo vai trò của Marketing và của tuyến Hỗ trợ | Marketing: chỉ "Chung". Tuyến Hỗ trợ: "Chung" + ghi chú ghim đã được đánh dấu cho phép | Chỉ "Chung" / "Chung" + ghi chú ghim được phép | Chủ sở hữu + BVDL | **Có sàn bắt buộc** — không có lựa chọn mở phạm vi "Nội bộ đội bán hàng" **theo vai trò** cho Marketing hay tuyến Hỗ trợ. Sàn chặn theo vai trò, không chặn theo tư cách thành viên đội ngũ: Nhân viên Hỗ trợ là thành viên Đội ngũ phụ trách của một bản ghi vẫn đọc được ghi chú nội bộ của riêng bản ghi đó (`BR-36.1`) — đó là quyền trên từng bản ghi, có nhật ký và thu hồi được |
+| `CFG-36-03` | `BR-36.7` | Phạm vi ghi chú đọc được qua quyền đọc tự động (`BR-35.4`) | "Chung" + ghi chú ghim đã được đánh dấu "Cho phép tuyến Hỗ trợ đọc" | Chỉ "Chung" / "Chung" + ghi chú ghim được phép | Chủ sở hữu + BVDL | **Có sàn bắt buộc** — quyền đọc tự động không bao giờ mở phạm vi "Nội bộ đội bán hàng". Ai đọc được ghi chú nội bộ theo vai trò là ô (Khách hàng, Đọc ghi chú nội bộ) tại Mục 5.1, không phải tham số này; tư cách thành viên Đội ngũ phụ trách mở ghi chú nội bộ của riêng bản ghi đó khi ô này khác Không có (`BR-36.1`) |
 | — | `BR-19.6`, `BR-19.8`, `BR-30.5` (nhóm Tiếp thị), `BR-30.9`, `BR-30.10`, `BR-33.7` (nghĩa vụ xác minh và quy tắc hai người — không gồm thời hạn biện pháp phòng ngừa, cấu hình qua `CFG-33-04`), `BR-33.8` (phạm vi xóa và các sàn liên tài liệu — không gồm thời hạn lưu tệp nhập khẩu gốc, cấu hình qua `CFG-22-01`), `BR-34.4`, `BR-36.3`, `NFR-07` (giới hạn nội dung nhật ký), `NFR-14` | Bảo vệ đồng thuận tiếp thị, cưỡng chế đồng thuận trên mọi nguồn, giai đoạn khách đang trả tiền, xác minh chủ thể dữ liệu, phạm vi xóa, chốt bàn giao, chống xóa cứng ghi chú, giới hạn nội dung và quyền đọc nhật ký | Theo đúng quy tắc | — | — | **Cố định** — không cấu hình được ở mọi mức |
 
 *Ghi chú phân loại:* cụm "sàn bắt buộc" trong tên một quy tắc ở thân tài liệu nghĩa là **quy tắc có một phần không được nới lỏng**; nó không tự quyết định mức độ tự do ở bảng này. Quy tắc có phần điều chỉnh được thì xuất hiện ở một dòng tham số với mức "Có sàn bắt buộc"; quy tắc **toàn bộ** không có gì để điều chỉnh thì nằm ở hàng cuối với mức "Cố định". Ba quy tắc hỗn hợp có mặt ở cả hai: `BR-33.7` (nghĩa vụ xác minh cố định · thời hạn biện pháp phòng ngừa qua `CFG-33-04`), `BR-33.8` (phạm vi xóa cố định · thời hạn lưu tệp gốc qua `CFG-22-01`), `BR-30.5` (nhóm Tiếp thị luôn chịu chi phối · nhóm Liên lạc 1-1 cấu hình qua `CFG-30-01`).
 
 **Quản trị cấu hình:** mọi thay đổi tham số được ghi nhật ký (`NFR-07`) gồm người đổi, giá trị trước và sau, thời điểm. Thay đổi chỉ áp dụng **từ thời điểm đổi trở đi**, không hồi tố dữ liệu đã xử lý. Tham số mức "Có sàn bắt buộc" hiển thị rõ ngưỡng sàn trên màn hình cấu hình, và hệ thống từ chối giá trị vi phạm sàn ngay tại màn hình.
 
-**Hằng số vận hành cấp hệ thống (không cấu hình theo tenant):** thời hạn hiệu lực 24 giờ của đường tải tệp xuất và tệp báo cáo lỗi (`BR-25.2`, `BR-24.2`), thời hạn 7 ngày của quyền đọc tạm tự cấp (`BR-17.2c`), thời hạn xóa tài liệu xác minh danh tính 30 ngày (`BR-01.5b`), các giới hạn theo gói dịch vụ (`NFR-11`) và chu kỳ sao lưu 35 ngày (`NFR-10`) áp dụng thống nhất cho mọi không gian làm việc cùng gói.
+**Hằng số vận hành cấp hệ thống (không cấu hình theo tenant):** thời hạn hiệu lực 24 giờ của đường tải tệp xuất và tệp báo cáo lỗi (`BR-25.2`, `BR-24.2`), thời hạn 7 ngày của quyền đọc tạm tự cấp (`BR-17.2c`); hạn của đề nghị chuyển bản ghi theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `CFG-25-01` (`BR-34.1b`), thời hạn xóa tài liệu xác minh danh tính 30 ngày (`BR-01.5b`), các giới hạn theo gói dịch vụ (`NFR-11`) và chu kỳ sao lưu 35 ngày (`NFR-10`) áp dụng thống nhất cho mọi không gian làm việc cùng gói.
 
 ---
 
@@ -2828,8 +3506,8 @@ Phụ lục này ghi các mâu thuẫn nội tại đã được giải quyết 
 
 | # | Mâu thuẫn / câu hỏi | Cách xử lý đã chốt | Nơi có hiệu lực |
 | --- | --- | --- | --- |
-| C.1 | Phạm vi dữ liệu của vai trò Marketing | Ô (Khách hàng, Xem) của vai trò dựng sẵn Marketing mặc định Toàn workspace, các thao tác khác trên Khách hàng Không có; tenant siết lại bằng cách điều chỉnh đúng ô đó qua `CFG-05-02`. Mọi vai trò tự tạo cũng đặt được "xem rộng, sửa hẹp"; mỗi lượt đọc ngoài phạm vi phụ trách đều ghi nhật ký | Mục 5, `NFR-07` mục 13, `iam-tenant-authorization.md` BR-35.7, BR-35.9 |
-| C.2 | Quyền nhập khẩu dữ liệu của Marketing | Tham số `CFG-05-02`: mặc định cho phép khi được cấp quyền Nhập dữ liệu, bắt buộc khai báo cơ sở đồng thuận | Mục 5, `BR-30.4` |
+| C.1 | Phạm vi dữ liệu của vai trò Marketing | Ô (Khách hàng, Xem) của vai trò dựng sẵn Marketing mặc định Toàn workspace, các thao tác khác trên Khách hàng Không có; tenant siết lại bằng cách điều chỉnh đúng ô đó qua [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `CFG-29-02`. Mọi vai trò tự tạo cũng đặt được "xem rộng, sửa hẹp"; mỗi lượt đọc ngoài phạm vi phụ trách đều ghi nhật ký | Mục 5, `NFR-07` mục 13, [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-35.7`, `BR-35.9` |
+| C.2 | Quyền nhập khẩu dữ liệu của Marketing | Ô (Khách hàng, Nhập): Marketing mặc định Không có, Quản lý Marketing mặc định Đơn vị của mình (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `FEAT-29`); doanh nghiệp cấp thêm qua [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `CFG-29-02`; mọi lô bắt buộc khai báo cơ sở đồng thuận | Mục 5.1, `BR-30.4` |
 | C.3 | Mức độ phụ thuộc vào tài liệu Phân quyền khi chia sẻ bản ghi | Chia sẻ nới rộng phạm vi dữ liệu, không cấp năng lực vai trò (quyền hiệu lực là phần giao); không nới mức che trường; không vượt lượt chặn tường minh | `BR-35.1`, `BR-35.5`; [ADR-0007](../docs/adr/0007-record-sharing-and-permission-precedence-contract.md) |
 | C.4 | Hai sàn liên tài liệu cho việc xóa theo quyền chủ thể (Hộp thư Đa kênh, Vé hỗ trợ) | Hộp thư Đa kênh đã có quy tắc thỏa sàn; Vé hỗ trợ khi chưa có quy tắc thỏa sàn thì Biên bản bắt buộc nêu rõ phần chưa được bảo đảm; bổ sung trạng thái "Đang tạm dừng theo yêu cầu pháp lý"; tham chiếu liên tài liệu luôn ghi đủ tên tệp | `BR-33.8`; [ADR-0008](../docs/adr/0008-data-subject-deletion-contract-omnichat-tickets.md) |
 | C.5 | Xung đột trường nhiều giá trị (nhiều email/số điện thoại) khi gộp | Giữ toàn bộ kênh hợp lệ, người dùng chỉ định một kênh chính mỗi loại | `BR-19.10` |
@@ -2860,4 +3538,39 @@ Phụ lục này ghi các mâu thuẫn nội tại đã được giải quyết 
 | C.30 | Tính lại Bản ghi Chính khi hoàn tác gộp làm mất xác nhận Đồng ý của chính chủ trong thời gian gộp; chưa rõ lượt cấp kênh áp cho điểm đến nào và điểm đến của bản ghi phụ đi đâu | `BR-20.2` nhận thêm lượt nới mức là hành vi của chính chủ trên đúng điểm đến; lượt cấp kênh áp cho kênh, lượt theo địa chỉ áp cho địa chỉ; điểm đến của bản ghi phụ trở về bản ghi phụ | `BR-20.2`, `BR-18.2` |
 | C.31 | Kịch bản 16 ghi nhầm bản ghi; "mọi lượt" đi theo điểm đến mâu thuẫn bộ lọc trạng thái; gộp xét đổi chủ số theo kênh; hoàn tác đặt lại Hạn chế xử lý đã được chính chủ rút | `BR-20.2`: lượt đi theo làm lịch sử, trạng thái theo bộ lọc; điểm đến mới ở lại Bản ghi Chính; dỡ Hạn chế hợp lệ được áp; `BR-19.6` nhánh 3 xét theo cùng địa chỉ | `BR-19.6`, `BR-20.2` |
 | C.32 | Bảng tóm tắt gộp thiếu điều kiện "cùng địa chỉ"; gộp có thể bị hiểu là tạo lượt đồng thuận mới; dỡ Hạn chế xử lý khi hoàn tác chưa giới hạn theo bản ghi | Bảng `BR-18.2` sửa; gộp không tạo lượt mới; dỡ Hạn chế chỉ áp cho bản ghi vốn giữ kênh đã xác minh | `BR-18.2`, `BR-19.6`, `BR-20.2` |
-| C.33 | Chỉ vai trò Marketing có được "xem toàn bộ, không sửa"; doanh nghiệp không cấu hình được cho vai trò tự tạo | Mức truy cập theo từng thao tác trên từng loại dữ liệu cho mọi vai trò (ADR-0009); "Xem toàn bộ" là giá trị ô; nhật ký đọc ngoài phạm vi áp theo cấu hình ô, không theo tên vai trò | Mục 5, `CFG-05-02`, `NFR-07` mục 13 |
+| C.33 | Chỉ vai trò Marketing có được "xem toàn bộ, không sửa"; doanh nghiệp không cấu hình được cho vai trò tự tạo | Mức truy cập theo từng thao tác trên từng loại dữ liệu cho mọi vai trò (ADR-0009); "Xem toàn bộ" là giá trị ô; nhật ký đọc ngoài phạm vi áp theo cấu hình ô, không theo tên vai trò | Mục 5, [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `CFG-29-02`, `NFR-07` mục 13 |
+| C.34 | Tài liệu tự định nghĩa bốn mức phạm vi, trong đó "Đơn vị của mình" gồm cả đơn vị cấp dưới — khác định nghĩa của tài liệu Phân quyền, nên cùng một người có hai tập bản ghi khác nhau ở hai phân hệ | Dùng đúng năm mức và định nghĩa "Bản ghi thuộc một đơn vị" của [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) Mục 1.4, `FEAT-34`; tài liệu này không định nghĩa lại; vai trò Quản lý dùng mức Đơn vị và các đơn vị con | `BR-01.3`, `BR-01.4`, Mục 1.4, Mục 5 |
+| C.35 | Tham số điều chỉnh ô vai trò dựng sẵn nằm ở tài liệu này trong khi bản chất là tham số chung của mọi loại dữ liệu | Chuyển về [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `CFG-29-02`; bỏ khỏi Phụ lục B, giữ một dòng dẫn chiếu kèm sàn của phân hệ; mọi chỗ dẫn chiếu trong tài liệu trỏ tới tham số đó | Phụ lục B, Mục 5, Kịch bản 22 |
+| C.36 | Cột vai trò của ma trận dùng tên tự đặt (Quản lý Kinh doanh, Nhân viên Marketing…) không khớp danh sách vai trò dựng sẵn; thiếu ba vai trò dựng sẵn | Cột ma trận dùng đúng tên vai trò dựng sẵn của [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `FEAT-29`; Mục 2.2 ghi tên gọi trong quy tắc tương ứng với vai trò nào; khai báo đủ ô cho Chỉ xem bản ghi được giao, Kiểm toán, Kiểm toán quyền | Mục 2.2, Mục 5 |
+| C.37 | Ma trận mặc định lệch mức đặt sẵn của tài liệu Phân quyền (Nhân viên Kinh doanh chỉ xem của mình, Nhân viên Hỗ trợ tạo được khách hàng, Marketing mặc định nhập/xuất) | Căn theo mức mặc định chung của [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `FEAT-29`; phân hệ khai báo chi tiết theo loại dữ liệu và thao tác đặc thù. Hai điểm chi tiết có chủ đích: Nhân viên Kinh doanh có (Khách hàng, Xuất) = Chỉ của mình vì `BR-25.5`; Marketing có thao tác đặc thù Gắn thẻ phân loại và Ghi nhận đồng thuận ở mức Toàn workspace vì đây là công việc phân khúc và đồng thuận cốt lõi của vai trò | Mục 5.1 |
+| C.38 | Nhiều năng lực gắn cứng với tên vai trò ("Quản lý Kinh doanh trở lên", "Marketing không đọc ghi chú", "Marketing chỉ được thêm làm Quan sát", "riêng vai trò Marketing không xem chỉ số tài chính", người phê duyệt xuất theo cặp vai trò) nên vai trò tự tạo không cấu hình được tương đương | Mọi năng lực là ô (gồm thao tác đặc thù tại Mục 5.1) hoặc quyền quản trị của phân hệ (Mục 5.2), áp như nhau cho mọi vai trò; phê duyệt và khai báo thay đi theo quan hệ quản lý trực tiếp; quy ước đọc tên vai trò tại Mục 2.2 | Mục 2.2, Mục 5, `BR-02.2`, `BR-07.4`, `BR-12.4`, `BR-14.2`, `BR-15.4`, `BR-25.4`, `BR-31.5`, `BR-31.8`, `BR-32.4`, `BR-35.1`, `BR-36.1` |
+| C.39 | Hàng đợi "Chưa phân công" không thuộc đơn vị nào; khách hàng tiềm năng chưa có người phụ trách không thuộc phạm vi của ai nên đội kinh doanh không thấy để nhận | Hàng đợi theo đơn vị tiếp nhận của từng nguồn; khách hàng tiềm năng là bản ghi chờ phân công; thành viên đơn vị tiếp nhận thấy và nhận việc bằng ô Gán; khai báo giai đoạn chưa chốt và không có chuyển hàng đợi (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-35.10` – `BR-35.14`) | `BR-31.4`, `BR-31.9`, `BR-01.3` |
+| C.40 | Phân bổ tự động có thể giao khách cho người ngoài phạm vi của người cấu hình quy tắc, và tiếp tục chạy khi người đó đã bị thu hẹp quyền hay nghỉ việc | Phân bổ là thao tác Gán thay người chịu trách nhiệm quy tắc, chịu ô Gán và phần giao của phạm vi lúc thiết lập với phạm vi hiện tại; quy tắc tạm dừng khi người đó tạm ngưng hay rời đi | `BR-31.10` |
+| C.41 | Nhập tệp không quy định người phụ trách là người chưa vào workspace, không có đường đưa bản ghi vào hàng đợi | Bản ghi giữ chỗ thuộc Đơn vị chính ghi trong lời mời, chặn với mọi người trừ nhóm ngoại lệ; cột Đơn vị tiếp nhận đưa bản ghi vào hàng đợi; cột Người phụ trách chịu ô Gán | `BR-23.5`, `BR-24.2` |
+| C.42 | Chặn vô hiệu hóa người dùng khi còn bản ghi trái quy tắc tạm ngưng luôn thực hiện ngay của tài liệu Phân quyền | Tạm ngưng không bị chặn; xử lý bản ghi (giữ nguyên, chuyển tạm, trả về hàng đợi) là thao tác riêng sau đó; chỉ gỡ khỏi workspace mới bị chặn khi còn bản ghi; bỏ danh sách "Chờ bàn giao lại" | `BR-34.4`, Kịch bản 14 |
+| C.43 | Thao tác thu hồi chia sẻ hay tạm ngưng có thể bị chặn khi nhật ký tạm lỗi | Thu hẹp không bị chặn, nhật ký ghi bù; nới rộng vẫn đóng khi lỗi ([ADR-0010](../docs/adr/0010-revocation-not-blocked-by-audit-failure.md)) | `NFR-07`, `BR-35.6`, `BR-34.4` |
+| C.44 | Trường nhạy cảm của phân hệ chưa được khai báo với khung che dữ liệu dùng chung; trợ lý AI có thể nhận giá trị đầy đủ khi người dùng ở cột (A) | Khai báo trường nhạy cảm của hệ thống, mẫu che riêng, quyền xem đầy đủ; Doanh nghiệp không có trường nhạy cảm của hệ thống; AI luôn nhận giá trị đã che (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `FEAT-40`) | `BR-04.7` |
+| C.45 | Sàn của nhóm Định danh KYC và quyền đọc nhật ký kiểm toán được tài liệu Phân quyền dẫn chiếu bằng mã | Giữ nguyên mã `BR-01.5b` và `NFR-14` là Sàn bắt buộc của phân hệ; bổ sung xuất nhóm KYC là năng lực không cấp được qua vai trò | `BR-01.5b`, `NFR-14`, `BR-25.4` |
+| C.46 | "Bắt buộc chỉ định theo pháp luật", "sàn pháp lý" ngầm khóa nghĩa vụ theo một quốc gia | Doanh nghiệp tự xác định nghĩa vụ áp dụng cho mình và chịu trách nhiệm; tài liệu dùng "Sàn bắt buộc" do phân hệ khai báo | Mục 2.2, `BR-30.5`, Phụ lục B |
+| C.47 | Ngưỡng 14 ngày không đăng nhập để tự bật trạng thái không khả dụng là con số cố định, trong khi nhịp làm việc mỗi doanh nghiệp khác nhau | Thành tham số `CFG-34-02`, mặc định 14 ngày | `BR-34.6` |
+| C.48 | Thẩm quyền đổi tham số ghi theo tên vai trò | Ghi theo quyền quản trị của phân hệ, kèm vai trò dựng sẵn mặc định trong ngoặc | Phụ lục B, Kịch bản 22 |
+| C.49 | Ô Gán cho giao bản ghi cho bất kỳ ai, kể cả ra ngoài phạm vi của người gán; ô Gán mức Chỉ của mình hiểu là được giao bản ghi của mình | Theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-25.6`: chỉ giao sang người mà bản ghi vẫn nằm trong mức của người gán; Chỉ của mình chỉ nhận việc về mình; điều kiện người nhận tập trung tại `BR-34.1`; Người phụ trách luôn có hai đường — trả về hàng đợi, đề nghị chuyển | `BR-34.1`, `BR-34.1b`, `BR-31.4`, `BR-31.9` (c) |
+| C.50 | Đề nghị chuyển giới hạn "cùng nhóm/đơn vị" mơ hồ và không quy định điều kiện của người nhận, hạn của đề nghị | *(Đã thay bởi C.60)* Người nhận tự đạt điều kiện nhận việc lúc chấp nhận; hạn theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `CFG-25-01` | `BR-34.1b`, Phụ lục B |
+| C.51 | Yêu cầu phát sinh của khách có người phụ trách đang tạm ngưng bị phân bổ lại cho người khác, trái quy tắc giữ nguyên người phụ trách khi tạm ngưng | Không phân bổ lại; yêu cầu sang người xử lý thay hoặc quản lý trực tiếp; bỏ nhánh "đã rời" vì không xảy ra | `BR-31.6`, `BR-34.4` (b) |
+| C.52 | Gắn vào Cơ hội sẵn có khi chuyển đổi xét cả Cơ hội ngoài phạm vi, tự chọn khi có nhiều Cơ hội; chuyển đổi được bản ghi chưa ai nhận | Chỉ xét Cơ hội trong ô (Cơ hội, Sửa) của người chuyển đổi, bắt buộc chọn khi có nhiều, giữ Người phụ trách Cơ hội (thống nhất [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) `BR-33.1`); bản ghi chưa có Người phụ trách phải được nhận việc trước | `BR-14.3`, `BR-14.6` |
+| C.53 | Hoàn tác Chuyển đổi xóa mềm Cơ hội và Doanh nghiệp chỉ dựa trên quyền trên Khách hàng; xóa Cơ hội khi hoàn tác lại kích hoạt chuyển Nurturing | Mỗi thực thể bị xóa mềm hay gỡ liên kết cần ô của chính loại dữ liệu đó, thiếu thì không hoàn tác một phần; `BR-12.3b` không áp cho hoàn tác | `BR-14.2`, `BR-14.5`, `BR-12.3b` |
+| C.54 | Chuyển giao kèm Cơ hội và Vé chỉ xét quyền trên Khách hàng; vé đổi đơn vị theo người phụ trách | Cần ô Gán của từng loại dữ liệu; vé là bản ghi công việc ở lại đơn vị tiếp nhận; thực thể không đủ điều kiện vào danh sách bỏ qua | `BR-34.3`, Kịch bản 14 |
+| C.55 | Ô mở khóa nhóm Định danh KYC chưa có trần và chưa có thẩm quyền bổ sung khi cấp | Trần Chỉ của mình; mỗi lượt cấp cần Người phụ trách Bảo vệ Dữ liệu phê duyệt; thu hẹp tự do | `BR-04.7`, Mục 5.1 |
+| C.56 | Miền thời hạn lưu KYC 6–24 tháng khóa thay doanh nghiệp một con số | Miền 1–120 tháng; sàn chỉ là phải có thời hạn và hết hạn buộc tự khử định danh | `CFG-01-03`, `BR-01.5b` |
+| C.57 | Lô nhập chạy nền tiếp tục với quyền cũ sau khi người nhập bị thu hẹp quyền hay tạm ngưng | Lô là tiến trình chạy thay người nhập theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-35.8` | `BR-22.1`, `BR-24.2` |
+| C.58 | Chuyển kèm thực thể con có thể đổi người phụ trách cơ hội đã đóng, và phần cơ hội không theo quy tắc bàn giao của phân hệ Cơ hội | Cơ hội đã đóng không bao giờ đổi người phụ trách; phần cơ hội tuân [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) `BR-37.1` (lý do, thông báo đơn vị nhận, việc nhắc và người theo dõi đi theo) và quy tắc đích trên ô (Cơ hội, Gán người phụ trách) | `BR-34.1`, `BR-34.3`, `CFG-34-01` |
+| C.59 | Chuyển đổi "gán Người phụ trách thống nhất" là đường vòng của ô Gán | Liên hệ giữ người phụ trách; Doanh nghiệp, Cơ hội tạo mới do người chuyển đổi phụ trách; thay đổi khác qua ô Gán | `BR-14.7` |
+| C.60 | Đề nghị chuyển của Người phụ trách bị giới hạn trong cùng đơn vị và có thêm quyền thu hồi riêng của quản lý, khác điều kiện nhận việc của tài liệu Phân quyền và của phân hệ Cơ hội | Người nhận tự đạt điều kiện nhận việc của [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-25.6` (xem được qua chia sẻ và Đội ngũ phụ trách) cộng ô Sửa khác Không có; không giới hạn đơn vị; báo quản lý trực tiếp của người đề nghị, không có thời hạn thu hồi; đề nghị chỉ chuyển bản ghi khách hàng hoặc doanh nghiệp | `BR-34.1b` |
+| C.61 | Điều kiện hoàn tác chuyển đổi nằm rải ở hai phân hệ (quyết định chung với phân hệ Cơ hội) | `BR-14.5` là danh sách duy nhất, gồm Liên hệ chưa có hoạt động và gỡ nguồn gốc bổ sung; [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) `BR-04.5` dẫn chiếu; Cơ hội xóa do hoàn tác không khôi phục được | `BR-14.2`, `BR-14.5`, Mục 5.2 |
+| C.62 | Thông báo và đề xuất trả bản ghi khi người phụ trách tạm ngưng chưa thống nhất với phân hệ Cơ hội | Giữ nguyên thì báo quản lý trực tiếp hoặc quản lý tạm thời, không báo người tạm ngưng; khi kích hoạt lại chỉ đề xuất trả bản ghi người xử lý thay vẫn đang phụ trách | `BR-31.6`, `BR-34.4` (b) |
+| C.63 | Sàn ô mở khóa KYC chưa nói có áp lên Người có toàn quyền hay không | Áp cả lên Người có toàn quyền: chỉ mở khóa từng bản ghi, có nhật ký và hạn mức | `BR-04.7` |
+| C.64 | Quản lý không đồng ý với một lượt chuyển theo đề nghị mà không có quyền thu hồi riêng thì không biết làm gì | Giao lại bằng ô Gán theo `BR-34.1`; Mục 5 không ghi quyền thu hồi | Mục 5.2, 5.3 |
+| C.65 | Chuyển phòng của Người phụ trách không có quy tắc cho Khách hàng và Doanh nghiệp | Ba lựa chọn tường minh không chọn sẵn; chặn "đi theo người" khi mất ô Sửa; thống nhất [`deals-pipeline-srs.md`](./deals-pipeline-srs.md) `BR-37.3` | `BR-34.9` |
+| C.66 | "Đề nghị chuyển giao" của người ngoài phạm vi trùng tên với đề nghị chuyển của Người phụ trách; ai chấp thuận chưa rõ | Đổi tên thành "Yêu cầu nhận bàn giao"; chỉ người có ô Gán đạt `BR-34.1` với người yêu cầu là người nhận mới chấp thuận; Người phụ trách chỉ có Gán Chỉ của mình chuyển tiếp lên quản lý | `BR-17.2c`, `BR-17.3`, `BR-35.3b` |
+| C.67 | Cảnh báo trùng và màn hình ngoài phạm vi lộ thông tin nhận diện của bản ghi bị chặn hay giữ chỗ | Chỉ nhãn "Bị hạn chế truy cập" và "Đề nghị gộp" tới Người có toàn quyền (theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-39.4`) | `BR-17.3` |
+| C.68 | Điều kiện người nhận đòi "ô Xem bao phủ bản ghi"; quy trình rời workspace đòi người thực hiện có ô Gán | Ô Xem khác Không có như [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-25.6`; trong rời workspace và tạm ngưng chỉ áp điều kiện người nhận theo [`iam-tenant-authorization.md`](./iam-tenant-authorization.md) `BR-43.2`, `BR-43.4` | `BR-34.1`, `BR-34.4` (c) |

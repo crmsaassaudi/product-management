@@ -268,7 +268,7 @@ Mục này không thêm yêu cầu nào. Nó nêu **quan hệ phụ thuộc bắ
 - BR-03.3: Tiền tệ và múi giờ cắt kỳ, một khi đăng ký trả phí đã kích hoạt, KHÔNG ĐƯỢC thay đổi trong suốt vòng đời đăng ký đó — đổi được thì mọi hóa đơn lịch sử mất tính so sánh và ranh giới kỳ trở nên tùy tiện.
 - BR-03.4: Thông tin xuất hóa đơn PHẢI sửa được bởi doanh nghiệp cho tới trước thời điểm kỳ được chốt. Sau khi hóa đơn đã phát hành, sửa thông tin chỉ áp dụng cho các hóa đơn về sau; hóa đơn cũ điều chỉnh theo FEAT-23.
 - BR-03.5: Người phụ trách thanh toán PHẢI chỉ định được và PHẢI có thể là một người khác Chủ workspace, kể cả một người không tham gia vận hành CRM hằng ngày. Nếu chưa chỉ định ai, Chủ workspace mặc nhiên giữ vai trò này — hệ thống KHÔNG ĐƯỢC ở trạng thái không có ai nhận thông báo về tiền.
-- BR-03.6: Xóa hoặc vô hiệu hóa người dùng đang giữ vai trò Người phụ trách thanh toán PHẢI buộc chỉ định người thay thế trước khi hoàn tất.
+- BR-03.6: Gỡ khỏi workspace hoặc xoá người dùng đang giữ vai trò Người phụ trách thanh toán PHẢI buộc chỉ định người thay thế trước khi hoàn tất. Tạm ngưng hoặc khoá tài khoản người đó KHÔNG bị chặn: vai trò tạm về Chủ workspace theo BR-03.5 và Chủ workspace được thông báo để xác nhận hoặc chỉ định người khác (`iam-tenant-authorization.md` `FEAT-42`) — cắt truy cập khẩn cấp không được chờ tìm người thay.
 - BR-03.7: Hồ sơ thanh toán và mọi dữ liệu tài chính gắn với nó chỉ hiển thị cho các vai trò được phép theo Mục 5; Thành viên thường KHÔNG ĐƯỢC thấy phí, hóa đơn hay tình trạng nợ của doanh nghiệp mình.
 
 **Tiêu chí chấp nhận:**

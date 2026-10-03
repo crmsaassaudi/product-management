@@ -34,21 +34,71 @@ _Avoid_: "Required" dùng lẫn cho cả hai trường hợp mà không phân bi
 
 ## IAM & Phân quyền Workspace
 
-**Quyền Ủy thác (Delegated Grant Authority)**:
-Một quyền hệ thống riêng biệt, do Owner/Admin chủ động cấp, cho phép người giữ nó gán các Vai trò/Nhóm đã tồn tại sẵn trong workspace cho thành viên khác mà không bị giới hạn bởi năng lực quyền hạn của chính bản thân (miễn trừ nguyên tắc "không vượt ceiling"). Không áp dụng cho việc tạo Vai trò/Nhóm mới, không áp dụng cho Cấp quyền tạm thời, và không cho phép thay đổi Cấp bậc thành viên (Owner/Admin/Member).
-_Avoid_: "Quyền tạm thời"/"Role Assignment" (tên khác của một tính năng đã có sẵn — cấp có thời hạn, cần phê duyệt; Quyền Ủy thác là cấp vĩnh viễn, không cần phê duyệt, chỉ miễn trừ ràng buộc ceiling). Xem [ADR-0002](./docs/adr/0002-delegated-grant-authority-ceiling-exception.md).
+Nguồn: [`srs/iam-tenant-authorization.md`](./srs/iam-tenant-authorization.md) v5 Mục 1.4.
+
+**Thành viên / Trạng thái thành viên**:
+Quan hệ giữa một tài khoản (duy nhất theo email toàn hệ thống) và một workspace; mọi thuộc tính phân quyền gắn với thành viên. Trạng thái: Đang chờ chấp nhận / Chờ duyệt gia nhập / Đang hoạt động / Tạm ngưng / Đã rời.
+_Avoid_: "Vô hiệu hoá người dùng" — dùng Tạm ngưng (giữ cấu hình, chặn truy cập trong workspace) hoặc Gỡ (Đã rời). Khoá tài khoản là thao tác toàn hệ thống của nhà cung cấp.
 
 **Cấp bậc thành viên (Membership Tier)** vs **Vai trò (Role)**:
-Hai trục hoàn toàn độc lập trong một workspace — Cấp bậc thành viên (Owner/Admin/Member) quyết định có toàn quyền hay không; Vai trò là tập hợp quyền hạn chi tiết chỉ có ý nghĩa ở cấp Member. Một thay đổi tác động tới trục này không mặc nhiên tác động tới trục kia.
-_Avoid_: Dùng lẫn "vai trò" để chỉ cả hai trục trong văn bản nghiệp vụ (ví dụ khi liệt kê phạm vi một nhật ký/audit log) — luôn nêu rõ đang nói tới Cấp bậc thành viên hay Vai trò.
+Hai trục độc lập. Cấp bậc (Chủ sở hữu / Quản trị viên / Thành viên) quyết định có toàn quyền hay không; Vai trò là ma trận ô cộng các quyền quản trị, chỉ có ý nghĩa ở cấp Thành viên. **Người có toàn quyền** là cách gọi chung Chủ sở hữu và Quản trị viên.
+_Avoid_: Dùng lẫn "vai trò" để chỉ cả hai trục; coi "Quản trị viên" là một vai trò.
 
 **Mức truy cập (Access Level)**:
-Giá trị của một ô trong ma trận quyền của Vai trò; mỗi ô là một cặp (loại dữ liệu, thao tác), ví dụ (Khách hàng, Sửa). Nhận một trong các mức Không có / Chỉ của mình / Của mình + cấp dưới và đơn vị của mình / Cả nhánh đơn vị / Toàn workspace. Mỗi thao tác dùng mức của chính ô đó, nên một vai trò có thể "xem rộng, sửa hẹp". Mức Sửa không bao giờ rộng hơn mức Xem cùng loại dữ liệu. Xem `iam-tenant-authorization.md` FEAT-25, BR-35.7 và [ADR-0009](./docs/adr/0009-access-level-per-action-and-record-type.md).
-_Avoid_: Nói "phạm vi dữ liệu của vai trò" như một giá trị duy nhất cho mọi thao tác, và gắn cứng quyền đặc biệt cho một vai trò cụ thể (ví dụ "Marketing được xem toàn bộ") thay vì nêu giá trị của ô tương ứng.
+Giá trị của một ô (loại dữ liệu, thao tác) trong ma trận của Vai trò: Không có / Chỉ của mình / Đơn vị của mình (của mình + cấp dưới trực tiếp và gián tiếp + Đơn vị chính và kiêm nhiệm) / Đơn vị và các đơn vị con / Toàn workspace. Thao tác Tạo chỉ có Có / Không có. Mỗi thao tác dùng mức của chính ô đó; mức của thao tác khác không rộng hơn mức Xem. Xem `FEAT-34`, `BR-35.7`, [ADR-0009](./docs/adr/0009-access-level-per-action-and-record-type.md).
+_Avoid_: "Phạm vi dữ liệu của vai trò" như một giá trị duy nhất; gắn cứng quyền cho một vai trò có tên.
+
+**Mức nền & Công khai đọc**:
+Mức workspace dùng cho ô mà không vai trò nào khai báo; công khai đọc là nguồn nới phạm vi chỉ cho thao tác Xem. Nới rộng chỉ Người có toàn quyền làm được. Xem `FEAT-34`.
+
+**Năng lực quyền hạn (trần)**:
+Toàn bộ quyền hiệu lực của một người, dùng làm trần khi người đó làm tăng quyền của bất kỳ ai. Khi làm trần cho lượt cấp vĩnh viễn thì không tính quyền tạm thời. Xem Nguyên tắc 1.
+_Avoid_: "Ceiling" trong văn bản nghiệp vụ.
+
+**Thu hẹp / Nới rộng / Trung tính**:
+Phân loại thao tác thay đổi quyền. Gỡ một hạn chế là nới rộng. Thao tác thu hẹp có hiệu lực từ thao tác kế tiếp và không bao giờ bị chặn bởi sự cố nhật ký (ghi bù, [ADR-0010](./docs/adr/0010-revocation-not-blocked-by-audit-failure.md)).
+
+**Thứ tự hợp nhất quyền**:
+Mức theo ô → nguồn nới phạm vi (công khai đọc, phụ trách đơn vị, chính sách Cho phép, lượt cấp trên bản ghi; không mở ô Không có) → nguồn chặn (chính sách Từ chối, lượt chặn, Sàn bắt buộc) → phân quyền trường và che. Xem `BR-39.6`.
+
+**Sàn bắt buộc**:
+Ràng buộc không cấu hình vượt được qua vai trò, nhóm, lượt cấp hay điều chỉnh — kể cả với Người có toàn quyền khi sàn nêu rõ. Do SRS phân hệ khai báo hoặc doanh nghiệp tự đặt; hệ thống không tự duy trì quy định pháp lý của quốc gia nào.
+
+**Quản lý trực tiếp** vs **Người phụ trách đơn vị**:
+Quản lý trực tiếp là cấp trên được khai báo của một thành viên; chuỗi quản lý xác định cấp dưới. Người phụ trách đơn vị là người phụ trách chính hoặc đồng phụ trách một đơn vị, có thể được xem toàn nhánh khi `CFG-34-02` bật.
+_Avoid_: Suy quản lý trực tiếp từ cây đơn vị.
+
+**Đơn vị chính / Đơn vị kiêm nhiệm**:
+Mỗi thành viên có tối đa một Đơn vị chính và nhiều Đơn vị kiêm nhiệm (mặc định Chỉ xem: chỉ nới thao tác Xem và nhận việc từ hàng đợi; Đầy đủ: mọi thao tác). Bản ghi thuộc đơn vị theo Người phụ trách hiện tại (qua Đơn vị chính hoặc kiêm nhiệm Đầy đủ). Ngoại lệ: **bản ghi công việc** của hàng đợi (vé, hội thoại) thuộc đơn vị tiếp nhận suốt vòng đời; **bản ghi chờ phân công** (khách hàng tiềm năng từ biểu mẫu) thuộc đơn vị tiếp nhận tới khi có người phụ trách; đơn vị tiếp nhận mặc định theo loại nguồn do Người có toàn quyền đặt (`BR-35.10` – `BR-35.12`).
+
+**Vai trò gợi ý của đơn vị / Chế độ Cơ bản**:
+Vai trò được chọn sẵn khi mời hoặc chuyển người vào đơn vị (`BR-21.4`). Chế độ Cơ bản cho mỗi loại dữ liệu chọn một mức đặt sẵn — Không truy cập / Chỉ xem đơn vị / Chỉ dữ liệu của mình / Xem đơn vị, sửa của mình / Quản lý dữ liệu đơn vị / Toàn quyền (`BR-25.4`).
+
+**Quyền Ủy thác (Delegated Grant Authority)**:
+Quyền do Người có toàn quyền cấp trực tiếp cho từng người, kèm danh sách vai trò được giao; người giữ gán được các vai trò trong danh sách (và thêm vào nhóm chỉ mang chúng) vượt năng lực của chính mình. Không truyền tiếp, không nằm trong vai trò, không áp cho cấp bậc, quyền tạm thời hay tạo vai trò. Xem `FEAT-45`, [ADR-0002](./docs/adr/0002-delegated-grant-authority-ceiling-exception.md).
+_Avoid_: Nhầm với Quyền tạm thời (có hạn, cần phê duyệt).
+
+**Chức danh trách nhiệm & Người duyệt thứ hai**:
+Chức danh (Người phụ trách Bảo vệ Dữ liệu, Người phụ trách thanh toán, Người phụ trách bảo mật) không tự cấp quyền. Người duyệt thứ hai luôn khác người thực hiện; thiếu người mang chức danh thì là một Người có toàn quyền khác. Xem `FEAT-47`.
+
+**Phiên hỗ trợ của nhà cung cấp**:
+Cách duy nhất nhân sự vận hành nền tảng vào dữ liệu một workspace: có thời hạn, có mức do doanh nghiệp chọn, ghi vào nhật ký của workspace, không bao giờ đổi cấu hình quyền. Xem `FEAT-08`.
+
+**Liên kết mời / Tự gia nhập theo tên miền**:
+Hai cách đưa nhiều người vào nhanh; mặc định cần duyệt, chịu trần năng lực của người tạo, đi theo người tạo. Tự gia nhập chỉ với tên miền email đã xác minh. Xem `FEAT-50`.
+
+**Tách biệt nhiệm vụ / Rà soát quyền định kỳ**:
+Cặp quyền không được cùng nằm trong tay một người (không áp lên Người có toàn quyền); đợt rà soát giao cho quản lý xác nhận Giữ / Thu hồi, kết quả là biên bản không sửa được. Xem `FEAT-46`, `FEAT-48`.
+
+**Đọc ngoài phạm vi phụ trách**:
+Lượt xem được phép chỉ nhờ mức Xem rộng hơn mức Sửa của chính người đó; phân hệ ghi nhật ký sự kiện này. Xem `BR-35.9`.
+
+**Nhóm**:
+Tập thành viên do doanh nghiệp tạo để cấp vai trò tập thể và gán cấu hình Object Manager; cùng thực thể với "Nhóm quyền" của Object Manager. Không phải sơ đồ tổ chức.
 
 **Nguyên tắc đóng cho Nhật ký cấu hình quyền (Closure Rule)**:
-Nguyên tắc xác định phạm vi "Nhật ký thay đổi cấu hình quyền" (audit log Fail-closed, lưu 2 năm): bất kỳ thao tác nào làm thay đổi ai-được-làm-gì hoặc ai-thấy-gì trong workspace đều mặc định thuộc diện này, trừ thao tác xem trước/mô phỏng và thao tác chỉ đọc. Dùng nguyên tắc này thay vì liệt kê tĩnh để tránh bỏ sót tính năng phân quyền mới phát sinh sau này.
-_Avoid_: Coi danh sách ví dụ minh hoạ (Vai trò, Nhóm, Đơn vị tổ chức...) là danh sách đóng kín — đó chỉ là ví dụ, nguyên tắc mới là điều khoản ràng buộc thật. Xem [ADR-0003](./docs/adr/0003-permission-config-audit-log-fail-closed.md) cho quyết định Fail-closed đi kèm.
+Mọi thao tác thay đổi ai-được-làm-gì hoặc ai-thấy-gì mặc định thuộc nhật ký thay đổi cấu hình quyền (thời hạn lưu `CFG-41-02`), trừ xem trước, mô phỏng và chỉ đọc. Đóng khi lỗi cho thao tác nới rộng và trung tính; ghi bù cho thao tác thu hẹp. Xem `BR-41.4` – `BR-41.6`, [ADR-0003](./docs/adr/0003-permission-config-audit-log-fail-closed.md), [ADR-0010](./docs/adr/0010-revocation-not-blocked-by-audit-failure.md).
+_Avoid_: Coi danh sách ví dụ ở `BR-41.4` là danh sách đóng kín.
 
 ## Omnichat
 
@@ -140,50 +190,44 @@ _Avoid_: Gộp vai trò này vào Chủ workspace — chúng có thể là hai n
 
 ## Onboarding & Khởi tạo Không gian làm việc
 
-**Quy trình Đăng ký Tự phục vụ (Self-Serve / PLG Onboarding)**:
-Quy trình nhiều bước (multi-step wizard) cho phép khách hàng tự đăng ký tài khoản, khai báo thông tin doanh nghiệp, chọn mục tiêu sử dụng và chờ hệ thống tự động khởi tạo không gian làm việc (workspace) mà không cần sự can thiệp thủ công của đội ngũ vận hành nền tảng.
+Nguồn: [`srs/onboarding-srs.md`](./srs/onboarding-srs.md) v3 Mục 1.4.
 
-**Quy trình Khởi tạo Doanh nghiệp (Enterprise / SLG Onboarding)**:
-Quy trình khởi tạo không gian làm việc dành cho khách hàng doanh nghiệp lớn thông qua cổng quản trị nội bộ hoặc API hệ thống, tạo trước tài khoản quản trị chưa có mật khẩu và gửi email kích hoạt bảo mật để thiết lập mật khẩu lần đầu.
+**Đăng ký tự phục vụ** vs **Tạo hộ**:
+Hai kênh tạo workspace. Tự phục vụ: người đăng ký xác minh email rồi tạo workspace và trở thành Chủ sở hữu. Tạo hộ: nhà cung cấp tạo theo hợp đồng; Chủ sở hữu do khách hàng chỉ định bằng văn bản, ở trạng thái Đang chờ chấp nhận; có thể có giai đoạn triển khai trước kích hoạt (chỉ cấu hình, không dữ liệu, không gửi lời mời).
 
-**Tên miền phụ tổ chức (Tenant Subdomain / Alias)**:
-Chuỗi định danh duy nhất toàn hệ thống đại diện cho không gian làm việc của một tổ chức trên Internet (ví dụ: `acme.crmsaudi.dev`). Có thể được sinh tự động từ tên doanh nghiệp (hỗ trợ chuyển đổi tiếng Việt có dấu) hoặc do người dùng tự chỉnh sửa theo quy chuẩn URL-safe.
+**Đăng ký dở dang**:
+Tài khoản đã tạo nhưng chưa hoàn tất workspace. Được nhắc rồi dọn sau thời hạn nền tảng `PLT-02`; không dọn nếu đã là thành viên workspace khác. Tài khoản chưa xác minh không giữ chỗ email.
+_Avoid_: "Tài khoản mồ côi".
 
-**Chuỗi giao dịch bù trừ (Provisioning Saga & Compensation Rollback)**:
-Mô hình điều phối chuỗi tác vụ khởi tạo không gian làm việc phân tán qua nhiều hệ thống độc lập (Keycloak, MongoDB, crm-bot, Redis). Nếu một bước gặp lỗi không thể khắc phục, hệ thống sẽ thực thi các tác vụ hoàn tác (compensating transactions) theo thứ tự ngược lại để dọn sạch tài nguyên rác và đảm bảo tính nhất quán dữ liệu.
+**Tên miền phụ / Giữ chỗ tên miền phụ / Tên miền riêng / Tên miền email đã xác minh**:
+Tên miền phụ: địa chỉ của workspace dưới tên miền nền tảng, duy nhất, được giữ chỗ trong lúc đăng ký. Tên miền riêng: tên miền của doanh nghiệp trỏ về workspace, phải chứng minh sở hữu, có trạng thái Mất xác minh. Tên miền email đã xác minh: tên miền email (congty.vn) mà workspace đã chứng minh sở hữu, mở tự gia nhập và nhận diện doanh nghiệp trong thư mời.
+_Avoid_: Dùng lẫn tên miền riêng (để truy cập) với tên miền email (để nhận diện người).
 
-**Khởi tạo Cấu hình Nền tảng (Baseline Seeding)**:
-Tập hợp các bước tự động thiết lập cấu hình nghiệp vụ chuẩn ngay sau khi không gian làm việc được tạo thành công, bao gồm thiết lập CRM mặc định, quy trình bán hàng (Deal Pipeline & Stages), quy trình hỗ trợ (Ticket Workflow), quy tắc điều phối (Assignment Rules), vai trò hệ thống dựng sẵn (System Roles), đơn vị tổ chức gốc (HQ) và nhóm chủ sở hữu (Owner Group).
+**Khởi tạo / Sẵn sàng**:
+Khởi tạo tạo workspace toàn vẹn; Sẵn sàng khi đủ Chủ sở hữu, khung phân quyền, trạng thái thương mại, tên miền phụ, dịch vụ đi kèm bắt buộc. Thất bại thì dọn sạch, giải phóng tên miền phụ. Cấu hình theo ngành và dữ liệu mẫu không thuộc điều kiện Sẵn sàng.
 
-**Dữ liệu Mẫu Định hướng (Tailored Sample Data)**:
-Tập hợp dữ liệu mẫu (Khách hàng, Doanh nghiệp, Cơ hội bán hàng) được khởi tạo tự động phù hợp với mục tiêu sử dụng (`onboardingGoal`) mà người dùng đã chọn trong quy trình đăng ký, giúp rút ngắn thời gian tiếp cận giá trị sản phẩm (Time-to-Value).
+**Mẫu ngành / Mẫu đội ngũ**:
+Mẫu ngành: phễu, quy trình vé và dữ liệu mẫu cho một ngành; áp về sau chỉ thêm, không sửa dữ liệu đang có. Mẫu đội ngũ: đội gợi ý theo quy mô và mục tiêu, mỗi đội là một đơn vị tổ chức kèm vai trò gợi ý.
 
-**Tài khoản Khởi tạo Dở dang / Mồ côi (Orphan Account)**:
-Tài khoản người dùng đã bắt đầu bước 1 của quy trình đăng ký nhưng rời bỏ mà không hoàn tất việc tạo không gian làm việc. Được hệ thống tự động quét và thu hồi định kỳ sau 24 giờ để tránh lãng phí định danh và tài nguyên.
+**Dữ liệu mẫu**:
+Bản ghi minh hoạ mang nhãn Mẫu, không tính vào báo cáo, hạn mức, tiêu dùng và không kích hoạt gửi ra ngoài; xoá được một lần, có lựa chọn giữ lại bản ghi mẫu đã sửa hoặc đã gắn với dữ liệu thật.
 
-**Bộ chọn Không gian làm việc (Workspace Switcher / Tenant Picker)**:
-Giao diện hiển thị danh sách tất cả các không gian làm việc mà một người dùng đang là thành viên, cho phép chuyển đổi qua lại giữa các tổ chức hoặc tự động điều hướng trực tiếp vào không gian làm việc nếu người dùng chỉ thuộc đúng 1 tổ chức.
+**Thiết lập đội ngũ nhanh**:
+Tối đa ba màn hình ở lần đăng nhập đầu: đội và cách thấy dữ liệu → dán email theo đội, trưởng nhóm, đồng quản trị → xem lại và gửi. Là lối tắt dùng đúng quy tắc của IAM.
 
-**Dùng thử Miễn phí 14 ngày (14-Day Free Trial)**:
-Chính sách tự động cấp quyền trải nghiệm toàn bộ các tính năng cao cấp của gói chuyên nghiệp (Pro/Enterprise) trong 14 ngày ngay sau khi đăng ký tự phục vụ, không yêu cầu thẻ tín dụng, nhằm tối đa hóa cơ hội chứng minh giá trị sản phẩm trước khi chuyển đổi trả phí.
+**Lộ trình thiết lập nhanh / Đạt kích hoạt sử dụng**:
+Nhiệm vụ đầu tiên, đánh dấu theo kết quả nghiệp vụ, đội ngũ đứng đầu. Đạt kích hoạt sử dụng: ≥ 3 thành viên Đang hoạt động (gồm Chủ sở hữu), có kênh hoặc khách hàng thật, có cơ hội hoặc vé thật.
+_Avoid_: Dùng "kích hoạt" trơn — luôn nói rõ kích hoạt Chủ sở hữu, kích hoạt tên miền hay Đạt kích hoạt sử dụng.
 
-**Bảng tiến độ Tiếp nhận Tương tác (In-App Onboarding Checklist & FTUX)**:
-Thành phần giao diện tương tác hiển thị trên màn hình chính sau khi đăng nhập lần đầu, gồm danh sách 5 tác vụ cốt lõi (kết nối kênh, mời đồng nghiệp, nhập danh bạ, tạo cơ hội, tải ứng dụng) kèm thanh phần trăm hoàn thành và phần thưởng khích lệ để dẫn dắt người dùng đạt trạng thái kích hoạt (Product Activation).
+**Thông điệp hướng dẫn kích hoạt**:
+Email hướng dẫn theo hành vi, mốc cuối tương đối với ngày hết dùng thử, gửi theo giờ và lịch làm việc của workspace, huỷ nhận được. Khác với thông báo bắt buộc trước khi hết dùng thử của billing.
 
-**Trình Quản lý Dữ liệu Mẫu & Xóa 1-Click (Sample Data Manager & Purge)**:
-Tính năng cho phép người dùng chủ động bật/tắt hiển thị hoặc xóa sạch toàn bộ các bản ghi dữ liệu mẫu (Contacts, Accounts, Deals) đã nạp ban đầu chỉ bằng 1 thao tác bấm nút khi doanh nghiệp sẵn sàng đưa dữ liệu kinh doanh thật vào vận hành.
+**Tham số nền tảng (PLT) vs Tham số workspace (CFG)**:
+PLT là chính sách của nhà cung cấp, áp chung, doanh nghiệp không đổi được; CFG do doanh nghiệp cấu hình.
 
-**Tên miền Riêng Tùy chỉnh (Custom Domain CNAME)**:
-Khả năng cho phép tổ chức sử dụng tên miền thương hiệu riêng của doanh nghiệp (ví dụ: `crm.congty.vn`) thay cho tên miền phụ mặc định (`congty.crmsaudi.dev`), thông qua việc cấu hình bản ghi DNS CNAME và cơ chế tự động cấp phát chứng chỉ bảo mật SSL/TLS.
-
-**Phễu Bán hàng Đặc thù theo Ngành (Industry-Specific Pipeline)**:
-Quy trình các giai đoạn bán hàng được tùy biến cấu trúc tự động dựa trên ngành nghề kinh doanh mà khách hàng đã chọn (Bất động sản, Bán lẻ, Dịch vụ B2B, Tài chính), thay vì chỉ áp dụng một phễu bán hàng chung chung cho mọi lĩnh vực.
-
-**Cảnh báo Khách hàng Doanh nghiệp Tiềm năng (Enterprise Sales Alert)**:
-Cơ chế tự động chấm điểm và phát sinh thông báo tức thì tới đội ngũ kinh doanh nội bộ khi một khách hàng đăng ký có quy mô nhân sự lớn (`200+`) hoặc thuộc ngành mục tiêu chiến lược, giúp đội ngũ bán hàng chủ động liên hệ tư vấn chuyên sâu.
-
-**Chiến dịch Email Nuôi dưỡng Tự động (Onboarding Drip Email Campaign)**:
-Chuỗi thông điệp email được hệ thống tự động gửi định kỳ vào các mốc thời gian then chốt (ngày 1, ngày 3, ngày 7, ngày 12) sau khi đăng ký, cung cấp hướng dẫn nghiệp vụ và thúc đẩy người dùng hoàn thành các mốc kích hoạt sản phẩm.
+**Dùng thử**:
+Thời hạn, hạn mức và chính sách dùng thử thuộc [`srs/billing-subscription-srs.md`](./srs/billing-subscription-srs.md) `FEAT-05` (tham số theo chiến dịch); onboarding chỉ hiển thị trạng thái.
+_Avoid_: "Dùng thử 14 ngày" như một hằng số.
 
 ## Quản lý Khách hàng & Danh bạ (Contacts & Accounts)
 
