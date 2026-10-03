@@ -1,6 +1,29 @@
 {
   "initiatives": [
     {
+      "id": "feat-560",
+      "title": "Triển khai IAM v5.0, Onboarding v3.0 và đồng bộ 7 SRS phân hệ (194 issue #366–#559)",
+      "primary_repo": "crm-api",
+      "affected_repos": [
+        "product-management",
+        "crm-api",
+        "crm-web",
+        "crm-auth",
+        "crm-manager-api",
+        "crm-manager-web",
+        "crm-lago",
+        "crm-bot",
+        "livechat-widget"
+      ],
+      "status": "not-started",
+      "links": [
+        "https://github.com/crmsaassaudi/product-management/issues/560",
+        "https://github.com/crmsaassaudi/product-management/pull/365",
+        "https://github.com/crmsaassaudi/product-management/blob/main/srs/iam-tenant-authorization.md",
+        "https://github.com/crmsaassaudi/product-management/blob/main/srs/onboarding-srs.md"
+      ]
+    },
+    {
       "id": "feat-359",
       "title": "IAM: mức truy cập theo từng thao tác trên từng loại dữ liệu (ADR-0009)",
       "primary_repo": "crm-api",
